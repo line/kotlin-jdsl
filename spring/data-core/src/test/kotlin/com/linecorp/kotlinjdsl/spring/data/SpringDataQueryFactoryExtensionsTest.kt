@@ -2,11 +2,13 @@ package com.linecorp.kotlinjdsl.spring.data
 
 import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
+import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataPageableQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataSubqueryDsl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
+import com.linecorp.kotlinjdsl.test.entity.order.Order
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -16,7 +18,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import java.util.stream.Stream
 import javax.persistence.TypedQuery
+import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
 internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
@@ -152,6 +156,22 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
 
         confirmVerified(queryFactory)
     }
+
+    @Test
+    fun streamQuery() {
+        // given
+        every { queryFactory.streamQuery<Long>(any()) } returns Stream.of(1L, 2L, 3L)
+
+        // when
+        val actual = queryFactory.streamQuery<Long>() {
+            select(col(Order::id))
+            from(entity(Order::class))
+            where(col(Order::purchaserId).equal(1000))
+        }.toList()
+        // then
+        assertThat(actual).containsExactlyInAnyOrder(3, 2, 1)
+    }
+
 
     @Test
     fun `pageQuery with countProjection`() {
