@@ -11,6 +11,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.util.stream.Stream
 import javax.persistence.TypedQuery
 
 @ExtendWith(MockKExtension::class)
@@ -69,6 +70,31 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         verify(exactly = 1) {
             queryFactory.typedQuery(Data1::class.java, dsl)
             typedQuery.resultList
+        }
+
+        confirmVerified(queryFactory, typedQuery)
+    }
+
+    @Test
+    fun streamQuery() {
+        // given
+        every { queryFactory.typedQuery<Data1>(any(), any()) } returns typedQuery
+        every { typedQuery.resultStream } returns Stream.of(Data1())
+
+        val dsl: CriteriaQueryDsl<Data1>.() -> Unit = {
+            select(entity(Data1::class))
+            from(entity(Data1::class))
+        }
+
+        // when
+        queryFactory.streamQuery(dsl).use { actual ->
+            // then
+            assertThat(actual).contains(Data1())
+        }
+
+        verify(exactly = 1) {
+            queryFactory.typedQuery(Data1::class.java, dsl)
+            typedQuery.resultStream
         }
 
         confirmVerified(queryFactory, typedQuery)

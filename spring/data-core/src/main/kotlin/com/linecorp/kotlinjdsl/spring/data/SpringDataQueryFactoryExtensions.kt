@@ -5,6 +5,7 @@ import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataPageableQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataSubqueryDsl
 import org.springframework.data.domain.Pageable
+import java.util.stream.Stream
 
 inline fun <reified T> SpringDataQueryFactory.singleQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
@@ -13,6 +14,10 @@ inline fun <reified T> SpringDataQueryFactory.singleQuery(
 inline fun <reified T> SpringDataQueryFactory.listQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
 ): List<T> = typedQuery(T::class.java, dsl).resultList
+
+inline fun <reified T> SpringDataQueryFactory.streamQuery(
+    noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
+): Stream<T> = typedQuery(T::class.java, dsl).resultStream
 
 inline fun <reified T> SpringDataQueryFactory.typedQuery(noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit) =
     typedQuery(T::class.java, dsl)
