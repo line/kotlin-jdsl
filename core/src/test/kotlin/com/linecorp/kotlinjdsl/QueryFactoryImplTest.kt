@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.GroupByClause
 import com.linecorp.kotlinjdsl.query.clause.having.HavingClause
-import com.linecorp.kotlinjdsl.query.clause.hint.HibernateSqlQueryHintClause
+import com.linecorp.kotlinjdsl.query.clause.hint.EmptySqlQueryHintClause
 import com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClauseImpl
 import com.linecorp.kotlinjdsl.query.clause.limit.LimitClause
 import com.linecorp.kotlinjdsl.query.clause.orderby.OrderByClause
@@ -71,7 +71,7 @@ internal class QueryFactoryImplTest : WithKotlinJdslAssertions {
                     orderBy = OrderByClause(emptyList()),
                     limit = LimitClause.empty,
                     jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-                    sqlHint = HibernateSqlQueryHintClause(emptyList()),
+                    sqlHint = EmptySqlQueryHintClause,
                 )
             )
         }

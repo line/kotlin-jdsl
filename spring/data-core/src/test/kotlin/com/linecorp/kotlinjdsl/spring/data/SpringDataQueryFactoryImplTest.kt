@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.GroupByClause
 import com.linecorp.kotlinjdsl.query.clause.having.HavingClause
-import com.linecorp.kotlinjdsl.query.clause.hint.HibernateSqlQueryHintClause
+import com.linecorp.kotlinjdsl.query.clause.hint.EmptySqlQueryHintClause
 import com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClauseImpl
 import com.linecorp.kotlinjdsl.query.clause.limit.LimitClause
 import com.linecorp.kotlinjdsl.query.clause.orderby.OrderByClause
@@ -79,7 +79,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
                     orderBy = OrderByClause(emptyList()),
                     limit = LimitClause.empty,
                     jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-                    sqlHint = HibernateSqlQueryHintClause(emptyList()),
+                    sqlHint = EmptySqlQueryHintClause,
                 )
             )
         }
@@ -131,7 +131,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             orderBy = SpringDataPageableOrderByClause(pageable),
             limit = SpringDataPageableLimitClause(pageable),
             jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-            sqlHint = HibernateSqlQueryHintClause(emptyList()),
+            sqlHint = EmptySqlQueryHintClause,
         )
 
         val expectedPageableCountSpec = QueryDslImpl.CriteriaQuerySpecImpl(
@@ -147,7 +147,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             orderBy = OrderByClause(emptyList()),
             limit = LimitClause.empty,
             jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-            sqlHint = HibernateSqlQueryHintClause(emptyList()),
+            sqlHint = EmptySqlQueryHintClause,
         )
 
         val pageableQuery: TypedQuery<Data1> = mockk {
@@ -200,7 +200,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             orderBy = SpringDataPageableOrderByClause(pageable),
             limit = SpringDataPageableLimitClause(pageable),
             jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-            sqlHint = HibernateSqlQueryHintClause(emptyList()),
+            sqlHint = EmptySqlQueryHintClause,
         )
 
         val expectedPageableCountSpec = QueryDslImpl.CriteriaQuerySpecImpl(
@@ -220,7 +220,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             orderBy = OrderByClause(emptyList()),
             limit = LimitClause.empty,
             jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-            sqlHint = HibernateSqlQueryHintClause(emptyList()),
+            sqlHint = EmptySqlQueryHintClause,
         )
 
         val pageableQuery: TypedQuery<Data1> = mockk {
