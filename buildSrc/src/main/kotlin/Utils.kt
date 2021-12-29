@@ -1,0 +1,1 @@
+fun Any.isSnapshot(): Boolean = this.toString().endsWith("SNAPSHOT")
