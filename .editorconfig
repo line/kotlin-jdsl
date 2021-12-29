@@ -1,0 +1,13 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+
+[*.{kt,kts}]
+disabled_rules=import-ordering,no-wildcard-imports
+indent_size = 4
+indent_style = space
+trim_trailing_whitespace = true
+insert_final_newline = true
+tab_width = 4
