@@ -1,0 +1,26 @@
+plugins {
+    id("org.springframework.boot") version "2.5.8"
+    kotlin("plugin.spring")
+    kotlin("plugin.jpa")
+}
+
+apply(plugin = "org.springframework.boot")
+apply(plugin = "kotlin-spring")
+apply(plugin = "kotlin-jpa")
+
+dependencies {
+    // implementation("com.linecorp.kotlin-jdsl:hibernate-kotlin-jdsl:x.y.z")
+    implementation(Modules.hibernate)
+    // implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-core:x.y.z")
+    implementation(Modules.springDataCore)
+    // implementation("spring-data-kotlin-jdsl-autoconfigure:x.y.z")
+    implementation(Modules.springDataAutoconfigure)
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation(Dependencies.jacksonKotlinModule)
+    implementation(Dependencies.h2)
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.5.8"))
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+}

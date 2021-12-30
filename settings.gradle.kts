@@ -30,7 +30,10 @@ module(name = ":test-fixture-integration", path = "test-fixture/integration")
 
 // EXAMPLES
 module(name = ":hibernate-example", path = "examples/hibernate")
-module(name = ":spring-data-boot-example", path = "examples/spring-boot")
+module(name = ":spring-data-boot-2.6-example", path = "examples/spring-boot-2.6")
+module(name = ":spring-data-boot-2.5-example", path = "examples/spring-boot-2.5")
+module(name = ":spring-data-boot-2.4-example", path = "examples/spring-boot-2.4")
+module(name = ":spring-data-boot-2.3-example", path = "examples/spring-boot-2.3")
 
 modules.forEach {
     include(it.name)
