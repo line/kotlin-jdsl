@@ -1,3 +1,5 @@
+apply<PublishPlugin>()
+
 dependencies {
     api(Modules.hibernate)
     api(Modules.springDataCore)

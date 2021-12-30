@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     jacoco
-    `maven-publish`
 
     id("org.jetbrains.kotlin.plugin.noarg") version Dependencies.kotlinVersion
     id("org.jetbrains.kotlin.plugin.allopen") version Dependencies.kotlinVersion
@@ -20,14 +19,12 @@ allprojects {
 }
 
 subprojects {
-    apply {
-        plugin("jacoco")
-        plugin("kotlin")
-        plugin("kotlin-noarg")
-        plugin("kotlin-allopen")
+    apply(plugin = "jacoco")
+    apply(plugin = "kotlin")
+    apply(plugin = "kotlin-noarg")
+    apply(plugin = "kotlin-allopen")
 
-        plugin("maven-publish")
-    }
+    apply<LocalPropertiesPlugin>()
 
     java.sourceCompatibility = JavaVersion.VERSION_1_8
     java.targetCompatibility = JavaVersion.VERSION_1_8
@@ -57,9 +54,5 @@ subprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform()
-    }
-
-    java {
-        withSourcesJar()
     }
 }
