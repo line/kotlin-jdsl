@@ -22,7 +22,7 @@ internal class BookControllerIntegrationTest : WithAssertions {
 
     @Test
     fun createBook() {
-        createBookTest(BookService.CreateBookSpec("name")) {
+        createBook(BookService.CreateBookSpec("name")) {
             status { isOk }
         }
     }
@@ -30,7 +30,7 @@ internal class BookControllerIntegrationTest : WithAssertions {
     @Test
     fun findById() {
         val spec = BookService.CreateBookSpec("name1")
-        val id = createBookTest(spec)
+        val id = createBook(spec)
         mockMvc.get("$context/$id")
             .andExpect {
                 status { isOk }
@@ -44,8 +44,8 @@ internal class BookControllerIntegrationTest : WithAssertions {
     fun findByName() {
         val spec1 = BookService.CreateBookSpec("name2")
         val spec2 = BookService.CreateBookSpec("name2")
-        val id1 = createBookTest(spec1)
-        val id2 = createBookTest(spec2)
+        val id1 = createBook(spec1)
+        val id2 = createBook(spec2)
         mockMvc.get(context) {
             param("name", spec1.name)
         }
@@ -65,7 +65,7 @@ internal class BookControllerIntegrationTest : WithAssertions {
             }
     }
 
-    private fun createBookTest(spec: BookService.CreateBookSpec, dsl: MockMvcResultMatchersDsl.() -> Unit = {}) = mockMvc.post(context) {
+    private fun createBook(spec: BookService.CreateBookSpec, dsl: MockMvcResultMatchersDsl.() -> Unit = {}) = mockMvc.post(context) {
         contentType = MediaType.APPLICATION_JSON
         content = spec.toJson()
     }.andExpect(dsl)
