@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 
@@ -21,7 +22,9 @@ internal class BookControllerIntegrationTest : WithAssertions {
 
     @Test
     fun createBook() {
-        createBookTest(BookService.CreateBookSpec("name"))
+        createBookTest(BookService.CreateBookSpec("name")) {
+            status { isOk() }
+        }
     }
 
     @Test
@@ -62,9 +65,11 @@ internal class BookControllerIntegrationTest : WithAssertions {
             }
     }
 
-    private fun createBookTest(spec: BookService.CreateBookSpec) = mockMvc.post(context) {
+    private fun createBookTest(spec: BookService.CreateBookSpec, dsl: MockMvcResultMatchersDsl.() -> Unit = {}) = mockMvc.post(context) {
         contentType = MediaType.APPLICATION_JSON
         content = spec.toJson()
-    }.andExpect { status { isOk() } }
-        .andReturn().response.contentAsString.toLong()
+    }.andExpect(dsl)
+        .andReturn()
+        .response
+        .contentAsString.toLong()
 }
