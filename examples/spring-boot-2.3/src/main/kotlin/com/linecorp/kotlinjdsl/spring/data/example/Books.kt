@@ -69,12 +69,12 @@ class BookService(
     data class CreateBookSpec(
         val name: String
     ) {
-        fun toJson() = """{"name":"$name"} """
+        fun toJson() = """{"name":"$name"}"""
     }
 
     data class FindBookSpec(
         val name: String
     ) {
-        fun toJson() = """{"name":"$name"} """
+        fun toJson() = """{"name":"$name"}"""
     }
 }

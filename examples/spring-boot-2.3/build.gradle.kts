@@ -1,5 +1,5 @@
 plugins {
-    id("org.springframework.boot") version Dependencies.springBoot23Version
+    id("org.springframework.boot") version "2.3.12.RELEASE"
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
 }
@@ -20,7 +20,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation(Dependencies.jacksonKotlinModule)
     implementation(Dependencies.h2)
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:${Dependencies.springBoot23Version}"))
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.3.12.RELEASE"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

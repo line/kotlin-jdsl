@@ -30,7 +30,7 @@ internal class BookControllerIntegrationTest : WithAssertions {
         val id = createBookTest(spec)
         mockMvc.get("$context/$id")
             .andExpect {
-                status { isOk() }
+                status { isOk }
                 content {
                     json(Book(id = id, name = spec.name).toJson())
                 }
@@ -47,7 +47,7 @@ internal class BookControllerIntegrationTest : WithAssertions {
             param("name", spec1.name)
         }
             .andExpect {
-                status { isOk() }
+                status { isOk }
                 content {
                     json(
                         buildString {
@@ -65,6 +65,6 @@ internal class BookControllerIntegrationTest : WithAssertions {
     private fun createBookTest(spec: BookService.CreateBookSpec) = mockMvc.post(context) {
         contentType = MediaType.APPLICATION_JSON
         content = spec.toJson()
-    }.andExpect { status { isOk() } }
+    }.andExpect { status { isOk } }
         .andReturn().response.contentAsString.toLong()
 }

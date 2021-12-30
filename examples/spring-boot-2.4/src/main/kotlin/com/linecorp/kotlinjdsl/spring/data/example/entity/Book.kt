@@ -13,5 +13,5 @@ data class Book(
     @Column
     val name: String,
 ) {
-    fun toJson() = """{"id":$id,"name":"$name"} """
+    fun toJson() = """{"id":$id,"name":"$name"}"""
 }
