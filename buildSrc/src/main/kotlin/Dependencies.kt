@@ -6,9 +6,6 @@ object Dependencies {
     const val kotlinVersion = "1.6.10"
     const val springCoreVersion = "5.3.14"
     const val springBootVersion = "2.6.2"
-    const val springBoot25Version = "2.5.8"
-    const val springBoot24Version = "2.4.13"
-    const val springBoot23Version = "2.3.12.RELEASE"
     const val springDataJpa = "2.6.0"
 
     // kotlin
