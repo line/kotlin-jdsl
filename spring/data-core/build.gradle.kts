@@ -1,3 +1,5 @@
+apply<PublishPlugin>()
+
 dependencies {
     compileOnly(Modules.core)
     compileOnly(Dependencies.springJpa)
