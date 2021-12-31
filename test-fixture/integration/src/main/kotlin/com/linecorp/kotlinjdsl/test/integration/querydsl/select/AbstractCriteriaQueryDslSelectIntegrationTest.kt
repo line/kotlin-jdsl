@@ -24,8 +24,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
 
     @BeforeEach
     fun setUp() {
-        entityManager.persistAll(order1, order2, order3)
-        entityManager.flushAndClear()
+        entityManager.persistAllFlushAndClearEach(order1, order2, order3)
     }
 
     @Test
@@ -92,7 +91,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
     }
 
     @Test
-    fun `listQuery - select single subquery`() {
+    open fun `listQuery - select single subquery`() {
         val subquery = queryFactory.subquery<Long> {
             val order = entity(Order::class, "o")
 

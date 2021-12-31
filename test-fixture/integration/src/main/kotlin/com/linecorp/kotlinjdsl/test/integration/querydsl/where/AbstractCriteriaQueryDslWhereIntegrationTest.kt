@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
 abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQueryDslIntegrationTest() {
     private val order1 = order { purchaserId = 1000 }
@@ -16,8 +17,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQu
 
     @BeforeEach
     fun setUp() {
-        entityManager.persistAll(order1, order2, order3)
-        entityManager.flushAndClear()
+        entityManager.persistAllFlushAndClearEach(order1, order2, order3)
     }
 
     @Test
@@ -29,9 +29,12 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQu
             where(col(Order::purchaserId).equal(1000))
         }
 
+        order.groups.forEach { it.items.forEach { it.price } }
+
         // then
         assertThat(order)
             .usingRecursiveComparison()
+            .withComparatorForType(BigDecimal::compareTo, BigDecimal::class.java)
             .isEqualTo(order1)
     }
 
