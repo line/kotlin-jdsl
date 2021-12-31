@@ -20,6 +20,16 @@ dependencies {
 }
 ```
 
+### Eclipselink
+Add Hibernate Kotlin JDSL and Eclipselink to dependencies
+
+```kotlin
+dependencies {
+    implementation("com.linecorp.kotlin-jdsl:eclipselink-kotlin-jdsl:x.y.z")
+    implementation("org.eclipse.persistence:org.eclipse.persistence.jpa:x.y.z")
+}
+```
+
 Create QueryFactory using EntityManager
 
 ```kotlin
