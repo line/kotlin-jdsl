@@ -21,7 +21,7 @@ dependencies {
 ```
 
 ### Eclipselink
-Add Hibernate Kotlin JDSL and Eclipselink to dependencies
+Add Eclipselink Kotlin JDSL and Eclipselink to dependencies
 
 ```kotlin
 dependencies {
