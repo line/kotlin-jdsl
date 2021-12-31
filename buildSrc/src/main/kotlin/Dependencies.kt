@@ -17,7 +17,7 @@ object Dependencies {
     const val slf4j = "org.slf4j:slf4j-api:1.7.32"
     const val logback = "ch.qos.logback:logback-classic:1.2.6"
     const val hibernate = "org.hibernate:hibernate-core:5.6.3.Final"
-    const val eclipse = "org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.9"
+    const val eclipselink = "org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.10"
     const val jacksonKotlinModule = "com.fasterxml.jackson.module:jackson-module-kotlin"
 
     // SpringBoot
