@@ -24,7 +24,8 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
 
     @BeforeEach
     fun setUp() {
-        entityManager.persistAllFlushAndClearEach(order1, order2, order3)
+        entityManager.persistAll(order1, order2, order3)
+        entityManager.flushAndClear()
     }
 
     @Test
@@ -36,7 +37,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         }
 
         // then
-        assertThat(purchaserId).isEqualTo(order3.id)
+        assertThat(purchaserId).isEqualTo(listOf(order1.id, order2.id, order3.id).maxOrNull())
     }
 
     @Test
@@ -62,7 +63,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         }
 
         // then
-        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id, order3.id))
+        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted())
     }
 
     @Test

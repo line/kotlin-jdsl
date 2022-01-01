@@ -17,7 +17,8 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQu
 
     @BeforeEach
     fun setUp() {
-        entityManager.persistAllFlushAndClearEach(order1, order2, order3)
+        entityManager.persistAll(order1, order2, order3)
+        entityManager.flushAndClear()
     }
 
     @Test

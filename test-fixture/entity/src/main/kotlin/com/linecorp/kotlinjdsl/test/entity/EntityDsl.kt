@@ -12,11 +12,6 @@ import javax.persistence.EntityManager
 abstract class EntityDsl {
     fun EntityManager.persistAll(vararg entities: Any) = persistAll(entities.toList())
     fun EntityManager.persistAll(entities: Collection<Any>) = entities.forEach { persist(it) }
-    fun EntityManager.persistAllFlushAndClearEach(vararg entities: Any) = persistAllFlushAndClearEach(entities.toList())
-    fun EntityManager.persistAllFlushAndClearEach(entities: Collection<Any>) = entities.forEach {
-        persist(it)
-        flushAndClear()
-    }
     fun EntityManager.removeAll(vararg entities: Any) = removeAll(entities.toList())
     fun EntityManager.removeAll(entities: Collection<Any>) = entities.forEach {
         if (contains(it)) {

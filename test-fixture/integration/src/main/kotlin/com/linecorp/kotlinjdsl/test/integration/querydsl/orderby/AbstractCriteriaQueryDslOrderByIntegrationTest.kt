@@ -13,7 +13,8 @@ abstract class AbstractCriteriaQueryDslOrderByIntegrationTest : AbstractCriteria
 
     @BeforeEach
     fun setUp() {
-        entityManager.persistAllFlushAndClearEach(order1, order2)
+        entityManager.persistAll(order1, order2)
+        entityManager.flushAndClear()
     }
 
     @Test
@@ -26,7 +27,7 @@ abstract class AbstractCriteriaQueryDslOrderByIntegrationTest : AbstractCriteria
         }
 
         // then
-        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id))
+        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id).sorted())
     }
 
     @Test
@@ -39,6 +40,6 @@ abstract class AbstractCriteriaQueryDslOrderByIntegrationTest : AbstractCriteria
         }
 
         // then
-        assertThat(orderIds).isEqualTo(listOf(order2.id, order1.id))
+        assertThat(orderIds).isEqualTo(listOf(order2.id, order1.id).sortedDescending())
     }
 }
