@@ -11,7 +11,7 @@ class EclipselinkCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQueryDs
     override lateinit var entityManager: EntityManager
 
     @Test
-    override fun `listQuery - select single subquery`() {
+    override fun `listQuery - subquery in select, subquery in from`() {
         // https://wiki.eclipse.org/EclipseLink/UserGuide/JPA/Basic_JPA_Development/Querying/JPQL#Sub-selects_in_FROM_clause
         // eclipselink does not support select subquery and jpa criteria does not support from subquery
         // so kotlin-jdsl's eclipselink does not support select subquery column

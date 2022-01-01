@@ -91,7 +91,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
     }
 
     @Test
-    open fun `listQuery - select single subquery`() {
+    open fun `listQuery - subquery in select, subquery in from`() {
         val subquery = queryFactory.subquery<Long> {
             val order = entity(Order::class, "o")
 
