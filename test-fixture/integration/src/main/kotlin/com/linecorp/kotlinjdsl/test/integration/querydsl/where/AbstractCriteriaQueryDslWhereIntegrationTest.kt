@@ -29,8 +29,6 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQu
             where(col(Order::purchaserId).equal(1000))
         }
 
-        order.groups.forEach { it.items.forEach { it.price } }
-
         // then
         assertThat(order)
             .usingRecursiveComparison()
