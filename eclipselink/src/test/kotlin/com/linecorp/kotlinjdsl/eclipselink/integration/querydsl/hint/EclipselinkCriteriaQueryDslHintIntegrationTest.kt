@@ -36,7 +36,7 @@ internal class EclipselinkCriteriaQueryDslHintIntegrationTest : AbstractCriteria
             select(min(Order::purchaserId))
             from(entity(Order::class))
             where(col(Order::id).`in`(order1.id, order2.id, order3.id))
-            // Since eclipselink does not put /*+ */ comments in SQL hints, users must put all comments in hints.
+            // Since eclipselink does not put /*+ */ comments automatically in SQL hints, users must put all comments in hints.
             sqlHints("/*+ idx1 */")
         }
 
