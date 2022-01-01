@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.hibernate.example.entity
+package com.linecorp.kotlinjdsl.eclipselink.example.entity
 
 import javax.persistence.*
 

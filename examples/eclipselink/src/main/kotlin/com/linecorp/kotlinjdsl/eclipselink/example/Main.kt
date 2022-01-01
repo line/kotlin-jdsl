@@ -1,8 +1,8 @@
-package com.linecorp.kotlinjdsl.hibernate.example
+package com.linecorp.kotlinjdsl.eclipselink.example
 
 import com.linecorp.kotlinjdsl.QueryFactory
 import com.linecorp.kotlinjdsl.QueryFactoryImpl
-import com.linecorp.kotlinjdsl.hibernate.example.entity.Book
+import com.linecorp.kotlinjdsl.eclipselink.example.entity.Book
 import com.linecorp.kotlinjdsl.listQuery
 import com.linecorp.kotlinjdsl.query.creator.CriteriaQueryCreatorImpl
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreatorImpl
