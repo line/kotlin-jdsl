@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.querydsl.hint.hibernate
+package com.linecorp.kotlinjdsl.querydsl.hint.eclipselink
 
 import com.linecorp.kotlinjdsl.query.clause.hint.EclipselinkSqlQueryHintClause
 import com.linecorp.kotlinjdsl.querydsl.hint.SqlQueryHintClauseFactoryProvider
