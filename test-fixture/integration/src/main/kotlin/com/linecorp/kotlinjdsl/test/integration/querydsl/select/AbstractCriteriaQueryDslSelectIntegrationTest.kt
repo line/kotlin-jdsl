@@ -3,13 +3,16 @@ package com.linecorp.kotlinjdsl.test.integration.querydsl.select
 import com.linecorp.kotlinjdsl.listQuery
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.count
+import com.linecorp.kotlinjdsl.querydsl.expression.function
 import com.linecorp.kotlinjdsl.querydsl.expression.max
 import com.linecorp.kotlinjdsl.singleQuery
 import com.linecorp.kotlinjdsl.subquery
 import com.linecorp.kotlinjdsl.test.entity.order.Order
+import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import kotlin.math.sqrt
 
 abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQueryDslIntegrationTest() {
     private val orderItem1 = orderItem { }
@@ -109,5 +112,30 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
 
         // then
         assertThat(counts).isEqualTo(listOf(2L, 2L, 1L))
+    }
+
+    @Test
+    fun `function - sqrt function`() {
+        val purchaserIdSquareRoot = queryFactory.singleQuery<Double> {
+            select(function("sqrt", col(Order::purchaserId)))
+            from(entity(Order::class))
+            where(col(Order::purchaserId).equal(order1.purchaserId))
+            maxResults(1)
+        }
+
+        // then
+        assertThat(purchaserIdSquareRoot).isEqualTo(sqrt(order1.purchaserId.toDouble()))
+    }
+
+    @Test
+    fun `function - substring function`() {
+        val result = queryFactory.singleQuery<String> {
+            select(function("substring", col(OrderItem::productName), literal(1), literal(2)))
+            from(entity(OrderItem::class))
+            where(col(OrderItem::id).equal(order1.groups.first().items.first().id))
+        }
+
+        // then
+        assertThat(result).isEqualTo(order1.groups.first().items.first().productName.take(2))
     }
 }
