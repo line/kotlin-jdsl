@@ -27,7 +27,7 @@ abstract class AbstractCriteriaQueryDslOrderByIntegrationTest : AbstractCriteria
         }
 
         // then
-        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id))
+        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id).sorted())
     }
 
     @Test
@@ -40,6 +40,6 @@ abstract class AbstractCriteriaQueryDslOrderByIntegrationTest : AbstractCriteria
         }
 
         // then
-        assertThat(orderIds).isEqualTo(listOf(order2.id, order1.id))
+        assertThat(orderIds).isEqualTo(listOf(order2.id, order1.id).sortedDescending())
     }
 }
