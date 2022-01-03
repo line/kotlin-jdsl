@@ -66,7 +66,7 @@ class PublishPlugin : AbstractPlugin() {
                             developer {
                                 id.set("shouwn")
                                 name.set("jonghyon.s")
-                                email.set("jonghon.s@linecorp.com")
+                                email.set("jonghyon.s@linecorp.com")
                             }
                             developer {
                                 id.set("cj848")
