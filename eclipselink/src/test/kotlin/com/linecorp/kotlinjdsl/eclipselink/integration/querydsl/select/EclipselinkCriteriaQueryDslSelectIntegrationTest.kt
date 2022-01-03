@@ -25,6 +25,6 @@ class EclipselinkCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQueryDs
 
         // then
         assertThat(exception)
-            .hasMessage("${SubQueryImpl::class.qualifiedName} cannot be cast to ${SelectionImpl::class.qualifiedName}")
+            .hasMessageContaining("class ${SubQueryImpl::class.qualifiedName} cannot be cast to class ${SelectionImpl::class.qualifiedName}")
     }
 }
