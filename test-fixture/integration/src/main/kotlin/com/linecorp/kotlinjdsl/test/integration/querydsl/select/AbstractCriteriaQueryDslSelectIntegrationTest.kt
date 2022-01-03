@@ -40,7 +40,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         }
 
         // then
-        assertThat(purchaserId).isEqualTo(order3.id)
+        assertThat(purchaserId).isEqualTo(listOf(order1.id, order2.id, order3.id).maxOrNull())
     }
 
     @Test
@@ -66,7 +66,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         }
 
         // then
-        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id, order3.id))
+        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted())
     }
 
     @Test
@@ -94,8 +94,12 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         assertThat(purchaserIds).isEqualTo(listOf(1000L, 2000L))
     }
 
+    /**
+     * Currently, in the case of this test, eclipselink does not support it properly,
+     * so for tests that generate an exception like this, open it so that it can be extended with open.
+     */
     @Test
-    fun `listQuery - select single subquery`() {
+    open fun `listQuery - subquery in select, subquery in from`() {
         val subquery = queryFactory.subquery<Long> {
             val order = entity(Order::class, "o")
 
@@ -115,7 +119,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
     }
 
     @Test
-    fun `function - sqrt function`() {
+    fun `function - sqrt function, single parameter`() {
         val purchaserIdSquareRoot = queryFactory.singleQuery<Double> {
             select(function("sqrt", col(Order::purchaserId)))
             from(entity(Order::class))
@@ -128,7 +132,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
     }
 
     @Test
-    fun `function - substring function`() {
+    fun `function - substring function, mutliple parameters`() {
         val result = queryFactory.singleQuery<String> {
             select(function("substring", col(OrderItem::productName), literal(1), literal(2)))
             from(entity(OrderItem::class))
@@ -139,3 +143,4 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         assertThat(result).isEqualTo(order1.groups.first().items.first().productName.take(2))
     }
 }
+

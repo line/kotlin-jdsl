@@ -10,6 +10,7 @@ data class Module(
 object Modules {
     val core = module(":kotlin-jdsl-core")
     val hibernate = module(":hibernate-kotlin-jdsl")
+    val eclipselink = module(":eclipselink-kotlin-jdsl")
 
     val springDataCore = module(":spring-data-kotlin-jdsl-core")
     val springBatchInfrastructure = module(":spring-batch-kotlin-jdsl-infrastructure")

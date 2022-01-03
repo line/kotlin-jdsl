@@ -29,7 +29,7 @@ abstract class AbstractCriteriaQueryDslLimitIntegrationTest : AbstractCriteriaQu
         }
 
         // then
-        assertThat(orderIds).containsOnly(order2.id, order3.id)
+        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted().drop(1))
     }
 
     @Test
@@ -43,7 +43,7 @@ abstract class AbstractCriteriaQueryDslLimitIntegrationTest : AbstractCriteriaQu
         }
 
         // then
-        assertThat(orderIds).containsOnly(order1.id)
+        assertThat(orderIds).containsOnly(listOf(order1.id, order2.id, order3.id).minOrNull())
     }
 
     @Test
@@ -57,6 +57,6 @@ abstract class AbstractCriteriaQueryDslLimitIntegrationTest : AbstractCriteriaQu
         }
 
         // then
-        assertThat(orderIds).containsOnly(order2.id)
+        assertThat(orderIds).containsOnly(listOf(order1.id, order2.id, order3.id).sorted()[1])
     }
 }
