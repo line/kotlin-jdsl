@@ -37,7 +37,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         }
 
         // then
-        assertThat(purchaserId).isEqualTo(order3.id)
+        assertThat(purchaserId).isEqualTo(listOf(order1.id, order2.id, order3.id).maxOrNull())
     }
 
     @Test
@@ -63,7 +63,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         }
 
         // then
-        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id, order3.id))
+        assertThat(orderIds).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted())
     }
 
     @Test
@@ -91,8 +91,12 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         assertThat(purchaserIds).isEqualTo(listOf(1000L, 2000L))
     }
 
+    /**
+     * Currently, in the case of this test, eclipselink does not support it properly,
+     * so for tests that generate an exception like this, open it so that it can be extended with open.
+     */
     @Test
-    fun `listQuery - select single subquery`() {
+    open fun `listQuery - subquery in select, subquery in from`() {
         val subquery = queryFactory.subquery<Long> {
             val order = entity(Order::class, "o")
 

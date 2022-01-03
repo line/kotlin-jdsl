@@ -13,6 +13,18 @@ dependencies {
 }
 ```
 
+kotlin-jdsl's spring boot starter is adopted hibernate as the default implementation of kotlin-jdsl, so to use eclipselink, you need to modify the build script as follows.
+
+```kotlin
+dependencies {
+    implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:x.y.z") {
+        exclude(group = "com.linecorp.kotlin-jdsl", module = "hibernate-kotlin-jdsl")
+    }
+    implementation("com.linecorp.kotlin-jdsl:eclipselink-kotlin-jdsl:x.y.z")
+    implementation("org.eclipse.persistence:org.eclipse.persistence.jpa:x.y.z")
+}
+```
+
 Inject SpringDataQueryFactory in your service and query using it
 
 ```kotlin

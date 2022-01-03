@@ -94,7 +94,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
         }
 
         // then
-        assertThat(max).isEqualTo(50.toBigDecimal().setScale(2))
+        assertThat(max).isEqualByComparingTo(50.toString())
     }
 
     @Test
@@ -106,7 +106,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
         }
 
         // then
-        assertThat(min).isEqualTo(10.toBigDecimal().setScale(2))
+        assertThat(min).isEqualByComparingTo(10.toString())
     }
 
     @Test
@@ -130,7 +130,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
         }
 
         // then
-        assertThat(sum).isEqualTo(110.toBigDecimal().setScale(2))
+        assertThat(sum).isEqualByComparingTo(110.toString())
     }
 
     @Test

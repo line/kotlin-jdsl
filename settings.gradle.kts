@@ -14,6 +14,7 @@ data class Module(
 // CORE
 module(name = ":kotlin-jdsl-core", path = "core")
 module(name = ":hibernate-kotlin-jdsl", path = "hibernate")
+module(name = ":eclipselink-kotlin-jdsl", path = "eclipselink")
 
 // SPRING
 module(name = ":spring", path = "spring")
@@ -30,6 +31,7 @@ module(name = ":test-fixture-integration", path = "test-fixture/integration")
 
 // EXAMPLES
 module(name = ":hibernate-example", path = "examples/hibernate")
+module(name = ":eclipselink-example", path = "examples/eclipselink")
 module(name = ":spring-data-boot-2.6-example", path = "examples/spring-boot-2.6")
 module(name = ":spring-data-boot-2.5-example", path = "examples/spring-boot-2.5")
 module(name = ":spring-data-boot-2.4-example", path = "examples/spring-boot-2.4")

@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
 abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQueryDslIntegrationTest() {
     private val order1 = order { purchaserId = 1000 }
@@ -32,6 +33,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQu
         // then
         assertThat(order)
             .usingRecursiveComparison()
+            .withComparatorForType(BigDecimal::compareTo, BigDecimal::class.java)
             .isEqualTo(order1)
     }
 
