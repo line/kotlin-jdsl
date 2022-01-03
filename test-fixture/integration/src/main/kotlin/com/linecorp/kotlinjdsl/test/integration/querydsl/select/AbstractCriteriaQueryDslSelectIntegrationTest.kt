@@ -91,6 +91,10 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         assertThat(purchaserIds).isEqualTo(listOf(1000L, 2000L))
     }
 
+    /**
+     * Currently, in the case of this test, eclipselink does not support it properly,
+     * so for tests that generate an exception like this, open it so that it can be extended with open.
+     */
     @Test
     open fun `listQuery - subquery in select, subquery in from`() {
         val subquery = queryFactory.subquery<Long> {
