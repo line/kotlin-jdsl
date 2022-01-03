@@ -143,4 +143,3 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
         assertThat(result).isEqualTo(order1.groups.first().items.first().productName.take(2))
     }
 }
-
