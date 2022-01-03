@@ -301,7 +301,7 @@ internal class QueryDslImplExpressionTest : WithKotlinJdslAssertions {
     }
 
     @Test
-    fun function() {
+    fun functionVarArg() {
         // when
         val actual: FunctionSpec<String>
         QueryDslImpl(String::class.java).apply {
@@ -311,6 +311,36 @@ internal class QueryDslImplExpressionTest : WithKotlinJdslAssertions {
                 column(EntitySpec(Data1::class.java), Data1::id),
                 literal(1),
                 literal(2)
+            )
+        }
+
+        // then
+        assertThat(actual).isEqualTo(
+            FunctionSpec(
+                name = "substring",
+                returnType = String::class.java,
+                expressions = listOf(
+                    ColumnSpec(EntitySpec(Data1::class.java), Data1::id.name),
+                    LiteralSpec(1),
+                    LiteralSpec(2)
+                )
+            )
+        )
+    }
+
+    @Test
+    fun functionList() {
+        // when
+        val actual: FunctionSpec<String>
+        QueryDslImpl(String::class.java).apply {
+            actual = function(
+                "substring",
+                String::class.java,
+                listOf(
+                    column(EntitySpec(Data1::class.java), Data1::id),
+                    literal(1),
+                    literal(2)
+                )
             )
         }
 
