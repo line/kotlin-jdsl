@@ -325,6 +325,85 @@ internal class ExpressionDslExtensionsTest : WithKotlinJdslAssertions {
         confirmVerified(dsl)
     }
 
+    @Test
+    fun functionVarArg() {
+        // given
+        val columnSpec: ColumnSpec<String> = mockk()
+        val literal1: LiteralSpec<Int> = mockk()
+        val literal2: LiteralSpec<Int> = mockk()
+        val functionSpec: FunctionSpec<String> = mockk()
+        val entitySpec = EntitySpec(Data1::class.java)
+
+        with(dsl) {
+            every { literal(1) } returns literal1
+            every { literal(2) } returns literal2
+            every { column(entitySpec, Data1::id) } returns columnSpec
+            every { function<String>("substring", listOf(columnSpec, literal1, literal2)) } returns functionSpec
+        }
+
+        // when
+        val actual = with(dsl) { function<String>("substring", column(entitySpec, Data1::id), literal(1), literal(2)) }
+
+        // then
+        assertThat(actual).isEqualTo(functionSpec)
+
+        verify(exactly = 1) {
+            with(dsl) {
+                literal(1)
+                literal(2)
+                column(entitySpec, Data1::id)
+                function<String>("substring", listOf(columnSpec, literal1, literal2))
+            }
+        }
+
+        confirmVerified(dsl)
+    }
+
+    @Test
+    fun functionList() {
+        // given
+        val columnSpec: ColumnSpec<String> = mockk()
+        val literal1: LiteralSpec<Int> = mockk()
+        val literal2: LiteralSpec<Int> = mockk()
+        val functionSpec: FunctionSpec<String> = mockk()
+        val entitySpec = EntitySpec(Data1::class.java)
+
+        with(dsl) {
+            every { literal(1) } returns literal1
+            every { literal(2) } returns literal2
+            every { column(entitySpec, Data1::id) } returns columnSpec
+            every {
+                function(
+                    "substring",
+                    String::class.java,
+                    listOf(columnSpec, literal1, literal2)
+                )
+            } returns functionSpec
+        }
+
+        // when
+        val actual =
+            with(dsl) { function<String>("substring", listOf(column(entitySpec, Data1::id), literal(1), literal(2))) }
+
+        // then
+        assertThat(actual).isEqualTo(functionSpec)
+
+        verify(exactly = 1) {
+            with(dsl) {
+                literal(1)
+                literal(2)
+                column(entitySpec, Data1::id)
+                function(
+                    "substring",
+                    String::class.java,
+                    listOf(columnSpec, literal1, literal2)
+                )
+            }
+        }
+
+        confirmVerified(dsl)
+    }
+
     class Data1 {
         val id: String = "10"
         val price: Int = 100

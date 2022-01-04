@@ -32,4 +32,9 @@ interface ExpressionDsl {
     fun <T> `when`(predicate: PredicateSpec, expression: ExpressionSpec<T>) = CaseSpec.WhenSpec(predicate, expression)
     fun `when`(predicate: PredicateSpec) = WhenDsl(predicate)
     fun `when`(predicate: () -> PredicateSpec) = WhenDsl(predicate())
+
+    fun <T> function(name: String, returnType: Class<T>, vararg expressions: ExpressionSpec<*>) =
+        function(name, returnType, expressions.toList())
+    fun <T> function(name: String, returnType: Class<T>, expressions: List<ExpressionSpec<*>>) =
+        FunctionSpec(name, returnType, expressions)
 }
