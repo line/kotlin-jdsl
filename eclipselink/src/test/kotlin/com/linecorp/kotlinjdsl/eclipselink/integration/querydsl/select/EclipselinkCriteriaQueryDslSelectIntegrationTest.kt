@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
 
+@Suppress("CAST_NEVER_SUCCEEDS")
 @ExtendWith(EntityManagerExtension::class)
 class EclipselinkCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQueryDslSelectIntegrationTest() {
     override lateinit var entityManager: EntityManager
@@ -25,6 +26,9 @@ class EclipselinkCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQueryDs
 
         // then
         assertThat(exception)
-            .hasMessageContaining("class ${SubQueryImpl::class.qualifiedName} cannot be cast to class ${SelectionImpl::class.qualifiedName}")
+            .isInstanceOf(ClassCastException::class.java)
+            .hasMessageContaining(SubQueryImpl::class.qualifiedName)
+            .hasMessageContaining("cannot be cast")
+            .hasMessageContaining(SelectionImpl::class.qualifiedName)
     }
 }
