@@ -24,7 +24,6 @@ module(name = ":spring-data-kotlin-jdsl-autoconfigure", path = "spring/data-auto
 module(name = ":spring-data-kotlin-jdsl-starter", path = "spring/data-starter")
 
 // TEST FIXTURE
-module(name = ":test-fixture", path = "test-fixture")
 module(name = ":test-fixture-core", path = "test-fixture/core")
 module(name = ":test-fixture-entity", path = "test-fixture/entity")
 module(name = ":test-fixture-integration", path = "test-fixture/integration")

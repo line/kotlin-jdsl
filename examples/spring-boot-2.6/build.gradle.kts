@@ -8,6 +8,10 @@ apply(plugin = "org.springframework.boot")
 apply(plugin = "kotlin-spring")
 apply(plugin = "kotlin-jpa")
 
+coverage {
+    exclude(project)
+}
+
 dependencies {
     // implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:x.y.z")
     implementation(Modules.springDataStarter)

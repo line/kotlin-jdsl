@@ -1,3 +1,7 @@
+coverage {
+    exclude(project)
+}
+
 dependencies {
     api(Modules.testFixtureCore)
     api(Modules.testFixtureEntity)
