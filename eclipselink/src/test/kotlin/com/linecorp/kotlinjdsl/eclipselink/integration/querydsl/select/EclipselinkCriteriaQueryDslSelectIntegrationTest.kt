@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
 
-@Suppress("CAST_NEVER_SUCCEEDS")
 @ExtendWith(EntityManagerExtension::class)
 class EclipselinkCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQueryDslSelectIntegrationTest() {
     override lateinit var entityManager: EntityManager
