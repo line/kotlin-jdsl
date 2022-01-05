@@ -1,3 +1,7 @@
+coverage {
+    exclude(project)
+}
+
 dependencies {
     api(Dependencies.junit)
     api(Dependencies.mockk)

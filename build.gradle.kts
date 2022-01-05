@@ -18,6 +18,10 @@ allprojects {
     }
 }
 
+rootProject {
+    apply<JacocoExtensionPlugin>()
+}
+
 subprojects {
     apply(plugin = "jacoco")
     apply(plugin = "kotlin")
