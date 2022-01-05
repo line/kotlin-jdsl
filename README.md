@@ -1,4 +1,10 @@
 # Kotlin JDSL
+<a href="https://codecov.io/gh/line/kotlin-jdsl">
+  <img src="https://codecov.io/gh/line/kotlin-jdsl/branch/main/graph/badge.svg?token=YWPDKYDARW"/>
+</a>
+<a href="https://github.com/line/kotlin-jdsl/contributors"><img src="https://img.shields.io/github/contributors/line/kotlin-jdsl.svg" /></a>
+<a href="https://search.maven.org/search?q=g:com.linecorp.kotlin-jdsl%20AND%20a:kotlin-jdsl-core"><img src="https://img.shields.io/maven-central/v/com.linecorp.kotlin-jdsl/kotlin-jdsl-core.svg?label=version" /></a>
+<a href="https://github.com/line/kotlin-jdsl/commits"><img src="https://img.shields.io/github/release-date/line/kotlin-jdsl.svg?label=release" /></a>
 
 Kotlin JDSL is DSL for JPA Criteria API without generated metamodel and reflection. It helps you write a JPA query like
 writing an SQL statement.
@@ -267,3 +273,10 @@ If you believe you have discovered a vulnerability or have an issue related to s
    limitations under the License.
 ```
 See [LICENSE](LICENSE) for more details.
+
+# Our Lovely Contrubutors
+See [the complete list of our contributors](https://github.com/line/kotlin-jdsl/contributors).
+
+<a href="https://github.com/line/kotlin-jdsl/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=line/kotlin-jdsl"/>
+</a>
