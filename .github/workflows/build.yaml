@@ -26,10 +26,10 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
       - name: CodeCoverage(with test) with Gradle
-        if: github.event_name != 'pull_request'
         run: ./gradlew codeCoverageReport
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
+        if: github.event_name != 'pull_request'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml
