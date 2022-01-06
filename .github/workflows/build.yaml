@@ -29,6 +29,7 @@ jobs:
         run: ./gradlew codeCoverageReport
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
+        if: github.event_name != 'pull_request'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml
