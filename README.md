@@ -274,7 +274,7 @@ If you believe you have discovered a vulnerability or have an issue related to s
 ```
 See [LICENSE](LICENSE) for more details.
 
-# Our Lovely Contrubutors
+# Our Lovely Contributors
 See [the complete list of our contributors](https://github.com/line/kotlin-jdsl/contributors).
 
 <a href="https://github.com/line/kotlin-jdsl/graphs/contributors">
