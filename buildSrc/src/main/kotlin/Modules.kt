@@ -11,6 +11,7 @@ object Modules {
     val core = module(":kotlin-jdsl-core")
     val hibernate = module(":hibernate-kotlin-jdsl")
     val eclipselink = module(":eclipselink-kotlin-jdsl")
+    val query = module(":kotlin-jdsl-query")
 
     val springDataCore = module(":spring-data-kotlin-jdsl-core")
     val springBatchInfrastructure = module(":spring-batch-kotlin-jdsl-infrastructure")
