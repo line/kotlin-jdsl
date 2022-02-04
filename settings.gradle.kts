@@ -15,6 +15,7 @@ data class Module(
 module(name = ":kotlin-jdsl-core", path = "core")
 module(name = ":hibernate-kotlin-jdsl", path = "hibernate")
 module(name = ":eclipselink-kotlin-jdsl", path = "eclipselink")
+module(name = ":kotlin-jdsl-query", path = "query")
 
 // SPRING
 module(name = ":spring", path = "spring")
