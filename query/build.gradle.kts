@@ -1,8 +1,4 @@
-apply<PublishPlugin>()
-
 dependencies {
-    api(Modules.query)
-
     compileOnly(Dependencies.javaPersistenceApi)
     compileOnly(Dependencies.slf4j)
     compileOnly(Dependencies.hibernate)

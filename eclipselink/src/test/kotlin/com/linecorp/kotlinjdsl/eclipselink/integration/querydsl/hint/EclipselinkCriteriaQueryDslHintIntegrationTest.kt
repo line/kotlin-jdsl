@@ -6,8 +6,6 @@ import com.linecorp.kotlinjdsl.querydsl.expression.min
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
-import org.eclipse.persistence.config.CacheUsage
-import org.eclipse.persistence.config.HintValues
 import org.eclipse.persistence.config.PessimisticLock
 import org.eclipse.persistence.config.QueryHints
 import org.junit.jupiter.api.BeforeEach
