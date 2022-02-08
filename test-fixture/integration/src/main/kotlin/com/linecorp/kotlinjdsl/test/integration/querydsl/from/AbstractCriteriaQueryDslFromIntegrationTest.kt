@@ -5,8 +5,10 @@ import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.singleQuery
+import com.linecorp.kotlinjdsl.test.entity.Address
 import com.linecorp.kotlinjdsl.test.entity.delivery.Delivery
 import com.linecorp.kotlinjdsl.test.entity.order.Order
+import com.linecorp.kotlinjdsl.test.entity.order.OrderAddress
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
@@ -69,6 +71,34 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest : AbstractCriteriaQue
         // then
         assertThat(purchaserIds).containsOnly(delivery1.id, delivery2.id)
     }
+
+    @Test
+    fun associate() {
+        // given
+        val delivery1 = delivery { orderId = order1.id }
+        val delivery2 = delivery { orderId = order2.id }
+        val delivery3 = delivery { orderId = order3.id }
+
+        entityManager.persistAll(delivery1, delivery2, delivery3)
+        entityManager.flushAndClear()
+
+        // when
+        val zipCodes = queryFactory.listQuery<String> {
+            selectDistinct(col(Address::zipCode))
+            from(entity(Delivery::class))
+            join(Order::class, on { col(Delivery::orderId).equal(col(Order::id)) })
+            join(Order::groups)
+            join(OrderGroup::address)
+            associate(OrderAddress::class, Address::class, on(OrderAddress::address))
+            where(col(Order::purchaserId).equal(1000))
+        }
+
+        // then
+        assertThat(zipCodes)
+            .hasSize(1)
+            .containsOnly(order1.groups.first().address.address.zipCode)
+    }
+
 
     @Test
     fun fetch() {

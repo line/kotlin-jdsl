@@ -1,10 +1,7 @@
 package com.linecorp.kotlinjdsl.querydsl
 
 import com.linecorp.kotlinjdsl.querydsl.expression.ExpressionDsl
-import com.linecorp.kotlinjdsl.querydsl.from.FetchDsl
-import com.linecorp.kotlinjdsl.querydsl.from.FromDsl
-import com.linecorp.kotlinjdsl.querydsl.from.JoinDsl
-import com.linecorp.kotlinjdsl.querydsl.from.RelationDsl
+import com.linecorp.kotlinjdsl.querydsl.from.*
 import com.linecorp.kotlinjdsl.querydsl.groupby.GroupByDsl
 import com.linecorp.kotlinjdsl.querydsl.having.HavingDsl
 import com.linecorp.kotlinjdsl.querydsl.hint.HintDsl
@@ -22,6 +19,7 @@ interface CriteriaQueryDsl<T> :
     MultiSelectDsl<T>,
     FromDsl,
     JoinDsl,
+    AssociateDsl,
     FetchDsl,
     RelationDsl,
     WhereDsl,

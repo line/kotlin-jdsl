@@ -11,29 +11,29 @@ import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.criteria.JoinType
 
 @ExtendWith(MockKExtension::class)
-internal class JoinDslExtensionsTest : WithKotlinJdslAssertions {
+internal class AssociateDslExtensionsTest : WithKotlinJdslAssertions {
     @MockK
-    private lateinit var dsl: JoinDsl
+    private lateinit var dsl: AssociateDsl
 
     @Test
-    fun join() {
+    fun associate() {
         // given
         with(dsl) {
-            justRun { join(Data1::class, Data2::class, Relation("data2"), JoinType.LEFT) }
-            justRun { join(Data1::class, Data2::class, Relation("data2List"), JoinType.RIGHT) }
+            justRun { associate(Data1::class, Data2::class, Relation("data2"), JoinType.LEFT) }
+            justRun { associate(Data1::class, Data2::class, Relation("data2List"), JoinType.RIGHT) }
         }
 
         // when
         with(dsl) {
-            join(Data1::data2, JoinType.LEFT)
-            join(Data1::data2List, JoinType.RIGHT)
+            associate(Data1::data2, JoinType.LEFT)
+            associate(Data1::data2List, JoinType.RIGHT)
         }
 
         // then
         verify(exactly = 1) {
             with(dsl) {
-                join(Data1::class, Data2::class, Relation("data2"), JoinType.LEFT)
-                join(Data1::class, Data2::class, Relation("data2List"), JoinType.RIGHT)
+                associate(Data1::class, Data2::class, Relation("data2"), JoinType.LEFT)
+                associate(Data1::class, Data2::class, Relation("data2List"), JoinType.RIGHT)
             }
         }
 
