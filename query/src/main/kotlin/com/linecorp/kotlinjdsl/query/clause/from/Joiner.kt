@@ -56,18 +56,21 @@ class Joiner(
         }
     }
 
-    private fun join(spec: AssociatedJoinSpec<*, *>): Path<*> = when (spec) {
-        is SimpleJoinSpec<*, *> -> (realized.getValue(spec.left) as From<*, *>).apply {
-            spec.left.criteriaAlias()?.run { alias(this) }
-        }.join<Any, Any>(spec.path, spec.joinType)
-        is FetchJoinSpec<*, *> -> {
-            (realized.getValue(spec.left) as From<*, *>).apply { spec.left.criteriaAlias()?.run { alias(this) } }
-                .fetch<Any, Any>(spec.path, spec.joinType) as Join<*, *>
+    private fun join(spec: AssociatedJoinSpec<*, *>): Path<*> =
+        spec.left.criteriaAlias().let { criteriaAlias ->
+            when (spec) {
+                is SimpleJoinSpec<*, *> -> (realized.getValue(spec.left) as From<*, *>).apply {
+                    criteriaAlias?.run { alias(this) }
+                }.join<Any, Any>(spec.path, spec.joinType)
+                is FetchJoinSpec<*, *> -> {
+                    (realized.getValue(spec.left) as From<*, *>).apply { criteriaAlias?.run { alias(this) } }
+                        .fetch<Any, Any>(spec.path, spec.joinType) as Join<*, *>
+                }
+                is AssociateOnlyJoinSpec<*, *> -> (realized.getValue(spec.left) as From<*, *>).apply {
+                    criteriaAlias?.run { alias(this) }
+                }.get(spec.path)
+            } as Path<*>
         }
-        is AssociateOnlyJoinSpec<*, *> -> (realized.getValue(spec.left) as From<*, *>).apply {
-            spec.left.criteriaAlias()?.run { alias(this) }
-        }.get(spec.path)
-    } as Path<*>
 
     fun joinAll(): Froms {
         if (realizedListeners.isNotEmpty()) {
