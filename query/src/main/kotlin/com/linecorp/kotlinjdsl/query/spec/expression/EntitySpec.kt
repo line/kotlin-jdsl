@@ -7,11 +7,16 @@ import javax.persistence.criteria.Expression
 
 data class EntitySpec<T>(
     val type: Class<T>,
-    val alias: String = type.name
+    val alias: String = "$DEFAULT_ALIAS_TOKEN${type.name}"
 ) : ExpressionSpec<T> {
+    companion object {
+        const val DEFAULT_ALIAS_TOKEN = "\\"
+    }
     override fun toCriteriaExpression(
         froms: Froms,
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> = froms[this]
+
+    fun criteriaAlias() = alias.takeIf { !it.startsWith(DEFAULT_ALIAS_TOKEN) }
 }

@@ -47,5 +47,15 @@ internal class EntitySpecTest : WithKotlinJdslAssertions {
         confirmVerified(froms, query, criteriaBuilder)
     }
 
+    @Test
+    fun `createAlias if user entered explicit alias`() {
+        assertThat(EntitySpec(Data::class.java, "data1").criteriaAlias()).isEqualTo("data1")
+    }
+
+    @Test
+    fun `createAlias if not user entered explicit alias`() {
+        assertThat(EntitySpec(Data::class.java).criteriaAlias()).isNull()
+    }
+
     private class Data
 }
