@@ -61,8 +61,6 @@ class Joiner(
             when (spec) {
                 is SimpleJoinSpec<*, *> -> (realized.getValue(spec.left) as From<*, *>).apply {
                     criteriaAlias?.run { alias(this) }
-
-
                 }.join<Any, Any>(spec.path, spec.joinType)
                 is FetchJoinSpec<*, *> -> {
                     (realized.getValue(spec.left) as From<*, *>).apply { criteriaAlias?.run { alias(this) } }
