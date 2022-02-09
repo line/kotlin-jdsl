@@ -17,6 +17,7 @@
         <class>com.linecorp.kotlinjdsl.test.entity.delivery.DeliveryAddress</class>
 
         <properties>
+            <property name="eclipselink.logging.level" value="FINE" />
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;MODE=MYSQL"/>
             <property name="javax.persistence.jdbc.user" value="sa"/>
             <property name="javax.persistence.jdbc.password" value=""/>
