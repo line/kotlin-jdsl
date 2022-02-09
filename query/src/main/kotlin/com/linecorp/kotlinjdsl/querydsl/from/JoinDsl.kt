@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import javax.persistence.criteria.JoinType
 import kotlin.reflect.KClass
 
-interface JoinDsl {
+interface JoinDsl : AssociateDsl {
     fun on(predicate: PredicateSpec): PredicateSpec = predicate
     fun on(predicate: () -> PredicateSpec): PredicateSpec = on(predicate())
 
