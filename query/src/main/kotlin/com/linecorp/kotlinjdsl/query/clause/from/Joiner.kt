@@ -56,16 +56,19 @@ class Joiner(
         }
     }
 
-    private fun join(spec: AssociatedJoinSpec<*, *>): From<*, *> = when (spec) {
-        is SimpleJoinSpec<*, *> -> realized.getValue(spec.left).join<Any, Any>(spec.path, spec.joinType)
-        is FetchJoinSpec<*, *> -> realized.getValue(spec.left).fetch(spec.path, spec.joinType)
-    } as Join<*, *>
+    private fun join(spec: AssociatedJoinSpec<*, *>): From<*, *> =
+        when (spec) {
+            is SimpleJoinSpec, is SimpleAssociatedJoinSpec ->
+                realized.getValue(spec.left).join<Any, Any>(spec.path, spec.joinType)
+            is FetchJoinSpec ->
+                realized.getValue(spec.left).fetch(spec.path, spec.joinType)
+        } as From<*, *>
 
     fun joinAll(): Froms {
         if (realizedListeners.isNotEmpty()) {
             throw IllegalStateException(
                 "Join clause is incomplete. Please check if the following Entities are joined. " +
-                        "Entities: ${realizedListeners.keys}"
+                    "Entities: ${realizedListeners.keys}"
             )
         }
 

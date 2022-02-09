@@ -50,6 +50,19 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     }
 
     @Test
+    fun entityAlias() {
+        // when
+        val orders = queryFactory.listQuery<Order> {
+            val entity = entity(Order::class, "orderAlias")
+            select(entity)
+            from(entity)
+        }
+
+        // then
+        assertThat(orders.map { it.id }).containsOnly(order1.id, order2.id, order3.id)
+    }
+
+    @Test
     fun literal() {
         // when
         val literals = queryFactory.listQuery<Int> {

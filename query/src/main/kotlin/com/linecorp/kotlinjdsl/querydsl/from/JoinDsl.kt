@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import javax.persistence.criteria.JoinType
 import kotlin.reflect.KClass
 
-interface JoinDsl {
+interface JoinDsl : AssociateDsl {
     fun on(predicate: PredicateSpec): PredicateSpec = predicate
     fun on(predicate: () -> PredicateSpec): PredicateSpec = on(predicate())
 
@@ -31,34 +31,6 @@ interface JoinDsl {
     ) = join(left, EntitySpec(right.java), relation, joinType)
 
     fun <T : Any, R : Any> join(
-        left: KClass<T>,
-        right: KClass<R>,
-        relation: Relation<T, R?>,
-        joinType: JoinType = JoinType.INNER
-    ) = join(EntitySpec(left.java), EntitySpec(right.java), relation, joinType)
-
-    fun <T, R> associate(
-        left: EntitySpec<T>,
-        right: EntitySpec<R>,
-        relation: Relation<T, R?>,
-        joinType: JoinType = JoinType.INNER
-    ) = join(left, right, relation, joinType)
-
-    fun <T : Any, R> associate(
-        left: KClass<T>,
-        right: EntitySpec<R>,
-        relation: Relation<T, R?>,
-        joinType: JoinType = JoinType.INNER
-    ) = join(EntitySpec(left.java), right, relation, joinType)
-
-    fun <T, R : Any> associate(
-        left: EntitySpec<T>,
-        right: KClass<R>,
-        relation: Relation<T, R?>,
-        joinType: JoinType = JoinType.INNER
-    ) = join(left, EntitySpec(right.java), relation, joinType)
-
-    fun <T : Any, R : Any> associate(
         left: KClass<T>,
         right: KClass<R>,
         relation: Relation<T, R?>,

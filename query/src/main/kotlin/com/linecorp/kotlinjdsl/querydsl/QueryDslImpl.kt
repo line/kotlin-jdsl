@@ -84,6 +84,15 @@ open class QueryDslImpl<T>(
         wheres.add(predicate)
     }
 
+    override fun <T, R> associate(
+        left: EntitySpec<T>,
+        right: EntitySpec<R>,
+        relation: Relation<T, R?>,
+        joinType: JoinType
+    ) {
+        joins.add(SimpleAssociatedJoinSpec(left = left, right = right, path = relation.path))
+    }
+
     override fun <T, R> fetch(
         left: EntitySpec<T>,
         right: EntitySpec<R>,
