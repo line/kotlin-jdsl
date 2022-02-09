@@ -2,7 +2,7 @@ package com.linecorp.kotlinjdsl.querydsl.from
 
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
 import com.linecorp.kotlinjdsl.query.clause.where.WhereClause
-import com.linecorp.kotlinjdsl.query.spec.AssociateOnlyJoinSpec
+import com.linecorp.kotlinjdsl.query.spec.SimpleAssociatedJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.CrossJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.SimpleJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
@@ -87,7 +87,7 @@ internal class QueryDslImplJoinTest : WithKotlinJdslAssertions {
         }
 
         // then
-        val joinSpec = AssociateOnlyJoinSpec(
+        val joinSpec = SimpleAssociatedJoinSpec(
             left = EntitySpec(Data1::class.java),
             right = EntitySpec(Data2::class.java),
             path = "data2"

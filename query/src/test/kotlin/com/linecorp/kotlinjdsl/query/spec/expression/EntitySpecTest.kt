@@ -31,6 +31,7 @@ internal class EntitySpecTest : WithKotlinJdslAssertions {
         val from = mockk<From<*, Data>>()
 
         every { froms[any<EntitySpec<Data>>()] } returns from
+        every { from.alias("data1") } returns mockk()
 
         // when
         val spec = EntitySpec(Data::class.java, "data1")
@@ -42,19 +43,10 @@ internal class EntitySpecTest : WithKotlinJdslAssertions {
 
         verify(exactly = 1) {
             froms[spec]
+            from.alias("data1")
         }
 
         confirmVerified(froms, query, criteriaBuilder)
-    }
-
-    @Test
-    fun `createAlias if user entered explicit alias`() {
-        assertThat(EntitySpec(Data::class.java, "data1").criteriaAlias()).isEqualTo("data1")
-    }
-
-    @Test
-    fun `createAlias if not user entered explicit alias`() {
-        assertThat(EntitySpec(Data::class.java).criteriaAlias()).isNull()
     }
 
     private class Data

@@ -17,6 +17,5 @@ data class EntitySpec<T>(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> = froms[this]
-
-    fun criteriaAlias() = alias.takeIf { !it.startsWith(DEFAULT_ALIAS_TOKEN) }
+        .apply { this@EntitySpec.alias.takeIf { !it.startsWith(DEFAULT_ALIAS_TOKEN) }?.run { alias(this) } }
 }

@@ -90,7 +90,7 @@ open class QueryDslImpl<T>(
         relation: Relation<T, R?>,
         joinType: JoinType
     ) {
-        joins.add(AssociateOnlyJoinSpec(left = left, right = right, path = relation.path))
+        joins.add(SimpleAssociatedJoinSpec(left = left, right = right, path = relation.path))
     }
 
     override fun <T, R> fetch(

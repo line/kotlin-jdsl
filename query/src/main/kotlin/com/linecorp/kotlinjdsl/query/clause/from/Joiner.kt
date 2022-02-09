@@ -12,7 +12,7 @@ class Joiner(
 ) {
     private val root: Root<*> = query.from(fromEntity.type)
 
-    private val realized: LinkedHashMap<EntitySpec<*>, Path<*>> = linkedMapOf(fromEntity to root)
+    private val realized: LinkedHashMap<EntitySpec<*>, From<*, *>> = linkedMapOf(fromEntity to root)
     private val realizedListeners: LinkedHashMap<EntitySpec<*>, LinkedList<() -> Unit>> = linkedMapOf()
 
     init {
@@ -49,28 +49,22 @@ class Joiner(
         realize(spec.entity) { query.from(spec.entity.type) }
     }
 
-    private fun realize(entity: EntitySpec<*>, join: () -> Path<*>) {
+    private fun realize(entity: EntitySpec<*>, join: () -> From<*, *>) {
         realized[entity] = join()
         realizedListeners.remove(entity)?.run {
             this.forEach { it() }
         }
     }
 
-    private fun join(spec: AssociatedJoinSpec<*, *>): Path<*> =
-        spec.left.criteriaAlias().let { criteriaAlias ->
-            when (spec) {
-                is SimpleJoinSpec<*, *> -> (realized.getValue(spec.left) as From<*, *>).apply {
-                    criteriaAlias?.run { alias(this) }
-                }.join<Any, Any>(spec.path, spec.joinType)
-                is FetchJoinSpec<*, *> -> {
-                    (realized.getValue(spec.left) as From<*, *>).apply { criteriaAlias?.run { alias(this) } }
-                        .fetch<Any, Any>(spec.path, spec.joinType) as Join<*, *>
-                }
-                is AssociateOnlyJoinSpec<*, *> -> (realized.getValue(spec.left) as From<*, *>).apply {
-                    criteriaAlias?.run { alias(this) }
-                }.get(spec.path)
-            } as Path<*>
-        }
+    private fun join(spec: AssociatedJoinSpec<*, *>): From<*, *> =
+        when (spec) {
+            is SimpleJoinSpec, is SimpleAssociatedJoinSpec -> realized.getValue(spec.left)
+                .join<Any, Any>(spec.path, spec.joinType)
+            is FetchJoinSpec -> {
+                (realized.getValue(spec.left))
+                    .fetch(spec.path, spec.joinType)
+            }
+        } as From<*, *>
 
     fun joinAll(): Froms {
         if (realizedListeners.isNotEmpty()) {
