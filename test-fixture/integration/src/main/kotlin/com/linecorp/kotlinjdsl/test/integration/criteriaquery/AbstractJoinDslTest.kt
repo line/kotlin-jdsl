@@ -1,6 +1,7 @@
 package com.linecorp.kotlinjdsl.test.integration.criteriaquery
 
 import com.linecorp.kotlinjdsl.querydsl.expression.col
+import com.linecorp.kotlinjdsl.selectQuery
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.Address
 import com.linecorp.kotlinjdsl.test.entity.delivery.Delivery
@@ -10,13 +11,12 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
-import com.linecorp.kotlinjdsl.typedQuery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
 
 @ExtendWith(EntityManagerExtension::class)
-class JoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
+abstract class AbstractJoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
     override lateinit var entityManager: EntityManager
 
     @Test
@@ -32,7 +32,7 @@ class JoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAss
         }
 
         // when
-        val query = queryFactory.typedQuery<Long> {
+        val query = queryFactory.selectQuery<Long> {
             select(col(OrderAddress::id))
             from(entity(OrderGroup::class))
             join(OrderGroup::class, OrderAddress::class, on(OrderGroup::address))
@@ -58,7 +58,7 @@ class JoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAss
         }
 
         // when
-        val query = queryFactory.typedQuery<Long> {
+        val query = queryFactory.selectQuery<Long> {
             select(col(OrderItem::productId))
             from(entity(OrderGroup::class))
             join(OrderGroup::class, OrderItem::class, on(OrderGroup::items))
@@ -79,6 +79,7 @@ class JoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAss
         val order1 = order { groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1, orderItem2) }) }
 
         entityManager.persist(order1)
+        entityManager.flush()
 
         val delivery1 = delivery { orderId = order1.id }
 
@@ -88,7 +89,7 @@ class JoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAss
         }
 
         // when
-        val query = queryFactory.typedQuery<Long> {
+        val query = queryFactory.selectQuery<Long> {
             select(col(Delivery::id))
             from(entity(Order::class))
             join(Delivery::class, on { col(Delivery::orderId).equal(col(Order::id)) })
@@ -113,7 +114,7 @@ class JoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAss
         }
 
         // when
-        val query = queryFactory.typedQuery<String> {
+        val query = queryFactory.selectQuery<String> {
             select(col(Address::zipCode))
             from(entity(OrderAddress::class))
             associate(OrderAddress::class, Address::class, on(OrderAddress::address))

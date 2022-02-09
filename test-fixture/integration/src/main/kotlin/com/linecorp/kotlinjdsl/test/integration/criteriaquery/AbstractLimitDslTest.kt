@@ -1,17 +1,17 @@
 package com.linecorp.kotlinjdsl.test.integration.criteriaquery
 
 import com.linecorp.kotlinjdsl.querydsl.expression.col
+import com.linecorp.kotlinjdsl.selectQuery
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
-import com.linecorp.kotlinjdsl.typedQuery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
 
 @ExtendWith(EntityManagerExtension::class)
-class LimitDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
+abstract class AbstractLimitDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
     override lateinit var entityManager: EntityManager
 
     @Test
@@ -29,7 +29,7 @@ class LimitDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAs
         }
 
         // when
-        val query = queryFactory.typedQuery<Long> {
+        val query = queryFactory.selectQuery<Long> {
             select(col(Order::purchaserId))
             from(entity(Order::class))
             orderBy(col(Order::purchaserId).asc())
@@ -57,7 +57,7 @@ class LimitDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAs
         }
 
         // when
-        val query = queryFactory.typedQuery<Long> {
+        val query = queryFactory.selectQuery<Long> {
             select(col(Order::purchaserId))
             from(entity(Order::class))
             orderBy(col(Order::purchaserId).asc())

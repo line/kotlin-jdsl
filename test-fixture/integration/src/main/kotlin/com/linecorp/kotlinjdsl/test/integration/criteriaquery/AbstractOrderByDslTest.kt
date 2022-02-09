@@ -5,13 +5,13 @@ import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
-import com.linecorp.kotlinjdsl.typedQuery
+import com.linecorp.kotlinjdsl.selectQuery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
 
 @ExtendWith(EntityManagerExtension::class)
-class OrderByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
+abstract class AbstractOrderByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
     override lateinit var entityManager: EntityManager
 
     @Test
@@ -27,7 +27,7 @@ class OrderByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdsl
         }
 
         // when
-        val query = queryFactory.typedQuery<Long> {
+        val query = queryFactory.selectQuery<Long> {
             select(col(Order::purchaserId))
             from(entity(Order::class))
             orderBy(col(Order::purchaserId).desc())
@@ -52,7 +52,7 @@ class OrderByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdsl
         }
 
         // when
-        val query = queryFactory.typedQuery<Long> {
+        val query = queryFactory.selectQuery<Long> {
             select(col(Order::purchaserId))
             from(entity(Order::class))
             orderBy(col(Order::purchaserId).desc())
