@@ -1,9 +1,11 @@
 package com.linecorp.kotlinjdsl.querydsl
 
 import com.linecorp.kotlinjdsl.query.CriteriaQuerySpec
+import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import com.linecorp.kotlinjdsl.query.SubquerySpec
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
+import com.linecorp.kotlinjdsl.query.clause.from.SimpleAssociatedJoinClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.CriteriaQueryGroupByClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.GroupByClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.SubqueryGroupByClause
@@ -21,10 +23,12 @@ import com.linecorp.kotlinjdsl.query.clause.select.CriteriaQuerySelectClause
 import com.linecorp.kotlinjdsl.query.clause.select.MultiSelectClause
 import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
 import com.linecorp.kotlinjdsl.query.clause.select.SubquerySelectClause
+import com.linecorp.kotlinjdsl.query.clause.set.SetClause
 import com.linecorp.kotlinjdsl.query.clause.where.CriteriaQueryWhereClause
 import com.linecorp.kotlinjdsl.query.clause.where.SubqueryWhereClause
 import com.linecorp.kotlinjdsl.query.clause.where.WhereClause
 import com.linecorp.kotlinjdsl.query.spec.*
+import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
@@ -41,7 +45,7 @@ import javax.persistence.criteria.JoinType
  */
 open class QueryDslImpl<T>(
     private val returnType: Class<T>,
-) : CriteriaQueryDsl<T>, SubqueryDsl<T> {
+) : CriteriaQueryDsl<T>, SubqueryDsl<T>, CriteriaUpdateQueryDsl {
     private var singleSelectClause: SingleSelectClause<T>? = null
     private var multiSelectClause: MultiSelectClause<T>? = null
     private var fromClause: FromClause? = null
@@ -54,6 +58,7 @@ open class QueryDslImpl<T>(
     private var maxResults: Int? = null
     private var sqlHints: MutableList<String> = mutableListOf()
     private var jpaHints: MutableMap<String, Any> = mutableMapOf()
+    private var params: MutableMap<ColumnSpec<*>, Any?> = mutableMapOf()
 
     override fun select(distinct: Boolean, expression: ExpressionSpec<T>): SingleSelectClause<T> {
         return SingleSelectClause(
@@ -134,6 +139,14 @@ open class QueryDslImpl<T>(
         jpaHints.putAll(hints)
     }
 
+    override fun setParams(params: Map<ColumnSpec<*>, Any?>) {
+        this.params.putAll(params)
+    }
+
+    override fun set(column: ColumnSpec<*>, value: Any?) {
+        params[column] = value
+    }
+
     fun createCriteriaQuerySpec(): CriteriaQuerySpec<T> {
         return CriteriaQuerySpecImpl(
             select = getCriteriaQuerySelectClause(),
@@ -146,6 +159,18 @@ open class QueryDslImpl<T>(
             limit = getLimitClause(),
             sqlHint = getSqlQueryHintClause(),
             jpaHint = getJpaQueryHintClause(),
+        )
+    }
+
+    fun createCriteriaUpdateQuerySpec(): CriteriaUpdateQuerySpec<T> {
+        return CriteriaUpdateQuerySpecImpl(
+            targetEntity = returnType,
+            from = getFromClause(),
+            associate = getSimpleAssociatedJoinClauseOnly(),
+            where = getWhereClause(),
+            sqlHint = getSqlQueryHintClause(),
+            jpaHint = getJpaQueryHintClause(),
+            set = SetClause(params)
         )
     }
 
@@ -191,6 +216,13 @@ open class QueryDslImpl<T>(
         mustBe(joins.filterIsInstance<FetchJoinSpec<*, *>>().isEmpty()) { "This query does not support fetch" }
 
         return getJoinClause()
+    }
+
+    protected fun getSimpleAssociatedJoinClauseOnly(): SimpleAssociatedJoinClause {
+        return joins.filterIsInstance<SimpleAssociatedJoinSpec<*, *>>().let {
+            mustBe(it.size == joins.size) { "This query only support associate" }
+            SimpleAssociatedJoinClause(it)
+        }
     }
 
     protected fun getWhereClause(): WhereClause {
@@ -268,20 +300,18 @@ open class QueryDslImpl<T>(
         override val limit: QueryLimitClause,
         override val jpaHint: JpaQueryHintClause,
         override val sqlHint: SqlQueryHintClause,
-    ) : CriteriaQuerySpec<T> {
-        constructor(spec: CriteriaQuerySpec<T>) : this(
-            select = spec.select,
-            from = spec.from,
-            join = spec.join,
-            where = spec.where,
-            groupBy = spec.groupBy,
-            having = spec.having,
-            orderBy = spec.orderBy,
-            limit = spec.limit,
-            jpaHint = spec.jpaHint,
-            sqlHint = spec.sqlHint,
-        )
-    }
+    ) : CriteriaQuerySpec<T>
+
+    data class CriteriaUpdateQuerySpecImpl<T>(
+        override val targetEntity: Class<T>,
+        override val from: FromClause,
+        override val associate: SimpleAssociatedJoinClause,
+        override val where: CriteriaQueryWhereClause,
+        override val jpaHint: JpaQueryHintClause,
+        override val sqlHint: SqlQueryHintClause,
+        override val set: SetClause
+    ) : CriteriaUpdateQuerySpec<T>
+
 
     data class SubquerySpecImpl<T>(
         override val select: SubquerySelectClause<T>,

@@ -39,7 +39,7 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
     @Test
     fun singleQuery() {
         // given
-        every { queryFactory.typedQuery<Data1>(any(), any()) } returns typedQuery
+        every { queryFactory.selectQuery<Data1>(any(), any()) } returns typedQuery
         every { typedQuery.singleResult } returns Data1()
 
         val dsl: SpringDataCriteriaQueryDsl<Data1>.() -> Unit = {
@@ -54,7 +54,7 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(Data1())
 
         verify(exactly = 1) {
-            queryFactory.typedQuery(Data1::class.java, dsl)
+            queryFactory.selectQuery(Data1::class.java, dsl)
             typedQuery.singleResult
         }
 
@@ -64,7 +64,7 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
     @Test
     fun listQuery() {
         // given
-        every { queryFactory.typedQuery<Data1>(any(), any()) } returns typedQuery
+        every { queryFactory.selectQuery<Data1>(any(), any()) } returns typedQuery
         every { typedQuery.resultList } returns listOf(Data1())
 
         val dsl: SpringDataCriteriaQueryDsl<Data1>.() -> Unit = {
@@ -79,7 +79,7 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(listOf(Data1()))
 
         verify(exactly = 1) {
-            queryFactory.typedQuery(Data1::class.java, dsl)
+            queryFactory.selectQuery(Data1::class.java, dsl)
             typedQuery.resultList
         }
 
@@ -89,7 +89,7 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
     @Test
     fun typedQuery() {
         // given
-        every { queryFactory.typedQuery<Data1>(any(), any()) } returns typedQuery
+        every { queryFactory.selectQuery<Data1>(any(), any()) } returns typedQuery
 
         val dsl: SpringDataCriteriaQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
@@ -103,7 +103,7 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(typedQuery)
 
         verify(exactly = 1) {
-            queryFactory.typedQuery(Data1::class.java, dsl)
+            queryFactory.selectQuery(Data1::class.java, dsl)
         }
 
         confirmVerified(queryFactory)
@@ -163,7 +163,7 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         every { queryFactory.streamQuery<Long>(any()) } returns Stream.of(1L, 2L, 3L)
 
         // when
-        val actual = queryFactory.streamQuery<Long>() {
+        val actual = queryFactory.streamQuery<Long> {
             select(col(Order::id))
             from(entity(Order::class))
             where(col(Order::purchaserId).equal(1000))
@@ -171,7 +171,6 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         // then
         assertThat(actual).containsExactlyInAnyOrder(3, 2, 1)
     }
-
 
     @Test
     fun `pageQuery with countProjection`() {

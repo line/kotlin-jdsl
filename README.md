@@ -90,6 +90,22 @@ val books: List<Row> = queryFactory.listQuery {
 }
 ```
 
+### Update
+
+Users can perform bulk update through update query.
+* kotlin-jdsl's update does not require from clause. Type T given as generic handles from automatically.
+* According to the JPA specification, update does not support join, fetch, group by, order by, limit.
+* If you want to use an association mapping as a where condition, you must use [associate](#associate).
+
+```kotlin
+val query: Query = queryFactory.updateQuery<Order> {
+    where(col(Order::purchaserId).`in`(1000, 2000))
+    setParams(col(Order::purchaserId) to 3000)
+}
+
+val udpatedRowsCount: Int = query.executeUpdate()
+```
+
 ### Expression
 
 Kotlin JDSL supports various expressions.
@@ -199,6 +215,25 @@ val orders = queryFactory.listQuery<Order> {
     // ...
 }
 ```
+
+#### associate
+
+associate behaves similarly to join, and operates exactly the same as join in select, and since Join cannot be used in update/delete, use associate to associate the relationship with other internally mapped objects (ex: @Embedded) You can build it and run the query.
+```kotlin
+val query = queryFactory.selectQuery<String> {
+    select(col(Address::zipCode))
+    from(entity(OrderAddress::class))
+    associate(OrderAddress::class, Address::class, on(OrderAddress::address))
+}
+
+queryFactory.updateQuery<OrderAddress> {
+    where(col(OrderAddress::id).equal(address1.id))
+    associate(OrderAddress::class, Address::class, on(OrderAddress::address))
+    set(col(Address::zipCode), "test")
+    set(col(Address::baseAddress), "base")
+}.executeUpdate()
+```
+
 
 ## How it works
 

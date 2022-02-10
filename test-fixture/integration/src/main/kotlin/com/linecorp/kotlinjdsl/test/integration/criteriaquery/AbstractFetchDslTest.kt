@@ -1,18 +1,18 @@
 package com.linecorp.kotlinjdsl.test.integration.criteriaquery
 
+import com.linecorp.kotlinjdsl.selectQuery
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.order.OrderAddress
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
-import com.linecorp.kotlinjdsl.typedQuery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
 
 @ExtendWith(EntityManagerExtension::class)
-class FetchDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
+abstract class AbstractFetchDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
     override lateinit var entityManager: EntityManager
 
     @Test
@@ -28,7 +28,7 @@ class FetchDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAs
         }
 
         // when
-        val query = queryFactory.typedQuery<OrderGroup> {
+        val query = queryFactory.selectQuery<OrderGroup> {
             select(entity(OrderGroup::class))
             from(entity(OrderGroup::class))
             fetch(OrderGroup::class, OrderAddress::class, on(OrderGroup::address))
@@ -57,7 +57,7 @@ class FetchDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAs
         }
 
         // when
-        val query = queryFactory.typedQuery<OrderGroup> {
+        val query = queryFactory.selectQuery<OrderGroup> {
             selectDistinct(entity(OrderGroup::class))
             from(entity(OrderGroup::class))
             fetch(OrderGroup::class, OrderItem::class, on(OrderGroup::items))

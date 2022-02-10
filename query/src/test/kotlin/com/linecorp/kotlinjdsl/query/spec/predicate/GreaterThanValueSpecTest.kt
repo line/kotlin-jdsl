@@ -11,10 +11,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Expression
-import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class GreaterThanValueSpecTest : WithKotlinJdslAssertions {
@@ -23,6 +20,9 @@ internal class GreaterThanValueSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var query: AbstractQuery<*>
+
+    @MockK
+    private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -37,7 +37,7 @@ internal class GreaterThanValueSpecTest : WithKotlinJdslAssertions {
 
         val greaterThanEqualToPredicate: Predicate = mockk()
 
-        every { leftExpressionSpec.toCriteriaExpression(any(), any(), any()) } returns leftExpression
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns leftExpression
 
         every { criteriaBuilder.greaterThanOrEqualTo(any(), any<Int>()) } returns greaterThanEqualToPredicate
 
@@ -66,7 +66,7 @@ internal class GreaterThanValueSpecTest : WithKotlinJdslAssertions {
 
         val greaterThanPredicate: Predicate = mockk()
 
-        every { leftExpressionSpec.toCriteriaExpression(any(), any(), any()) } returns leftExpression
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns leftExpression
 
         every { criteriaBuilder.greaterThan(any(), any<Int>()) } returns greaterThanPredicate
 
@@ -83,5 +83,63 @@ internal class GreaterThanValueSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, query, criteriaBuilder)
+    }
+
+    @Test
+    fun `update toCriteriaPredicate - inclusive`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val right = 10
+
+        val leftExpression: Expression<Int> = mockk()
+
+        val greaterThanEqualToPredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns leftExpression
+
+        every { criteriaBuilder.greaterThanOrEqualTo(any(), any<Int>()) } returns greaterThanEqualToPredicate
+
+        // when
+        val actual = GreaterThanValueSpec(leftExpressionSpec, right, true)
+            .toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(greaterThanEqualToPredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
+            criteriaBuilder.greaterThanOrEqualTo(leftExpression, right)
+        }
+
+        confirmVerified(froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `update toCriteriaPredicate - not inclusive`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val right = 10
+
+        val leftExpression: Expression<Int> = mockk()
+
+        val greaterThanPredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns leftExpression
+
+        every { criteriaBuilder.greaterThan(any(), any<Int>()) } returns greaterThanPredicate
+
+        // when
+        val actual = GreaterThanValueSpec(leftExpressionSpec, right, false)
+            .toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(greaterThanPredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
+            criteriaBuilder.greaterThan(leftExpression, right)
+        }
+
+        confirmVerified(froms, updateQuery, criteriaBuilder)
     }
 }

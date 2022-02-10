@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.AbstractQuery
 import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.criteria.Predicate
 
 data class EqualValueSpec<T>(
@@ -13,6 +14,14 @@ data class EqualValueSpec<T>(
     override fun toCriteriaPredicate(
         froms: Froms,
         query: AbstractQuery<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Predicate {
+        return criteriaBuilder.equal(left.toCriteriaExpression(froms, query, criteriaBuilder), right)
+    }
+
+    override fun toCriteriaPredicate(
+        froms: Froms,
+        query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
         return criteriaBuilder.equal(left.toCriteriaExpression(froms, query, criteriaBuilder), right)

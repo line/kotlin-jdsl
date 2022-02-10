@@ -10,10 +10,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Expression
-import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class EqualExpressionSpecTest : WithKotlinJdslAssertions {
@@ -22,6 +19,9 @@ internal class EqualExpressionSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var query: AbstractQuery<*>
+
+    @MockK
+    private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -37,8 +37,8 @@ internal class EqualExpressionSpecTest : WithKotlinJdslAssertions {
 
         val equalPredicate: Predicate = mockk()
 
-        every { leftExpressionSpec.toCriteriaExpression(any(), any(), any()) } returns leftExpression
-        every { rightExpressionSpec.toCriteriaExpression(any(), any(), any()) } returns rightExpression
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns leftExpression
+        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns rightExpression
 
         every { criteriaBuilder.equal(leftExpression, rightExpression) } returns equalPredicate
 
@@ -52,6 +52,37 @@ internal class EqualExpressionSpecTest : WithKotlinJdslAssertions {
         verify(exactly = 1) {
             leftExpressionSpec.toCriteriaExpression(froms, query, criteriaBuilder)
             rightExpressionSpec.toCriteriaExpression(froms, query, criteriaBuilder)
+
+            criteriaBuilder.equal(leftExpression, rightExpression)
+        }
+    }
+
+    @Test
+    fun `update toCriteriaPredicate`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val rightExpressionSpec: ExpressionSpec<Int> = mockk()
+
+        val leftExpression: Expression<Int> = mockk()
+        val rightExpression: Expression<Int> = mockk()
+
+        val equalPredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns leftExpression
+        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns rightExpression
+
+        every { criteriaBuilder.equal(leftExpression, rightExpression) } returns equalPredicate
+
+        // when
+        val actual = EqualExpressionSpec(leftExpressionSpec, rightExpressionSpec)
+            .toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(equalPredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
+            rightExpressionSpec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
 
             criteriaBuilder.equal(leftExpression, rightExpression)
         }

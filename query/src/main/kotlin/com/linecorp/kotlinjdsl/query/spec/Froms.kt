@@ -1,16 +1,16 @@
 package com.linecorp.kotlinjdsl.query.spec
 
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
-import javax.persistence.criteria.From
+import javax.persistence.criteria.Path
 import javax.persistence.criteria.Root
 
 class Froms internal constructor(
     val root: Root<*>,
-    private val map: Map<EntitySpec<*>, From<*, *>>
+    private val map: Map<EntitySpec<*>, Path<*>>
 ) {
     @Suppress("UNCHECKED_CAST")
-    operator fun <T> get(key: EntitySpec<T>): From<*, T> =
-        map[key] as? From<*, T>
+    operator fun <T> get(key: EntitySpec<T>): Path<T> =
+        map[key] as? Path<T>
             ?: throw IllegalStateException("There is no $key in from or join clause. contains: ${map.keys}")
 
     operator fun plus(other: Froms): Froms {

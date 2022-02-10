@@ -2,9 +2,7 @@ package com.linecorp.kotlinjdsl.query.spec.predicate
 
 import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.*
 
 data class GreaterThanValueSpec<T, R>(
     val left: ExpressionSpec<T>,
@@ -19,6 +17,23 @@ data class GreaterThanValueSpec<T, R>(
     ): Predicate {
         val leftExpression = left.toCriteriaExpression(froms, query, criteriaBuilder)
 
+        return toCriteriaPredicate(criteriaBuilder, leftExpression)
+    }
+
+    override fun toCriteriaPredicate(
+        froms: Froms,
+        query: CriteriaUpdate<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Predicate {
+        val leftExpression = left.toCriteriaExpression(froms, query, criteriaBuilder)
+
+        return toCriteriaPredicate(criteriaBuilder, leftExpression)
+    }
+
+    private fun toCriteriaPredicate(
+        criteriaBuilder: CriteriaBuilder,
+        leftExpression: Expression<T>
+    ): Predicate {
         return if (inclusive) {
             criteriaBuilder.greaterThanOrEqualTo<R>(leftExpression, right)
         } else {

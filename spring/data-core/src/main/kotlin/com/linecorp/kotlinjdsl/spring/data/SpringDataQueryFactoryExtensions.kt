@@ -9,18 +9,22 @@ import java.util.stream.Stream
 
 inline fun <reified T> SpringDataQueryFactory.singleQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
-): T = typedQuery(T::class.java, dsl).singleResult
+): T = selectQuery(T::class.java, dsl).singleResult
 
 inline fun <reified T> SpringDataQueryFactory.listQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
-): List<T> = typedQuery(T::class.java, dsl).resultList
+): List<T> = selectQuery(T::class.java, dsl).resultList
 
 inline fun <reified T> SpringDataQueryFactory.streamQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
-): Stream<T> = typedQuery(T::class.java, dsl).resultStream
+): Stream<T> = selectQuery(T::class.java, dsl).resultStream
 
+@Deprecated(replaceWith = ReplaceWith(expression = "selectQuery"), message = "This method has been replaced with selectQuery.")
 inline fun <reified T> SpringDataQueryFactory.typedQuery(noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit) =
-    typedQuery(T::class.java, dsl)
+    selectQuery(dsl)
+
+inline fun <reified T> SpringDataQueryFactory.selectQuery(noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit) =
+    selectQuery(T::class.java, dsl)
 
 inline fun <reified T> SpringDataQueryFactory.subquery(noinline dsl: SpringDataSubqueryDsl<T>.() -> Unit) =
     subquery(T::class.java, dsl)

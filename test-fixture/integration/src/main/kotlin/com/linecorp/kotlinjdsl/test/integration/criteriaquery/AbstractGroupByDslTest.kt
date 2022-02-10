@@ -2,19 +2,19 @@ package com.linecorp.kotlinjdsl.test.integration.criteriaquery
 
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.from.join
+import com.linecorp.kotlinjdsl.selectQuery
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
-import com.linecorp.kotlinjdsl.typedQuery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
 
 @ExtendWith(EntityManagerExtension::class)
-class GroupByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
+abstract class AbstractGroupByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
     override lateinit var entityManager: EntityManager
 
     @Test
@@ -46,7 +46,7 @@ class GroupByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdsl
         }
 
         // when
-        val query = queryFactory.typedQuery<Row> {
+        val query = queryFactory.selectQuery<Row> {
             selectMulti(col(Order::purchaserId), sum(col(OrderItem::quantity)))
             from(entity(Order::class))
             join(Order::groups)
@@ -87,7 +87,7 @@ class GroupByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdsl
         }
 
         // when
-        val query = queryFactory.typedQuery<Long> {
+        val query = queryFactory.selectQuery<Long> {
             select(col(Order::purchaserId))
             from(entity(Order::class))
             join(Order::groups)

@@ -10,9 +10,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Expression
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class GreatestSpecTest : WithKotlinJdslAssertions {
@@ -21,6 +19,9 @@ internal class GreatestSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var query: AbstractQuery<*>
+
+    @MockK
+    private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -33,7 +34,7 @@ internal class GreatestSpecTest : WithKotlinJdslAssertions {
 
         val greatestExpression = mockk<Expression<Int>>()
 
-        every { column.toCriteriaExpression(any(), any(), any()) } returns columnExpression
+        every { column.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
         every { criteriaBuilder.greatest(any<Expression<Int>>()) } returns greatestExpression
 
         // when
@@ -50,5 +51,32 @@ internal class GreatestSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(column, froms, query, criteriaBuilder)
+    }
+
+    @Test
+    fun `update toCriteriaExpression`() {
+        // given
+        val column = mockk<ColumnSpec<Int>>()
+        val columnExpression = mockk<Expression<Int>>()
+
+        val greatestExpression = mockk<Expression<Int>>()
+
+        every { column.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns columnExpression
+        every { criteriaBuilder.greatest(any<Expression<Int>>()) } returns greatestExpression
+
+        // when
+        val spec = GreatestSpec(column)
+
+        val actual = spec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(greatestExpression)
+
+        verify(exactly = 1) {
+            column.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
+            criteriaBuilder.greatest(columnExpression)
+        }
+
+        confirmVerified(column, froms, updateQuery, criteriaBuilder)
     }
 }

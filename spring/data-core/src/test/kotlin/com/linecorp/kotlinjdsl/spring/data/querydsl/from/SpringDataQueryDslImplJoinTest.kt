@@ -1,9 +1,10 @@
 package com.linecorp.kotlinjdsl.spring.data.querydsl.from
 
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
+import com.linecorp.kotlinjdsl.query.clause.from.SimpleAssociatedJoinClause
 import com.linecorp.kotlinjdsl.query.clause.where.WhereClause
-import com.linecorp.kotlinjdsl.query.spec.SimpleAssociatedJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.CrossJoinSpec
+import com.linecorp.kotlinjdsl.query.spec.SimpleAssociatedJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.SimpleJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
@@ -128,6 +129,68 @@ internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
         assertThat(pageableCountQuerySpec.join).isEqualTo(
             JoinClause(listOf(joinSpec, joinSpec, joinSpec, joinSpec))
         )
+    }
+
+    @Test
+    fun updateAssociate() {
+        // when
+        val actual = SpringDataQueryDslImpl(Data1::class.java).apply {
+            select(Data1::class.java)
+            from(Data1::class.java)
+            associate(entity(Data1::class), entity(Data2::class), on(Data1::data2), JoinType.LEFT)
+            associate(Data1::class, entity(Data2::class), on(Data1::data2), JoinType.LEFT)
+            associate(entity(Data1::class), Data2::class, on(Data1::data2), JoinType.LEFT)
+            associate(Data1::class, Data2::class, on(Data1::data2), JoinType.LEFT)
+        }
+
+        // then
+        val joinSpec = SimpleAssociatedJoinSpec(
+            left = EntitySpec(Data1::class.java),
+            right = EntitySpec(Data2::class.java),
+            path = "data2"
+        )
+
+        val criteriaQuerySpec = actual.createCriteriaUpdateQuerySpec()
+
+        assertThat(criteriaQuerySpec.associate).isEqualTo(
+            SimpleAssociatedJoinClause(listOf(joinSpec, joinSpec, joinSpec, joinSpec))
+        )
+
+        val subquerySpec = actual.createSubquerySpec()
+
+        assertThat(subquerySpec.join).isEqualTo(
+            JoinClause(listOf(joinSpec, joinSpec, joinSpec, joinSpec))
+        )
+
+        val pageableQuerySpec = actual.createPageableQuerySpec()
+
+        assertThat(pageableQuerySpec.join).isEqualTo(
+            JoinClause(listOf(joinSpec, joinSpec, joinSpec, joinSpec))
+        )
+
+        val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
+
+        assertThat(pageableCountQuerySpec.join).isEqualTo(
+            JoinClause(listOf(joinSpec, joinSpec, joinSpec, joinSpec))
+        )
+    }
+
+    @Test
+    fun updateAssociateOnlyAllowsSimpleAssociatedJoinSpec() {
+        // when
+        val actual = SpringDataQueryDslImpl(Data1::class.java).apply {
+            select(Data1::class.java)
+            from(Data1::class.java)
+            associate(entity(Data1::class), entity(Data2::class), on(Data1::data2), JoinType.LEFT)
+            associate(Data1::class, entity(Data2::class), on(Data1::data2), JoinType.LEFT)
+            associate(entity(Data1::class), Data2::class, on(Data1::data2), JoinType.LEFT)
+            associate(Data1::class, Data2::class, on(Data1::data2), JoinType.LEFT)
+            join(Data1::class, Data2::class, on(Data1::data2))
+        }
+
+        val result = catchThrowable(IllegalStateException::class) { actual.createCriteriaUpdateQuerySpec() }
+
+        assertThat(result).hasMessage("This query only support associate")
     }
 
     @Test

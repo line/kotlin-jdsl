@@ -3,6 +3,7 @@ package com.linecorp.kotlinjdsl.query.spec.predicate
 import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.AbstractQuery
 import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.criteria.Predicate
 
 data class AndSpec(
@@ -13,9 +14,21 @@ data class AndSpec(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
+        return toCriteriaPredicate(criteriaBuilder) { it.toCriteriaPredicate(froms, query, criteriaBuilder) }
+    }
+
+    override fun toCriteriaPredicate(
+        froms: Froms,
+        query: CriteriaUpdate<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Predicate {
+        return toCriteriaPredicate(criteriaBuilder) { it.toCriteriaPredicate(froms, query, criteriaBuilder) }
+    }
+
+    fun toCriteriaPredicate(criteriaBuilder: CriteriaBuilder, predicate: (PredicateSpec) -> Predicate): Predicate {
         return predicates.asSequence()
             .filterNotNull()
-            .map { it.toCriteriaPredicate(froms, query, criteriaBuilder) }
+            .map { predicate(it) }
             .reduceOrNull { left, right -> criteriaBuilder.and(left, right) }
             ?: criteriaBuilder.conjunction()
     }

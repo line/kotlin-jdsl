@@ -1,11 +1,49 @@
 package com.linecorp.kotlinjdsl.query.spec.predicate
 
+import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
+import javax.persistence.criteria.AbstractQuery
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaUpdate
+import javax.persistence.criteria.Predicate
 
 internal class PredicateSpecTest : WithKotlinJdslAssertions {
-    private val predicateSpec1: PredicateSpec = PredicateSpec { _, _, criteriaBuilder -> criteriaBuilder.conjunction() }
-    private val predicateSpec2: PredicateSpec = PredicateSpec { _, _, criteriaBuilder -> criteriaBuilder.conjunction() }
+    private val predicateSpec1: PredicateSpec = object : PredicateSpec {
+        override fun toCriteriaPredicate(
+            froms: Froms,
+            query: AbstractQuery<*>,
+            criteriaBuilder: CriteriaBuilder
+        ): Predicate {
+            return criteriaBuilder.conjunction()
+        }
+
+        override fun toCriteriaPredicate(
+            froms: Froms,
+            query: CriteriaUpdate<*>,
+            criteriaBuilder: CriteriaBuilder
+        ): Predicate {
+            return criteriaBuilder.conjunction()
+        }
+    }
+
+    private val predicateSpec2: PredicateSpec = object : PredicateSpec {
+        override fun toCriteriaPredicate(
+            froms: Froms,
+            query: AbstractQuery<*>,
+            criteriaBuilder: CriteriaBuilder
+        ): Predicate {
+            return criteriaBuilder.conjunction()
+        }
+
+        override fun toCriteriaPredicate(
+            froms: Froms,
+            query: CriteriaUpdate<*>,
+            criteriaBuilder: CriteriaBuilder
+        ): Predicate {
+            return criteriaBuilder.conjunction()
+        }
+    }
 
     @Test
     fun isEmpty() {
