@@ -166,7 +166,7 @@ open class QueryDslImpl<T>(
         return CriteriaUpdateQuerySpecImpl(
             targetEntity = returnType,
             from = getFromClause(),
-            join = getSimpleAssociatedJoinClauseOnly(),
+            associate = getSimpleAssociatedClauseOnly(),
             where = getWhereClause(),
             sqlHint = getSqlQueryHintClause(),
             jpaHint = getJpaQueryHintClause(),
@@ -218,7 +218,7 @@ open class QueryDslImpl<T>(
         return getJoinClause()
     }
 
-    protected fun getSimpleAssociatedJoinClauseOnly(): SimpleAssociatedJoinClause {
+    protected fun getSimpleAssociatedClauseOnly(): SimpleAssociatedJoinClause {
         return joins.filterIsInstance<SimpleAssociatedJoinSpec<*, *>>().let {
             mustBe(it.size == joins.size) { "This query only support associate join" }
             SimpleAssociatedJoinClause(it)
@@ -305,7 +305,7 @@ open class QueryDslImpl<T>(
     data class CriteriaUpdateQuerySpecImpl<T>(
         override val targetEntity: Class<T>,
         override val from: FromClause,
-        override val join: SimpleAssociatedJoinClause,
+        override val associate: SimpleAssociatedJoinClause,
         override val where: CriteriaQueryWhereClause,
         override val jpaHint: JpaQueryHintClause,
         override val sqlHint: SqlQueryHintClause,

@@ -6,7 +6,6 @@ import javax.persistence.EntityManager
 import javax.persistence.Query
 import javax.persistence.TypedQuery
 import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.Path
 
 class CriteriaQueryCreatorImpl(
     private val em: EntityManager,
@@ -33,7 +32,7 @@ class CriteriaQueryCreatorImpl(
     override fun <T> createQuery(spec: CriteriaUpdateQuerySpec<T>): Query {
         val criteriaBuilder = em.criteriaBuilder
         val query = criteriaBuilder.createCriteriaUpdate(spec.targetEntity) as CriteriaUpdate<Any>
-        val froms = spec.from.associate(spec.join, query, spec.targetEntity)
+        val froms = spec.from.associate(spec.associate, query, spec.targetEntity)
 
         spec.where.apply(froms, query, criteriaBuilder)
         spec.set.apply(froms, query, criteriaBuilder)

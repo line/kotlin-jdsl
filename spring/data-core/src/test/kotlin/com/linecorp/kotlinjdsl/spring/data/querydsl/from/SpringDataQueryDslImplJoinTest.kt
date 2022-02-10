@@ -152,7 +152,7 @@ internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
 
         val criteriaQuerySpec = actual.createCriteriaUpdateQuerySpec()
 
-        assertThat(criteriaQuerySpec.join).isEqualTo(
+        assertThat(criteriaQuerySpec.associate).isEqualTo(
             SimpleAssociatedJoinClause(listOf(joinSpec, joinSpec, joinSpec, joinSpec))
         )
 

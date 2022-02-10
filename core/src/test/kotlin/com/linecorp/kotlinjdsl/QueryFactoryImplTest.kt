@@ -112,7 +112,7 @@ internal class QueryFactoryImplTest : WithKotlinJdslAssertions {
             criteriaQueryCreator.createQuery(
                 QueryDslImpl.CriteriaUpdateQuerySpecImpl(
                     from = FromClause(EntitySpec(Data1::class.java)),
-                    join = SimpleAssociatedJoinClause(emptyList()),
+                    associate = SimpleAssociatedJoinClause(emptyList()),
                     where = WhereClause(EqualValueSpec(columnSpec, 1)),
                     jpaHint = JpaQueryHintClauseImpl(emptyMap()),
                     sqlHint = EmptySqlQueryHintClause,

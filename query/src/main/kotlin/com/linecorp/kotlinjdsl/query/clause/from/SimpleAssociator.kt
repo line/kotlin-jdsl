@@ -1,9 +1,8 @@
 package com.linecorp.kotlinjdsl.query.clause.from
 
-import com.linecorp.kotlinjdsl.query.spec.SimpleAssociatedJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.AssociatedJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.Froms
-import com.linecorp.kotlinjdsl.query.spec.JoinSpec
+import com.linecorp.kotlinjdsl.query.spec.SimpleAssociatedJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import java.util.*
 import javax.persistence.criteria.Path
@@ -11,16 +10,15 @@ import javax.persistence.criteria.Root
 
 class SimpleAssociator(
     fromEntity: EntitySpec<*>,
-    joins: Collection<JoinSpec<*>>,
+    associates: Collection<SimpleAssociatedJoinSpec<*, *>>,
     private val root: Root<*>
 ) {
     private val realized: LinkedHashMap<EntitySpec<*>, Path<*>> = linkedMapOf(fromEntity to root)
     private val realizedListeners: LinkedHashMap<EntitySpec<*>, LinkedList<() -> Unit>> = linkedMapOf()
 
     init {
-        joins.asSequence()
+        associates.asSequence()
             .filter { !realized.contains(it.entity) }
-            .onEach { if (it !is SimpleAssociatedJoinSpec<*, *>) throw IllegalArgumentException("It allows only ${SimpleAssociatedJoinSpec::class.simpleName} type") }
             .forEach {
                 it as SimpleAssociatedJoinSpec<*, *>
                 if (!realized.contains(it.left)) {

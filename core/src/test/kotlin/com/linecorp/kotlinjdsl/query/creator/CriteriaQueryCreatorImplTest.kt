@@ -137,7 +137,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         data class TestCriteriaUpdateQuerySpec<T>(
             override val targetEntity: Class<T>,
             override val from: FromClause,
-            override val join: SimpleAssociatedJoinClause,
+            override val associate: SimpleAssociatedJoinClause,
             override val where: CriteriaQueryWhereClause,
             override val jpaHint: JpaQueryHintClause,
             override val sqlHint: SqlQueryHintClause,
@@ -156,7 +156,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
 
         val spec: CriteriaUpdateQuerySpec<Int> = TestCriteriaUpdateQuerySpec(
             from = from,
-            join = join,
+            associate = join,
             where = where,
             jpaHint = jpaHint,
             sqlHint = sqlHint,
