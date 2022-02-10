@@ -11,6 +11,7 @@ import com.linecorp.kotlinjdsl.query.clause.limit.LimitClause
 import com.linecorp.kotlinjdsl.query.clause.orderby.OrderByClause
 import com.linecorp.kotlinjdsl.query.clause.select.CountSingleSelectClause
 import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
+import com.linecorp.kotlinjdsl.query.clause.set.SetClause
 import com.linecorp.kotlinjdsl.query.clause.where.WhereClause
 import com.linecorp.kotlinjdsl.query.creator.CriteriaQueryCreator
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreator
@@ -122,7 +123,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
                     where = WhereClause(EqualValueSpec(columnSpec, 1)),
                     jpaHint = JpaQueryHintClauseImpl(emptyMap()),
                     sqlHint = EmptySqlQueryHintClause,
-                    params = mapOf(columnSpec to 2),
+                    set = SetClause(mapOf(ColumnSpec<Any>(EntitySpec(Data1::class.java), Data1::id.name) to 2)),
                     targetEntity = Data1::class.java
                 )
             )
