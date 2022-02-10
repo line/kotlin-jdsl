@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.CriteriaQuerySpec
 import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
+import com.linecorp.kotlinjdsl.query.clause.from.SimpleAssociatedJoinClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.CriteriaQueryGroupByClause
 import com.linecorp.kotlinjdsl.query.clause.having.CriteriaQueryHavingClause
 import com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClause
@@ -136,7 +137,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         data class TestCriteriaUpdateQuerySpec<T>(
             override val targetEntity: Class<T>,
             override val from: FromClause,
-            override val join: JoinClause,
+            override val join: SimpleAssociatedJoinClause,
             override val where: CriteriaQueryWhereClause,
             override val jpaHint: JpaQueryHintClause,
             override val sqlHint: SqlQueryHintClause,
@@ -147,7 +148,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         val query: Query = mockk()
 
         val from: FromClause = mockk()
-        val join: JoinClause = mockk()
+        val join: SimpleAssociatedJoinClause = mockk()
         val where: CriteriaQueryWhereClause = mockk()
         val jpaHint: JpaQueryHintClause = mockk()
         val sqlHint: SqlQueryHintClause = mockk()

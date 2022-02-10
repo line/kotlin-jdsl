@@ -12,7 +12,7 @@ data class FromClause(
         return Joiner(entity, joinClause.joins, query).joinAll()
     }
 
-    fun associate(joinClause: JoinClause, query: CriteriaUpdate<in Any>, targetEntity: Class<*>): Froms {
+    fun associate(joinClause: SimpleAssociatedJoinClause, query: CriteriaUpdate<in Any>, targetEntity: Class<*>): Froms {
         return SimpleAssociator(entity, joinClause.joins, query.from(targetEntity)).associateAll()
     }
 }

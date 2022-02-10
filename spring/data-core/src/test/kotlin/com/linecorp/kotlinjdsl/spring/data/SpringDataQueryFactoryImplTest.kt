@@ -3,6 +3,7 @@ package com.linecorp.kotlinjdsl.spring.data
 import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
+import com.linecorp.kotlinjdsl.query.clause.from.SimpleAssociatedJoinClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.GroupByClause
 import com.linecorp.kotlinjdsl.query.clause.having.HavingClause
 import com.linecorp.kotlinjdsl.query.clause.hint.EmptySqlQueryHintClause
@@ -119,7 +120,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             criteriaQueryCreator.createQuery(
                 QueryDslImpl.CriteriaUpdateQuerySpecImpl(
                     from = FromClause(EntitySpec(Data1::class.java)),
-                    join = JoinClause(emptyList()),
+                    join = SimpleAssociatedJoinClause(emptyList()),
                     where = WhereClause(EqualValueSpec(columnSpec, 1)),
                     jpaHint = JpaQueryHintClauseImpl(emptyMap()),
                     sqlHint = EmptySqlQueryHintClause,

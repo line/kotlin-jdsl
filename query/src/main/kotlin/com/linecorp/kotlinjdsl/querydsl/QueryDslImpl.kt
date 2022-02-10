@@ -5,6 +5,7 @@ import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import com.linecorp.kotlinjdsl.query.SubquerySpec
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
+import com.linecorp.kotlinjdsl.query.clause.from.SimpleAssociatedJoinClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.CriteriaQueryGroupByClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.GroupByClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.SubqueryGroupByClause
@@ -165,7 +166,7 @@ open class QueryDslImpl<T>(
         return CriteriaUpdateQuerySpecImpl(
             targetEntity = returnType,
             from = getFromClause(),
-            join = getJoinClauseDoesNotHaveFetch(),
+            join = getSimpleAssociatedJoinClauseOnly(),
             where = getWhereClause(),
             sqlHint = getSqlQueryHintClause(),
             jpaHint = getJpaQueryHintClause(),
@@ -215,6 +216,13 @@ open class QueryDslImpl<T>(
         mustBe(joins.filterIsInstance<FetchJoinSpec<*, *>>().isEmpty()) { "This query does not support fetch" }
 
         return getJoinClause()
+    }
+
+    protected fun getSimpleAssociatedJoinClauseOnly(): SimpleAssociatedJoinClause {
+        return joins.filterIsInstance<SimpleAssociatedJoinSpec<*, *>>().let {
+            mustBe(it.size == joins.size) { "This query only support associate join" }
+            SimpleAssociatedJoinClause(it)
+        }
     }
 
     protected fun getWhereClause(): WhereClause {
@@ -297,7 +305,7 @@ open class QueryDslImpl<T>(
     data class CriteriaUpdateQuerySpecImpl<T>(
         override val targetEntity: Class<T>,
         override val from: FromClause,
-        override val join: JoinClause,
+        override val join: SimpleAssociatedJoinClause,
         override val where: CriteriaQueryWhereClause,
         override val jpaHint: JpaQueryHintClause,
         override val sqlHint: SqlQueryHintClause,

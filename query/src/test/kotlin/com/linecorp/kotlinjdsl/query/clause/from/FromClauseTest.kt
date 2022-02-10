@@ -3,9 +3,12 @@ package com.linecorp.kotlinjdsl.query.clause.from
 import com.linecorp.kotlinjdsl.query.spec.*
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
-import io.mockk.*
+import io.mockk.confirmVerified
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.criteria.*
@@ -117,7 +120,7 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
 
         val joinSpec1 = SimpleAssociatedJoinSpec(entitySpec1, entitySpec2, "data2")
         val joinSpec2 = SimpleAssociatedJoinSpec(entitySpec2, entitySpec3, "data3")
-        val joinClause = JoinClause(listOf(joinSpec1, joinSpec2))
+        val joinClause = SimpleAssociatedJoinClause(listOf(joinSpec1, joinSpec2))
 
         val root = mockk<Root<Data1>>()
         val join1 = mockk<Path<Any>>()
@@ -165,7 +168,7 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
         val fromClause = FromClause(fromEntitySpec)
 
         val joinSpec = SimpleAssociatedJoinSpec(entitySpec2, entitySpec3, "data3")
-        val joinClause = JoinClause(listOf(joinSpec))
+        val joinClause = SimpleAssociatedJoinClause(listOf(joinSpec))
 
         val root = mockk<Root<Data1>>()
 
@@ -179,37 +182,6 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
         // then
         assertThat(exception)
             .hasMessageContaining("Associate clause is incomplete. Please check if the following Entities are associated")
-
-        verify(exactly = 1) {
-            updateQuery.from(Data1::class.java)
-        }
-
-        confirmVerified(root, updateQuery)
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    @Test
-    fun `associate - if a type other than SimpleAssociatedJoinSpec is entered as a parameter, an exception is thrown`() {
-        // given
-        val fromEntitySpec = entitySpec1
-        val fromClause = FromClause(fromEntitySpec)
-
-        val joinSpec = SimpleAssociatedJoinSpec(entitySpec2, entitySpec3, "data3")
-        val otherJoinSpec = SimpleJoinSpec(entitySpec2, entitySpec3, "data3", JoinType.INNER)
-        val joinClause = JoinClause(listOf(joinSpec, otherJoinSpec))
-
-        val root = mockk<Root<Data1>>()
-
-        every { updateQuery.from(Data1::class.java) } returns root
-
-        // when
-        val exception = catchThrowable(IllegalArgumentException::class) {
-            fromClause.associate(joinClause, updateQuery as CriteriaUpdate<in Any>, Data1::class.java)
-        }
-
-        // then
-        assertThat(exception)
-            .hasMessageContaining("It allows only ${SimpleAssociatedJoinSpec::class.simpleName} type")
 
         verify(exactly = 1) {
             updateQuery.from(Data1::class.java)
