@@ -36,12 +36,7 @@ class CriteriaQueryCreatorImpl(
         val froms = spec.from.associate(spec.join, query, spec.targetEntity)
 
         spec.where.apply(froms, query, criteriaBuilder)
-        spec.params.forEach {
-            query.set(
-                it.key.toCriteriaExpression(froms, query, criteriaBuilder) as Path<Any>,
-                it.value
-            )
-        }
+        spec.set.apply(froms, query, criteriaBuilder)
 
         return em.createQuery(query).apply {
             spec.jpaHint.apply(this)

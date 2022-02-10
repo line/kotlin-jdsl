@@ -22,6 +22,7 @@ import com.linecorp.kotlinjdsl.query.clause.select.CriteriaQuerySelectClause
 import com.linecorp.kotlinjdsl.query.clause.select.MultiSelectClause
 import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
 import com.linecorp.kotlinjdsl.query.clause.select.SubquerySelectClause
+import com.linecorp.kotlinjdsl.query.clause.set.SetClause
 import com.linecorp.kotlinjdsl.query.clause.where.CriteriaQueryWhereClause
 import com.linecorp.kotlinjdsl.query.clause.where.SubqueryWhereClause
 import com.linecorp.kotlinjdsl.query.clause.where.WhereClause
@@ -168,7 +169,7 @@ open class QueryDslImpl<T>(
             where = getWhereClause(),
             sqlHint = getSqlQueryHintClause(),
             jpaHint = getJpaQueryHintClause(),
-            params = params
+            set = SetClause(params)
         )
     }
 
@@ -300,7 +301,7 @@ open class QueryDslImpl<T>(
         override val where: CriteriaQueryWhereClause,
         override val jpaHint: JpaQueryHintClause,
         override val sqlHint: SqlQueryHintClause,
-        override val params: Map<ColumnSpec<*>, Any?>
+        override val set: SetClause
     ) : CriteriaUpdateQuerySpec<T>
 
 
