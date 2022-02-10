@@ -166,7 +166,7 @@ open class QueryDslImpl<T>(
         return CriteriaUpdateQuerySpecImpl(
             targetEntity = returnType,
             from = getFromClause(),
-            associate = getSimpleAssociatedClauseOnly(),
+            associate = getSimpleAssociatedJoinClauseOnly(),
             where = getWhereClause(),
             sqlHint = getSqlQueryHintClause(),
             jpaHint = getJpaQueryHintClause(),
@@ -218,9 +218,9 @@ open class QueryDslImpl<T>(
         return getJoinClause()
     }
 
-    protected fun getSimpleAssociatedClauseOnly(): SimpleAssociatedJoinClause {
+    protected fun getSimpleAssociatedJoinClauseOnly(): SimpleAssociatedJoinClause {
         return joins.filterIsInstance<SimpleAssociatedJoinSpec<*, *>>().let {
-            mustBe(it.size == joins.size) { "This query only support associate join" }
+            mustBe(it.size == joins.size) { "This query only support associate" }
             SimpleAssociatedJoinClause(it)
         }
     }
