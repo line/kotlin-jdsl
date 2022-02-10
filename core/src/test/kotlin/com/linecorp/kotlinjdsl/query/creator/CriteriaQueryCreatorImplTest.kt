@@ -148,7 +148,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         val query: Query = mockk()
 
         val from: FromClause = mockk()
-        val join = SimpleAssociatedJoinClause(emptyList())
+        val associate = SimpleAssociatedJoinClause(emptyList())
         val where: CriteriaQueryWhereClause = mockk()
         val jpaHint: JpaQueryHintClause = mockk()
         val sqlHint: SqlQueryHintClause = mockk()
@@ -156,7 +156,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
 
         val spec: CriteriaUpdateQuerySpec<Int> = TestCriteriaUpdateQuerySpec(
             from = from,
-            associate = join,
+            associate = associate,
             where = where,
             jpaHint = jpaHint,
             sqlHint = sqlHint,
@@ -170,7 +170,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         every { em.criteriaBuilder } returns criteriaBuilder
         every { em.createQuery(createdQuery) } returns query
         every { criteriaBuilder.createCriteriaUpdate(Int::class.java) } returns createdQuery
-        every { from.associate(join, createdQuery as CriteriaUpdate<in Any>, Int::class.java) } returns froms
+        every { from.associate(associate, createdQuery as CriteriaUpdate<in Any>, Int::class.java) } returns froms
         every { where.apply(froms, createdQuery, criteriaBuilder) } just runs
         every { jpaHint.apply(query) } just runs
         every { sqlHint.apply(query) } just runs
@@ -186,7 +186,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
             em.criteriaBuilder
             em.createQuery(createdQuery)
             criteriaBuilder.createCriteriaUpdate(Int::class.java)
-            from.associate(join, createdQuery as CriteriaUpdate<in Any>, Int::class.java)
+            from.associate(associate, createdQuery as CriteriaUpdate<in Any>, Int::class.java)
             where.apply(froms, createdQuery, criteriaBuilder)
             set.apply(froms, createdQuery, criteriaBuilder)
             jpaHint.apply(query)
