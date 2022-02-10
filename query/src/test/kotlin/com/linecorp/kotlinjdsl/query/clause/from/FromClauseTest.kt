@@ -209,7 +209,7 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
 
         // then
         assertThat(exception)
-            .hasMessageContaining("it allows only ${SimpleAssociatedJoinSpec::class.simpleName} type")
+            .hasMessageContaining("It allows only ${SimpleAssociatedJoinSpec::class.simpleName} type")
 
         verify(exactly = 1) {
             updateQuery.from(Data1::class.java)

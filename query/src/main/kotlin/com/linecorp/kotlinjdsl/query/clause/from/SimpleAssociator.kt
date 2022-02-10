@@ -20,7 +20,7 @@ class SimpleAssociator(
     init {
         joins.asSequence()
             .filter { !realized.contains(it.entity) }
-            .onEach { if (it !is SimpleAssociatedJoinSpec<*, *>) throw IllegalArgumentException("it allows only ${SimpleAssociatedJoinSpec::class.simpleName} type") }
+            .onEach { if (it !is SimpleAssociatedJoinSpec<*, *>) throw IllegalArgumentException("It allows only ${SimpleAssociatedJoinSpec::class.simpleName} type") }
             .forEach {
                 it as SimpleAssociatedJoinSpec<*, *>
                 if (!realized.contains(it.left)) {
