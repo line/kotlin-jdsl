@@ -28,7 +28,7 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
     @Test
     fun singleQuery() {
         // given
-        every { queryFactory.typedQuery<Data1>(any(), any()) } returns typedQuery
+        every { queryFactory.selectQuery<Data1>(any(), any()) } returns typedQuery
         every { typedQuery.singleResult } returns Data1()
 
         val dsl: CriteriaQueryDsl<Data1>.() -> Unit = {
@@ -43,7 +43,7 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(Data1())
 
         verify(exactly = 1) {
-            queryFactory.typedQuery(Data1::class.java, dsl)
+            queryFactory.selectQuery(Data1::class.java, dsl)
             typedQuery.singleResult
         }
 
@@ -53,7 +53,7 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
     @Test
     fun listQuery() {
         // given
-        every { queryFactory.typedQuery<Data1>(any(), any()) } returns typedQuery
+        every { queryFactory.selectQuery<Data1>(any(), any()) } returns typedQuery
         every { typedQuery.resultList } returns listOf(Data1())
 
         val dsl: CriteriaQueryDsl<Data1>.() -> Unit = {
@@ -68,7 +68,7 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(listOf(Data1()))
 
         verify(exactly = 1) {
-            queryFactory.typedQuery(Data1::class.java, dsl)
+            queryFactory.selectQuery(Data1::class.java, dsl)
             typedQuery.resultList
         }
 
@@ -78,7 +78,7 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
     @Test
     fun streamQuery() {
         // given
-        every { queryFactory.typedQuery<Data1>(any(), any()) } returns typedQuery
+        every { queryFactory.selectQuery<Data1>(any(), any()) } returns typedQuery
         every { typedQuery.resultStream } returns Stream.of(Data1())
 
         val dsl: CriteriaQueryDsl<Data1>.() -> Unit = {
@@ -93,7 +93,7 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         }
 
         verify(exactly = 1) {
-            queryFactory.typedQuery(Data1::class.java, dsl)
+            queryFactory.selectQuery(Data1::class.java, dsl)
             typedQuery.resultStream
         }
 
@@ -101,9 +101,9 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
     }
 
     @Test
-    fun typedQuery() {
+    fun selectQuery() {
         // given
-        every { queryFactory.typedQuery<Data1>(any(), any()) } returns typedQuery
+        every { queryFactory.selectQuery<Data1>(any(), any()) } returns typedQuery
 
         val dsl: CriteriaQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
@@ -111,13 +111,15 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         }
 
         // when
-        val actual: TypedQuery<Data1> = queryFactory.typedQuery(dsl)
+        val actual: TypedQuery<Data1> = queryFactory.selectQuery(dsl)
+        val typedActual: TypedQuery<Data1> = queryFactory.typedQuery(dsl)
 
         // then
         assertThat(actual).isEqualTo(typedQuery)
+        assertThat(typedActual).isEqualTo(typedQuery)
 
-        verify(exactly = 1) {
-            queryFactory.typedQuery(Data1::class.java, dsl)
+        verify(exactly = 2) {
+            queryFactory.selectQuery(Data1::class.java, dsl)
         }
 
         confirmVerified(queryFactory)

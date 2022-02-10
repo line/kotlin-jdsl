@@ -11,10 +11,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Predicate
-import javax.persistence.criteria.Subquery
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class WhereClauseTest : WithKotlinJdslAssertions {
@@ -26,6 +23,9 @@ internal class WhereClauseTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var criteriaQuery: CriteriaQuery<Int>
+
+    @MockK
+    private lateinit var criteriaUpdateQuery: CriteriaUpdate<Int>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -62,6 +62,40 @@ internal class WhereClauseTest : WithKotlinJdslAssertions {
 
         // then
         confirmVerified(froms, subquery, criteriaQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `apply criteria update query`() {
+        // given
+        val predicateSpec: PredicateSpec = mockk()
+        val predicate: Predicate = mockk()
+
+        every { predicateSpec.isEmpty() } returns false
+        every { predicateSpec.toCriteriaPredicate(froms, criteriaUpdateQuery, criteriaBuilder) } returns predicate
+        every { criteriaUpdateQuery.where(predicate) } returns criteriaUpdateQuery
+
+        // when
+        WhereClause(predicateSpec).apply(froms, criteriaUpdateQuery, criteriaBuilder)
+
+        // then
+        verify(exactly = 1) {
+            predicateSpec.isEmpty()
+            predicateSpec.toCriteriaPredicate(froms, criteriaUpdateQuery, criteriaBuilder)
+            criteriaUpdateQuery.where(predicate)
+
+            criteriaUpdateQuery.where(predicate)
+        }
+
+        confirmVerified(predicateSpec, froms, subquery, criteriaUpdateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `apply criteria update query - if predicate is empty then do nothing`() {
+        // when
+        WhereClause(PredicateSpec.empty).apply(froms, criteriaUpdateQuery, criteriaBuilder)
+
+        // then
+        confirmVerified(froms, subquery, criteriaUpdateQuery, criteriaBuilder)
     }
 
     @Test

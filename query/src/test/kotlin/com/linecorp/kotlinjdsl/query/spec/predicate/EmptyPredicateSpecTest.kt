@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.criteria.AbstractQuery
 import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.criteria.Predicate
 
 @ExtendWith(MockKExtension::class)
@@ -21,6 +22,9 @@ internal class EmptyPredicateSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var query: AbstractQuery<*>
+
+    @MockK
+    private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -43,5 +47,25 @@ internal class EmptyPredicateSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, query, criteriaBuilder)
+    }
+
+    @Test
+    fun `update toCriteriaPredicate`() {
+        // given
+        val emptyPredicate: Predicate = mockk()
+
+        every { criteriaBuilder.conjunction() } returns emptyPredicate
+
+        // when
+        val actual = EmptyPredicateSpec.toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(emptyPredicate)
+
+        verify(exactly = 1) {
+            criteriaBuilder.conjunction()
+        }
+
+        confirmVerified(froms, updateQuery, criteriaBuilder)
     }
 }

@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.spring.data
 
+import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.GroupByClause
@@ -17,8 +18,10 @@ import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.CountSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
+import com.linecorp.kotlinjdsl.query.spec.predicate.EqualValueSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.QueryDslImpl
+import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.spring.data.query.clause.limit.SpringDataPageableLimitClause
 import com.linecorp.kotlinjdsl.spring.data.query.clause.orderby.SpringDataPageableOrderByClause
@@ -34,6 +37,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
+import javax.persistence.Query
 import javax.persistence.TypedQuery
 
 @ExtendWith(MockKExtension::class)
@@ -48,22 +52,28 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
     private lateinit var subqueryCreator: SubqueryCreator
 
     @Test
-    fun typedQuery() {
+    fun selectQuery() {
         // given
         val typedQuery: TypedQuery<Data1> = mockk()
 
-        every { criteriaQueryCreator.createQuery<Data1>(any()) } returns typedQuery
+        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaQuerySpecImpl<Data1>>()) } returns typedQuery
 
         // when
-        val actual = sut.typedQuery(Data1::class.java) {
+        val actual = sut.selectQuery(Data1::class.java) {
+            select(entity(Data1::class))
+            from(entity(Data1::class))
+        }
+
+        val actualTypedQuery = sut.typedQuery(Data1::class.java) {
             select(entity(Data1::class))
             from(entity(Data1::class))
         }
 
         // then
         assertThat(actual).isEqualTo(typedQuery)
+        assertThat(actualTypedQuery).isEqualTo(typedQuery)
 
-        verify(exactly = 1) {
+        verify(exactly = 2) {
             criteriaQueryCreator.createQuery(
                 QueryDslImpl.CriteriaQuerySpecImpl(
                     select = SingleSelectClause(
@@ -80,6 +90,40 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
                     limit = LimitClause.empty,
                     jpaHint = JpaQueryHintClauseImpl(emptyMap()),
                     sqlHint = EmptySqlQueryHintClause,
+                )
+            )
+        }
+
+        confirmVerified(criteriaQueryCreator)
+    }
+
+    @Test
+    fun updateQuery() {
+        // given
+        val query: Query = mockk()
+
+        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaUpdateQuerySpecImpl<Data1>>()) } returns query
+
+        // when
+        val actual = sut.updateQuery(Data1::class) {
+            where(col(Data1::id).equal(1))
+            set(col(Data1::id), 2)
+        }
+
+        // then
+        assertThat(actual).isEqualTo(query)
+
+        verify(exactly = 1) {
+            val columnSpec = ColumnSpec<Int>(EntitySpec(Data1::class.java), Data1::id.name)
+            criteriaQueryCreator.createQuery(
+                QueryDslImpl.CriteriaUpdateQuerySpecImpl(
+                    from = FromClause(EntitySpec(Data1::class.java)),
+                    join = JoinClause(emptyList()),
+                    where = WhereClause(EqualValueSpec(columnSpec, 1)),
+                    jpaHint = JpaQueryHintClauseImpl(emptyMap()),
+                    sqlHint = EmptySqlQueryHintClause,
+                    params = mapOf(columnSpec to 2),
+                    targetEntity = Data1::class.java
                 )
             )
         }

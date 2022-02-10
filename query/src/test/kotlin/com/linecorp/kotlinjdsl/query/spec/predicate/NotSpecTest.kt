@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.criteria.AbstractQuery
 import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.criteria.Predicate
 
 @ExtendWith(MockKExtension::class)
@@ -21,6 +22,9 @@ internal class NotSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var query: AbstractQuery<*>
+
+    @MockK
+    private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -48,5 +52,30 @@ internal class NotSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(predicateSpec, froms, query, criteriaBuilder)
+    }
+
+    @Test
+    fun `update toCriteriaPredicate`() {
+        // given
+        val predicateSpec: PredicateSpec = mockk()
+        val predicate: Predicate = mockk()
+
+        val notPredicate: Predicate = mockk()
+
+        every { predicateSpec.toCriteriaPredicate(froms, updateQuery, criteriaBuilder) } returns predicate
+        every { criteriaBuilder.not(predicate) } returns notPredicate
+
+        // when
+        val actual = NotSpec(predicateSpec).toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(notPredicate)
+
+        verify(exactly = 1) {
+            predicateSpec.toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+            criteriaBuilder.not(predicate)
+        }
+
+        confirmVerified(predicateSpec, froms, updateQuery, criteriaBuilder)
     }
 }

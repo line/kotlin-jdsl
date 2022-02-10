@@ -34,7 +34,7 @@ internal class ExpressionOrderSpecTest : WithKotlinJdslAssertions {
 
         val order = mockk<Order>()
 
-        every { expression.toCriteriaExpression(any(), any(), any()) } returns criteriaExpression
+        every { expression.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns criteriaExpression
         every { criteriaBuilder.asc(any()) } returns order
 
         // when
@@ -61,7 +61,7 @@ internal class ExpressionOrderSpecTest : WithKotlinJdslAssertions {
 
         val order = mockk<Order>()
 
-        every { expression.toCriteriaExpression(any(), any(), any()) } returns criteriaExpression
+        every { expression.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns criteriaExpression
         every { criteriaBuilder.desc(any()) } returns order
 
         // when

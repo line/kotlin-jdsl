@@ -6,19 +6,28 @@ import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
 import com.linecorp.kotlinjdsl.querydsl.CriteriaQueryDsl
 import com.linecorp.kotlinjdsl.querydsl.QueryDslImpl
 import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
+import com.linecorp.kotlinjdsl.querydsl.CriteriaUpdateQueryDsl
+import javax.persistence.Query
 import javax.persistence.TypedQuery
+import kotlin.reflect.KClass
 
 class QueryFactoryImpl(
     private val criteriaQueryCreator: CriteriaQueryCreator,
     private val subqueryCreator: SubqueryCreator,
 ) : QueryFactory {
-    override fun <T> typedQuery(
+    override fun <T> selectQuery(
         returnType: Class<T>,
         dsl: CriteriaQueryDsl<T>.() -> Unit
     ): TypedQuery<T> {
         val criteriaQuerySpec = QueryDslImpl(returnType).apply(dsl).createCriteriaQuerySpec()
 
         return criteriaQueryCreator.createQuery(criteriaQuerySpec)
+    }
+
+    override fun <T: Any> updateQuery(target: KClass<T>, dsl: CriteriaUpdateQueryDsl.() -> Unit): Query {
+        return criteriaQueryCreator.createQuery(
+            QueryDslImpl(target.java).apply(dsl).apply { from(target) }.createCriteriaUpdateQuerySpec()
+        )
     }
 
     override fun <T> subquery(

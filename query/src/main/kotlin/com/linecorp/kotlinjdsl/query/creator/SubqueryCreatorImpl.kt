@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.SubquerySpec
 import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.criteria.Subquery
 
 class SubqueryCreatorImpl : SubqueryCreator {
@@ -11,6 +12,17 @@ class SubqueryCreatorImpl : SubqueryCreator {
         spec: SubquerySpec<T>,
         froms: Froms,
         criteriaQuery: CriteriaQuery<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Subquery<T> {
+        val query = criteriaQuery.subquery(spec.select.returnType)
+
+        return apply(spec, froms, query, criteriaBuilder)
+    }
+
+    override fun <T> createQuery(
+        spec: SubquerySpec<T>,
+        froms: Froms,
+        criteriaQuery: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Subquery<T> {
         val query = criteriaQuery.subquery(spec.select.returnType)

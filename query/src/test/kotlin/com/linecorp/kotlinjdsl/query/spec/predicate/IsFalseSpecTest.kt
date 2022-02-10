@@ -11,10 +11,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Expression
-import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class IsFalseSpecTest : WithKotlinJdslAssertions {
@@ -23,6 +20,9 @@ internal class IsFalseSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var query: AbstractQuery<*>
+
+    @MockK
+    private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -51,5 +51,31 @@ internal class IsFalseSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(expressionSpec, froms, query, criteriaBuilder)
+    }
+
+    @Test
+    fun `update toCriteriaPredicate`() {
+        // given
+        val expressionSpec: ExpressionSpec<Boolean?> = mockk()
+
+        val expression: Expression<Boolean?> = mockk()
+
+        val isFalsePredicate: Predicate = mockk()
+
+        every { expressionSpec.toCriteriaExpression(froms, updateQuery, criteriaBuilder) } returns expression
+        every { criteriaBuilder.isFalse(expression) } returns isFalsePredicate
+
+        // when
+        val actual = IsFalseSpec(expressionSpec).toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(isFalsePredicate)
+
+        verify(exactly = 1) {
+            expressionSpec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
+            criteriaBuilder.isFalse(expression)
+        }
+
+        confirmVerified(expressionSpec, froms, updateQuery, criteriaBuilder)
     }
 }

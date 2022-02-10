@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
 import com.linecorp.kotlinjdsl.query.creator.CriteriaQueryCreator
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreator
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
+import com.linecorp.kotlinjdsl.querydsl.CriteriaUpdateQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataPageableQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataQueryDslImpl
@@ -11,17 +12,27 @@ import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataSubqueryDsl
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.support.PageableExecutionUtils
+import javax.persistence.Query
 import javax.persistence.TypedQuery
+import kotlin.reflect.KClass
 
 class SpringDataQueryFactoryImpl(
     private val criteriaQueryCreator: CriteriaQueryCreator,
     private val subqueryCreator: SubqueryCreator,
 ) : SpringDataQueryFactory {
-    override fun <T> typedQuery(
+    override fun <T> selectQuery(
         returnType: Class<T>,
         dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
     ): TypedQuery<T> {
         val criteriaQuerySpec = SpringDataQueryDslImpl(returnType).apply(dsl).createCriteriaQuerySpec()
+
+        return criteriaQueryCreator.createQuery(criteriaQuerySpec)
+    }
+
+    override fun <T : Any> updateQuery(returnType: KClass<T>, dsl: CriteriaUpdateQueryDsl.() -> Unit): Query {
+        val criteriaQuerySpec = SpringDataQueryDslImpl(returnType.java).apply(dsl).apply {
+            from(returnType)
+        }.createCriteriaUpdateQuerySpec()
 
         return criteriaQueryCreator.createQuery(criteriaQuerySpec)
     }

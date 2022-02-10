@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.criteria.AbstractQuery
 import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.criteria.Expression
 
 @ExtendWith(MockKExtension::class)
@@ -21,6 +22,9 @@ internal class NullLiteralSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var query: AbstractQuery<*>
+
+    @MockK
+    private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -45,5 +49,27 @@ internal class NullLiteralSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, query, criteriaBuilder)
+    }
+
+    @Test
+    fun `update toCriteriaExpression`() {
+        // given
+        val expression = mockk<Expression<String?>>()
+
+        every { criteriaBuilder.nullLiteral<String>(any()) } returns expression
+
+        // when
+        val spec = NullLiteralSpec(String::class.java)
+
+        val actual = spec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(expression)
+
+        verify(exactly = 1) {
+            criteriaBuilder.nullLiteral(String::class.java)
+        }
+
+        confirmVerified(froms, updateQuery, criteriaBuilder)
     }
 }

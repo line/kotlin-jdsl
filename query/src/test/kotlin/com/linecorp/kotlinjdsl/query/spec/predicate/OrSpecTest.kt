@@ -10,9 +10,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class OrSpecTest : WithKotlinJdslAssertions {
@@ -21,6 +19,9 @@ internal class OrSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var query: AbstractQuery<*>
+
+    @MockK
+    private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -36,8 +37,8 @@ internal class OrSpecTest : WithKotlinJdslAssertions {
         val predicate2: Predicate = mockk()
         val orPredicate: Predicate = mockk()
 
-        every { predicateSpec1.toCriteriaPredicate(any(), any(), any()) } returns predicate1
-        every { predicateSpec2.toCriteriaPredicate(any(), any(), any()) } returns predicate2
+        every { predicateSpec1.toCriteriaPredicate(any(), any<CriteriaQuery<*>>(), any()) } returns predicate1
+        every { predicateSpec2.toCriteriaPredicate(any(), any<CriteriaQuery<*>>(), any()) } returns predicate2
 
         every { criteriaBuilder.or(any(), any()) } returns orPredicate
 
@@ -78,5 +79,60 @@ internal class OrSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, query, criteriaBuilder)
+    }
+
+    @Test
+    fun `update toCriteriaPredicate`() {
+        // given
+        val predicateSpec1: PredicateSpec = mockk()
+        val predicateSpec2: PredicateSpec = mockk()
+        val predicateSpec3: PredicateSpec? = null
+
+        val predicate1: Predicate = mockk()
+        val predicate2: Predicate = mockk()
+        val orPredicate: Predicate = mockk()
+
+        every { predicateSpec1.toCriteriaPredicate(any(), any<CriteriaUpdate<*>>(), any()) } returns predicate1
+        every { predicateSpec2.toCriteriaPredicate(any(), any<CriteriaUpdate<*>>(), any()) } returns predicate2
+
+        every { criteriaBuilder.or(any(), any()) } returns orPredicate
+
+        // when
+        val actual = OrSpec(listOf(predicateSpec1, predicateSpec2, predicateSpec3))
+            .toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(orPredicate)
+
+        verify(exactly = 1) {
+            predicateSpec1.toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+            predicateSpec2.toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+            criteriaBuilder.or(predicate1, predicate2)
+        }
+
+        confirmVerified(predicateSpec1, predicateSpec2, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `update toCriteriaPredicate - if predicate is empty then return conjunction`() {
+        // given
+        val predicateSpec1: PredicateSpec? = null
+        val predicateSpec2: PredicateSpec? = null
+
+        val andPredicate: Predicate = mockk()
+
+        every { criteriaBuilder.conjunction() } returns andPredicate
+
+        // when
+        val actual = OrSpec(listOf(predicateSpec1, predicateSpec2)).toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(andPredicate)
+
+        verify(exactly = 1) {
+            criteriaBuilder.conjunction()
+        }
+
+        confirmVerified(froms, updateQuery, criteriaBuilder)
     }
 }

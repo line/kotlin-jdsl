@@ -1,6 +1,7 @@
 package com.linecorp.kotlinjdsl.query.creator
 
 import com.linecorp.kotlinjdsl.query.CriteriaQuerySpec
+import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
 import com.linecorp.kotlinjdsl.query.clause.groupby.CriteriaQueryGroupByClause
@@ -12,6 +13,7 @@ import com.linecorp.kotlinjdsl.query.clause.orderby.CriteriaQueryOrderByClause
 import com.linecorp.kotlinjdsl.query.clause.select.CriteriaQuerySelectClause
 import com.linecorp.kotlinjdsl.query.clause.where.CriteriaQueryWhereClause
 import com.linecorp.kotlinjdsl.query.spec.Froms
+import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
@@ -20,9 +22,9 @@ import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
+import javax.persistence.Query
 import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
@@ -123,6 +125,80 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         confirmVerified(
             spec, select, from, join, where, groupBy, having, orderBy, limit, jpaHint, sqlHint,
             createdQuery, typedQuery,
+            em, froms, criteriaBuilder
+        )
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Test
+    fun createUpdateQuery() {
+        // given
+        val createdQuery: CriteriaUpdate<Int> = mockk()
+        val query: Query = mockk()
+
+        val from: FromClause = mockk()
+        val join: JoinClause = mockk()
+        val where: CriteriaQueryWhereClause = mockk()
+        val jpaHint: JpaQueryHintClause = mockk()
+        val sqlHint: SqlQueryHintClause = mockk()
+        val column = mockk<ColumnSpec<*>>()
+        val params: Map<ColumnSpec<*>, Any?> = mapOf(column to 1234)
+
+        val spec: CriteriaUpdateQuerySpec<Int> = mockk {
+            every { this@mockk.from } returns from
+            every { this@mockk.join } returns join
+            every { this@mockk.where } returns where
+            every { this@mockk.jpaHint } returns jpaHint
+            every { this@mockk.sqlHint } returns sqlHint
+            every { this@mockk.params } returns params
+            every { targetEntity } returns Int::class.java
+        }
+
+        val setKey = mockk<Path<Int>>()
+        every { column.toCriteriaExpression(froms, createdQuery, criteriaBuilder) } returns setKey
+        every { createdQuery.set(setKey, 1234) } returns createdQuery
+
+        every { em.criteriaBuilder } returns criteriaBuilder
+        every { em.createQuery(createdQuery) } returns query
+        every { criteriaBuilder.createCriteriaUpdate(Int::class.java) } returns createdQuery
+        every { from.associate(join, createdQuery as CriteriaUpdate<in Any>, Int::class.java) } returns froms
+        every { where.apply(froms, createdQuery, criteriaBuilder) } just runs
+        every { jpaHint.apply(query) } just runs
+        every { sqlHint.apply(query) } just runs
+
+        // when
+        val actual = sut.createQuery(spec)
+
+        // then
+        assertThat(actual).isEqualTo(query)
+
+        verify(exactly = 2) {
+            spec.targetEntity
+        }
+
+        verify(exactly = 1) {
+            spec.from
+            spec.join
+            spec.where
+            spec.jpaHint
+            spec.sqlHint
+            spec.params
+            column.toCriteriaExpression(froms, createdQuery, criteriaBuilder)
+
+            em.criteriaBuilder
+            em.createQuery(createdQuery)
+            criteriaBuilder.createCriteriaUpdate(Int::class.java)
+            from.associate(join, createdQuery as CriteriaUpdate<in Any>, Int::class.java)
+            where.apply(froms, createdQuery, criteriaBuilder)
+            jpaHint.apply(query)
+            sqlHint.apply(query)
+            createdQuery.set(setKey, 1234)
+            query == query
+        }
+
+        confirmVerified(
+            spec, from, where, jpaHint, sqlHint, column,
+            createdQuery, query,
             em, froms, criteriaBuilder
         )
     }
