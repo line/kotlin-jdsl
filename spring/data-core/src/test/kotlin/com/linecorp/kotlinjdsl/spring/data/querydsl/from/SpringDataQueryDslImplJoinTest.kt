@@ -190,7 +190,7 @@ internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
 
         val result = catchThrowable(IllegalStateException::class) { actual.createCriteriaUpdateQuerySpec() }
 
-        assertThat(result).hasMessage("This query only support associate join")
+        assertThat(result).hasMessage("This query only support associate")
     }
 
     @Test
