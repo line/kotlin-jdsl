@@ -148,7 +148,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         val query: Query = mockk()
 
         val from: FromClause = mockk()
-        val join: SimpleAssociatedJoinClause = mockk()
+        val join = SimpleAssociatedJoinClause(emptyList())
         val where: CriteriaQueryWhereClause = mockk()
         val jpaHint: JpaQueryHintClause = mockk()
         val sqlHint: SqlQueryHintClause = mockk()
