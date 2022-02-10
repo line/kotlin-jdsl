@@ -95,7 +95,7 @@ val books: List<Row> = queryFactory.listQuery {
 Users can perform bulk update through update query.
 * kotlin-jdsl's update does not require from clause. Type T given as generic handles from automatically.
 * According to the JPA specification, update does not support join, fetch, group by, order by, limit.
-* If you want to use an association mapping as a where condition, you must use associate.
+* If you want to use an association mapping as a where condition, you must use [associate](#associate).
 
 ```kotlin
 val query: Query = queryFactory.updateQuery<Order> {
