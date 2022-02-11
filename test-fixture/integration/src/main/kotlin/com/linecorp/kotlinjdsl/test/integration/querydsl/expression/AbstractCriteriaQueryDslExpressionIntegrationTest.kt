@@ -152,13 +152,14 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
         // when
         data class DataDTO(
             val id: Long,
-            val amount: BigDecimal
+            val amount: Long
         )
 
-        entityManager.persist(TestTable(id = 1, role = "A", occurAmount = 7.toBigDecimal()))
-        entityManager.persist(TestTable(id = 2, role = "A", occurAmount = 5.toBigDecimal()))
-        entityManager.persist(TestTable(id = 1, role = "B", occurAmount = 5.toBigDecimal()))
-        entityManager.persist(TestTable(id = 2, role = "B", occurAmount = 6.toBigDecimal()))
+        entityManager.persist(TestTable(id = 1, role = "A", occurAmount = 7))
+        entityManager.persist(TestTable(id = 2, role = "A", occurAmount = 5))
+        entityManager.persist(TestTable(id = 1, role = "B", occurAmount = 5))
+        entityManager.persist(TestTable(id = 2, role = "B", occurAmount = 6))
+        entityManager.persist(TestTable(id = 3, role = "C", occurAmount = 6))
         entityManager.flush()
 
         val sum = queryFactory.listQuery<DataDTO> {
@@ -178,8 +179,9 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
         }
 
         // then
-        assertThat(sum.first { it.id == 1L }.amount).isEqualByComparingTo(12.toString())
-        assertThat(sum.first { it.id == 2L }.amount).isEqualByComparingTo(11.toString())
+        assertThat(sum.first { it.id == 1L }.amount).isEqualTo(12L)
+        assertThat(sum.first { it.id == 2L }.amount).isEqualTo(11L)
+        assertThat(sum.first { it.id == 3L }.amount).isEqualTo(0L)
     }
 
     @Test

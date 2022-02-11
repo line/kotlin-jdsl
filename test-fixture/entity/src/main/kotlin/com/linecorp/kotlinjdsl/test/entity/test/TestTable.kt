@@ -1,6 +1,5 @@
 package com.linecorp.kotlinjdsl.test.entity.test
 
-import java.math.BigDecimal
 import javax.persistence.*
 
 @Entity
@@ -18,5 +17,5 @@ class TestTable(
     val role: String,
 
     @Column(name = "amount")
-    val occurAmount: BigDecimal,
+    val occurAmount: Long,
 )
