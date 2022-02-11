@@ -1,3 +1,5 @@
+apply<PublishPlugin>()
+
 dependencies {
     compileOnly(Dependencies.javaPersistenceApi)
     compileOnly(Dependencies.slf4j)
