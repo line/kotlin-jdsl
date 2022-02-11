@@ -10,7 +10,7 @@ interface SubqueryCreator {
     fun <T> createQuery(
         spec: SubquerySpec<T>,
         froms: Froms,
-        commonQuery: CommonAbstractCriteria,
+        criteria: CommonAbstractCriteria,
         criteriaBuilder: CriteriaBuilder
     ): Subquery<T>
 }

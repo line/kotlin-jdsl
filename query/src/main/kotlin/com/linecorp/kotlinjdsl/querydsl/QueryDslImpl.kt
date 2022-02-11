@@ -46,7 +46,7 @@ import javax.persistence.criteria.JoinType
  */
 open class QueryDslImpl<T>(
     private val returnType: Class<T>,
-) : CriteriaQueryDsl<T>, SubqueryDsl<T>, CriteriaUpdateQueryDsl {
+) : CriteriaQueryDsl<T>, SubqueryDsl<T>, CriteriaUpdateQueryDsl, CriteriaDeleteQueryDsl {
     private var singleSelectClause: SingleSelectClause<T>? = null
     private var multiSelectClause: MultiSelectClause<T>? = null
     private var fromClause: FromClause? = null

@@ -8,10 +8,10 @@ class SubqueryCreatorImpl : SubqueryCreator {
     override fun <T> createQuery(
         spec: SubquerySpec<T>,
         froms: Froms,
-        commonQuery: CommonAbstractCriteria,
+        criteria: CommonAbstractCriteria,
         criteriaBuilder: CriteriaBuilder
     ): Subquery<T> {
-        val subquery = commonQuery.subquery(spec.select.returnType)
+        val subquery = criteria.subquery(spec.select.returnType)
         val subqueryFroms = spec.from.join(spec.join, subquery) + froms
 
         spec.select.apply(subqueryFroms, subquery, criteriaBuilder)
