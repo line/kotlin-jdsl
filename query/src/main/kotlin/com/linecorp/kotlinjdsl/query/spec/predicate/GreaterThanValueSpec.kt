@@ -9,7 +9,6 @@ data class GreaterThanValueSpec<T, R>(
     val right: R,
     val inclusive: Boolean,
 ) : PredicateSpec where R : Comparable<R>, R : Any, T : R? {
-    @Suppress("TYPE_MISMATCH_WARNING")
     override fun toCriteriaPredicate(
         froms: Froms,
         query: AbstractQuery<*>,
@@ -40,6 +39,7 @@ data class GreaterThanValueSpec<T, R>(
         return toCriteriaPredicate(criteriaBuilder, leftExpression)
     }
 
+    @Suppress("TYPE_MISMATCH_WARNING")
     private fun toCriteriaPredicate(
         criteriaBuilder: CriteriaBuilder,
         leftExpression: Expression<T>
