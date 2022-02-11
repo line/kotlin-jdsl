@@ -90,11 +90,11 @@ val books: List<Row> = queryFactory.listQuery {
 }
 ```
 
-### Update
+### Update & Delete
 
-Users can perform bulk update through update query.
-* kotlin-jdsl's update does not require from clause. Type T given as generic handles from automatically.
-* According to the JPA specification, update does not support join, fetch, group by, order by, limit.
+Users can perform bulk update through update/delete query.
+* kotlin-jdsl's update/delete does not require from clause. Type T given as generic handles from automatically.
+* According to the JPA specification, update/delete does not support join, fetch, group by, order by, limit.
 * If you want to use an association mapping as a where condition, you must use [associate](#associate).
 
 ```kotlin
@@ -103,8 +103,15 @@ val query: Query = queryFactory.updateQuery<Order> {
     setParams(col(Order::purchaserId) to 3000)
 }
 
-val udpatedRowsCount: Int = query.executeUpdate()
+val updatedRowsCount: Int = query.executeUpdate()
+
+val deleteQuery: Query = queryFactory.deleteQuery<Order> {
+    where(col(Order::purchaserId).`in`(1000, 2000))
+}
+
+val deletedRowsCount: Int = deleteQuery.executeUpdate()
 ```
+
 
 ### Expression
 
@@ -226,11 +233,16 @@ val query = queryFactory.selectQuery<String> {
     associate(OrderAddress::class, Address::class, on(OrderAddress::address))
 }
 
-queryFactory.updateQuery<OrderAddress> {
+val updatedRowCount = queryFactory.updateQuery<OrderAddress> {
     where(col(OrderAddress::id).equal(address1.id))
     associate(OrderAddress::class, Address::class, on(OrderAddress::address))
     set(col(Address::zipCode), "test")
     set(col(Address::baseAddress), "base")
+}.executeUpdate()
+
+val deletedRowCount = queryFactory.deleteQuery<OrderAddress> {
+    where(col(OrderAddress::id).equal(address1.id))
+    associate(OrderAddress::class, Address::class, on(OrderAddress::address))
 }.executeUpdate()
 ```
 
