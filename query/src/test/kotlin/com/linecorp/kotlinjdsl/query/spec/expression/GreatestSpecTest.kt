@@ -32,16 +32,16 @@ internal class GreatestSpecTest : WithKotlinJdslAssertions {
     @Test
     fun toCriteriaExpression() {
         // given
-        val column = mockk<ColumnSpec<Int>>()
+        val expression = mockk<ExpressionSpec<Int>>()
         val columnExpression = mockk<Expression<Int>>()
 
         val greatestExpression = mockk<Expression<Int>>()
 
-        every { column.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
+        every { expression.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
         every { criteriaBuilder.greatest(any<Expression<Int>>()) } returns greatestExpression
 
         // when
-        val spec = GreatestSpec(column)
+        val spec = GreatestSpec(expression)
 
         val actual = spec.toCriteriaExpression(froms, query, criteriaBuilder)
 
@@ -49,11 +49,11 @@ internal class GreatestSpecTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(greatestExpression)
 
         verify(exactly = 1) {
-            column.toCriteriaExpression(froms, query, criteriaBuilder)
+            expression.toCriteriaExpression(froms, query, criteriaBuilder)
             criteriaBuilder.greatest(columnExpression)
         }
 
-        confirmVerified(column, froms, query, criteriaBuilder)
+        confirmVerified(expression, froms, query, criteriaBuilder)
     }
 
     @Test

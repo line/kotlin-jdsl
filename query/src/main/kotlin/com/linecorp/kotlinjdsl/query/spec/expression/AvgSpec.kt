@@ -4,14 +4,14 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class AvgSpec<T : Number?>(
-    val column: ColumnSpec<T>
+    val expression: ExpressionSpec<T>
 ) : ExpressionSpec<Double> {
     override fun toCriteriaExpression(
         froms: Froms,
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<Double> {
-        val expression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+        val expression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return criteriaBuilder.avg(expression)
     }
@@ -21,7 +21,7 @@ data class AvgSpec<T : Number?>(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<Double> {
-        val expression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+        val expression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return criteriaBuilder.avg(expression)
     }
@@ -31,7 +31,7 @@ data class AvgSpec<T : Number?>(
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<Double> {
-        val expression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+        val expression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return criteriaBuilder.avg(expression)
     }

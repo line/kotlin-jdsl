@@ -32,16 +32,16 @@ internal class SumSpecTest : WithKotlinJdslAssertions {
     @Test
     fun toCriteriaExpression() {
         // given
-        val column = mockk<ColumnSpec<Int>>()
+        val expression = mockk<ExpressionSpec<Int>>()
         val columnExpression = mockk<Expression<Int>>()
 
         val sumExpression = mockk<Expression<Int>>()
 
-        every { column.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
+        every { expression.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
         every { criteriaBuilder.sum(any<Expression<Int>>()) } returns sumExpression
 
         // when
-        val spec = SumSpec(column)
+        val spec = SumSpec(expression)
 
         val actual = spec.toCriteriaExpression(froms, query, criteriaBuilder)
 
@@ -49,11 +49,11 @@ internal class SumSpecTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(sumExpression)
 
         verify(exactly = 1) {
-            column.toCriteriaExpression(froms, query, criteriaBuilder)
+            expression.toCriteriaExpression(froms, query, criteriaBuilder)
             criteriaBuilder.sum(columnExpression)
         }
 
-        confirmVerified(column, froms, query, criteriaBuilder)
+        confirmVerified(expression, froms, query, criteriaBuilder)
     }
 
     @Test

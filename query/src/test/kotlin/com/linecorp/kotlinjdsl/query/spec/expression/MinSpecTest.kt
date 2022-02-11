@@ -32,16 +32,16 @@ internal class MinSpecTest : WithKotlinJdslAssertions {
     @Test
     fun toCriteriaExpression() {
         // given
-        val column = mockk<ColumnSpec<Int>>()
+        val expression = mockk<ExpressionSpec<Int>>()
         val columnExpression = mockk<Expression<Int>>()
 
         val minExpression = mockk<Expression<Int>>()
 
-        every { column.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
+        every { expression.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
         every { criteriaBuilder.min(any<Expression<Int>>()) } returns minExpression
 
         // when
-        val spec = MinSpec(column)
+        val spec = MinSpec(expression)
 
         val actual = spec.toCriteriaExpression(froms, query, criteriaBuilder)
 
@@ -49,11 +49,11 @@ internal class MinSpecTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(minExpression)
 
         verify(exactly = 1) {
-            column.toCriteriaExpression(froms, query, criteriaBuilder)
+            expression.toCriteriaExpression(froms, query, criteriaBuilder)
             criteriaBuilder.min(columnExpression)
         }
 
-        confirmVerified(column, froms, query, criteriaBuilder)
+        confirmVerified(expression, froms, query, criteriaBuilder)
     }
 
     @Test

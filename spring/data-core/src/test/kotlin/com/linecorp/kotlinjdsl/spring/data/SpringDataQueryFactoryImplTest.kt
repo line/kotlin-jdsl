@@ -286,7 +286,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
                 distinct = false,
                 expression = CountSpec(
                     distinct = false,
-                    column = ColumnSpec<Long>(EntitySpec(Data1::class.java), "id")
+                    expression = ColumnSpec<Long>(EntitySpec(Data1::class.java), "id")
                 )
             ),
             from = FromClause(EntitySpec(Data1::class.java)),

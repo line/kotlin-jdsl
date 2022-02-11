@@ -4,14 +4,14 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class SumSpec<T : Number?>(
-    val column: ColumnSpec<T>
+    val expression: ExpressionSpec<T>
 ) : ExpressionSpec<T> {
     override fun toCriteriaExpression(
         froms: Froms,
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> {
-        val expression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+        val expression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return criteriaBuilder.sum(expression)
     }
@@ -21,7 +21,7 @@ data class SumSpec<T : Number?>(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> {
-        val expression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+        val expression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return criteriaBuilder.sum(expression)
     }
@@ -31,7 +31,7 @@ data class SumSpec<T : Number?>(
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> {
-        val expression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+        val expression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return criteriaBuilder.sum(expression)
     }
