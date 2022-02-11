@@ -24,6 +24,9 @@ internal class AndSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -134,5 +137,60 @@ internal class AndSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val predicateSpec1: PredicateSpec = mockk()
+        val predicateSpec2: PredicateSpec = mockk()
+        val predicateSpec3: PredicateSpec? = null
+
+        val predicate1: Predicate = mockk()
+        val predicate2: Predicate = mockk()
+        val andPredicate: Predicate = mockk()
+
+        every { predicateSpec1.toCriteriaPredicate(any(), any<CriteriaDelete<*>>(), any()) } returns predicate1
+        every { predicateSpec2.toCriteriaPredicate(any(), any<CriteriaDelete<*>>(), any()) } returns predicate2
+
+        every { criteriaBuilder.and(any(), any()) } returns andPredicate
+
+        // when
+        val actual = AndSpec(listOf(predicateSpec1, predicateSpec2, predicateSpec3))
+            .toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(andPredicate)
+
+        verify(exactly = 1) {
+            predicateSpec1.toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+            predicateSpec2.toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.and(predicate1, predicate2)
+        }
+
+        confirmVerified(predicateSpec1, predicateSpec2, froms, deleteQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate - if predicate is empty then return conjunction`() {
+        // given
+        val predicateSpec1: PredicateSpec? = null
+        val predicateSpec2: PredicateSpec? = null
+
+        val andPredicate: Predicate = mockk()
+
+        every { criteriaBuilder.conjunction() } returns andPredicate
+
+        // when
+        val actual = AndSpec(listOf(predicateSpec1, predicateSpec2)).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(andPredicate)
+
+        verify(exactly = 1) {
+            criteriaBuilder.conjunction()
+        }
+
+        confirmVerified(froms, deleteQuery, criteriaBuilder)
     }
 }

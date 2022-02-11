@@ -10,10 +10,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.Expression
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class LiteralSpecTest : WithKotlinJdslAssertions {
@@ -25,6 +22,9 @@ internal class LiteralSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var updateQuery: CriteriaUpdate<*>
+
+    @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -71,5 +71,27 @@ internal class LiteralSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaExpression`() {
+        // given
+        val expression = mockk<Expression<String>>()
+
+        every { criteriaBuilder.literal(any<String>()) } returns expression
+
+        // when
+        val spec = LiteralSpec("TEST")
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(expression)
+
+        verify(exactly = 1) {
+            criteriaBuilder.literal("TEST")
+        }
+
+        confirmVerified(froms, deleteQuery, criteriaBuilder)
     }
 }

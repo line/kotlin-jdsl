@@ -3,6 +3,7 @@ package com.linecorp.kotlinjdsl.query.clause.from
 import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import javax.persistence.criteria.AbstractQuery
+import javax.persistence.criteria.CriteriaDelete
 import javax.persistence.criteria.CriteriaUpdate
 
 data class FromClause(
@@ -13,6 +14,10 @@ data class FromClause(
     }
 
     fun associate(joinClause: SimpleAssociatedJoinClause, query: CriteriaUpdate<in Any>, targetEntity: Class<*>): Froms {
+        return SimpleAssociator(entity, joinClause.joins, query.from(targetEntity)).associateAll()
+    }
+
+    fun associate(joinClause: SimpleAssociatedJoinClause, query: CriteriaDelete<in Any>, targetEntity: Class<*>): Froms {
         return SimpleAssociator(entity, joinClause.joins, query.from(targetEntity)).associateAll()
     }
 }

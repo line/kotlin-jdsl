@@ -24,6 +24,9 @@ internal class MinSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -78,5 +81,32 @@ internal class MinSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(column, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaExpression`() {
+        // given
+        val column = mockk<ColumnSpec<Int>>()
+        val columnExpression = mockk<Expression<Int>>()
+
+        val minExpression = mockk<Expression<Int>>()
+
+        every { column.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns columnExpression
+        every { criteriaBuilder.min(any<Expression<Int>>()) } returns minExpression
+
+        // when
+        val spec = MinSpec(column)
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(minExpression)
+
+        verify(exactly = 1) {
+            column.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.min(columnExpression)
+        }
+
+        confirmVerified(column, froms, deleteQuery, criteriaBuilder)
     }
 }

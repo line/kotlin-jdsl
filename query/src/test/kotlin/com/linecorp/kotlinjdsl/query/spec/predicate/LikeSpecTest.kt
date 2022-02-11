@@ -25,6 +25,9 @@ internal class LikeSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -79,5 +82,32 @@ internal class LikeSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(leftExpressionSpec, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<String?> = mockk()
+        val right = "%test%"
+
+        val likeExpression: Expression<String?> = mockk()
+
+        val likePredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder) } returns likeExpression
+        every { criteriaBuilder.like(likeExpression, right) } returns likePredicate
+
+        // when
+        val actual = LikeSpec(leftExpressionSpec, right).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(likePredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.like(likeExpression, right)
+        }
+
+        confirmVerified(leftExpressionSpec, froms, deleteQuery, criteriaBuilder)
     }
 }

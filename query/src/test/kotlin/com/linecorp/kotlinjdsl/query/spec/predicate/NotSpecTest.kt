@@ -10,10 +10,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class NotSpecTest : WithKotlinJdslAssertions {
@@ -25,6 +22,9 @@ internal class NotSpecTest : WithKotlinJdslAssertions {
 
     @MockK
     private lateinit var updateQuery: CriteriaUpdate<*>
+
+    @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -77,5 +77,30 @@ internal class NotSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(predicateSpec, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val predicateSpec: PredicateSpec = mockk()
+        val predicate: Predicate = mockk()
+
+        val notPredicate: Predicate = mockk()
+
+        every { predicateSpec.toCriteriaPredicate(froms, deleteQuery, criteriaBuilder) } returns predicate
+        every { criteriaBuilder.not(predicate) } returns notPredicate
+
+        // when
+        val actual = NotSpec(predicateSpec).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(notPredicate)
+
+        verify(exactly = 1) {
+            predicateSpec.toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.not(predicate)
+        }
+
+        confirmVerified(predicateSpec, froms, deleteQuery, criteriaBuilder)
     }
 }

@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.*
 
+@Suppress("UNCHECKED_CAST")
 data class LikeSpec(
     val left: ExpressionSpec<out String?>,
     val right: String
@@ -13,7 +14,6 @@ data class LikeSpec(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        @Suppress("UNCHECKED_CAST")
         return criteriaBuilder.like(
             left.toCriteriaExpression(froms, query, criteriaBuilder) as Expression<String?>,
             right
@@ -25,7 +25,17 @@ data class LikeSpec(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        @Suppress("UNCHECKED_CAST")
+        return criteriaBuilder.like(
+            left.toCriteriaExpression(froms, query, criteriaBuilder) as Expression<String?>,
+            right
+        )
+    }
+
+    override fun toCriteriaPredicate(
+        froms: Froms,
+        query: CriteriaDelete<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Predicate {
         return criteriaBuilder.like(
             left.toCriteriaExpression(froms, query, criteriaBuilder) as Expression<String?>,
             right

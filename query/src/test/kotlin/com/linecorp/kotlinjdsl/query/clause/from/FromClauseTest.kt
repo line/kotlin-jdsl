@@ -21,6 +21,9 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
     @MockK
     private lateinit var updateQuery: CriteriaUpdate<Data1>
 
+    @MockK
+    private lateinit var deleteQuery: CriteriaDelete<Data1>
+
     private val entitySpec1 = EntitySpec(Data1::class.java)
     private val entitySpec2 = EntitySpec(Data2::class.java)
     private val entitySpec3 = EntitySpec(Data3::class.java)
@@ -127,11 +130,13 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
         val join2 = mockk<MockFetch<Any, Any>>()
 
         every { updateQuery.from(Data1::class.java) } returns root
+        every { deleteQuery.from(Data1::class.java) } returns root
         every { root.get<Any>(joinSpec1.path) } returns join1
         every { join1.get<Any>(joinSpec2.path) } returns join2
 
         // when
         val actual = fromClause.associate(joinClause, updateQuery as CriteriaUpdate<in Any>, Data1::class.java)
+        val deleteActual = fromClause.associate(joinClause, deleteQuery as CriteriaDelete<in Any>, Data1::class.java)
 
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(
@@ -144,9 +149,23 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
                 )
             )
         )
+        assertThat(deleteActual).usingRecursiveComparison().isEqualTo(
+            Froms(
+                root = root,
+                map = mapOf(
+                    entitySpec1 to root,
+                    entitySpec2 to join1,
+                    entitySpec3 to join2,
+                )
+            )
+        )
 
         verify(exactly = 1) {
             updateQuery.from(Data1::class.java)
+            deleteQuery.from(Data1::class.java)
+        }
+
+        verify(exactly = 2) {
             root.get<Any>(joinSpec1.path)
             join1.get<Any>(joinSpec2.path)
         }
@@ -157,7 +176,7 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
             join2.hashCode()
         }
 
-        confirmVerified(root, join1, join2, updateQuery)
+        confirmVerified(root, join1, join2, updateQuery, deleteQuery)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -173,21 +192,30 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
         val root = mockk<Root<Data1>>()
 
         every { updateQuery.from(Data1::class.java) } returns root
+        every { deleteQuery.from(Data1::class.java) } returns root
 
         // when
         val exception = catchThrowable(IllegalStateException::class) {
             fromClause.associate(joinClause, updateQuery as CriteriaUpdate<in Any>, Data1::class.java)
         }
 
+        val deleteException = catchThrowable(IllegalStateException::class) {
+            fromClause.associate(joinClause, deleteQuery as CriteriaDelete<in Any>, Data1::class.java)
+        }
+
         // then
         assertThat(exception)
             .hasMessageContaining("Associate clause is incomplete. Please check if the following Entities are associated")
 
+        assertThat(deleteException)
+            .hasMessageContaining("Associate clause is incomplete. Please check if the following Entities are associated")
+
         verify(exactly = 1) {
             updateQuery.from(Data1::class.java)
+            deleteQuery.from(Data1::class.java)
         }
 
-        confirmVerified(root, updateQuery)
+        confirmVerified(root, updateQuery, deleteQuery)
     }
 
     private class Data1

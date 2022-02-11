@@ -25,6 +25,9 @@ internal class BetweenValueSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -89,5 +92,37 @@ internal class BetweenValueSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(leftExpressionSpec, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int?> = mockk()
+        val right1 = 10
+        val right2 = 20
+
+        val leftExpression: Expression<Int?> = mockk()
+
+        val betweenPredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
+
+        every { criteriaBuilder.between(any(), any<Int>(), any()) } returns betweenPredicate
+
+        // when
+        val actual = BetweenValueSpec(leftExpressionSpec, right1, right2)
+            .toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(betweenPredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+            @Suppress("TYPE_MISMATCH_WARNING")
+            criteriaBuilder.between<Int>(leftExpression, right1, right2)
+        }
+
+        confirmVerified(leftExpressionSpec, froms, deleteQuery, criteriaBuilder)
     }
 }

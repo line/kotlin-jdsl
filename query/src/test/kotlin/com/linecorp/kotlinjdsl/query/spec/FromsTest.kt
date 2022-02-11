@@ -7,6 +7,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.criteria.From
+import javax.persistence.criteria.Path
 import javax.persistence.criteria.Root
 
 @ExtendWith(MockKExtension::class)
@@ -17,7 +18,7 @@ internal class FromsTest : WithKotlinJdslAssertions {
         val root: Root<*> = mockk()
 
         val entitySpec1 = EntitySpec(Data1::class.java)
-        val from1: From<*, *> = mockk()
+        val from1: Path<*> = mockk()
 
         val entitySpec2 = EntitySpec(Data2::class.java)
         val from2: From<*, *> = mockk()

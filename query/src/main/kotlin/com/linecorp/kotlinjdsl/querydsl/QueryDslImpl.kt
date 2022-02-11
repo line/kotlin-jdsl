@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.querydsl
 
+import com.linecorp.kotlinjdsl.query.CriteriaDeleteQuerySpec
 import com.linecorp.kotlinjdsl.query.CriteriaQuerySpec
 import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import com.linecorp.kotlinjdsl.query.SubquerySpec
@@ -45,7 +46,7 @@ import javax.persistence.criteria.JoinType
  */
 open class QueryDslImpl<T>(
     private val returnType: Class<T>,
-) : CriteriaQueryDsl<T>, SubqueryDsl<T>, CriteriaUpdateQueryDsl {
+) : CriteriaQueryDsl<T>, SubqueryDsl<T>, CriteriaUpdateQueryDsl, CriteriaDeleteQueryDsl {
     private var singleSelectClause: SingleSelectClause<T>? = null
     private var multiSelectClause: MultiSelectClause<T>? = null
     private var fromClause: FromClause? = null
@@ -171,6 +172,17 @@ open class QueryDslImpl<T>(
             sqlHint = getSqlQueryHintClause(),
             jpaHint = getJpaQueryHintClause(),
             set = SetClause(params)
+        )
+    }
+
+    fun createCriteriaDeleteQuerySpec(): CriteriaDeleteQuerySpec<T> {
+        return CriteriaDeleteQuerySpecImpl(
+            targetEntity = returnType,
+            from = getFromClause(),
+            associate = getSimpleAssociatedJoinClauseOnly(),
+            where = getWhereClause(),
+            sqlHint = getSqlQueryHintClause(),
+            jpaHint = getJpaQueryHintClause()
         )
     }
 
@@ -312,6 +324,14 @@ open class QueryDslImpl<T>(
         override val set: SetClause
     ) : CriteriaUpdateQuerySpec<T>
 
+    data class CriteriaDeleteQuerySpecImpl<T>(
+        override val targetEntity: Class<T>,
+        override val from: FromClause,
+        override val associate: SimpleAssociatedJoinClause,
+        override val where: CriteriaQueryWhereClause,
+        override val jpaHint: JpaQueryHintClause,
+        override val sqlHint: SqlQueryHintClause
+    ) : CriteriaDeleteQuerySpec<T>
 
     data class SubquerySpecImpl<T>(
         override val select: SubquerySelectClause<T>,
@@ -320,14 +340,5 @@ open class QueryDslImpl<T>(
         override val where: SubqueryWhereClause,
         override val groupBy: SubqueryGroupByClause,
         override val having: SubqueryHavingClause
-    ) : SubquerySpec<T> {
-        constructor(spec: SubquerySpec<T>) : this(
-            select = spec.select,
-            from = spec.from,
-            join = spec.join,
-            where = spec.where,
-            groupBy = spec.groupBy,
-            having = spec.having,
-        )
-    }
+    ) : SubquerySpec<T>
 }

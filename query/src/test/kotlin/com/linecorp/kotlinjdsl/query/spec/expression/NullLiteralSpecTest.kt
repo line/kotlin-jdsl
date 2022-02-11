@@ -10,10 +10,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.Expression
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class NullLiteralSpecTest : WithKotlinJdslAssertions {
@@ -27,10 +24,27 @@ internal class NullLiteralSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
     fun toCriteriaExpression() {
+        toCriteriaExpression { it.toCriteriaExpression(froms, query, criteriaBuilder) }
+    }
+
+    @Test
+    fun `update toCriteriaExpression`() {
+        toCriteriaExpression { it.toCriteriaExpression(froms, updateQuery, criteriaBuilder) }
+    }
+
+    @Test
+    fun `delete toCriteriaExpression`() {
+        toCriteriaExpression { it.toCriteriaExpression(froms, deleteQuery, criteriaBuilder) }
+    }
+
+    private fun toCriteriaExpression(predicate: (NullLiteralSpec<String>) -> Expression<String?>) {
         // given
         val expression = mockk<Expression<String?>>()
 
@@ -39,7 +53,7 @@ internal class NullLiteralSpecTest : WithKotlinJdslAssertions {
         // when
         val spec = NullLiteralSpec(String::class.java)
 
-        val actual = spec.toCriteriaExpression(froms, query, criteriaBuilder)
+        val actual = predicate(spec)
 
         // then
         assertThat(actual).isEqualTo(expression)
@@ -49,27 +63,5 @@ internal class NullLiteralSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, query, criteriaBuilder)
-    }
-
-    @Test
-    fun `update toCriteriaExpression`() {
-        // given
-        val expression = mockk<Expression<String?>>()
-
-        every { criteriaBuilder.nullLiteral<String>(any()) } returns expression
-
-        // when
-        val spec = NullLiteralSpec(String::class.java)
-
-        val actual = spec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
-
-        // then
-        assertThat(actual).isEqualTo(expression)
-
-        verify(exactly = 1) {
-            criteriaBuilder.nullLiteral(String::class.java)
-        }
-
-        confirmVerified(froms, updateQuery, criteriaBuilder)
     }
 }

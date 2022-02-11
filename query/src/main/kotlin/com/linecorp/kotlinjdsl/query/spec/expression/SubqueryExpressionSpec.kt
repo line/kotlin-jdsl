@@ -14,16 +14,20 @@ data class SubqueryExpressionSpec<T>(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> {
-        return when (query) {
-            is CriteriaQuery -> subqueryCreator.createQuery(spec, froms, query, criteriaBuilder)
-            is Subquery -> subqueryCreator.createQuery(spec, froms, query, criteriaBuilder)
-            else -> throw IllegalStateException("${query::class.qualifiedName} could not create Subquery")
-        }
+        return subqueryCreator.createQuery(spec, froms, query, criteriaBuilder)
     }
 
     override fun toCriteriaExpression(
         froms: Froms,
         query: CriteriaUpdate<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Expression<T> {
+        return subqueryCreator.createQuery(spec, froms, query, criteriaBuilder)
+    }
+
+    override fun toCriteriaExpression(
+        froms: Froms,
+        query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> {
         return subqueryCreator.createQuery(spec, froms, query, criteriaBuilder)

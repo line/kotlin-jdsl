@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.*
 
+@Suppress("UNCHECKED_CAST")
 data class IsTrueSpec(
     val expression: ExpressionSpec<out Boolean?>
 ) : PredicateSpec {
@@ -12,7 +13,6 @@ data class IsTrueSpec(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        @Suppress("UNCHECKED_CAST")
         return criteriaBuilder.isTrue(
             expression.toCriteriaExpression(froms, query, criteriaBuilder) as Expression<Boolean?>
         )
@@ -23,7 +23,16 @@ data class IsTrueSpec(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        @Suppress("UNCHECKED_CAST")
+        return criteriaBuilder.isTrue(
+            expression.toCriteriaExpression(froms, query, criteriaBuilder) as Expression<Boolean?>
+        )
+    }
+
+    override fun toCriteriaPredicate(
+        froms: Froms,
+        query: CriteriaDelete<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Predicate {
         return criteriaBuilder.isTrue(
             expression.toCriteriaExpression(froms, query, criteriaBuilder) as Expression<Boolean?>
         )

@@ -24,6 +24,9 @@ internal class MaxSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -78,5 +81,32 @@ internal class MaxSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(column, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaExpression`() {
+        // given
+        val column = mockk<ColumnSpec<Int>>()
+        val columnExpression = mockk<Expression<Int>>()
+
+        val maxExpression = mockk<Expression<Int>>()
+
+        every { column.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns columnExpression
+        every { criteriaBuilder.max(any<Expression<Int>>()) } returns maxExpression
+
+        // when
+        val spec = MaxSpec(column)
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(maxExpression)
+
+        verify(exactly = 1) {
+            column.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.max(columnExpression)
+        }
+
+        confirmVerified(column, froms, deleteQuery, criteriaBuilder)
     }
 }

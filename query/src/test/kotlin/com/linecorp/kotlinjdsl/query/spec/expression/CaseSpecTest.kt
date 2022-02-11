@@ -25,6 +25,9 @@ internal class CaseSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -158,6 +161,73 @@ internal class CaseSpecTest : WithKotlinJdslAssertions {
             resultSpec1, resultSpec2,
             otherwise1, case,
             froms, updateQuery, criteriaBuilder
+        )
+    }
+
+    @Test
+    fun `delete toCriteriaExpression`() {
+        // given
+        val predicateSpec1 = mockk<PredicateSpec>()
+        val predicateSpec2 = mockk<PredicateSpec>()
+
+        val predicate1 = mockk<Predicate>()
+        val predicate2 = mockk<Predicate>()
+
+        val resultSpec1 = mockk<ExpressionSpec<Int>>()
+        val resultSpec2 = mockk<ExpressionSpec<Int>>()
+
+        val result1 = mockk<Expression<Int>>()
+        val result2 = mockk<Expression<Int>>()
+
+        val when1 = CaseSpec.WhenSpec(predicateSpec1, resultSpec1)
+        val when2 = CaseSpec.WhenSpec(predicateSpec2, resultSpec2)
+
+        val otherwise1 = mockk<ExpressionSpec<Int?>>()
+        val otherwise1Expression = mockk<Expression<Int?>>()
+
+        val case = mockk<CriteriaBuilder.Case<Int>>()
+        val caseExpression = mockk<Expression<Int>>()
+
+        every { predicateSpec1.toCriteriaPredicate(any(), any<CriteriaDelete<*>>(), any()) } returns predicate1
+        every { predicateSpec2.toCriteriaPredicate(any(), any<CriteriaDelete<*>>(), any()) } returns predicate2
+
+        every { resultSpec1.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns result1
+        every { resultSpec2.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns result2
+
+        every { otherwise1.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns otherwise1Expression
+
+        every { criteriaBuilder.selectCase<Int>() } returns case
+        every { case.`when`(any(), any<Expression<Int>>()) } returns case
+        every { case.otherwise(any<Expression<Int>>()) } returns caseExpression
+
+        // when
+        val spec = CaseSpec(listOf(when1, when2), otherwise1)
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(caseExpression)
+
+        verify(exactly = 1) {
+            predicateSpec1.toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+            predicateSpec2.toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+            resultSpec1.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            resultSpec2.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+            otherwise1.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+            criteriaBuilder.selectCase<Int>()
+            case.`when`(predicate1, result1)
+            case.`when`(predicate2, result2)
+            case.otherwise(otherwise1Expression)
+        }
+
+        confirmVerified(
+            predicateSpec1, predicateSpec2,
+            resultSpec1, resultSpec2,
+            otherwise1, case,
+            froms, deleteQuery, criteriaBuilder
         )
     }
 }

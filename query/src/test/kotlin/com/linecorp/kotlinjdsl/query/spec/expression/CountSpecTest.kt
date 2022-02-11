@@ -24,6 +24,9 @@ internal class CountSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -132,5 +135,59 @@ internal class CountSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(column, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaExpression - distinct`() {
+        // given
+        val column = mockk<ColumnSpec<Int>>()
+        val columnExpression = mockk<Expression<Int>>()
+
+        val countExpression = mockk<Expression<Long>>()
+
+        every { column.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns columnExpression
+        every { criteriaBuilder.countDistinct(any<Expression<Int>>()) } returns countExpression
+
+        // when
+        val spec = CountSpec(distinct = true, column)
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(countExpression)
+
+        verify(exactly = 1) {
+            column.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.countDistinct(columnExpression)
+        }
+
+        confirmVerified(column, froms, deleteQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaExpression - non distinct`() {
+        // given
+        val column = mockk<ColumnSpec<Int>>()
+        val columnExpression = mockk<Expression<Int>>()
+
+        val countExpression = mockk<Expression<Long>>()
+
+        every { column.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns columnExpression
+        every { criteriaBuilder.count(any<Expression<Int>>()) } returns countExpression
+
+        // when
+        val spec = CountSpec(distinct = false, column)
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(countExpression)
+
+        verify(exactly = 1) {
+            column.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.count(columnExpression)
+        }
+
+        confirmVerified(column, froms, deleteQuery, criteriaBuilder)
     }
 }

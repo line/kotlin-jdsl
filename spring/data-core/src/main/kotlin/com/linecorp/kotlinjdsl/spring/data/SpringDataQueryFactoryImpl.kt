@@ -5,10 +5,7 @@ import com.linecorp.kotlinjdsl.query.creator.CriteriaQueryCreator
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreator
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
 import com.linecorp.kotlinjdsl.querydsl.CriteriaUpdateQueryDsl
-import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
-import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataPageableQueryDsl
-import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataQueryDslImpl
-import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataSubqueryDsl
+import com.linecorp.kotlinjdsl.spring.data.querydsl.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.support.PageableExecutionUtils
@@ -29,12 +26,18 @@ class SpringDataQueryFactoryImpl(
         return criteriaQueryCreator.createQuery(criteriaQuerySpec)
     }
 
-    override fun <T : Any> updateQuery(returnType: KClass<T>, dsl: CriteriaUpdateQueryDsl.() -> Unit): Query {
-        val criteriaQuerySpec = SpringDataQueryDslImpl(returnType.java).apply(dsl).apply {
-            from(returnType)
+    override fun <T : Any> updateQuery(target: KClass<T>, dsl: SpringDataCriteriaUpdateQueryDsl.() -> Unit): Query {
+        val criteriaQuerySpec = SpringDataQueryDslImpl(target.java).apply(dsl).apply {
+            from(target)
         }.createCriteriaUpdateQuerySpec()
 
         return criteriaQueryCreator.createQuery(criteriaQuerySpec)
+    }
+
+    override fun <T: Any> deleteQuery(target: KClass<T>, dsl: SpringDataCriteriaDeleteQueryDsl.() -> Unit): Query {
+        return criteriaQueryCreator.createQuery(
+            SpringDataQueryDslImpl(target.java).apply(dsl).apply { from(target) }.createCriteriaDeleteQuerySpec()
+        )
     }
 
     override fun <T> subquery(

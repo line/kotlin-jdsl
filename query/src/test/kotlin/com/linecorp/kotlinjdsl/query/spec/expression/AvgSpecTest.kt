@@ -24,6 +24,9 @@ internal class AvgSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -78,5 +81,32 @@ internal class AvgSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(column, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaExpression`() {
+        // given
+        val column = mockk<ColumnSpec<Int>>()
+        val columnExpression = mockk<Expression<Int>>()
+
+        val avgExpression = mockk<Expression<Double>>()
+
+        every { column.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns columnExpression
+        every { criteriaBuilder.avg(any<Expression<Int>>()) } returns avgExpression
+
+        // when
+        val spec = AvgSpec(column)
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(avgExpression)
+
+        verify(exactly = 1) {
+            column.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.avg(columnExpression)
+        }
+
+        confirmVerified(column, froms, deleteQuery, criteriaBuilder)
     }
 }

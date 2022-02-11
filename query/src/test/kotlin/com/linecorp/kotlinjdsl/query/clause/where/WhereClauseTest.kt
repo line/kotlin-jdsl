@@ -28,6 +28,9 @@ internal class WhereClauseTest : WithKotlinJdslAssertions {
     private lateinit var criteriaUpdateQuery: CriteriaUpdate<Int>
 
     @MockK
+    private lateinit var criteriaDeleteQuery: CriteriaDelete<Int>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -96,6 +99,40 @@ internal class WhereClauseTest : WithKotlinJdslAssertions {
 
         // then
         confirmVerified(froms, subquery, criteriaUpdateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `apply criteria delete query`() {
+        // given
+        val predicateSpec: PredicateSpec = mockk()
+        val predicate: Predicate = mockk()
+
+        every { predicateSpec.isEmpty() } returns false
+        every { predicateSpec.toCriteriaPredicate(froms, criteriaDeleteQuery, criteriaBuilder) } returns predicate
+        every { criteriaDeleteQuery.where(predicate) } returns criteriaDeleteQuery
+
+        // when
+        WhereClause(predicateSpec).apply(froms, criteriaDeleteQuery, criteriaBuilder)
+
+        // then
+        verify(exactly = 1) {
+            predicateSpec.isEmpty()
+            predicateSpec.toCriteriaPredicate(froms, criteriaDeleteQuery, criteriaBuilder)
+            criteriaDeleteQuery.where(predicate)
+
+            criteriaDeleteQuery.where(predicate)
+        }
+
+        confirmVerified(predicateSpec, froms, subquery, criteriaDeleteQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `apply criteria delete query - if predicate is empty then do nothing`() {
+        // when
+        WhereClause(PredicateSpec.empty).apply(froms, criteriaDeleteQuery, criteriaBuilder)
+
+        // then
+        confirmVerified(froms, subquery, criteriaDeleteQuery, criteriaBuilder)
     }
 
     @Test

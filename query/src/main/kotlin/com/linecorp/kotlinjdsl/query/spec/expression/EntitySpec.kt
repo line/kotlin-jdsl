@@ -14,13 +14,21 @@ data class EntitySpec<T>(
         froms: Froms,
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
-    ): Expression<T> = froms[this].apply { applyAlias() }
+    ): Expression<T> = path(froms)
 
     override fun toCriteriaExpression(
         froms: Froms,
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
-    ): Expression<T> = froms[this].apply { applyAlias() }
+    ): Expression<T> = path(froms)
+
+    override fun toCriteriaExpression(
+        froms: Froms,
+        query: CriteriaDelete<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Expression<T> = path(froms)
+
+    private fun path(froms: Froms) = froms[this].apply { applyAlias() }
 
     private fun Path<T>.applyAlias() {
         this@EntitySpec.alias.takeIf { !it.startsWith(DEFAULT_ALIAS_TOKEN) }?.run { alias(this) }

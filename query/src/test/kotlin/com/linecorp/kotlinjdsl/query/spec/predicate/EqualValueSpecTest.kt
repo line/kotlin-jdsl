@@ -25,6 +25,9 @@ internal class EqualValueSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -81,5 +84,33 @@ internal class EqualValueSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(leftExpressionSpec, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val right = 10
+
+        val leftExpression: Expression<Int> = mockk()
+
+        val equalPredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder) } returns leftExpression
+
+        every { criteriaBuilder.equal(any(), any<Int>()) } returns equalPredicate
+
+        // when
+        val actual = EqualValueSpec(leftExpressionSpec, right).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(equalPredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.equal(leftExpression, right)
+        }
+
+        confirmVerified(leftExpressionSpec, froms, deleteQuery, criteriaBuilder)
     }
 }

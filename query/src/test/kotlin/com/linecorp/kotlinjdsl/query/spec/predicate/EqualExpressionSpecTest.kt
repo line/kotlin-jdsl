@@ -24,6 +24,9 @@ internal class EqualExpressionSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -83,6 +86,37 @@ internal class EqualExpressionSpecTest : WithKotlinJdslAssertions {
         verify(exactly = 1) {
             leftExpressionSpec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
             rightExpressionSpec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
+
+            criteriaBuilder.equal(leftExpression, rightExpression)
+        }
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val rightExpressionSpec: ExpressionSpec<Int> = mockk()
+
+        val leftExpression: Expression<Int> = mockk()
+        val rightExpression: Expression<Int> = mockk()
+
+        val equalPredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
+        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression
+
+        every { criteriaBuilder.equal(leftExpression, rightExpression) } returns equalPredicate
+
+        // when
+        val actual = EqualExpressionSpec(leftExpressionSpec, rightExpressionSpec)
+            .toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(equalPredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            rightExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
 
             criteriaBuilder.equal(leftExpression, rightExpression)
         }

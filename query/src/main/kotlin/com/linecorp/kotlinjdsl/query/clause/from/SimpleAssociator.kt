@@ -20,7 +20,6 @@ class SimpleAssociator(
         associates.asSequence()
             .filter { !realized.contains(it.entity) }
             .forEach {
-                it as SimpleAssociatedJoinSpec<*, *>
                 if (!realized.contains(it.left)) {
                     realizeLazy(it)
                 } else {
