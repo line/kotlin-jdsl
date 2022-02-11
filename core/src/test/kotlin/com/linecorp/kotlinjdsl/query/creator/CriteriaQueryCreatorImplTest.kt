@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.query.creator
 
+import com.linecorp.kotlinjdsl.query.CriteriaDeleteQuerySpec
 import com.linecorp.kotlinjdsl.query.CriteriaQuerySpec
 import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
@@ -25,11 +26,9 @@ import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
 import javax.persistence.Query
 import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.Path
+import javax.persistence.criteria.*
 
+@Suppress("UnusedEquals")
 @ExtendWith(MockKExtension::class)
 internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
     @InjectMockKs
@@ -189,6 +188,69 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
             from.associate(associate, createdQuery as CriteriaUpdate<in Any>, Int::class.java)
             where.apply(froms, createdQuery, criteriaBuilder)
             set.apply(froms, createdQuery, criteriaBuilder)
+            jpaHint.apply(query)
+            sqlHint.apply(query)
+            query == query
+        }
+
+        confirmVerified(
+            from, where, jpaHint, sqlHint, set,
+            createdQuery, query,
+            em, froms, criteriaBuilder
+        )
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Test
+    fun createDeleteQuery() {
+        data class TestCriteriaDeleteQuerySpec<T>(
+            override val targetEntity: Class<T>,
+            override val from: FromClause,
+            override val associate: SimpleAssociatedJoinClause,
+            override val where: CriteriaQueryWhereClause,
+            override val jpaHint: JpaQueryHintClause,
+            override val sqlHint: SqlQueryHintClause,
+        ) : CriteriaDeleteQuerySpec<T>
+        // given
+        val createdQuery: CriteriaDelete<Int> = mockk()
+        val query: Query = mockk()
+
+        val from: FromClause = mockk()
+        val associate = SimpleAssociatedJoinClause(emptyList())
+        val where: CriteriaQueryWhereClause = mockk()
+        val jpaHint: JpaQueryHintClause = mockk()
+        val sqlHint: SqlQueryHintClause = mockk()
+        val set: SetClause = mockk()
+
+        val spec: CriteriaDeleteQuerySpec<Int> = TestCriteriaDeleteQuerySpec(
+            from = from,
+            associate = associate,
+            where = where,
+            jpaHint = jpaHint,
+            sqlHint = sqlHint,
+            targetEntity = Int::class.java
+        )
+
+        every { em.criteriaBuilder } returns criteriaBuilder
+        every { em.createQuery(createdQuery) } returns query
+        every { criteriaBuilder.createCriteriaDelete(Int::class.java) } returns createdQuery
+        every { from.associate(associate, createdQuery as CriteriaDelete<in Any>, Int::class.java) } returns froms
+        every { where.apply(froms, createdQuery, criteriaBuilder) } just runs
+        every { jpaHint.apply(query) } just runs
+        every { sqlHint.apply(query) } just runs
+
+        // when
+        val actual = sut.createQuery(spec)
+
+        // then
+        assertThat(actual).isEqualTo(query)
+
+        verify(exactly = 1) {
+            em.criteriaBuilder
+            em.createQuery(createdQuery)
+            criteriaBuilder.createCriteriaDelete(Int::class.java)
+            from.associate(associate, createdQuery as CriteriaDelete<in Any>, Int::class.java)
+            where.apply(froms, createdQuery, criteriaBuilder)
             jpaHint.apply(query)
             sqlHint.apply(query)
             query == query

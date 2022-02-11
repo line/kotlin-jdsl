@@ -30,6 +30,16 @@ data class GreaterThanValueSpec<T, R>(
         return toCriteriaPredicate(criteriaBuilder, leftExpression)
     }
 
+    override fun toCriteriaPredicate(
+        froms: Froms,
+        query: CriteriaDelete<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Predicate {
+        val leftExpression = left.toCriteriaExpression(froms, query, criteriaBuilder)
+
+        return toCriteriaPredicate(criteriaBuilder, leftExpression)
+    }
+
     private fun toCriteriaPredicate(
         criteriaBuilder: CriteriaBuilder,
         leftExpression: Expression<T>

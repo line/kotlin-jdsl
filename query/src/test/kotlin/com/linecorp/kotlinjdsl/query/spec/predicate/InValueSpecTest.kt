@@ -25,6 +25,9 @@ internal class InValueSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -139,5 +142,62 @@ internal class InValueSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val right1 = 10
+        val right2 = 20
+
+        val leftExpression: Expression<Int> = mockk()
+
+        val `in`: CriteriaBuilder.In<Int> = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
+
+        every { criteriaBuilder.`in`(any<Expression<Int>>()) } returns `in`
+        every { `in`.value(right1) } returns `in`
+        every { `in`.value(right2) } returns `in`
+
+        // when
+        val actual = InValueSpec(leftExpressionSpec, listOf(right1, right2))
+            .toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(`in`)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.`in`(leftExpression)
+            `in`(right1)
+            `in`(right2)
+        }
+
+        confirmVerified(leftExpressionSpec, froms, deleteQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate - empty rights`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+
+        val emptyPredicate: Predicate = mockk()
+
+        every { criteriaBuilder.conjunction() } returns emptyPredicate
+
+        // when
+        val actual = InValueSpec(leftExpressionSpec, emptyList())
+            .toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(emptyPredicate)
+
+        verify(exactly = 1) {
+            criteriaBuilder.conjunction()
+        }
+
+        confirmVerified(froms, deleteQuery, criteriaBuilder)
     }
 }

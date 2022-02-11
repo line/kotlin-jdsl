@@ -126,6 +126,38 @@ internal class QueryFactoryImplTest : WithKotlinJdslAssertions {
     }
 
     @Test
+    fun deleteQuery() {
+        // given
+        val query: Query = mockk()
+
+        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaDeleteQuerySpecImpl<Data1>>()) } returns query
+
+        // when
+        val actual = sut.deleteQuery(Data1::class) {
+            where(col(Data1::id).equal(1))
+        }
+
+        // then
+        assertThat(actual).isEqualTo(query)
+
+        verify(exactly = 1) {
+            val columnSpec = ColumnSpec<Int>(EntitySpec(Data1::class.java), Data1::id.name)
+            criteriaQueryCreator.createQuery(
+                QueryDslImpl.CriteriaDeleteQuerySpecImpl(
+                    from = FromClause(EntitySpec(Data1::class.java)),
+                    associate = SimpleAssociatedJoinClause(emptyList()),
+                    where = WhereClause(EqualValueSpec(columnSpec, 1)),
+                    jpaHint = JpaQueryHintClauseImpl(emptyMap()),
+                    sqlHint = EmptySqlQueryHintClause,
+                    targetEntity = Data1::class.java
+                )
+            )
+        }
+
+        confirmVerified(criteriaQueryCreator)
+    }
+
+    @Test
     fun subquery() {
         // when
         val actual = sut.subquery(Data1::class.java) {

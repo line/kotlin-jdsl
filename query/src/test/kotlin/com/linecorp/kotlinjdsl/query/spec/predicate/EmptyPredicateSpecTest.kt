@@ -10,10 +10,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class EmptyPredicateSpecTest : WithKotlinJdslAssertions {
@@ -27,17 +24,34 @@ internal class EmptyPredicateSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
     fun toCriteriaPredicate() {
+        toCriteriaPredicate { EmptyPredicateSpec.toCriteriaPredicate(froms, query, criteriaBuilder) }
+    }
+
+    @Test
+    fun `update toCriteriaPredicate`() {
+        toCriteriaPredicate { EmptyPredicateSpec.toCriteriaPredicate(froms, updateQuery, criteriaBuilder) }
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        toCriteriaPredicate { EmptyPredicateSpec.toCriteriaPredicate(froms, deleteQuery, criteriaBuilder) }
+    }
+
+    private fun toCriteriaPredicate(predicate: () -> Predicate) {
         // given
         val emptyPredicate: Predicate = mockk()
 
         every { criteriaBuilder.conjunction() } returns emptyPredicate
 
         // when
-        val actual = EmptyPredicateSpec.toCriteriaPredicate(froms, query, criteriaBuilder)
+        val actual = predicate()
 
         // then
         assertThat(actual).isEqualTo(emptyPredicate)
@@ -47,25 +61,5 @@ internal class EmptyPredicateSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, query, criteriaBuilder)
-    }
-
-    @Test
-    fun `update toCriteriaPredicate`() {
-        // given
-        val emptyPredicate: Predicate = mockk()
-
-        every { criteriaBuilder.conjunction() } returns emptyPredicate
-
-        // when
-        val actual = EmptyPredicateSpec.toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
-
-        // then
-        assertThat(actual).isEqualTo(emptyPredicate)
-
-        verify(exactly = 1) {
-            criteriaBuilder.conjunction()
-        }
-
-        confirmVerified(froms, updateQuery, criteriaBuilder)
     }
 }

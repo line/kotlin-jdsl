@@ -24,6 +24,9 @@ internal class SumSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -78,5 +81,32 @@ internal class SumSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(column, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaExpression`() {
+        // given
+        val column = mockk<ColumnSpec<Int>>()
+        val columnExpression = mockk<Expression<Int>>()
+
+        val sumExpression = mockk<Expression<Int>>()
+
+        every { column.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns columnExpression
+        every { criteriaBuilder.sum(any<Expression<Int>>()) } returns sumExpression
+
+        // when
+        val spec = SumSpec(column)
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(sumExpression)
+
+        verify(exactly = 1) {
+            column.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.sum(columnExpression)
+        }
+
+        confirmVerified(column, froms, deleteQuery, criteriaBuilder)
     }
 }

@@ -2,10 +2,7 @@ package com.linecorp.kotlinjdsl.query.spec.predicate
 
 import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.*
 
 data class EqualValueSpec<T>(
     val left: ExpressionSpec<T>,
@@ -22,6 +19,14 @@ data class EqualValueSpec<T>(
     override fun toCriteriaPredicate(
         froms: Froms,
         query: CriteriaUpdate<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Predicate {
+        return criteriaBuilder.equal(left.toCriteriaExpression(froms, query, criteriaBuilder), right)
+    }
+
+    override fun toCriteriaPredicate(
+        froms: Froms,
+        query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
         return criteriaBuilder.equal(left.toCriteriaExpression(froms, query, criteriaBuilder), right)

@@ -25,6 +25,9 @@ internal class InExpressionSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -164,6 +167,76 @@ internal class InExpressionSpecTest : WithKotlinJdslAssertions {
             criteriaBuilder.conjunction()
         }
 
-        confirmVerified(leftExpressionSpec, froms, query, criteriaBuilder)
+        confirmVerified(leftExpressionSpec, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val rightExpressionSpec1: ExpressionSpec<Int> = mockk()
+        val rightExpressionSpec2: ExpressionSpec<Int> = mockk()
+
+        val leftExpression: Expression<Int> = mockk()
+        val rightExpression1: Expression<Int> = mockk()
+        val rightExpression2: Expression<Int> = mockk()
+
+        val `in`: CriteriaBuilder.In<Int> = mockk()
+
+        every { criteriaBuilder.`in`(any<Expression<Int>>()) } returns `in`
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
+        every { rightExpressionSpec1.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression1
+        every { rightExpressionSpec2.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression2
+
+        every { `in`.value(rightExpression1) } returns `in`
+        every { `in`.value(rightExpression2) } returns `in`
+
+        // when
+        val actual = InExpressionSpec(
+            leftExpressionSpec,
+            listOf(rightExpressionSpec1, rightExpressionSpec2)
+        ).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(`in`)
+
+        verify(exactly = 1) {
+            criteriaBuilder.`in`(leftExpression)
+            leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            rightExpressionSpec1.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            rightExpressionSpec2.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+            `in`.value(rightExpression1)
+            `in`.value(rightExpression2)
+        }
+
+        confirmVerified(
+            leftExpressionSpec, rightExpressionSpec1, rightExpressionSpec2,
+            froms, deleteQuery, criteriaBuilder,
+        )
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate - empty rights`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+
+        val emptyPredicate: Predicate = mockk()
+
+        every { criteriaBuilder.conjunction() } returns emptyPredicate
+
+        // when
+        val actual = InExpressionSpec(
+            leftExpressionSpec, emptyList()
+        ).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(emptyPredicate)
+
+        verify(exactly = 1) {
+            criteriaBuilder.conjunction()
+        }
+
+        confirmVerified(leftExpressionSpec, froms, deleteQuery, criteriaBuilder)
     }
 }

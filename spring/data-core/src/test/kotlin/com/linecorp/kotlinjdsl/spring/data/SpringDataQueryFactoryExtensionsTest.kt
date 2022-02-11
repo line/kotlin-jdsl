@@ -4,9 +4,7 @@ import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.column
-import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
-import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataPageableQueryDsl
-import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataSubqueryDsl
+import com.linecorp.kotlinjdsl.spring.data.querydsl.*
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import io.mockk.confirmVerified
@@ -19,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import java.util.stream.Stream
+import javax.persistence.Query
 import javax.persistence.TypedQuery
 import kotlin.streams.toList
 
@@ -87,7 +86,7 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
     }
 
     @Test
-    fun typedQuery() {
+    fun selectQuery() {
         // given
         every { queryFactory.selectQuery<Data1>(any(), any()) } returns typedQuery
 
@@ -97,13 +96,58 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         }
 
         // when
-        val actual: TypedQuery<Data1> = queryFactory.typedQuery(dsl)
+        val actual: TypedQuery<Data1> = queryFactory.selectQuery(dsl)
 
         // then
         assertThat(actual).isEqualTo(typedQuery)
 
         verify(exactly = 1) {
             queryFactory.selectQuery(Data1::class.java, dsl)
+        }
+
+        confirmVerified(queryFactory)
+    }
+
+    @Test
+    fun updateQuery() {
+        // given
+        every { queryFactory.updateQuery<Data1>(any(), any()) } returns typedQuery
+
+        val dsl: SpringDataCriteriaUpdateQueryDsl.() -> Unit = {
+            set(col(Data1::id), 1)
+            where(col(Data1::id).equal(2))
+        }
+
+        // when
+        val actual: Query = queryFactory.updateQuery<Data1>(dsl)
+
+        // then
+        assertThat(actual).isEqualTo(typedQuery)
+
+        verify(exactly = 1) {
+            queryFactory.updateQuery(Data1::class, dsl)
+        }
+
+        confirmVerified(queryFactory)
+    }
+
+    @Test
+    fun deleteQuery() {
+        // given
+        every { queryFactory.deleteQuery<Data1>(any(), any()) } returns typedQuery
+
+        val dsl: SpringDataCriteriaDeleteQueryDsl.() -> Unit = {
+            where(col(Data1::id).equal(1))
+        }
+
+        // when
+        val actual: Query = queryFactory.deleteQuery<Data1>(dsl)
+
+        // then
+        assertThat(actual).isEqualTo(typedQuery)
+
+        verify(exactly = 1) {
+            queryFactory.deleteQuery(Data1::class, dsl)
         }
 
         confirmVerified(queryFactory)

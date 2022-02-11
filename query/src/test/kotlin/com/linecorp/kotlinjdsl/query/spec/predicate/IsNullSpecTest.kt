@@ -25,6 +25,9 @@ internal class IsNullSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -77,5 +80,31 @@ internal class IsNullSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(expressionSpec, froms, updateQuery, criteriaBuilder)
+    }
+    
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val expressionSpec: ExpressionSpec<Boolean?> = mockk()
+
+        val expression: Expression<Boolean?> = mockk()
+
+        val isNullPredicate: Predicate = mockk()
+
+        every { expressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder) } returns expression
+        every { criteriaBuilder.isNull(expression) } returns isNullPredicate
+
+        // when
+        val actual = IsNullSpec(expressionSpec).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(isNullPredicate)
+
+        verify(exactly = 1) {
+            expressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.isNull(expression)
+        }
+
+        confirmVerified(expressionSpec, froms, deleteQuery, criteriaBuilder)
     }
 }

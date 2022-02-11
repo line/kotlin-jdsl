@@ -1,10 +1,7 @@
 package com.linecorp.kotlinjdsl.query.spec.expression
 
 import com.linecorp.kotlinjdsl.query.spec.Froms
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.Expression
+import javax.persistence.criteria.*
 
 data class AvgSpec<T : Number?>(
     val column: ColumnSpec<T>
@@ -22,6 +19,16 @@ data class AvgSpec<T : Number?>(
     override fun toCriteriaExpression(
         froms: Froms,
         query: CriteriaUpdate<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Expression<Double> {
+        val expression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+
+        return criteriaBuilder.avg(expression)
+    }
+
+    override fun toCriteriaExpression(
+        froms: Froms,
+        query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<Double> {
         val expression = column.toCriteriaExpression(froms, query, criteriaBuilder)

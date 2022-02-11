@@ -3,10 +3,7 @@ package com.linecorp.kotlinjdsl
 import com.linecorp.kotlinjdsl.query.creator.CriteriaQueryCreator
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreator
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
-import com.linecorp.kotlinjdsl.querydsl.CriteriaQueryDsl
-import com.linecorp.kotlinjdsl.querydsl.QueryDslImpl
-import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
-import com.linecorp.kotlinjdsl.querydsl.CriteriaUpdateQueryDsl
+import com.linecorp.kotlinjdsl.querydsl.*
 import javax.persistence.Query
 import javax.persistence.TypedQuery
 import kotlin.reflect.KClass
@@ -27,6 +24,12 @@ class QueryFactoryImpl(
     override fun <T: Any> updateQuery(target: KClass<T>, dsl: CriteriaUpdateQueryDsl.() -> Unit): Query {
         return criteriaQueryCreator.createQuery(
             QueryDslImpl(target.java).apply(dsl).apply { from(target) }.createCriteriaUpdateQuerySpec()
+        )
+    }
+
+    override fun <T: Any> deleteQuery(target: KClass<T>, dsl: CriteriaDeleteQueryDsl.() -> Unit): Query {
+        return criteriaQueryCreator.createQuery(
+            QueryDslImpl(target.java).apply(dsl).apply { from(target) }.createCriteriaDeleteQuerySpec()
         )
     }
 

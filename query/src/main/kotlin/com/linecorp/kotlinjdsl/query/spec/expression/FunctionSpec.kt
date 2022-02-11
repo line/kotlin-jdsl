@@ -1,10 +1,7 @@
 package com.linecorp.kotlinjdsl.query.spec.expression
 
 import com.linecorp.kotlinjdsl.query.spec.Froms
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.Expression
+import javax.persistence.criteria.*
 
 data class FunctionSpec<T>(
     val name: String,
@@ -18,7 +15,7 @@ data class FunctionSpec<T>(
     ): Expression<T> {
         return toCriteriaExpression(
             criteriaBuilder = criteriaBuilder,
-            expressions = expressions.map { it.toCriteriaExpression(froms, query, criteriaBuilder) }.toTypedArray()
+            expressions = expressions.map { it.toCriteriaExpression(froms, query, criteriaBuilder) }
         )
     }
 
@@ -29,18 +26,29 @@ data class FunctionSpec<T>(
     ): Expression<T> {
         return toCriteriaExpression(
             criteriaBuilder = criteriaBuilder,
-            expressions = expressions.map { it.toCriteriaExpression(froms, query, criteriaBuilder) }.toTypedArray()
+            expressions = expressions.map { it.toCriteriaExpression(froms, query, criteriaBuilder) }
+        )
+    }
+
+    override fun toCriteriaExpression(
+        froms: Froms,
+        query: CriteriaDelete<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Expression<T> {
+        return toCriteriaExpression(
+            criteriaBuilder = criteriaBuilder,
+            expressions = expressions.map { it.toCriteriaExpression(froms, query, criteriaBuilder) }
         )
     }
 
     private fun toCriteriaExpression(
         criteriaBuilder: CriteriaBuilder,
-        expressions: Array<Expression<out Any?>>
+        expressions: List<Expression<out Any?>>
     ): Expression<T> {
         return criteriaBuilder.function(
             name,
             returnType,
-            *expressions
+            *expressions.toTypedArray()
         )
     }
 }

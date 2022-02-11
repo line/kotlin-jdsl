@@ -25,6 +25,9 @@ internal class IsTrueSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -77,5 +80,31 @@ internal class IsTrueSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(expressionSpec, froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val expressionSpec: ExpressionSpec<Boolean?> = mockk()
+
+        val expression: Expression<Boolean?> = mockk()
+
+        val isTruePredicate: Predicate = mockk()
+
+        every { expressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder) } returns expression
+        every { criteriaBuilder.isTrue(expression) } returns isTruePredicate
+
+        // when
+        val actual = IsTrueSpec(expressionSpec).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(isTruePredicate)
+
+        verify(exactly = 1) {
+            expressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            criteriaBuilder.isTrue(expression)
+        }
+
+        confirmVerified(expressionSpec, froms, deleteQuery, criteriaBuilder)
     }
 }

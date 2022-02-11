@@ -12,10 +12,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Subquery
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class SubqueryExpressionSpecTest : WithKotlinJdslAssertions {
@@ -29,6 +26,12 @@ internal class SubqueryExpressionSpecTest : WithKotlinJdslAssertions {
     private lateinit var criteriaQuery: CriteriaQuery<*>
 
     @MockK
+    private lateinit var criteriaDelete: CriteriaDelete<*>
+
+    @MockK
+    private lateinit var criteriaUpdate: CriteriaUpdate<*>
+
+    @MockK
     private lateinit var subquery: Subquery<*>
 
     @MockK
@@ -38,7 +41,7 @@ internal class SubqueryExpressionSpecTest : WithKotlinJdslAssertions {
     private lateinit var subqueryCreator: SubqueryCreator
 
     @Test
-    fun `toCriteriaExpression - by criteria query`() {
+    fun toCriteriaExpression() {
         // given
         val spec: SubquerySpec<Int> = mockk()
         val createdSubquery: Subquery<Int> = mockk()
@@ -57,6 +60,50 @@ internal class SubqueryExpressionSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, abstractQuery, criteriaQuery, subquery, criteriaBuilder, subqueryCreator)
+    }
+
+    @Test
+    fun `toCriteriaExpression - by criteria update query`() {
+        // given
+        val spec: SubquerySpec<Int> = mockk()
+        val createdSubquery: Subquery<Int> = mockk()
+
+        every { subqueryCreator.createQuery(spec, froms, criteriaUpdate, criteriaBuilder) } returns createdSubquery
+
+        // when
+        val actual = SubqueryExpressionSpec(spec, subqueryCreator)
+            .toCriteriaExpression(froms, criteriaUpdate, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(createdSubquery)
+
+        verify(exactly = 1) {
+            subqueryCreator.createQuery(spec, froms, criteriaUpdate, criteriaBuilder)
+        }
+
+        confirmVerified(froms, abstractQuery, criteriaUpdate, subquery, criteriaBuilder, subqueryCreator)
+    }
+
+    @Test
+    fun `toCriteriaExpression - by criteria delete query`() {
+        // given
+        val spec: SubquerySpec<Int> = mockk()
+        val createdSubquery: Subquery<Int> = mockk()
+
+        every { subqueryCreator.createQuery(spec, froms, criteriaDelete, criteriaBuilder) } returns createdSubquery
+
+        // when
+        val actual = SubqueryExpressionSpec(spec, subqueryCreator)
+            .toCriteriaExpression(froms, criteriaDelete, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(createdSubquery)
+
+        verify(exactly = 1) {
+            subqueryCreator.createQuery(spec, froms, criteriaDelete, criteriaBuilder)
+        }
+
+        confirmVerified(froms, abstractQuery, criteriaDelete, subquery, criteriaBuilder, subqueryCreator)
     }
 
     @Test
@@ -79,20 +126,5 @@ internal class SubqueryExpressionSpecTest : WithKotlinJdslAssertions {
         }
 
         confirmVerified(froms, abstractQuery, criteriaQuery, subquery, criteriaBuilder, subqueryCreator)
-    }
-
-    @Test
-    fun `toCriteriaExpression - if query is not instance of CriteriaQuery or Subquery then throw exception`() {
-        // given
-        val spec: SubquerySpec<Int> = mockk()
-
-        // when
-        val exception = catchThrowable(IllegalStateException::class) {
-            SubqueryExpressionSpec(spec, subqueryCreator)
-                .toCriteriaExpression(froms, abstractQuery, criteriaBuilder)
-        }
-
-        // then
-        assertThat(exception).hasMessageContaining("could not create Subquery")
     }
 }

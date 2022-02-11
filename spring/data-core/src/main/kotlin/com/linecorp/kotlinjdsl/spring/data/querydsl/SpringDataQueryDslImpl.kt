@@ -18,7 +18,7 @@ import org.springframework.data.domain.Pageable
 class SpringDataQueryDslImpl<T>(
     returnType: Class<T>,
 ) : QueryDslImpl<T>(returnType),
-    SpringDataCriteriaQueryDsl<T>, SpringDataSubqueryDsl<T>, SpringDataPageableQueryDsl<T> {
+    SpringDataCriteriaQueryDsl<T>, SpringDataSubqueryDsl<T>, SpringDataPageableQueryDsl<T>, SpringDataCriteriaUpdateQueryDsl, SpringDataCriteriaDeleteQueryDsl {
     var pageable: Pageable = Pageable.unpaged()
 
     fun createPageableQuerySpec(): CriteriaQuerySpec<T> {

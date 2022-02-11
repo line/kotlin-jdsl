@@ -1,10 +1,12 @@
 package com.linecorp.kotlinjdsl.query.creator
 
+import com.linecorp.kotlinjdsl.query.CriteriaDeleteQuerySpec
 import com.linecorp.kotlinjdsl.query.CriteriaQuerySpec
 import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import javax.persistence.EntityManager
 import javax.persistence.Query
 import javax.persistence.TypedQuery
+import javax.persistence.criteria.CriteriaDelete
 import javax.persistence.criteria.CriteriaUpdate
 
 class CriteriaQueryCreatorImpl(
@@ -43,4 +45,17 @@ class CriteriaQueryCreatorImpl(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> createQuery(spec: CriteriaDeleteQuerySpec<T>): Query {
+        val criteriaBuilder = em.criteriaBuilder
+        val query = criteriaBuilder.createCriteriaDelete(spec.targetEntity) as CriteriaDelete<Any>
+        val froms = spec.from.associate(spec.associate, query, spec.targetEntity)
+
+        spec.where.apply(froms, query, criteriaBuilder)
+
+        return em.createQuery(query).apply {
+            spec.jpaHint.apply(this)
+            spec.sqlHint.apply(this)
+        }
+    }
 }

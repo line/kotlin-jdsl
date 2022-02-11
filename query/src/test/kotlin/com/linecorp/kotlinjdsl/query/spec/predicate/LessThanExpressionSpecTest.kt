@@ -25,6 +25,9 @@ internal class LessThanExpressionSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -176,6 +179,82 @@ internal class LessThanExpressionSpecTest : WithKotlinJdslAssertions {
             leftExpressionSpec,
             rightExpressionSpec,
             froms, updateQuery, criteriaBuilder
+        )
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate - inclusive`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val rightExpressionSpec: ExpressionSpec<Int> = mockk()
+
+        val leftExpression: Expression<Int> = mockk()
+        val rightExpression: Expression<Int> = mockk()
+
+        val lessThanOrEqualToPredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
+        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression
+
+        every {
+            criteriaBuilder.lessThanOrEqualTo(any(), any<Expression<Int>>())
+        } returns lessThanOrEqualToPredicate
+
+        // when
+        val actual = LessThanExpressionSpec(leftExpressionSpec, rightExpressionSpec, true)
+            .toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(lessThanOrEqualToPredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            rightExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+            criteriaBuilder.lessThanOrEqualTo(leftExpression, rightExpression)
+        }
+
+        confirmVerified(
+            leftExpressionSpec,
+            rightExpressionSpec,
+            froms, deleteQuery, criteriaBuilder
+        )
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate - not inclusive`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val rightExpressionSpec: ExpressionSpec<Int> = mockk()
+
+        val leftExpression: Expression<Int> = mockk()
+        val rightExpression: Expression<Int> = mockk()
+
+        val lessThanPredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
+        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression
+
+        every { criteriaBuilder.lessThan(any(), any<Expression<Int>>()) } returns lessThanPredicate
+
+        // when
+        val actual = LessThanExpressionSpec(leftExpressionSpec, rightExpressionSpec, false)
+            .toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(lessThanPredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            rightExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+            criteriaBuilder.lessThan(leftExpression, rightExpression)
+        }
+
+        confirmVerified(
+            leftExpressionSpec,
+            rightExpressionSpec,
+            froms, deleteQuery, criteriaBuilder
         )
     }
 }

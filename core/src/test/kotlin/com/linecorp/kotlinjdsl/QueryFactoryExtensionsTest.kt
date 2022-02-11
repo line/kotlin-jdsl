@@ -1,8 +1,11 @@
 package com.linecorp.kotlinjdsl
 
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
+import com.linecorp.kotlinjdsl.querydsl.CriteriaDeleteQueryDsl
 import com.linecorp.kotlinjdsl.querydsl.CriteriaQueryDsl
+import com.linecorp.kotlinjdsl.querydsl.CriteriaUpdateQueryDsl
 import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
+import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.confirmVerified
 import io.mockk.every
@@ -12,6 +15,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.util.stream.Stream
+import javax.persistence.Query
 import javax.persistence.TypedQuery
 
 @ExtendWith(MockKExtension::class)
@@ -124,6 +128,52 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
 
         confirmVerified(queryFactory)
     }
+
+    @Test
+    fun updateQuery() {
+        // given
+        every { queryFactory.updateQuery<Data1>(any(), any()) } returns typedQuery
+
+        val dsl: CriteriaUpdateQueryDsl.() -> Unit = {
+            set(col(Data1::id), 1)
+            where(col(Data1::id).equal(2))
+        }
+
+        // when
+        val actual: Query = queryFactory.updateQuery<Data1>(dsl)
+
+        // then
+        assertThat(actual).isEqualTo(typedQuery)
+
+        verify(exactly = 1) {
+            queryFactory.updateQuery(Data1::class, dsl)
+        }
+
+        confirmVerified(queryFactory)
+    }
+
+    @Test
+    fun deleteQuery() {
+        // given
+        every { queryFactory.deleteQuery<Data1>(any(), any()) } returns typedQuery
+
+        val dsl: CriteriaDeleteQueryDsl.() -> Unit = {
+            where(col(Data1::id).equal(1))
+        }
+
+        // when
+        val actual: Query = queryFactory.deleteQuery<Data1>(dsl)
+
+        // then
+        assertThat(actual).isEqualTo(typedQuery)
+
+        verify(exactly = 1) {
+            queryFactory.deleteQuery(Data1::class, dsl)
+        }
+
+        confirmVerified(queryFactory)
+    }
+
 
     @Test
     fun subquery() {

@@ -10,10 +10,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaUpdate
-import javax.persistence.criteria.From
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class EntitySpecTest : WithKotlinJdslAssertions {
@@ -24,7 +21,10 @@ internal class EntitySpecTest : WithKotlinJdslAssertions {
     private lateinit var query: AbstractQuery<*>
 
     @MockK
-    private lateinit var updateQUery: CriteriaUpdate<*>
+    private lateinit var updateQuery: CriteriaUpdate<*>
+
+    @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
 
     @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
@@ -85,7 +85,7 @@ internal class EntitySpecTest : WithKotlinJdslAssertions {
         // when
         val spec = EntitySpec(Data::class.java)
 
-        val actual = spec.toCriteriaExpression(froms, updateQUery, criteriaBuilder)
+        val actual = spec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
 
         // then
         assertThat(actual).isEqualTo(from)
@@ -94,7 +94,7 @@ internal class EntitySpecTest : WithKotlinJdslAssertions {
             froms[spec]
         }
 
-        confirmVerified(froms, updateQUery, criteriaBuilder)
+        confirmVerified(froms, updateQuery, criteriaBuilder)
     }
 
     @Test
@@ -108,7 +108,7 @@ internal class EntitySpecTest : WithKotlinJdslAssertions {
         // when
         val spec = EntitySpec(Data::class.java, "data1")
 
-        val actual = spec.toCriteriaExpression(froms, updateQUery, criteriaBuilder)
+        val actual = spec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
 
         // then
         assertThat(actual).isEqualTo(from)
@@ -118,7 +118,53 @@ internal class EntitySpecTest : WithKotlinJdslAssertions {
             from.alias("data1")
         }
 
-        confirmVerified(froms, updateQUery, criteriaBuilder)
+        confirmVerified(froms, updateQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaExpression`() {
+        // given
+        val from = mockk<From<*, Data>>()
+
+        every { froms[any<EntitySpec<Data>>()] } returns from
+
+        // when
+        val spec = EntitySpec(Data::class.java)
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(from)
+
+        verify(exactly = 1) {
+            froms[spec]
+        }
+
+        confirmVerified(froms, deleteQuery, criteriaBuilder)
+    }
+
+    @Test
+    fun `delete toCriteriaExpression with alias`() {
+        // given
+        val from = mockk<From<*, Data>>()
+
+        every { froms[any<EntitySpec<Data>>()] } returns from
+        every { from.alias("data1") } returns mockk()
+
+        // when
+        val spec = EntitySpec(Data::class.java, "data1")
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(from)
+
+        verify(exactly = 1) {
+            froms[spec]
+            from.alias("data1")
+        }
+
+        confirmVerified(froms, deleteQuery, criteriaBuilder)
     }
 
     private class Data

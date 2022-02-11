@@ -31,6 +31,17 @@ data class LessThanExpressionSpec<T : Comparable<T>>(
         return toCriteriaPredicate(criteriaBuilder, leftExpression, rightExpression)
     }
 
+    override fun toCriteriaPredicate(
+        froms: Froms,
+        query: CriteriaDelete<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Predicate {
+        val leftExpression = left.toCriteriaExpression(froms, query, criteriaBuilder)
+        val rightExpression = right.toCriteriaExpression(froms, query, criteriaBuilder)
+
+        return toCriteriaPredicate(criteriaBuilder, leftExpression, rightExpression)
+    }
+
     private fun toCriteriaPredicate(
         criteriaBuilder: CriteriaBuilder,
         leftExpression: Expression<T>,

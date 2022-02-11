@@ -14,9 +14,7 @@ import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Subquery
+import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class SubqueryCreatorImplTest : WithAssertions {
@@ -32,7 +30,22 @@ internal class SubqueryCreatorImplTest : WithAssertions {
     private lateinit var criteriaQuery: CriteriaQuery<Int>
 
     @MockK
+    private lateinit var criteriaUpdate: CriteriaUpdate<Int>
+
+    @MockK
+    private lateinit var criteriaDelete: CriteriaDelete<Int>
+
+    @MockK
     private lateinit var subquery: Subquery<Int>
+
+    data class TestSubquerySpec<T>(
+        override val select: SubquerySelectClause<T>,
+        override val from: FromClause,
+        override val join: JoinClause,
+        override val where: SubqueryWhereClause,
+        override val groupBy: SubqueryGroupByClause,
+        override val having: SubqueryHavingClause
+    ) : SubquerySpec<T>
 
     @Test
     fun createQuery() {
@@ -51,14 +64,14 @@ internal class SubqueryCreatorImplTest : WithAssertions {
         val groupBy: SubqueryGroupByClause = mockk()
         val having: SubqueryHavingClause = mockk()
 
-        val spec: SubquerySpec<Int> = mockk {
-            every { this@mockk.select } returns select
-            every { this@mockk.from } returns from
-            every { this@mockk.join } returns join
-            every { this@mockk.where } returns where
-            every { this@mockk.groupBy } returns groupBy
-            every { this@mockk.having } returns having
-        }
+        val spec: SubquerySpec<Int> = TestSubquerySpec(
+            select = select,
+            from = from,
+            join = join,
+            where = where,
+            groupBy = groupBy,
+            having = having
+        )
 
         every { criteriaQuery.subquery(Int::class.java) } returns createdQuery
         every { from.join(join, createdQuery) } returns createdFroms
@@ -74,17 +87,7 @@ internal class SubqueryCreatorImplTest : WithAssertions {
         // then
         assertThat(actual).isEqualTo(createdQuery)
 
-        verify(exactly = 2) {
-            spec.select
-        }
-
         verify(exactly = 1) {
-            spec.from
-            spec.join
-            spec.where
-            spec.groupBy
-            spec.having
-
             criteriaQuery.subquery(Int::class.java)
             from.join(join, createdQuery)
             createdFroms + froms
@@ -97,9 +100,68 @@ internal class SubqueryCreatorImplTest : WithAssertions {
         }
 
         confirmVerified(
-            spec, select, from, join, where, groupBy, having,
+            select, from, join, where, groupBy, having,
             createdFroms, mergedFroms, createdQuery,
             criteriaQuery, subquery, criteriaBuilder
+        )
+    }
+
+    @Test
+    fun createUpdateQuery() {
+        // given
+        val createdQuery: Subquery<Int> = mockk()
+
+        val createdFroms: Froms = mockk()
+        val mergedFroms: Froms = mockk()
+
+        val select: SubquerySelectClause<Int> = mockk {
+            every { returnType } returns Int::class.java
+        }
+        val from: FromClause = mockk()
+        val join: JoinClause = mockk()
+        val where: SubqueryWhereClause = mockk()
+        val groupBy: SubqueryGroupByClause = mockk()
+        val having: SubqueryHavingClause = mockk()
+
+        val spec: SubquerySpec<Int> = TestSubquerySpec(
+            select = select,
+            from = from,
+            join = join,
+            where = where,
+            groupBy = groupBy,
+            having = having
+        )
+
+        every { criteriaUpdate.subquery(Int::class.java) } returns createdQuery
+        every { from.join(join, createdQuery) } returns createdFroms
+        every { createdFroms + froms } returns mergedFroms
+        every { select.apply(mergedFroms, createdQuery, criteriaBuilder) } just runs
+        every { where.apply(mergedFroms, createdQuery, criteriaBuilder) } just runs
+        every { groupBy.apply(mergedFroms, createdQuery, criteriaBuilder) } just runs
+        every { having.apply(mergedFroms, createdQuery, criteriaBuilder) } just runs
+
+        // when
+        val actual = sut.createQuery(spec, froms, criteriaUpdate, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(createdQuery)
+
+        verify(exactly = 1) {
+            criteriaUpdate.subquery(Int::class.java)
+            from.join(join, createdQuery)
+            createdFroms + froms
+            select.returnType
+            select.apply(mergedFroms, createdQuery, criteriaBuilder)
+            where.apply(mergedFroms, createdQuery, criteriaBuilder)
+            groupBy.apply(mergedFroms, createdQuery, criteriaBuilder)
+            having.apply(mergedFroms, createdQuery, criteriaBuilder)
+            createdQuery == createdQuery
+        }
+
+        confirmVerified(
+            select, from, join, where, groupBy, having,
+            createdFroms, mergedFroms, createdQuery,
+            criteriaUpdate, subquery, criteriaBuilder
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl
 
+import com.linecorp.kotlinjdsl.querydsl.CriteriaDeleteQueryDsl
 import com.linecorp.kotlinjdsl.querydsl.CriteriaQueryDsl
 import com.linecorp.kotlinjdsl.querydsl.CriteriaUpdateQueryDsl
 import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
@@ -26,6 +27,9 @@ inline fun <reified T> QueryFactory.selectQuery(noinline dsl: CriteriaQueryDsl<T
 
 inline fun <reified T: Any> QueryFactory.updateQuery(noinline dsl: CriteriaUpdateQueryDsl.() -> Unit) =
     updateQuery(T::class, dsl)
+
+inline fun <reified T: Any> QueryFactory.deleteQuery(noinline dsl: CriteriaDeleteQueryDsl.() -> Unit) =
+    deleteQuery(T::class, dsl)
 
 inline fun <reified T> QueryFactory.subquery(noinline dsl: SubqueryDsl<T>.() -> Unit) =
     subquery(T::class.java, dsl)

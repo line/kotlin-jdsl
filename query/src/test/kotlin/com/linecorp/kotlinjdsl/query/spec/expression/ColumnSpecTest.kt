@@ -24,6 +24,9 @@ internal class ColumnSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -76,6 +79,30 @@ internal class ColumnSpecTest : WithKotlinJdslAssertions {
         confirmVerified(from, froms, updateQuery, criteriaBuilder)
     }
 
+    @Test
+    fun `delete toCriteriaExpression`() {
+        // given
+        val from = mockk<From<*, Data>>()
+        val path = mockk<Path<String>>()
+
+        every { froms[any<EntitySpec<Data>>()] } returns from
+        every { from.get<String>(any<String>()) } returns path
+
+        // when
+        val spec = ColumnSpec<String>(EntitySpec(Data::class.java), "name")
+
+        val actual = spec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(path)
+
+        verify {
+            froms[EntitySpec(Data::class.java)]
+            from.get<String>("name")
+        }
+
+        confirmVerified(from, froms, deleteQuery, criteriaBuilder)
+    }
 
     private class Data {
         val name = "name"

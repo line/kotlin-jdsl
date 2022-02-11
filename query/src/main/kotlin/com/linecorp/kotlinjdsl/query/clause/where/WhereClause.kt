@@ -17,6 +17,12 @@ data class WhereClause(
         query.where(predicate.toCriteriaPredicate(froms, query, criteriaBuilder))
     }
 
+    override fun apply(froms: Froms, query: CriteriaDelete<*>, criteriaBuilder: CriteriaBuilder) {
+        if (predicate.isEmpty()) return
+
+        query.where(predicate.toCriteriaPredicate(froms, query, criteriaBuilder))
+    }
+
     override fun apply(froms: Froms, query: Subquery<*>, criteriaBuilder: CriteriaBuilder) {
         applyInternally(froms, query, criteriaBuilder)
     }

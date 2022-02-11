@@ -4,12 +4,12 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.*
 
+@Suppress("TYPE_MISMATCH_WARNING")
 data class LessThanValueSpec<T, R>(
     val left: ExpressionSpec<T>,
     val right: R,
     val inclusive: Boolean,
 ) : PredicateSpec where R : Comparable<R>, R : Any, T : R? {
-    @Suppress("TYPE_MISMATCH_WARNING")
     override fun toCriteriaPredicate(
         froms: Froms,
         query: AbstractQuery<*>,
@@ -20,10 +20,19 @@ data class LessThanValueSpec<T, R>(
         return toCriteriaPredicate(criteriaBuilder, leftExpression)
     }
 
-    @Suppress("TYPE_MISMATCH_WARNING")
     override fun toCriteriaPredicate(
         froms: Froms,
         query: CriteriaUpdate<*>,
+        criteriaBuilder: CriteriaBuilder
+    ): Predicate {
+        val leftExpression: Expression<T> = left.toCriteriaExpression(froms, query, criteriaBuilder)
+
+        return toCriteriaPredicate(criteriaBuilder, leftExpression)
+    }
+
+    override fun toCriteriaPredicate(
+        froms: Froms,
+        query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
         val leftExpression: Expression<T> = left.toCriteriaExpression(froms, query, criteriaBuilder)

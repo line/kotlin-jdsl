@@ -25,6 +25,9 @@ internal class BetweenExpressionSpecTest : WithKotlinJdslAssertions {
     private lateinit var updateQuery: CriteriaUpdate<*>
 
     @MockK
+    private lateinit var deleteQuery: CriteriaDelete<*>
+
+    @MockK
     private lateinit var criteriaBuilder: CriteriaBuilder
 
     @Test
@@ -114,6 +117,51 @@ internal class BetweenExpressionSpecTest : WithKotlinJdslAssertions {
             rightExpressionSpec1,
             rightExpressionSpec2,
             froms, updateQuery, criteriaBuilder
+        )
+    }
+
+    @Test
+    fun `delete toCriteriaPredicate`() {
+        // given
+        val leftExpressionSpec: ExpressionSpec<Int> = mockk()
+        val rightExpressionSpec1: ExpressionSpec<Int> = mockk()
+        val rightExpressionSpec2: ExpressionSpec<Int> = mockk()
+
+        val leftExpression: Expression<Int> = mockk()
+        val rightExpression1: Expression<Int> = mockk()
+        val rightExpression2: Expression<Int> = mockk()
+
+        val betweenPredicate: Predicate = mockk()
+
+        every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
+        every { rightExpressionSpec1.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression1
+        every { rightExpressionSpec2.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression2
+
+        every { criteriaBuilder.between(any(), any<Expression<Int>>(), any()) } returns betweenPredicate
+
+        // when
+        val actual = BetweenExpressionSpec(
+            leftExpressionSpec,
+            rightExpressionSpec1,
+            rightExpressionSpec2
+        ).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+
+        // then
+        assertThat(actual).isEqualTo(betweenPredicate)
+
+        verify(exactly = 1) {
+            leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            rightExpressionSpec1.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+            rightExpressionSpec2.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
+
+            criteriaBuilder.between(leftExpression, rightExpression1, rightExpression2)
+        }
+
+        confirmVerified(
+            leftExpressionSpec,
+            rightExpressionSpec1,
+            rightExpressionSpec2,
+            froms, deleteQuery, criteriaBuilder
         )
     }
 }
