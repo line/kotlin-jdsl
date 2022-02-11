@@ -92,7 +92,7 @@ val books: List<Row> = queryFactory.listQuery {
 
 ### Update & Delete
 
-Users can perform bulk update through update/delete query.
+Users can perform bulk update/delete through update/delete query.
 * kotlin-jdsl's update/delete does not require from clause. Type T given as generic handles from automatically.
 * According to the JPA specification, update/delete does not support join, fetch, group by, order by, limit.
 * If you want to use an association mapping as a where condition, you must use [associate](#associate).
