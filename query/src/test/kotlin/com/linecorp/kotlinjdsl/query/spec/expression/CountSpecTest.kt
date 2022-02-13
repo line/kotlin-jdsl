@@ -32,16 +32,16 @@ internal class CountSpecTest : WithKotlinJdslAssertions {
     @Test
     fun `toCriteriaExpression - distinct`() {
         // given
-        val column = mockk<ColumnSpec<Int>>()
+        val expression = mockk<ExpressionSpec<Int>>()
         val columnExpression = mockk<Expression<Int>>()
 
         val countExpression = mockk<Expression<Long>>()
 
-        every { column.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
+        every { expression.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
         every { criteriaBuilder.countDistinct(any<Expression<Int>>()) } returns countExpression
 
         // when
-        val spec = CountSpec(distinct = true, column)
+        val spec = CountSpec(distinct = true, expression)
 
         val actual = spec.toCriteriaExpression(froms, query, criteriaBuilder)
 
@@ -49,11 +49,11 @@ internal class CountSpecTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(countExpression)
 
         verify(exactly = 1) {
-            column.toCriteriaExpression(froms, query, criteriaBuilder)
+            expression.toCriteriaExpression(froms, query, criteriaBuilder)
             criteriaBuilder.countDistinct(columnExpression)
         }
 
-        confirmVerified(column, froms, query, criteriaBuilder)
+        confirmVerified(expression, froms, query, criteriaBuilder)
     }
 
     @Test

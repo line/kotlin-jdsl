@@ -32,16 +32,16 @@ internal class AvgSpecTest : WithKotlinJdslAssertions {
     @Test
     fun toCriteriaExpression() {
         // given
-        val column = mockk<ColumnSpec<Int>>()
-        val columnExpression = mockk<Expression<Int>>()
+        val expression = mockk<ExpressionSpec<Int>>()
+        val returnExpression = mockk<Expression<Int>>()
 
         val avgExpression = mockk<Expression<Double>>()
 
-        every { column.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns columnExpression
+        every { expression.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns returnExpression
         every { criteriaBuilder.avg(any<Expression<Int>>()) } returns avgExpression
 
         // when
-        val spec = AvgSpec(column)
+        val spec = AvgSpec(expression)
 
         val actual = spec.toCriteriaExpression(froms, query, criteriaBuilder)
 
@@ -49,11 +49,11 @@ internal class AvgSpecTest : WithKotlinJdslAssertions {
         assertThat(actual).isEqualTo(avgExpression)
 
         verify(exactly = 1) {
-            column.toCriteriaExpression(froms, query, criteriaBuilder)
-            criteriaBuilder.avg(columnExpression)
+            expression.toCriteriaExpression(froms, query, criteriaBuilder)
+            criteriaBuilder.avg(returnExpression)
         }
 
-        confirmVerified(column, froms, query, criteriaBuilder)
+        confirmVerified(expression, froms, query, criteriaBuilder)
     }
 
     @Test

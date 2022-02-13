@@ -15,6 +15,7 @@
         <class>com.linecorp.kotlinjdsl.test.entity.delivery.Delivery</class>
         <class>com.linecorp.kotlinjdsl.test.entity.delivery.DeliveryItem</class>
         <class>com.linecorp.kotlinjdsl.test.entity.delivery.DeliveryAddress</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.test.TestTable</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;MODE=MYSQL"/>
