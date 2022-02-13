@@ -5,15 +5,9 @@ import com.linecorp.kotlinjdsl.selectQuery
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
-import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.EntityManager
 
-@ExtendWith(EntityManagerExtension::class)
 abstract class AbstractLimitDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
-    override lateinit var entityManager: EntityManager
-
     @Test
     fun offset() {
         // given
@@ -22,10 +16,8 @@ abstract class AbstractLimitDslTest : AbstractCriteriaQueryDslIntegrationTest(),
         val order3 = order { purchaserId = 3000 }
 
         entityManager.run {
-            persist(order1)
-            persist(order2)
-            persist(order3)
-            flush(); clear()
+            persistAll(order1, order2, order3)
+            flushAndClear()
         }
 
         // when
@@ -50,10 +42,8 @@ abstract class AbstractLimitDslTest : AbstractCriteriaQueryDslIntegrationTest(),
         val order3 = order { purchaserId = 3000 }
 
         entityManager.run {
-            persist(order1)
-            persist(order2)
-            persist(order3)
-            flush(); clear()
+            persistAll(order1, order2, order3)
+            flushAndClear()
         }
 
         // when

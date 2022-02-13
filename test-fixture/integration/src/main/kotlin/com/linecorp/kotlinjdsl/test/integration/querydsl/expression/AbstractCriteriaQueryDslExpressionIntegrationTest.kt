@@ -5,6 +5,7 @@ import com.linecorp.kotlinjdsl.querydsl.expression.*
 import com.linecorp.kotlinjdsl.singleQuery
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
+import com.linecorp.kotlinjdsl.test.entity.test.TestTable
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -147,6 +148,43 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     }
 
     @Test
+    fun sumWhen() {
+        // when
+        data class DataDTO(
+            val id: Long,
+            val amount: Long
+        )
+
+        entityManager.persist(TestTable(id = 1, role = "A", occurAmount = 7))
+        entityManager.persist(TestTable(id = 2, role = "A", occurAmount = 5))
+        entityManager.persist(TestTable(id = 1, role = "B", occurAmount = 5))
+        entityManager.persist(TestTable(id = 2, role = "B", occurAmount = 6))
+        entityManager.persist(TestTable(id = 3, role = "C", occurAmount = 6))
+        entityManager.flush()
+
+        val sum = queryFactory.listQuery<DataDTO> {
+            selectMulti(
+                col(TestTable::id),
+                sum(
+                    case(
+                        `when`(col(TestTable::role).`in`("A", "B")).then(col(TestTable::occurAmount)),
+                        `else` = literal(0L)
+                    )
+                ),
+            )
+            from(entity(TestTable::class))
+            groupBy(
+                col(TestTable::id),
+            )
+        }
+
+        // then
+        assertThat(sum.first { it.id == 1L }.amount).isEqualTo(12L)
+        assertThat(sum.first { it.id == 2L }.amount).isEqualTo(11L)
+        assertThat(sum.first { it.id == 3L }.amount).isEqualTo(0L)
+    }
+
+    @Test
     fun count() {
         // when
         val count = queryFactory.singleQuery<Long> {
@@ -156,6 +194,20 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
 
         // then
         assertThat(count).isEqualTo(4)
+    }
+
+    @Test
+    fun countExpression() {
+        // when
+        val count = queryFactory.singleQuery<Long> {
+            select(
+                count(literal(1))
+            )
+            from(entity(OrderItem::class))
+        }
+
+        // then
+        assertThat(count).isEqualTo(4L)
     }
 
     @Test

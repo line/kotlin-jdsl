@@ -55,8 +55,8 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest : AbstractCriteri
         val order1 = order { groups = hashSetOf(group1) }
 
         entityManager.run {
-            persist(order1)
-            flush(); clear()
+            persistAll(order1)
+            flushAndClear()
         }
 
         queryFactory.updateQuery<OrderAddress> {

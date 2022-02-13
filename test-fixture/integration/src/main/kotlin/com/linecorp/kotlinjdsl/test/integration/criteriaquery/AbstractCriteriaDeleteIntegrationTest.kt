@@ -15,8 +15,8 @@ abstract class AbstractCriteriaDeleteIntegrationTest : AbstractCriteriaQueryDslI
         val address1 = orderAddress { }
 
         entityManager.run {
-            persist(address1)
-            flush(); clear()
+            persistAll(address1)
+            flushAndClear()
         }
 
         queryFactory.deleteQuery<OrderAddress> {
@@ -41,8 +41,8 @@ abstract class AbstractCriteriaDeleteIntegrationTest : AbstractCriteriaQueryDslI
         val address1 = orderAddress { }
 
         entityManager.run {
-            persist(address1)
-            flush(); clear()
+            persistAll(address1)
+            flushAndClear()
         }
 
         queryFactory.deleteQuery<OrderAddress> {

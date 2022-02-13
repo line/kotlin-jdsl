@@ -1,19 +1,13 @@
 package com.linecorp.kotlinjdsl.test.integration.criteriaquery
 
 import com.linecorp.kotlinjdsl.querydsl.expression.col
+import com.linecorp.kotlinjdsl.selectQuery
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
-import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
-import com.linecorp.kotlinjdsl.selectQuery
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.EntityManager
 
-@ExtendWith(EntityManagerExtension::class)
 abstract class AbstractOrderByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
-    override lateinit var entityManager: EntityManager
-
     @Test
     fun `orderBy - asc`() {
         // given
@@ -21,9 +15,8 @@ abstract class AbstractOrderByDslTest : AbstractCriteriaQueryDslIntegrationTest(
         val order2 = order { purchaserId = 2000 }
 
         entityManager.run {
-            persist(order1)
-            persist(order2)
-            flush(); clear()
+            persistAll(order1, order2)
+            flushAndClear()
         }
 
         // when
@@ -46,9 +39,8 @@ abstract class AbstractOrderByDslTest : AbstractCriteriaQueryDslIntegrationTest(
         val order2 = order { purchaserId = 2000 }
 
         entityManager.run {
-            persist(order1)
-            persist(order2)
-            flush(); clear()
+            persistAll(order1, order2)
+            flushAndClear()
         }
 
         // when
