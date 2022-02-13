@@ -5,17 +5,12 @@ import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.min
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
-import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
 import org.eclipse.persistence.config.PessimisticLock
 import org.eclipse.persistence.config.QueryHints
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.EntityManager
 
-@ExtendWith(EntityManagerExtension::class)
 internal class EclipselinkCriteriaQueryDslHintIntegrationTest : AbstractCriteriaQueryDslIntegrationTest() {
-    override lateinit var entityManager: EntityManager
 
     private val order1 = order { purchaserId = 1000 }
     private val order2 = order { purchaserId = 1000 }

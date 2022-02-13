@@ -10,15 +10,9 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderAddress
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
-import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.EntityManager
 
-@ExtendWith(EntityManagerExtension::class)
 abstract class AbstractJoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
-    override lateinit var entityManager: EntityManager
-
     @Test
     fun joinOneToOne() {
         // given
@@ -27,8 +21,8 @@ abstract class AbstractJoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), 
         val order1 = order { groups = hashSetOf(group1) }
 
         entityManager.run {
-            persist(order1)
-            flush(); clear()
+            persistAll(order1)
+            flushAndClear()
         }
 
         // when
@@ -53,8 +47,8 @@ abstract class AbstractJoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), 
         val order1 = order { groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1, orderItem2) }) }
 
         entityManager.run {
-            persist(order1)
-            flush(); clear()
+            persistAll(order1)
+            flushAndClear()
         }
 
         // when
@@ -78,14 +72,14 @@ abstract class AbstractJoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), 
 
         val order1 = order { groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1, orderItem2) }) }
 
-        entityManager.persist(order1)
-        entityManager.flush()
+        entityManager.persistAll(order1)
+        entityManager.flushAndClear()
 
         val delivery1 = delivery { orderId = order1.id }
 
         entityManager.run {
-            persist(delivery1)
-            flush(); clear()
+            persistAll(delivery1)
+            flushAndClear()
         }
 
         // when
@@ -109,8 +103,8 @@ abstract class AbstractJoinDslTest : AbstractCriteriaQueryDslIntegrationTest(), 
         val order1 = order { groups = hashSetOf(group1) }
 
         entityManager.run {
-            persist(order1)
-            flush(); clear()
+            persistAll(order1)
+            flushAndClear()
         }
 
         // when

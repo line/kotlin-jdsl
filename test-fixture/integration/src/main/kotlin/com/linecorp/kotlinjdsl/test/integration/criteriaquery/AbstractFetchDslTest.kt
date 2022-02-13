@@ -6,15 +6,9 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderAddress
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
-import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.EntityManager
 
-@ExtendWith(EntityManagerExtension::class)
 abstract class AbstractFetchDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
-    override lateinit var entityManager: EntityManager
-
     @Test
     fun fetchOneToOne() {
         // given
@@ -23,8 +17,8 @@ abstract class AbstractFetchDslTest : AbstractCriteriaQueryDslIntegrationTest(),
         val order1 = order { groups = hashSetOf(group1) }
 
         entityManager.run {
-            persist(order1)
-            flush(); clear()
+            persistAll(order1)
+            flushAndClear()
         }
 
         // when
@@ -52,8 +46,8 @@ abstract class AbstractFetchDslTest : AbstractCriteriaQueryDslIntegrationTest(),
         val order1 = order { groups = hashSetOf(group1) }
 
         entityManager.run {
-            persist(order1)
-            flush(); clear()
+            persistAll(order1)
+            flushAndClear()
         }
 
         // when

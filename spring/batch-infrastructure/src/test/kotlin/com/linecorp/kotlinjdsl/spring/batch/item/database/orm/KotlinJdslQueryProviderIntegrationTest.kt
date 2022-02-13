@@ -4,7 +4,6 @@ import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.EntityDsl
 import com.linecorp.kotlinjdsl.test.entity.order.Order
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.batch.item.ExecutionContext
@@ -31,20 +30,10 @@ internal open class KotlinJdslQueryProviderIntegrationTest : EntityDsl(), WithKo
 
         entityManager.transaction.run {
             begin()
-            entityManager.persistAll(order1, order2, order3, order4)
-            commit()
-        }
-
-        entityManager.close()
-    }
-
-    @AfterEach
-    fun tearDown() {
-        val entityManager = entityManagerFactory.createEntityManager()
-
-        entityManager.transaction.run {
-            begin()
-            entityManager.removeAll(order1, order2, order3, order4)
+            sequenceOf(order1, order2, order3, order4).forEach {
+                entityManager.persist(it)
+                entityManager.flush()
+            }
             commit()
         }
 
