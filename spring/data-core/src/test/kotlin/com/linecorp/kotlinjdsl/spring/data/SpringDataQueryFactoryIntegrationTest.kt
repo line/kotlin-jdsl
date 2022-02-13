@@ -39,8 +39,11 @@ internal open class SpringDataQueryFactoryIntegrationTest : EntityDsl(), WithKot
             criteriaQueryCreator = CriteriaQueryCreatorImpl(entityManager),
             subqueryCreator = SubqueryCreatorImpl()
         )
-        entityManager.persistAll(order1, order2, order3, order4)
-        entityManager.flushAndClear()
+        sequenceOf(order1, order2, order3, order4).forEach {
+            entityManager.persist(it)
+            entityManager.flush()
+            entityManager.clear()
+        }
     }
 
     @Test

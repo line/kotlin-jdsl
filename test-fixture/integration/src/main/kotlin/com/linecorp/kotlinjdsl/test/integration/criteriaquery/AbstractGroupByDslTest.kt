@@ -8,15 +8,9 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
-import com.linecorp.kotlinjdsl.test.integration.EntityManagerExtension
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.EntityManager
 
-@ExtendWith(EntityManagerExtension::class)
 abstract class AbstractGroupByDslTest : AbstractCriteriaQueryDslIntegrationTest(), WithKotlinJdslAssertions {
-    override lateinit var entityManager: EntityManager
-
     @Test
     fun groupBy() {
         // given
@@ -40,9 +34,8 @@ abstract class AbstractGroupByDslTest : AbstractCriteriaQueryDslIntegrationTest(
         }
 
         entityManager.run {
-            persist(order1)
-            persist(order2)
-            flush(); clear()
+            persistAll(order1, order2)
+            flushAndClear()
         }
 
         // when
@@ -81,9 +74,8 @@ abstract class AbstractGroupByDslTest : AbstractCriteriaQueryDslIntegrationTest(
         }
 
         entityManager.run {
-            persist(order1)
-            persist(order2)
-            flush(); clear()
+            persistAll(order1, order2)
+            flushAndClear()
         }
 
         // when
