@@ -5,14 +5,14 @@ import javax.persistence.criteria.*
 
 data class CountSpec<T>(
     val distinct: Boolean = false,
-    val column: ColumnSpec<T>,
+    val expression: ExpressionSpec<T>,
 ) : ExpressionSpec<Long> {
     override fun toCriteriaExpression(
         froms: Froms,
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<Long> {
-        val jpaExpression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+        val jpaExpression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return toCriteriaExpression(criteriaBuilder, jpaExpression)
     }
@@ -22,7 +22,7 @@ data class CountSpec<T>(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<Long> {
-        val jpaExpression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+        val jpaExpression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return toCriteriaExpression(criteriaBuilder, jpaExpression)
     }
@@ -32,7 +32,7 @@ data class CountSpec<T>(
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<Long> {
-        val jpaExpression = column.toCriteriaExpression(froms, query, criteriaBuilder)
+        val jpaExpression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return toCriteriaExpression(criteriaBuilder, jpaExpression)
     }

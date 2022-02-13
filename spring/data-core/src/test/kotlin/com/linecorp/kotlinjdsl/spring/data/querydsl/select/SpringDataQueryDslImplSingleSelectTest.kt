@@ -271,7 +271,7 @@ internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions
                 distinct = false,
                 expression = CountSpec(
                     distinct = false,
-                    column = ColumnSpec<Long>(EntitySpec(Data1::class.java), "name")
+                    expression = ColumnSpec<Long>(EntitySpec(Data1::class.java), "name")
                 )
             )
         )
