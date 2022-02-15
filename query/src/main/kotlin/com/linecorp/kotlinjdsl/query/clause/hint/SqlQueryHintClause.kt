@@ -1,7 +1,10 @@
 package com.linecorp.kotlinjdsl.query.clause.hint
 
-import javax.persistence.Query
-
-interface SqlQueryHintClause {
-    fun apply(query: Query)
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
+interface SqlQueryHintClause<Q> {
+    fun apply(query: Q)
 }

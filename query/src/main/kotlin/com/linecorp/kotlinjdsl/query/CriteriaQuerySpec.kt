@@ -11,7 +11,12 @@ import com.linecorp.kotlinjdsl.query.clause.orderby.CriteriaQueryOrderByClause
 import com.linecorp.kotlinjdsl.query.clause.select.CriteriaQuerySelectClause
 import com.linecorp.kotlinjdsl.query.clause.where.CriteriaQueryWhereClause
 
-interface CriteriaQuerySpec<T> {
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
+interface CriteriaQuerySpec<T, Q> {
     val select: CriteriaQuerySelectClause<T>
     val from: FromClause
     val join: JoinClause
@@ -19,7 +24,7 @@ interface CriteriaQuerySpec<T> {
     val groupBy: CriteriaQueryGroupByClause
     val having: CriteriaQueryHavingClause
     val orderBy: CriteriaQueryOrderByClause
-    val limit: QueryLimitClause
-    val jpaHint: JpaQueryHintClause
-    val sqlHint: SqlQueryHintClause
+    val limit: QueryLimitClause<Q>
+    val jpaHint: JpaQueryHintClause<Q>
+    val sqlHint: SqlQueryHintClause<Q>
 }

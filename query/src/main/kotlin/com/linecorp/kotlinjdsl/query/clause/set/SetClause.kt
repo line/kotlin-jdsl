@@ -6,6 +6,11 @@ import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.criteria.Path
 
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
 data class SetClause(private val params: Map<ColumnSpec<*>, Any?>) {
     fun apply(froms: Froms, query: CriteriaUpdate<*>, criteriaBuilder: CriteriaBuilder) {
         params.forEach {

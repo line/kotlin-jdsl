@@ -3,7 +3,7 @@ package com.linecorp.kotlinjdsl.query.clause.hint
 import org.slf4j.LoggerFactory
 import javax.persistence.Query
 
-object EmptySqlQueryHintClause : SqlQueryHintClause {
+object EmptySqlQueryHintClause : SqlQueryHintClause<Query> {
     private val log = LoggerFactory.getLogger(EmptySqlQueryHintClause::class.java)
 
     override fun apply(query: Query) {

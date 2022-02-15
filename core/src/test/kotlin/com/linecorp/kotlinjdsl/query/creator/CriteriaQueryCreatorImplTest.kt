@@ -53,10 +53,10 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
             override val groupBy: CriteriaQueryGroupByClause,
             override val having: CriteriaQueryHavingClause,
             override val orderBy: CriteriaQueryOrderByClause,
-            override val limit: QueryLimitClause,
-            override val jpaHint: JpaQueryHintClause,
-            override val sqlHint: SqlQueryHintClause,
-        ) : CriteriaQuerySpec<T>
+            override val limit: QueryLimitClause<Query>,
+            override val jpaHint: JpaQueryHintClause<Query>,
+            override val sqlHint: SqlQueryHintClause<Query>,
+        ) : CriteriaQuerySpec<T, Query>
         // given
         val createdQuery: CriteriaQuery<Int> = mockk()
         val typedQuery: TypedQuery<Int> = mockk()
@@ -70,11 +70,11 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         val groupBy: CriteriaQueryGroupByClause = mockk()
         val having: CriteriaQueryHavingClause = mockk()
         val orderBy: CriteriaQueryOrderByClause = mockk()
-        val limit: QueryLimitClause = mockk()
-        val jpaHint: JpaQueryHintClause = mockk()
-        val sqlHint: SqlQueryHintClause = mockk()
+        val limit: QueryLimitClause<Query> = mockk()
+        val jpaHint: JpaQueryHintClause<Query> = mockk()
+        val sqlHint: SqlQueryHintClause<Query> = mockk()
 
-        val spec: CriteriaQuerySpec<Int> = TestCriteriaQuerySpec(
+        val spec: CriteriaQuerySpec<Int, Query> = TestCriteriaQuerySpec(
             from = from,
             join = join,
             where = where,
@@ -138,10 +138,10 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
             override val from: FromClause,
             override val associate: SimpleAssociatedJoinClause,
             override val where: CriteriaQueryWhereClause,
-            override val jpaHint: JpaQueryHintClause,
-            override val sqlHint: SqlQueryHintClause,
+            override val jpaHint: JpaQueryHintClause<Query>,
+            override val sqlHint: SqlQueryHintClause<Query>,
             override val set: SetClause
-        ) : CriteriaUpdateQuerySpec<T>
+        ) : CriteriaUpdateQuerySpec<T, Query>
         // given
         val createdQuery: CriteriaUpdate<Int> = mockk()
         val query: Query = mockk()
@@ -149,11 +149,11 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         val from: FromClause = mockk()
         val associate = SimpleAssociatedJoinClause(emptyList())
         val where: CriteriaQueryWhereClause = mockk()
-        val jpaHint: JpaQueryHintClause = mockk()
-        val sqlHint: SqlQueryHintClause = mockk()
+        val jpaHint: JpaQueryHintClause<Query> = mockk()
+        val sqlHint: SqlQueryHintClause<Query> = mockk()
         val set: SetClause = mockk()
 
-        val spec: CriteriaUpdateQuerySpec<Int> = TestCriteriaUpdateQuerySpec(
+        val spec: CriteriaUpdateQuerySpec<Int, Query> = TestCriteriaUpdateQuerySpec(
             from = from,
             associate = associate,
             where = where,
@@ -208,9 +208,9 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
             override val from: FromClause,
             override val associate: SimpleAssociatedJoinClause,
             override val where: CriteriaQueryWhereClause,
-            override val jpaHint: JpaQueryHintClause,
-            override val sqlHint: SqlQueryHintClause,
-        ) : CriteriaDeleteQuerySpec<T>
+            override val jpaHint: JpaQueryHintClause<Query>,
+            override val sqlHint: SqlQueryHintClause<Query>,
+        ) : CriteriaDeleteQuerySpec<T, Query>
         // given
         val createdQuery: CriteriaDelete<Int> = mockk()
         val query: Query = mockk()
@@ -218,11 +218,11 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         val from: FromClause = mockk()
         val associate = SimpleAssociatedJoinClause(emptyList())
         val where: CriteriaQueryWhereClause = mockk()
-        val jpaHint: JpaQueryHintClause = mockk()
-        val sqlHint: SqlQueryHintClause = mockk()
+        val jpaHint: JpaQueryHintClause<Query> = mockk()
+        val sqlHint: SqlQueryHintClause<Query> = mockk()
         val set: SetClause = mockk()
 
-        val spec: CriteriaDeleteQuerySpec<Int> = TestCriteriaDeleteQuerySpec(
+        val spec: CriteriaDeleteQuerySpec<Int, Query> = TestCriteriaDeleteQuerySpec(
             from = from,
             associate = associate,
             where = where,

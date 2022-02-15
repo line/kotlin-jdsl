@@ -5,7 +5,7 @@ import javax.persistence.Query
 
 data class HibernateSqlQueryHintClause(
     val queryHints: List<String>
-) : SqlQueryHintClause {
+) : SqlQueryHintClause<Query> {
     companion object {
         private val log = LoggerFactory.getLogger(HibernateSqlQueryHintClause::class.java)
     }

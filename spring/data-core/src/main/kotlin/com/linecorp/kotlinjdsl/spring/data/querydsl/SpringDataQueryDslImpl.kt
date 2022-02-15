@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.querydsl.QueryDslImpl
 import com.linecorp.kotlinjdsl.spring.data.query.clause.limit.SpringDataPageableLimitClause
 import com.linecorp.kotlinjdsl.spring.data.query.clause.orderby.SpringDataPageableOrderByClause
 import org.springframework.data.domain.Pageable
+import javax.persistence.Query
 
 /**
  * Internal DSL Implementation which is integrated Spring Data JPA
@@ -21,7 +22,7 @@ class SpringDataQueryDslImpl<T>(
     SpringDataCriteriaQueryDsl<T>, SpringDataSubqueryDsl<T>, SpringDataPageableQueryDsl<T>, SpringDataCriteriaUpdateQueryDsl, SpringDataCriteriaDeleteQueryDsl {
     var pageable: Pageable = Pageable.unpaged()
 
-    fun createPageableQuerySpec(): CriteriaQuerySpec<T> {
+    fun createPageableQuerySpec(): CriteriaQuerySpec<T, Query> {
         return CriteriaQuerySpecImpl(
             select = getCriteriaQuerySelectClause(),
             from = getFromClause(),
@@ -36,7 +37,7 @@ class SpringDataQueryDslImpl<T>(
         )
     }
 
-    fun createPageableCountQuerySpec(countSelectClause: SingleSelectClause<Long>? = null): CriteriaQuerySpec<Long> {
+    fun createPageableCountQuerySpec(countSelectClause: SingleSelectClause<Long>? = null): CriteriaQuerySpec<Long, Query> {
         return CriteriaQuerySpecImpl(
             select = countSelectClause ?: getCriteriaCountQuerySelectClause(),
             from = getFromClause(),
@@ -63,7 +64,7 @@ class SpringDataQueryDslImpl<T>(
         return SpringDataPageableOrderByClause(pageable)
     }
 
-    private fun getPageableLimitClause(): QueryLimitClause {
+    private fun getPageableLimitClause(): QueryLimitClause<Query> {
         return SpringDataPageableLimitClause(pageable)
     }
 }

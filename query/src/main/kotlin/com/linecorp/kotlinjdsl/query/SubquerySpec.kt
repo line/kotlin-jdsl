@@ -7,6 +7,11 @@ import com.linecorp.kotlinjdsl.query.clause.having.SubqueryHavingClause
 import com.linecorp.kotlinjdsl.query.clause.select.SubquerySelectClause
 import com.linecorp.kotlinjdsl.query.clause.where.SubqueryWhereClause
 
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
 interface SubquerySpec<T> {
     val select: SubquerySelectClause<T>
     val from: FromClause

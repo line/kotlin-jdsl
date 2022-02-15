@@ -8,6 +8,11 @@ import java.util.*
 import javax.persistence.criteria.Path
 import javax.persistence.criteria.Root
 
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
 class SimpleAssociator(
     fromEntity: EntitySpec<*>,
     associates: Collection<SimpleAssociatedJoinSpec<*, *>>,

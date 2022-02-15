@@ -1,6 +1,5 @@
 package com.linecorp.kotlinjdsl.querydsl.limit
 
-import com.linecorp.kotlinjdsl.query.clause.limit.LimitClause
 import com.linecorp.kotlinjdsl.querydsl.QueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
@@ -18,7 +17,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = null, maxResults = null)
+            com.linecorp.kotlinjdsl.query.clause.limit.LimitClause(offset = null, maxResults = null)
         )
     }
 
@@ -35,7 +34,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = 10, maxResults = null)
+            com.linecorp.kotlinjdsl.query.clause.limit.LimitClause(offset = 10, maxResults = null)
         )
     }
 
@@ -52,7 +51,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = null, maxResults = 10)
+            com.linecorp.kotlinjdsl.query.clause.limit.LimitClause(offset = null, maxResults = 10)
         )
     }
 
@@ -69,7 +68,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = null, maxResults = 10)
+            com.linecorp.kotlinjdsl.query.clause.limit.LimitClause(offset = null, maxResults = 10)
         )
     }
 
@@ -86,7 +85,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = 1, maxResults = 10)
+            com.linecorp.kotlinjdsl.query.clause.limit.LimitClause(offset = 1, maxResults = 10)
         )
     }
 

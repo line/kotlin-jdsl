@@ -3,8 +3,8 @@ package com.linecorp.kotlinjdsl.querydsl.from
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
 import com.linecorp.kotlinjdsl.query.clause.from.SimpleAssociatedJoinClause
 import com.linecorp.kotlinjdsl.query.clause.where.WhereClause
-import com.linecorp.kotlinjdsl.query.spec.SimpleAssociatedJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.CrossJoinSpec
+import com.linecorp.kotlinjdsl.query.spec.SimpleAssociatedJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.SimpleJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec

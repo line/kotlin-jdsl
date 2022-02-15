@@ -6,11 +6,16 @@ import com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClause
 import com.linecorp.kotlinjdsl.query.clause.hint.SqlQueryHintClause
 import com.linecorp.kotlinjdsl.query.clause.where.CriteriaQueryWhereClause
 
-interface CriteriaDeleteQuerySpec<T> {
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
+interface CriteriaDeleteQuerySpec<T, Q> {
     val targetEntity: Class<T>
     val from: FromClause
     val associate: SimpleAssociatedJoinClause
     val where: CriteriaQueryWhereClause
-    val jpaHint: JpaQueryHintClause
-    val sqlHint: SqlQueryHintClause
+    val jpaHint: JpaQueryHintClause<Q>
+    val sqlHint: SqlQueryHintClause<Q>
 }

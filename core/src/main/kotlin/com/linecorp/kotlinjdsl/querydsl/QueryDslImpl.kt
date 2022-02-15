@@ -36,6 +36,7 @@ import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.from.Relation
 import com.linecorp.kotlinjdsl.querydsl.hint.SqlQueryHintClauseProvider
+import javax.persistence.Query
 import javax.persistence.criteria.JoinType
 
 /**
@@ -148,7 +149,7 @@ open class QueryDslImpl<T>(
         params[column] = value
     }
 
-    fun createCriteriaQuerySpec(): CriteriaQuerySpec<T> {
+    fun createCriteriaQuerySpec(): CriteriaQuerySpec<T, Query> {
         return CriteriaQuerySpecImpl(
             select = getCriteriaQuerySelectClause(),
             from = getFromClause(),
@@ -163,7 +164,7 @@ open class QueryDslImpl<T>(
         )
     }
 
-    fun createCriteriaUpdateQuerySpec(): CriteriaUpdateQuerySpec<T> {
+    fun createCriteriaUpdateQuerySpec(): CriteriaUpdateQuerySpec<T, Query> {
         return CriteriaUpdateQuerySpecImpl(
             targetEntity = returnType,
             from = getFromClause(),
@@ -175,7 +176,7 @@ open class QueryDslImpl<T>(
         )
     }
 
-    fun createCriteriaDeleteQuerySpec(): CriteriaDeleteQuerySpec<T> {
+    fun createCriteriaDeleteQuerySpec(): CriteriaDeleteQuerySpec<T, Query> {
         return CriteriaDeleteQuerySpecImpl(
             targetEntity = returnType,
             from = getFromClause(),
@@ -269,19 +270,19 @@ open class QueryDslImpl<T>(
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    protected fun getLimitClause(): QueryLimitClause {
+    protected fun getLimitClause(): QueryLimitClause<Query> {
         return LimitClause(offset, maxResults)
     }
 
-    protected fun getEmptyLimitClause(): QueryLimitClause {
+    protected fun getEmptyLimitClause(): QueryLimitClause<Query> {
         return LimitClause.empty
     }
 
-    protected fun getJpaQueryHintClause(): JpaQueryHintClause {
+    protected fun getJpaQueryHintClause(): JpaQueryHintClause<Query> {
         return JpaQueryHintClauseImpl(jpaHints)
     }
 
-    protected fun getSqlQueryHintClause(): SqlQueryHintClause {
+    protected fun getSqlQueryHintClause(): SqlQueryHintClause<Query> {
         return SqlQueryHintClauseProvider.provide(sqlHints)
     }
 
@@ -301,7 +302,7 @@ open class QueryDslImpl<T>(
         }
     }
 
-    data class CriteriaQuerySpecImpl<T>(
+    data class CriteriaQuerySpecImpl<T, Q>(
         override val select: CriteriaQuerySelectClause<T>,
         override val from: FromClause,
         override val join: JoinClause,
@@ -309,29 +310,29 @@ open class QueryDslImpl<T>(
         override val groupBy: CriteriaQueryGroupByClause,
         override val having: CriteriaQueryHavingClause,
         override val orderBy: CriteriaQueryOrderByClause,
-        override val limit: QueryLimitClause,
-        override val jpaHint: JpaQueryHintClause,
-        override val sqlHint: SqlQueryHintClause,
-    ) : CriteriaQuerySpec<T>
+        override val limit: QueryLimitClause<Q>,
+        override val jpaHint: JpaQueryHintClause<Q>,
+        override val sqlHint: SqlQueryHintClause<Q>,
+    ) : CriteriaQuerySpec<T, Q>
 
-    data class CriteriaUpdateQuerySpecImpl<T>(
+    data class CriteriaUpdateQuerySpecImpl<T, Q>(
         override val targetEntity: Class<T>,
         override val from: FromClause,
         override val associate: SimpleAssociatedJoinClause,
         override val where: CriteriaQueryWhereClause,
-        override val jpaHint: JpaQueryHintClause,
-        override val sqlHint: SqlQueryHintClause,
+        override val jpaHint: JpaQueryHintClause<Q>,
+        override val sqlHint: SqlQueryHintClause<Q>,
         override val set: SetClause
-    ) : CriteriaUpdateQuerySpec<T>
+    ) : CriteriaUpdateQuerySpec<T, Q>
 
-    data class CriteriaDeleteQuerySpecImpl<T>(
+    data class CriteriaDeleteQuerySpecImpl<T, Q>(
         override val targetEntity: Class<T>,
         override val from: FromClause,
         override val associate: SimpleAssociatedJoinClause,
         override val where: CriteriaQueryWhereClause,
-        override val jpaHint: JpaQueryHintClause,
-        override val sqlHint: SqlQueryHintClause
-    ) : CriteriaDeleteQuerySpec<T>
+        override val jpaHint: JpaQueryHintClause<Q>,
+        override val sqlHint: SqlQueryHintClause<Q>
+    ) : CriteriaDeleteQuerySpec<T, Q>
 
     data class SubquerySpecImpl<T>(
         override val select: SubquerySelectClause<T>,

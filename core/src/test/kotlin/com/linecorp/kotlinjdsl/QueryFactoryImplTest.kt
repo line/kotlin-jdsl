@@ -50,7 +50,7 @@ internal class QueryFactoryImplTest : WithKotlinJdslAssertions {
         // given
         val typedQuery: TypedQuery<Data1> = mockk()
 
-        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaQuerySpecImpl<Data1>>()) } returns typedQuery
+        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaQuerySpecImpl<Data1, Query>>()) } returns typedQuery
 
         // when
         val actual = sut.typedQuery(Data1::class.java) {
@@ -96,7 +96,7 @@ internal class QueryFactoryImplTest : WithKotlinJdslAssertions {
         // given
         val query: Query = mockk()
 
-        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaUpdateQuerySpecImpl<Data1>>()) } returns query
+        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaUpdateQuerySpecImpl<Data1, Query>>()) } returns query
 
         // when
         val actual = sut.updateQuery(Data1::class) {
@@ -130,7 +130,7 @@ internal class QueryFactoryImplTest : WithKotlinJdslAssertions {
         // given
         val query: Query = mockk()
 
-        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaDeleteQuerySpecImpl<Data1>>()) } returns query
+        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaDeleteQuerySpecImpl<Data1, Query>>()) } returns query
 
         // when
         val actual = sut.deleteQuery(Data1::class) {

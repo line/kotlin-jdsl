@@ -5,7 +5,7 @@ import javax.persistence.Query
 data class LimitClause(
     val offset: Int?,
     val maxResults: Int?,
-) : QueryLimitClause {
+) : QueryLimitClause<Query> {
     companion object {
         val empty = LimitClause(null, null)
     }

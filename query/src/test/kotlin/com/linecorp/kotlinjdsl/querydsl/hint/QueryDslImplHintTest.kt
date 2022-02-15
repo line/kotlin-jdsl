@@ -18,7 +18,7 @@ internal class QueryDslImplHintTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.jpaHint).isEqualTo(
-            JpaQueryHintClauseImpl(emptyMap())
+            com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClauseImpl(emptyMap())
         )
     }
 
@@ -35,7 +35,7 @@ internal class QueryDslImplHintTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.jpaHint).isEqualTo(
-            JpaQueryHintClauseImpl(
+            com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClauseImpl(
                 mapOf(
                     "hint1" to true,
                     "hint2" to "comment"
@@ -57,7 +57,7 @@ internal class QueryDslImplHintTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.jpaHint).isEqualTo(
-            JpaQueryHintClauseImpl(
+            com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClauseImpl(
                 mapOf(
                     "hint1" to true,
                     "hint2" to "comment"
