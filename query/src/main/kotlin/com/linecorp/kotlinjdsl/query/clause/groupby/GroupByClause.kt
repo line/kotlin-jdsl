@@ -7,6 +7,11 @@ import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Subquery
 
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
 data class GroupByClause(
     val expressions: List<ExpressionSpec<*>>,
 ) : CriteriaQueryGroupByClause, SubqueryGroupByClause {

@@ -6,6 +6,11 @@ import javax.persistence.criteria.AbstractQuery
 import javax.persistence.criteria.CriteriaDelete
 import javax.persistence.criteria.CriteriaUpdate
 
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
 data class FromClause(
     val entity: EntitySpec<*>,
 ) {

@@ -5,6 +5,11 @@ import com.linecorp.kotlinjdsl.query.spec.OrderSpec
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
 data class OrderByClause(
     val orders: List<OrderSpec>,
 ) : CriteriaQueryOrderByClause {

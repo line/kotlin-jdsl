@@ -12,7 +12,7 @@ import javax.persistence.criteria.CriteriaUpdate
 class CriteriaQueryCreatorImpl(
     private val em: EntityManager,
 ) : CriteriaQueryCreator {
-    override fun <T> createQuery(spec: CriteriaQuerySpec<T>): TypedQuery<T> {
+    override fun <T> createQuery(spec: CriteriaQuerySpec<T, Query>): TypedQuery<T> {
         val criteriaBuilder = em.criteriaBuilder
         val query = criteriaBuilder.createQuery(spec.select.returnType)
         val froms = spec.from.join(spec.join, query)
@@ -31,7 +31,7 @@ class CriteriaQueryCreatorImpl(
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> createQuery(spec: CriteriaUpdateQuerySpec<T>): Query {
+    override fun <T> createQuery(spec: CriteriaUpdateQuerySpec<T, Query>): Query {
         val criteriaBuilder = em.criteriaBuilder
         val query = criteriaBuilder.createCriteriaUpdate(spec.targetEntity) as CriteriaUpdate<Any>
         val froms = spec.from.associate(spec.associate, query, spec.targetEntity)
@@ -46,7 +46,7 @@ class CriteriaQueryCreatorImpl(
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> createQuery(spec: CriteriaDeleteQuerySpec<T>): Query {
+    override fun <T> createQuery(spec: CriteriaDeleteQuerySpec<T, Query>): Query {
         val criteriaBuilder = em.criteriaBuilder
         val query = criteriaBuilder.createCriteriaDelete(spec.targetEntity) as CriteriaDelete<Any>
         val froms = spec.from.associate(spec.associate, query, spec.targetEntity)

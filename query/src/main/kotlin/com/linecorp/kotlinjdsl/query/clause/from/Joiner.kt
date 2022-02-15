@@ -5,6 +5,11 @@ import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import java.util.*
 import javax.persistence.criteria.*
 
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
 class Joiner(
     fromEntity: EntitySpec<*>,
     joins: Collection<JoinSpec<*>>,

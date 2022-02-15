@@ -4,6 +4,11 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import javax.persistence.criteria.*
 
+/**
+ * Internal Only
+ * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * It does not support backward compatibility.
+ */
 data class WhereClause(
     val predicate: PredicateSpec
 ) : CriteriaQueryWhereClause, SubqueryWhereClause {

@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.query.creator.SubqueryCreatorImpl
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactoryImpl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
-import com.linecorp.kotlinjdsl.spring.data.typedQuery
+import com.linecorp.kotlinjdsl.spring.data.selectQuery
 import org.springframework.batch.item.database.orm.JpaQueryProvider
 import javax.persistence.EntityManager
 import javax.persistence.Query
@@ -17,7 +17,7 @@ class KotlinJdslQueryProvider(
         inline fun <reified T> typedQuery(
             noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
         ): KotlinJdslQueryProvider {
-            return KotlinJdslQueryProvider { it.typedQuery(dsl) }
+            return KotlinJdslQueryProvider { it.selectQuery(dsl) }
         }
     }
 
