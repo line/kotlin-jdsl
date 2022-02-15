@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.querydsl.hint
 
+import com.linecorp.kotlinjdsl.query.clause.hint.EmptySqlQueryHintClause
 import com.linecorp.kotlinjdsl.query.clause.hint.SqlQueryHintClause
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -26,7 +27,7 @@ object SqlQueryHintClauseProvider {
     val provide: (List<String>) -> SqlQueryHintClause<Query>
 
     init {
-        val factory = SqlQueryHintClauseFactoryProvider.loadedFactory ?: { com.linecorp.kotlinjdsl.query.clause.hint.EmptySqlQueryHintClause }
+        val factory = SqlQueryHintClauseFactoryProvider.loadedFactory ?: { EmptySqlQueryHintClause }
         provide = { factory.invoke(it) }
     }
 }
