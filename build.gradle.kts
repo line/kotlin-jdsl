@@ -30,8 +30,9 @@ subprojects {
 
     apply<LocalPropertiesPlugin>()
 
-    java.sourceCompatibility = JavaVersion.VERSION_1_8
-    java.targetCompatibility = JavaVersion.VERSION_1_8
+    val javaVersion = if (name.contains("hibernate-reactive")) JavaVersion.VERSION_11 else JavaVersion.VERSION_1_8
+    java.sourceCompatibility = javaVersion
+    java.targetCompatibility = javaVersion
 
     dependencies {
         implementation(Dependencies.koltin)
