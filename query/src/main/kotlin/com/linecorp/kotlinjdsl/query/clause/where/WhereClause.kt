@@ -12,17 +12,17 @@ import javax.persistence.criteria.*
 data class WhereClause(
     val predicate: PredicateSpec
 ) : CriteriaQueryWhereClause, SubqueryWhereClause {
-    override fun apply(froms: Froms, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder) {
+    override fun <T> apply(froms: Froms, query: CriteriaQuery<T>, criteriaBuilder: CriteriaBuilder) {
         applyInternally(froms, query, criteriaBuilder)
     }
 
-    override fun apply(froms: Froms, query: CriteriaUpdate<*>, criteriaBuilder: CriteriaBuilder) {
+    override fun <T> apply(froms: Froms, query: CriteriaUpdate<T>, criteriaBuilder: CriteriaBuilder) {
         if (predicate.isEmpty()) return
 
         query.where(predicate.toCriteriaPredicate(froms, query, criteriaBuilder))
     }
 
-    override fun apply(froms: Froms, query: CriteriaDelete<*>, criteriaBuilder: CriteriaBuilder) {
+    override fun <T> apply(froms: Froms, query: CriteriaDelete<T>, criteriaBuilder: CriteriaBuilder) {
         if (predicate.isEmpty()) return
 
         query.where(predicate.toCriteriaPredicate(froms, query, criteriaBuilder))

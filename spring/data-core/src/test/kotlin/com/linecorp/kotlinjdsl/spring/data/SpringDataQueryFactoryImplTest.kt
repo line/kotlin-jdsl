@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.query.clause.groupby.GroupByClause
 import com.linecorp.kotlinjdsl.query.clause.having.HavingClause
 import com.linecorp.kotlinjdsl.query.clause.hint.EmptySqlQueryHintClause
 import com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClauseImpl
+import com.linecorp.kotlinjdsl.query.clause.hint.emptySqlHintClause
 import com.linecorp.kotlinjdsl.query.clause.limit.LimitClause
 import com.linecorp.kotlinjdsl.query.clause.orderby.OrderByClause
 import com.linecorp.kotlinjdsl.query.clause.select.CountSingleSelectClause
@@ -57,7 +58,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
         // given
         val typedQuery: TypedQuery<Data1> = mockk()
 
-        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaQuerySpecImpl<Data1, Query>>()) } returns typedQuery
+        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaQuerySpecImpl<Data1>>()) } returns typedQuery
 
         // when
         val actual = sut.selectQuery(Data1::class.java) {
@@ -65,6 +66,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             from(entity(Data1::class))
         }
 
+        @Suppress("DEPRECATION")
         val actualTypedQuery = sut.typedQuery(Data1::class.java) {
             select(entity(Data1::class))
             from(entity(Data1::class))
@@ -88,9 +90,9 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
                     groupBy = GroupByClause(emptyList()),
                     having = HavingClause(PredicateSpec.empty),
                     orderBy = OrderByClause(emptyList()),
-                    limit = LimitClause.empty,
+                    limit = LimitClause.empty(),
                     jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-                    sqlHint = EmptySqlQueryHintClause,
+                    sqlHint = emptySqlHintClause(),
                 )
             )
         }
@@ -208,7 +210,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             orderBy = SpringDataPageableOrderByClause(pageable),
             limit = SpringDataPageableLimitClause(pageable),
             jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-            sqlHint = EmptySqlQueryHintClause,
+            sqlHint = emptySqlHintClause(),
         )
 
         val expectedPageableCountSpec = QueryDslImpl.CriteriaQuerySpecImpl(
@@ -222,9 +224,9 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             groupBy = GroupByClause(emptyList()),
             having = HavingClause(PredicateSpec.empty),
             orderBy = OrderByClause(emptyList()),
-            limit = LimitClause.empty,
+            limit = LimitClause.empty(),
             jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-            sqlHint = EmptySqlQueryHintClause,
+            sqlHint = emptySqlHintClause(),
         )
 
         val pageableQuery: TypedQuery<Data1> = mockk {
@@ -277,7 +279,7 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             orderBy = SpringDataPageableOrderByClause(pageable),
             limit = SpringDataPageableLimitClause(pageable),
             jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-            sqlHint = EmptySqlQueryHintClause,
+            sqlHint = emptySqlHintClause(),
         )
 
         val expectedPageableCountSpec = QueryDslImpl.CriteriaQuerySpecImpl(
@@ -295,9 +297,9 @@ internal class SpringDataQueryFactoryImplTest : WithKotlinJdslAssertions {
             groupBy = GroupByClause(emptyList()),
             having = HavingClause(PredicateSpec.empty),
             orderBy = OrderByClause(emptyList()),
-            limit = LimitClause.empty,
+            limit = LimitClause.empty(),
             jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-            sqlHint = EmptySqlQueryHintClause,
+            sqlHint = emptySqlHintClause(),
         )
 
         val pageableQuery: TypedQuery<Data1> = mockk {

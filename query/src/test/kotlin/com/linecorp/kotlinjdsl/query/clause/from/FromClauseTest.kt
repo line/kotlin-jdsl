@@ -114,7 +114,6 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
         confirmVerified(root, query)
     }
 
-    @Suppress("UNCHECKED_CAST")
     @Test
     fun associate() {
         // given
@@ -135,8 +134,8 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
         every { join1.get<Any>(joinSpec2.path) } returns join2
 
         // when
-        val actual = fromClause.associate(joinClause, updateQuery as CriteriaUpdate<in Any>, Data1::class.java)
-        val deleteActual = fromClause.associate(joinClause, deleteQuery as CriteriaDelete<in Any>, Data1::class.java)
+        val actual = fromClause.associate(joinClause, updateQuery)
+        val deleteActual = fromClause.associate(joinClause, deleteQuery)
 
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(
@@ -179,7 +178,6 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
         confirmVerified(root, join1, join2, updateQuery, deleteQuery)
     }
 
-    @Suppress("UNCHECKED_CAST")
     @Test
     fun `associate - if associate is incomplete then throw exception`() {
         // given
@@ -196,11 +194,11 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
 
         // when
         val exception = catchThrowable(IllegalStateException::class) {
-            fromClause.associate(joinClause, updateQuery as CriteriaUpdate<in Any>, Data1::class.java)
+            fromClause.associate(joinClause, updateQuery)
         }
 
         val deleteException = catchThrowable(IllegalStateException::class) {
-            fromClause.associate(joinClause, deleteQuery as CriteriaDelete<in Any>, Data1::class.java)
+            fromClause.associate(joinClause, deleteQuery)
         }
 
         // then

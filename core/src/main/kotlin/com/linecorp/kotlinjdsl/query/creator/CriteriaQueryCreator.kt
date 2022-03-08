@@ -6,8 +6,8 @@ import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import javax.persistence.Query
 import javax.persistence.TypedQuery
 
-interface CriteriaQueryCreator {
-    fun <T> createQuery(spec: CriteriaQuerySpec<T, Query>): TypedQuery<T>
+interface CriteriaQueryCreator : JpaCriteriaQueryBuilder {
+    fun <T> createQuery(spec: CriteriaQuerySpec<T, TypedQuery<T>>): TypedQuery<T>
     fun <T> createQuery(spec: CriteriaUpdateQuerySpec<T, Query>): Query
     fun <T> createQuery(spec: CriteriaDeleteQuerySpec<T, Query>): Query
 }

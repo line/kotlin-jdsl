@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClauseImpl
 import com.linecorp.kotlinjdsl.querydsl.QueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
+import javax.persistence.Query
 
 internal class QueryDslImplHintTest : WithKotlinJdslAssertions {
     @Test
@@ -18,7 +19,7 @@ internal class QueryDslImplHintTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.jpaHint).isEqualTo(
-            JpaQueryHintClauseImpl(emptyMap())
+            JpaQueryHintClauseImpl<Query>(emptyMap())
         )
     }
 
@@ -35,7 +36,7 @@ internal class QueryDslImplHintTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.jpaHint).isEqualTo(
-            JpaQueryHintClauseImpl(
+            JpaQueryHintClauseImpl<Query>(
                 mapOf(
                     "hint1" to true,
                     "hint2" to "comment"
@@ -57,7 +58,7 @@ internal class QueryDslImplHintTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.jpaHint).isEqualTo(
-            JpaQueryHintClauseImpl(
+            JpaQueryHintClauseImpl<Query>(
                 mapOf(
                     "hint1" to true,
                     "hint2" to "comment"

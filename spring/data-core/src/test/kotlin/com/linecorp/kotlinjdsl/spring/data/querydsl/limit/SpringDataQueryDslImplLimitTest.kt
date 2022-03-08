@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import javax.persistence.Query
 
 internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
     @Test
@@ -21,13 +22,13 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = null, maxResults = null)
+            LimitClause<Query>(offset = null, maxResults = null)
         )
 
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause(Pageable.unpaged())
+            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -50,13 +51,13 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = 10, maxResults = null)
+            LimitClause<Query>(offset = 10, maxResults = null)
         )
 
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause(Pageable.unpaged())
+            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -79,13 +80,13 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = null, maxResults = 10)
+            LimitClause<Query>(offset = null, maxResults = 10)
         )
 
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause(Pageable.unpaged())
+            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -108,13 +109,13 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = null, maxResults = 10)
+            LimitClause<Query>(offset = null, maxResults = 10)
         )
 
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause(Pageable.unpaged())
+            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -137,13 +138,13 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = 1, maxResults = 10)
+            LimitClause<Query>(offset = 1, maxResults = 10)
         )
 
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause(Pageable.unpaged())
+            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -175,7 +176,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause(pageable)
+            SpringDataPageableLimitClause<Query>(pageable)
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()

@@ -12,7 +12,7 @@ import javax.persistence.criteria.CriteriaUpdate
  * It does not support backward compatibility.
  */
 interface CriteriaQueryWhereClause {
-    fun apply(froms: Froms, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder)
-    fun apply(froms: Froms, query: CriteriaUpdate<*>, criteriaBuilder: CriteriaBuilder)
-    fun apply(froms: Froms, query: CriteriaDelete<*>, criteriaBuilder: CriteriaBuilder)
+    fun <T> apply(froms: Froms, query: CriteriaQuery<T>, criteriaBuilder: CriteriaBuilder)
+    fun <T> apply(froms: Froms, query: CriteriaUpdate<T>, criteriaBuilder: CriteriaBuilder)
+    fun <T> apply(froms: Froms, query: CriteriaDelete<T>, criteriaBuilder: CriteriaBuilder)
 }

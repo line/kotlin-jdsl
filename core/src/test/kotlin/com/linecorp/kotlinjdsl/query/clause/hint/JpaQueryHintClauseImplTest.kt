@@ -26,7 +26,7 @@ internal class JpaQueryHintClauseImplTest : WithKotlinJdslAssertions {
         every { query.setHint(any(), any()) } returns query
 
         // when
-        JpaQueryHintClauseImpl(hints).apply(query)
+        JpaQueryHintClauseImpl<Query>(hints).apply(query)
 
         // then
         verify(exactly = 1) {

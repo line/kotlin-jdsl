@@ -47,16 +47,16 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
     fun createQuery() {
         data class TestCriteriaQuerySpec<T>(
             override val select: CriteriaQuerySelectClause<T>,
-            override val from: FromClause,
+            override val from: FromClause<*>,
             override val join: JoinClause,
             override val where: CriteriaQueryWhereClause,
             override val groupBy: CriteriaQueryGroupByClause,
             override val having: CriteriaQueryHavingClause,
             override val orderBy: CriteriaQueryOrderByClause,
-            override val limit: QueryLimitClause<Query>,
-            override val jpaHint: JpaQueryHintClause<Query>,
-            override val sqlHint: SqlQueryHintClause<Query>,
-        ) : CriteriaQuerySpec<T, Query>
+            override val limit: QueryLimitClause<TypedQuery<T>>,
+            override val jpaHint: JpaQueryHintClause<TypedQuery<T>>,
+            override val sqlHint: SqlQueryHintClause<TypedQuery<T>>,
+        ) : CriteriaQuerySpec<T, TypedQuery<T>>
         // given
         val createdQuery: CriteriaQuery<Int> = mockk()
         val typedQuery: TypedQuery<Int> = mockk()
@@ -64,17 +64,17 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         val select: CriteriaQuerySelectClause<Int> = mockk {
             every { returnType } returns Int::class.java
         }
-        val from: FromClause = mockk()
+        val from: FromClause<*> = mockk()
         val join: JoinClause = mockk()
         val where: CriteriaQueryWhereClause = mockk()
         val groupBy: CriteriaQueryGroupByClause = mockk()
         val having: CriteriaQueryHavingClause = mockk()
         val orderBy: CriteriaQueryOrderByClause = mockk()
-        val limit: QueryLimitClause<Query> = mockk()
-        val jpaHint: JpaQueryHintClause<Query> = mockk()
-        val sqlHint: SqlQueryHintClause<Query> = mockk()
+        val limit: QueryLimitClause<TypedQuery<Int>> = mockk()
+        val jpaHint: JpaQueryHintClause<TypedQuery<Int>> = mockk()
+        val sqlHint: SqlQueryHintClause<TypedQuery<Int>> = mockk()
 
-        val spec: CriteriaQuerySpec<Int, Query> = TestCriteriaQuerySpec(
+        val spec: CriteriaQuerySpec<Int, TypedQuery<Int>> = TestCriteriaQuerySpec(
             from = from,
             join = join,
             where = where,
@@ -130,12 +130,11 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         )
     }
 
-    @Suppress("UNCHECKED_CAST")
     @Test
     fun createUpdateQuery() {
         data class TestCriteriaUpdateQuerySpec<T>(
             override val targetEntity: Class<T>,
-            override val from: FromClause,
+            override val from: FromClause<T>,
             override val associate: SimpleAssociatedJoinClause,
             override val where: CriteriaQueryWhereClause,
             override val jpaHint: JpaQueryHintClause<Query>,
@@ -146,7 +145,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         val createdQuery: CriteriaUpdate<Int> = mockk()
         val query: Query = mockk()
 
-        val from: FromClause = mockk()
+        val from: FromClause<Int> = mockk()
         val associate = SimpleAssociatedJoinClause(emptyList())
         val where: CriteriaQueryWhereClause = mockk()
         val jpaHint: JpaQueryHintClause<Query> = mockk()
@@ -169,7 +168,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         every { em.criteriaBuilder } returns criteriaBuilder
         every { em.createQuery(createdQuery) } returns query
         every { criteriaBuilder.createCriteriaUpdate(Int::class.java) } returns createdQuery
-        every { from.associate(associate, createdQuery as CriteriaUpdate<in Any>, Int::class.java) } returns froms
+        every { from.associate(associate, createdQuery) } returns froms
         every { where.apply(froms, createdQuery, criteriaBuilder) } just runs
         every { jpaHint.apply(query) } just runs
         every { sqlHint.apply(query) } just runs
@@ -185,7 +184,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
             em.criteriaBuilder
             em.createQuery(createdQuery)
             criteriaBuilder.createCriteriaUpdate(Int::class.java)
-            from.associate(associate, createdQuery as CriteriaUpdate<in Any>, Int::class.java)
+            from.associate(associate, createdQuery)
             where.apply(froms, createdQuery, criteriaBuilder)
             set.apply(froms, createdQuery, criteriaBuilder)
             jpaHint.apply(query)
@@ -200,12 +199,11 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         )
     }
 
-    @Suppress("UNCHECKED_CAST")
     @Test
     fun createDeleteQuery() {
         data class TestCriteriaDeleteQuerySpec<T>(
             override val targetEntity: Class<T>,
-            override val from: FromClause,
+            override val from: FromClause<T>,
             override val associate: SimpleAssociatedJoinClause,
             override val where: CriteriaQueryWhereClause,
             override val jpaHint: JpaQueryHintClause<Query>,
@@ -215,7 +213,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         val createdQuery: CriteriaDelete<Int> = mockk()
         val query: Query = mockk()
 
-        val from: FromClause = mockk()
+        val from: FromClause<Int> = mockk()
         val associate = SimpleAssociatedJoinClause(emptyList())
         val where: CriteriaQueryWhereClause = mockk()
         val jpaHint: JpaQueryHintClause<Query> = mockk()
@@ -234,7 +232,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
         every { em.criteriaBuilder } returns criteriaBuilder
         every { em.createQuery(createdQuery) } returns query
         every { criteriaBuilder.createCriteriaDelete(Int::class.java) } returns createdQuery
-        every { from.associate(associate, createdQuery as CriteriaDelete<in Any>, Int::class.java) } returns froms
+        every { from.associate(associate, createdQuery) } returns froms
         every { where.apply(froms, createdQuery, criteriaBuilder) } just runs
         every { jpaHint.apply(query) } just runs
         every { sqlHint.apply(query) } just runs
@@ -249,7 +247,7 @@ internal class CriteriaQueryCreatorImplTest : WithKotlinJdslAssertions {
             em.criteriaBuilder
             em.createQuery(createdQuery)
             criteriaBuilder.createCriteriaDelete(Int::class.java)
-            from.associate(associate, createdQuery as CriteriaDelete<in Any>, Int::class.java)
+            from.associate(associate, createdQuery)
             where.apply(froms, createdQuery, criteriaBuilder)
             jpaHint.apply(query)
             sqlHint.apply(query)

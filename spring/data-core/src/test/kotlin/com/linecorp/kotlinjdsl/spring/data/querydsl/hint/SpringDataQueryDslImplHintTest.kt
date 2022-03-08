@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClauseImpl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
+import javax.persistence.Query
 
 internal class SpringDataQueryDslImplHintTest : WithKotlinJdslAssertions {
     @Test
@@ -18,19 +19,19 @@ internal class SpringDataQueryDslImplHintTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.jpaHint).isEqualTo(
-            JpaQueryHintClauseImpl(emptyMap())
+            JpaQueryHintClauseImpl<Query>(emptyMap())
         )
 
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.jpaHint).isEqualTo(
-            JpaQueryHintClauseImpl(emptyMap())
+            JpaQueryHintClauseImpl<Query>(emptyMap())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
 
         assertThat(pageableCountQuerySpec.jpaHint).isEqualTo(
-            JpaQueryHintClauseImpl(emptyMap())
+            JpaQueryHintClauseImpl<Query>(emptyMap())
         )
     }
 
@@ -44,7 +45,7 @@ internal class SpringDataQueryDslImplHintTest : WithKotlinJdslAssertions {
         }
 
         // then
-        val hintClause = JpaQueryHintClauseImpl(
+        val hintClause = JpaQueryHintClauseImpl<Query>(
             mapOf(
                 "hint1" to true,
                 "hint2" to "comment"
@@ -80,7 +81,7 @@ internal class SpringDataQueryDslImplHintTest : WithKotlinJdslAssertions {
         }
 
         // then
-        val hintClause = JpaQueryHintClauseImpl(
+        val hintClause = JpaQueryHintClauseImpl<Query>(
             mapOf(
                 "hint1" to true,
                 "hint2" to "comment"

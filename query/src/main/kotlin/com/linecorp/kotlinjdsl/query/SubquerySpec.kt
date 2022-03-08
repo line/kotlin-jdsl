@@ -14,7 +14,7 @@ import com.linecorp.kotlinjdsl.query.clause.where.SubqueryWhereClause
  */
 interface SubquerySpec<T> {
     val select: SubquerySelectClause<T>
-    val from: FromClause
+    val from: FromClause<*>
     val join: JoinClause
     val where: SubqueryWhereClause
     val groupBy: SubqueryGroupByClause

@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.query.clause.groupby.GroupByClause
 import com.linecorp.kotlinjdsl.query.clause.having.HavingClause
 import com.linecorp.kotlinjdsl.query.clause.hint.EmptySqlQueryHintClause
 import com.linecorp.kotlinjdsl.query.clause.hint.JpaQueryHintClauseImpl
+import com.linecorp.kotlinjdsl.query.clause.hint.emptySqlHintClause
 import com.linecorp.kotlinjdsl.query.clause.limit.LimitClause
 import com.linecorp.kotlinjdsl.query.clause.orderby.OrderByClause
 import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
@@ -50,22 +51,23 @@ internal class QueryFactoryImplTest : WithKotlinJdslAssertions {
         // given
         val typedQuery: TypedQuery<Data1> = mockk()
 
-        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaQuerySpecImpl<Data1, Query>>()) } returns typedQuery
+        every { criteriaQueryCreator.createQuery(any<QueryDslImpl.CriteriaQuerySpecImpl<Data1>>()) } returns typedQuery
 
         // when
-        val actual = sut.typedQuery(Data1::class.java) {
+
+        val actual = sut.selectQuery(Data1::class.java) {
             select(entity(Data1::class))
             from(entity(Data1::class))
         }
 
-        val actualSelectQuery = sut.selectQuery(Data1::class.java) {
+        @Suppress("DEPRECATION")
+        val actualTypedQuery = sut.typedQuery(Data1::class.java) {
             select(entity(Data1::class))
             from(entity(Data1::class))
         }
-
         // then
         assertThat(actual).isEqualTo(typedQuery)
-        assertThat(actualSelectQuery).isEqualTo(typedQuery)
+        assertThat(actualTypedQuery).isEqualTo(typedQuery)
 
         verify(exactly = 2) {
             criteriaQueryCreator.createQuery(
@@ -81,9 +83,9 @@ internal class QueryFactoryImplTest : WithKotlinJdslAssertions {
                     groupBy = GroupByClause(emptyList()),
                     having = HavingClause(PredicateSpec.empty),
                     orderBy = OrderByClause(emptyList()),
-                    limit = LimitClause.empty,
+                    limit = LimitClause.empty(),
                     jpaHint = JpaQueryHintClauseImpl(emptyMap()),
-                    sqlHint = EmptySqlQueryHintClause,
+                    sqlHint = emptySqlHintClause(),
                 )
             )
         }

@@ -14,7 +14,7 @@ import com.linecorp.kotlinjdsl.query.clause.where.CriteriaQueryWhereClause
  */
 interface CriteriaUpdateQuerySpec<T, Q> {
     val targetEntity: Class<T>
-    val from: FromClause
+    val from: FromClause<T>
     val associate: SimpleAssociatedJoinClause
     val where: CriteriaQueryWhereClause
     val jpaHint: JpaQueryHintClause<Q>

@@ -25,7 +25,7 @@ internal class LimitClauseTest : WithKotlinJdslAssertions {
         every { query.setMaxResults(20) } returns query
 
         // when
-        LimitClause(offset, maxResults).apply(query)
+        LimitClause<Query>(offset, maxResults).apply(query)
 
         // then
         verify(exactly = 1) {
@@ -43,7 +43,7 @@ internal class LimitClauseTest : WithKotlinJdslAssertions {
         val maxResults: Int? = null
 
         // when
-        LimitClause(offset, maxResults).apply(query)
+        LimitClause<Query>(offset, maxResults).apply(query)
 
         // then
         confirmVerified(query)

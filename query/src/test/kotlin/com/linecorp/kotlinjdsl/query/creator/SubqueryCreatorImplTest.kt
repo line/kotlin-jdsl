@@ -38,9 +38,9 @@ internal class SubqueryCreatorImplTest : WithAssertions {
     @MockK
     private lateinit var subquery: Subquery<Int>
 
-    data class TestSubquerySpec<T>(
+    data class TestSubquerySpec<T: Any>(
         override val select: SubquerySelectClause<T>,
-        override val from: FromClause,
+        override val from: FromClause<T>,
         override val join: JoinClause,
         override val where: SubqueryWhereClause,
         override val groupBy: SubqueryGroupByClause,
@@ -58,7 +58,7 @@ internal class SubqueryCreatorImplTest : WithAssertions {
         val select: SubquerySelectClause<Int> = mockk {
             every { returnType } returns Int::class.java
         }
-        val from: FromClause = mockk()
+        val from: FromClause<Int> = mockk()
         val join: JoinClause = mockk()
         val where: SubqueryWhereClause = mockk()
         val groupBy: SubqueryGroupByClause = mockk()
@@ -117,7 +117,7 @@ internal class SubqueryCreatorImplTest : WithAssertions {
         val select: SubquerySelectClause<Int> = mockk {
             every { returnType } returns Int::class.java
         }
-        val from: FromClause = mockk()
+        val from: FromClause<Int> = mockk()
         val join: JoinClause = mockk()
         val where: SubqueryWhereClause = mockk()
         val groupBy: SubqueryGroupByClause = mockk()

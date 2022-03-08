@@ -22,7 +22,7 @@ import javax.persistence.EntityManager
 
 @DataJpaTest
 @EntityScan(basePackages = ["com.linecorp.kotlinjdsl.test.entity"])
-internal open class SpringDataQueryFactoryIntegrationTest : EntityDsl(), WithKotlinJdslAssertions {
+internal class SpringDataQueryFactoryIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
     @Autowired
     private lateinit var entityManager: EntityManager
 

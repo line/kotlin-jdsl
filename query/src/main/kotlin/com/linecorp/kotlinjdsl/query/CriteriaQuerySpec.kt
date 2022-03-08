@@ -18,7 +18,7 @@ import com.linecorp.kotlinjdsl.query.clause.where.CriteriaQueryWhereClause
  */
 interface CriteriaQuerySpec<T, Q> {
     val select: CriteriaQuerySelectClause<T>
-    val from: FromClause
+    val from: FromClause<*>
     val join: JoinClause
     val where: CriteriaQueryWhereClause
     val groupBy: CriteriaQueryGroupByClause
