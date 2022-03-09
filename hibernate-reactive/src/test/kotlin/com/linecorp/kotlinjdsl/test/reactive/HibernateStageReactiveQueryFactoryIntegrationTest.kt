@@ -21,7 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.util.concurrent.CompletionStage
 
 @ExtendWith(StageSessionFactoryExtension::class)
-internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
+internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
     private lateinit var sessionFactory: SessionFactory
 
     private lateinit var queryFactory: HibernateStageReactiveQueryFactory
