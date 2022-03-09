@@ -16,14 +16,14 @@ class HibernateStageReactiveQueryFactory(
     private val subqueryCreator: SubqueryCreator,
 ) {
     suspend fun <T> withFactory(block: (ReactiveQueryFactory) -> CompletionStage<T>): T =
-        sessionFactory.withSession { session -> executeWithFactory(session, block) }.await()
+        sessionFactory.withSession { session -> executeSessionWithFactory(session, block) }.await()
 
     suspend fun <T> transactionWithFactory(block: (ReactiveQueryFactory) -> CompletionStage<T>): T =
-        sessionFactory.withTransaction { session -> executeWithFactory(session, block) }.await()
+        sessionFactory.withTransaction { session -> executeSessionWithFactory(session, block) }.await()
 
     fun <T> subquery(classType: Class<T>, dsl: SubqueryDsl<T>.() -> Unit) = subquery(classType, subqueryCreator, dsl)
 
-    private fun <T> executeWithFactory(session: Stage.Session, block: (ReactiveQueryFactory) -> CompletionStage<T>) =
+    fun <T> executeSessionWithFactory(session: Stage.Session, block: (ReactiveQueryFactory) -> CompletionStage<T>) =
         with(
             ReactiveQueryFactoryImpl(
                 subqueryCreator = subqueryCreator,

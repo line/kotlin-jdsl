@@ -15,15 +15,15 @@ class SpringDataHibernateStageReactiveQueryFactory(
     private val subqueryCreator: SubqueryCreator
 ) {
     suspend fun <T> withFactory(block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>): T =
-        sessionFactory.withSession { session -> executeWithFactory(session, block) }.await()
+        sessionFactory.withSession { session -> executeSessionWithFactory(session, block) }.await()
 
     suspend fun <T> transactionWithFactory(block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>): T =
-        sessionFactory.withTransaction { session -> executeWithFactory(session, block) }.await()
+        sessionFactory.withTransaction { session -> executeSessionWithFactory(session, block) }.await()
 
     fun <T> subquery(classType: Class<T>, dsl: SubqueryDsl<T>.() -> Unit) =
         subquery(classType, subqueryCreator, dsl)
 
-    private fun <T> executeWithFactory(session: Stage.Session, block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>) =
+    fun <T> executeSessionWithFactory(session: Stage.Session, block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>) =
         with(
             SpringDataReactiveQueryFactoryImpl(
                 subqueryCreator = subqueryCreator,

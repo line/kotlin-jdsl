@@ -1,41 +1,30 @@
-package com.linecorp.kotlinjdsl.spring.data.reactive
+package com.linecorp.kotlinjdsl.test.reactive
 
-import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
+import com.linecorp.kotlinjdsl.listQuery
+import com.linecorp.kotlinjdsl.query.*
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreatorImpl
 import com.linecorp.kotlinjdsl.querydsl.expression.col
-import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.querydsl.from.associate
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
-import com.linecorp.kotlinjdsl.querydsl.where.WhereDsl
-import com.linecorp.kotlinjdsl.spring.data.reactive.query.*
-import com.linecorp.kotlinjdsl.spring.reactive.listQuery
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataCriteriaQueryDsl
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataPageableQueryDsl
-import com.linecorp.kotlinjdsl.spring.reactive.singleQuery
-import com.linecorp.kotlinjdsl.spring.reactive.updateQuery
+import com.linecorp.kotlinjdsl.singleQuery
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.EntityDsl
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
-import com.linecorp.kotlinjdsl.test.reactive.StageSessionFactoryExtension
+import com.linecorp.kotlinjdsl.updateQuery
 import kotlinx.coroutines.future.await
 import org.hibernate.reactive.stage.Stage.SessionFactory
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import java.util.concurrent.CompletionStage
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 @ExtendWith(StageSessionFactoryExtension::class)
 internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
     private lateinit var sessionFactory: SessionFactory
 
-    private lateinit var queryFactory: SpringDataHibernateStageReactiveQueryFactory
+    private lateinit var queryFactory: HibernateStageReactiveQueryFactory
 
     private val order1 = order { purchaserId = 1000 }
     private val order2 = order { purchaserId = 1000 }
@@ -44,7 +33,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
 
     @BeforeEach
     fun setUp() {
-        queryFactory = SpringDataHibernateStageReactiveQueryFactory(
+        queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = sessionFactory,
             subqueryCreator = SubqueryCreatorImpl()
         )
@@ -203,77 +192,5 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
         assertThat(actual)
             .isEmpty()
     }
-
-    @Test
-    fun pageQuery() = runBlocking {
-        // when
-        val actual = queryFactory.pageQuery<Long>(PageRequest.of(1, 2, Sort.by("id"))) {
-            select(col(Order::id))
-            from(entity(Order::class))
-            where(col(Order::purchaserId).equal(1000))
-        }
-
-        // then
-        assertThat(actual.content).isEqualTo(listOf(order3.id))
-
-        assertThat(actual.totalElements).isEqualTo(3)
-        assertThat(actual.totalPages).isEqualTo(2)
-        assertThat(actual.number).isEqualTo(1)
-    }
-
-    @Test
-    fun pageExtractWhereQuery() = runBlocking {
-        // given
-        val pageable = PageRequest.of(0, 10)
-        fun WhereDsl.equalValueSpec() = column(Order::purchaserId).equal(1000L)
-
-        val dsl: SpringDataPageableQueryDsl<Order>.() -> Unit = {
-            select(entity(Order::class))
-            from(entity(Order::class))
-            where(equalValueSpec())
-        }
-
-        val dslCriteria: SpringDataCriteriaQueryDsl<Order>.() -> Unit = {
-            select(entity(Order::class))
-            from(entity(Order::class))
-            where(equalValueSpec())
-        }
-        // when
-        val actual: Page<Order> = queryFactory.pageQuery(pageable, dsl)
-        val actualList: List<Order> = queryFactory.listQuery(dslCriteria)
-
-        // then
-        assertThat(actual.content.size).isEqualTo(3)
-        assertThat(actual.map { it.id }).containsExactlyInAnyOrder(order1.id, order2.id, order3.id)
-        assertThat(actualList.map { it.id }).containsExactlyInAnyOrder(order1.id, order2.id, order3.id)
-    }
-
-    @Test
-    fun `pageQuery with countProjection`() = runBlocking {
-        // given
-        val pageable = PageRequest.of(0, 1, Sort.by(Sort.Direction.DESC, Order::id.name))
-
-        val dsl: SpringDataPageableQueryDsl<Order>.() -> Unit = {
-            select(entity(Order::class))
-            from(entity(Order::class))
-        }
-
-        val countProjection: SpringDataPageableQueryDsl<Long>.() -> SingleSelectClause<Long> = {
-            select(count(column(Order::purchaserId)))
-        }
-
-        // when
-        val actual: Page<Order> = queryFactory.pageQuery(pageable, dsl, countProjection)
-
-        // then
-        assertThat(actual).hasSize(1)
-        assertThat(actual.content.first().id)
-            .isEqualTo(order4.id)
-    }
 }
 
-fun runBlocking(context: CoroutineContext = EmptyCoroutineContext, block: suspend () -> Unit) {
-    kotlinx.coroutines.runBlocking(context) {
-        block()
-    }
-}
