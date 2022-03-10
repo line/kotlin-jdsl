@@ -224,12 +224,12 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
                 select(
                     count(literal(1))
                 )
-                from(entity(OrderItem::class))
+                from(entity(Order::class))
             }
         }
 
         // then
-        assertThat(count).isEqualTo(4L)
+        assertThat(count).isEqualTo(3L)
     }
 
     @Test
