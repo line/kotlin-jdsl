@@ -33,7 +33,6 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest<S> : CriteriaQueryDsl
     @BeforeEach
     fun setUp() = runBlocking {
         persistAll(order1, order2, order3)
-
     }
 
     @Test

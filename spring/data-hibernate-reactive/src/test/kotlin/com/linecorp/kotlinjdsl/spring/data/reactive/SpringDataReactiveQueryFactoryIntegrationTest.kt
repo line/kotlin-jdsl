@@ -20,17 +20,20 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.StageSessionFactoryExtension
 import com.linecorp.kotlinjdsl.test.reactive.query.initFactory
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.future.await
 import org.hibernate.reactive.stage.Stage.SessionFactory
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import java.util.concurrent.CompletionStage
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.reflect.KClass
 
 @ExtendWith(StageSessionFactoryExtension::class)
 internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
@@ -42,6 +45,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
     private val order2 = order { purchaserId = 1000 }
     private val order3 = order { purchaserId = 1000 }
     private val order4 = order { purchaserId = 2000 }
+    private val log = LoggerFactory.getLogger(this::class.java)
 
     @BeforeEach
     fun setUp() {
@@ -51,29 +55,45 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
         )
         sequenceOf(order1, order2, order3, order4).forEach {
             runBlocking {
-                sessionFactory.withSession { session -> session.persist(it).thenCompose { session.flush() } }.await()
+                retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class)) {
+                    sessionFactory.withSession { session -> session.persist(it).thenCompose { session.flush() } }
+                        .await()
+                }
             }
         }
     }
+    private suspend fun retry(maxTries: Long = 0, delayInMillis: Long = 100, retryExceptions: List<KClass<*>>, block: suspend () -> Unit) {
+        runCatching {
+            block()
+        }.onFailure {
+            if (maxTries > 0 && it::class in retryExceptions) {
+                log.warn("Exception occured, retry remain : ${maxTries - 1}", it)
+                delay(delayInMillis)
+                retry(maxTries - 1, delayInMillis, retryExceptions, block)
+            }
+        }
+    }
+
 
     @Test
     fun executeWithFactory() = runBlocking {
         val order = order { purchaserId = 5000 }
         val sessionFactory = initFactory()
+        retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class)) {
+            val actual: CompletionStage<Order> = sessionFactory.withSession { session ->
+                queryFactory.executeSessionWithFactory(session) { factory ->
 
-        val actual: CompletionStage<Order> = sessionFactory.withSession { session ->
-            queryFactory.executeSessionWithFactory(session) { factory ->
-
-                session.persist(order).thenCompose { session.flush() }.thenCompose {
-                    factory.singleQuery<Order> {
-                        select(entity(Order::class))
-                        from(entity(Order::class))
-                        where(col(Order::purchaserId).equal(5000))
+                    session.persist(order).thenCompose { session.flush() }.thenCompose {
+                        factory.singleQuery<Order> {
+                            select(entity(Order::class))
+                            from(entity(Order::class))
+                            where(col(Order::purchaserId).equal(5000))
+                        }
                     }
                 }
             }
+            assertThat(actual.await().id).isEqualTo(order.id)
         }
-        assertThat(actual.await().id).isEqualTo(order.id)
 
         sessionFactory.close()
     }

@@ -5,9 +5,11 @@ import org.hibernate.jpa.HibernatePersistenceProvider
 import org.hibernate.jpa.boot.internal.PersistenceXmlParser
 import org.hibernate.jpa.boot.spi.Bootstrap
 import org.hibernate.reactive.stage.Stage.SessionFactory
+import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.TestInstancePostProcessor
+import org.slf4j.LoggerFactory
 import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 import kotlin.reflect.KMutableProperty1
@@ -17,11 +19,11 @@ import kotlin.reflect.full.createType
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
-class StageSessionFactoryExtension : TestInstancePostProcessor, AfterEachCallback {
+class StageSessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback {
     private lateinit var sessionFactory: SessionFactory
     private lateinit var entityManagerFactory: EntityManagerFactory
     private val sessionFactoryType = SessionFactory::class.createType()
-
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun postProcessTestInstance(testInstance: Any, context: ExtensionContext) {
         // hibernate-reactive does not support h2 db officially.
@@ -43,7 +45,8 @@ class StageSessionFactoryExtension : TestInstancePostProcessor, AfterEachCallbac
         injectProperty(testInstance, sessionFactory, sessionFactoryType)
     }
 
-    override fun afterEach(context: ExtensionContext) {
+    override fun afterAll(context: ExtensionContext) {
+        logger.info("closing after all")
         sessionFactory.close()
         entityManagerFactory.close()
     }
