@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaDelete
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.CriteriaUpdate
 
-interface JpaCriteriaQueryBuilder {
+object JpaCriteriaQueryBuilder {
     fun <T, Q> createQuery(
         spec: CriteriaQuerySpec<T, Q>,
         criteriaBuilder: CriteriaBuilder,

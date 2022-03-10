@@ -11,11 +11,11 @@ class CriteriaQueryCreatorImpl(
     private val em: EntityManager,
 ) : CriteriaQueryCreator {
     override fun <T> createQuery(spec: CriteriaQuerySpec<T, TypedQuery<T>>): TypedQuery<T> =
-        createQuery(spec, em.criteriaBuilder, em::createQuery)
+        JpaCriteriaQueryBuilder.createQuery(spec, em.criteriaBuilder, em::createQuery)
 
     override fun <T> createQuery(spec: CriteriaUpdateQuerySpec<T, Query>): Query =
-        createQuery(spec, em.criteriaBuilder, em::createQuery)
+        JpaCriteriaQueryBuilder.createQuery(spec, em.criteriaBuilder, em::createQuery)
 
     override fun <T> createQuery(spec: CriteriaDeleteQuerySpec<T, Query>): Query =
-        createQuery(spec, em.criteriaBuilder, em::createQuery)
+        JpaCriteriaQueryBuilder.createQuery(spec, em.criteriaBuilder, em::createQuery)
 }
