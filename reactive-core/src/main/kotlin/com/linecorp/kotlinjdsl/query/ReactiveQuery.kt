@@ -17,5 +17,5 @@ interface ReactiveQuery<R> {
     fun setQueryHint(hintName: String, value: Any)
     val maxResults: Int
     val firstResult: Int
-    fun <T: Any> unwrap(type: KClass<T>): T
+    fun <T : Any> unwrap(type: KClass<T>): T
 }

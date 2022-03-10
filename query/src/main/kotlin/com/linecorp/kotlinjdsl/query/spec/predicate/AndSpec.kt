@@ -30,7 +30,10 @@ data class AndSpec(
         return toCriteriaPredicate(criteriaBuilder) { it.toCriteriaPredicate(froms, query, criteriaBuilder) }
     }
 
-    private fun toCriteriaPredicate(criteriaBuilder: CriteriaBuilder, predicate: (PredicateSpec) -> Predicate): Predicate {
+    private fun toCriteriaPredicate(
+        criteriaBuilder: CriteriaBuilder,
+        predicate: (PredicateSpec) -> Predicate
+    ): Predicate {
         return predicates.asSequence()
             .filterNotNull()
             .map { predicate(it) }

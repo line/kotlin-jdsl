@@ -273,20 +273,20 @@ open class QueryDslImpl<T>(
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    protected fun <Q: Query> getLimitClause(): QueryLimitClause<Q> {
+    protected fun <Q : Query> getLimitClause(): QueryLimitClause<Q> {
         return LimitClause(offset, maxResults)
     }
 
-    protected fun <Q: Query> getEmptyLimitClause(): QueryLimitClause<Q> {
+    protected fun <Q : Query> getEmptyLimitClause(): QueryLimitClause<Q> {
         return LimitClause.empty()
     }
 
-    protected fun <Q: Query> getJpaQueryHintClause(): JpaQueryHintClause<Q> {
+    protected fun <Q : Query> getJpaQueryHintClause(): JpaQueryHintClause<Q> {
         return JpaQueryHintClauseImpl(jpaHints)
     }
 
     @Suppress("UNCHECKED_CAST")
-    protected fun <Q: Query> getSqlQueryHintClause(): SqlQueryHintClause<Q> {
+    protected fun <Q : Query> getSqlQueryHintClause(): SqlQueryHintClause<Q> {
         return SqlQueryHintClauseProvider.provide(sqlHints) as SqlQueryHintClause<Q>
     }
 

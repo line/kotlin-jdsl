@@ -20,7 +20,8 @@ import javax.persistence.TypedQuery
 class SpringDataQueryDslImpl<T>(
     returnType: Class<T>,
 ) : QueryDslImpl<T>(returnType),
-    SpringDataCriteriaQueryDsl<T>, SpringDataSubqueryDsl<T>, SpringDataPageableQueryDsl<T>, SpringDataCriteriaUpdateQueryDsl, SpringDataCriteriaDeleteQueryDsl {
+    SpringDataCriteriaQueryDsl<T>, SpringDataSubqueryDsl<T>, SpringDataPageableQueryDsl<T>,
+    SpringDataCriteriaUpdateQueryDsl, SpringDataCriteriaDeleteQueryDsl {
     var pageable: Pageable = Pageable.unpaged()
 
     fun createPageableQuerySpec(): CriteriaQuerySpec<T, TypedQuery<T>> {
@@ -65,7 +66,7 @@ class SpringDataQueryDslImpl<T>(
         return SpringDataPageableOrderByClause(pageable)
     }
 
-    private fun <Q: Query> getPageableLimitClause(): QueryLimitClause<Q> {
+    private fun <Q : Query> getPageableLimitClause(): QueryLimitClause<Q> {
         return SpringDataPageableLimitClause(pageable)
     }
 }

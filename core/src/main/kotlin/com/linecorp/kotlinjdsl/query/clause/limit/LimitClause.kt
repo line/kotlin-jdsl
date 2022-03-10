@@ -2,14 +2,15 @@ package com.linecorp.kotlinjdsl.query.clause.limit
 
 import javax.persistence.Query
 
-data class LimitClause<Q: Query>(
+data class LimitClause<Q : Query>(
     val offset: Int?,
     val maxResults: Int?,
 ) : QueryLimitClause<Q> {
     companion object {
         val empty = LimitClause<Query>(null, null)
+
         @Suppress("UNCHECKED_CAST")
-        fun <T: Query> empty(): LimitClause<T> = empty as LimitClause<T>
+        fun <T : Query> empty(): LimitClause<T> = empty as LimitClause<T>
     }
 
     override fun apply(query: Q) {

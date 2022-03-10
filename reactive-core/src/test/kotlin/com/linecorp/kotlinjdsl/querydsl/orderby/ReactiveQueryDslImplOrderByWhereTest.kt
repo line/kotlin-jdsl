@@ -1,10 +1,10 @@
 package com.linecorp.kotlinjdsl.querydsl.orderby
 
-import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.query.clause.orderby.OrderByClause
 import com.linecorp.kotlinjdsl.query.spec.ExpressionOrderSpec
 import com.linecorp.kotlinjdsl.query.spec.OrderSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
+import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test

@@ -1,9 +1,9 @@
 package com.linecorp.kotlinjdsl.querydsl.where
 
-import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.query.clause.where.WhereClause
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
+import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test

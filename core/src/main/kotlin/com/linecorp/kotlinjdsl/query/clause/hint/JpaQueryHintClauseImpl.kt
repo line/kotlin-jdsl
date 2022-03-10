@@ -2,7 +2,7 @@ package com.linecorp.kotlinjdsl.query.clause.hint
 
 import javax.persistence.Query
 
-data class JpaQueryHintClauseImpl<Q: Query>(
+data class JpaQueryHintClauseImpl<Q : Query>(
     val hints: Map<String, Any>
 ) : JpaQueryHintClause<Q> {
     override fun apply(query: Q) {

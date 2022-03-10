@@ -4,11 +4,9 @@ import com.linecorp.kotlinjdsl.ReactiveQueryFactory
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.EntityDsl
 import java.util.concurrent.CompletionStage
-import javax.persistence.EntityManagerFactory
 
 interface CriteriaQueryDslIntegrationTest<S> : EntityDsl, WithKotlinJdslAssertions {
     var factory: S
-    var entityManagerFactory: EntityManagerFactory
 
     suspend fun persist(entity: Any)
     suspend fun persistAll(vararg entities: Any)

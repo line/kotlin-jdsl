@@ -19,6 +19,9 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.StageSessionFactoryExtension
+import com.linecorp.kotlinjdsl.test.reactive.query.initFactory
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.future.await
 import org.hibernate.reactive.stage.Stage.SessionFactory
 import org.junit.jupiter.api.BeforeEach
@@ -50,7 +53,9 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
         )
         sequenceOf(order1, order2, order3, order4).forEach {
             runBlocking {
-                sessionFactory.withSession { session -> session.persist(it).thenCompose { session.flush() } }.await()
+                flow<Any> {
+                    sessionFactory.withSession { session -> session.persist(it).thenCompose { session.flush() } }.await()
+                }.retry(10).collect {}
             }
         }
     }
@@ -58,20 +63,27 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
     @Test
     fun executeWithFactory() = runBlocking {
         val order = order { purchaserId = 5000 }
-        val actual: CompletionStage<Order> = sessionFactory.withSession { session ->
-            queryFactory.executeSessionWithFactory(session) { factory ->
-                session.persist(order).thenCompose { session.flush() }
-                    .thenCompose {
-                        factory.singleQuery<Order> {
-                            select(entity(Order::class))
-                            from(entity(Order::class))
-                            where(col(Order::purchaserId).equal(5000))
+        val sessionFactory = initFactory()
+
+        flow<Any> {
+            val actual: CompletionStage<Order> = sessionFactory.withSession { session ->
+                queryFactory.executeSessionWithFactory(session) { factory ->
+
+                    session.persist(order).thenCompose { session.flush() }
+                        .thenCompose {
+                            factory.singleQuery<Order> {
+                                select(entity(Order::class))
+                                from(entity(Order::class))
+                                where(col(Order::purchaserId).equal(5000))
+                            }
                         }
-                    }
+                }
             }
-        }
-        assertThat(actual.await().id)
-            .isEqualTo(order.id)
+            assertThat(actual.await().id)
+                .isEqualTo(order.id)
+        }.retry(10).collect {}
+
+        sessionFactory.close()
     }
 
     @Test

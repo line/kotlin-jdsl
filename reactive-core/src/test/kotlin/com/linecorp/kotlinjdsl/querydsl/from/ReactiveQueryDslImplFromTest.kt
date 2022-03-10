@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.querydsl.from
 
-import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
+import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 

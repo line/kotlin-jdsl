@@ -9,6 +9,7 @@ data class ReactiveLimitClause<R>(
 ) : QueryLimitClause<ReactiveQuery<R>> {
     companion object {
         val empty = ReactiveLimitClause<Any>(null, null)
+
         @Suppress("UNCHECKED_CAST")
         fun <T> empty(): QueryLimitClause<T> = empty as QueryLimitClause<T>
     }

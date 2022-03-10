@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.querydsl.limit
 
-import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.query.clause.limit.ReactiveLimitClause
+import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 

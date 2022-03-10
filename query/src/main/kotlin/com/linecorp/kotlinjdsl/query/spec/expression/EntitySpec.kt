@@ -10,6 +10,7 @@ data class EntitySpec<T>(
     companion object {
         private const val DEFAULT_ALIAS_TOKEN = "\\"
     }
+
     override fun toCriteriaExpression(
         froms: Froms,
         query: AbstractQuery<*>,

@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.querydsl.predicate
 
-import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.*
+import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test

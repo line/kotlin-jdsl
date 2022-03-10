@@ -21,13 +21,13 @@ class QueryFactoryImpl(
         return criteriaQueryCreator.createQuery(criteriaQuerySpec)
     }
 
-    override fun <T: Any> updateQuery(target: KClass<T>, dsl: CriteriaUpdateQueryDsl.() -> Unit): Query {
+    override fun <T : Any> updateQuery(target: KClass<T>, dsl: CriteriaUpdateQueryDsl.() -> Unit): Query {
         return criteriaQueryCreator.createQuery(
             QueryDslImpl(target.java).apply(dsl).apply { from(target) }.createCriteriaUpdateQuerySpec()
         )
     }
 
-    override fun <T: Any> deleteQuery(target: KClass<T>, dsl: CriteriaDeleteQueryDsl.() -> Unit): Query {
+    override fun <T : Any> deleteQuery(target: KClass<T>, dsl: CriteriaDeleteQueryDsl.() -> Unit): Query {
         return criteriaQueryCreator.createQuery(
             QueryDslImpl(target.java).apply(dsl).apply { from(target) }.createCriteriaDeleteQuerySpec()
         )

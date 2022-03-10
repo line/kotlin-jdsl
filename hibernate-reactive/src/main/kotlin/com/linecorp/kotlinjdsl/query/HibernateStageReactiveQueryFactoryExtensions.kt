@@ -17,15 +17,15 @@ suspend inline fun <reified T> HibernateStageReactiveQueryFactory.listQuery(
     noinline dsl: CriteriaQueryDsl<T>.() -> Unit
 ) = withFactory { it.listQuery(dsl) }
 
-suspend inline fun <reified T: Any> HibernateStageReactiveQueryFactory.updateQuery(
+suspend inline fun <reified T : Any> HibernateStageReactiveQueryFactory.updateQuery(
     noinline dsl: CriteriaUpdateQueryDsl.() -> Unit
 ) = withFactory { it.updateQuery<T>(dsl).executeUpdate }
 
-suspend inline fun <reified T: Any> HibernateStageReactiveQueryFactory.deleteQuery(
+suspend inline fun <reified T : Any> HibernateStageReactiveQueryFactory.deleteQuery(
     noinline dsl: CriteriaDeleteQueryDsl.() -> Unit
 ) = withFactory { it.deleteQuery<T>(dsl).executeUpdate }
 
 inline fun <reified T> HibernateStageReactiveQueryFactory.subquery(
-    noinline dsl: SubqueryDsl<T>.() -> Unit) =
-    subquery(T::class.java, dsl)
+    noinline dsl: SubqueryDsl<T>.() -> Unit
+) = subquery(T::class.java, dsl)
 

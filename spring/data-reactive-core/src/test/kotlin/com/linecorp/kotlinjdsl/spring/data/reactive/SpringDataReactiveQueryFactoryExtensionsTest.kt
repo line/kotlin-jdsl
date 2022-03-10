@@ -202,7 +202,9 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
     @Test
     fun `pageQuery with countProjection`() = runBlocking {
         // given
-        coEvery { queryFactory.pageQuery<Data1>(any(), any(), any(), any()) } returns CompletableFuture.completedFuture(page)
+        coEvery { queryFactory.pageQuery<Data1>(any(), any(), any(), any()) } returns CompletableFuture.completedFuture(
+            page
+        )
 
         val pageable = PageRequest.of(1, 10)
 

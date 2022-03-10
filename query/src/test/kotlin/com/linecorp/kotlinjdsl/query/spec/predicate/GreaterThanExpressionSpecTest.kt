@@ -42,7 +42,13 @@ internal class GreaterThanExpressionSpecTest : WithKotlinJdslAssertions {
         val greaterThanOrEqualToPredicate: Predicate = mockk()
 
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns rightExpression
+        every {
+            rightExpressionSpec.toCriteriaExpression(
+                any(),
+                any<CriteriaQuery<*>>(),
+                any()
+            )
+        } returns rightExpression
 
         every {
             criteriaBuilder.greaterThanOrEqualTo(any(), any<Expression<Int>>())
@@ -81,7 +87,13 @@ internal class GreaterThanExpressionSpecTest : WithKotlinJdslAssertions {
         val greaterThanPredicate: Predicate = mockk()
 
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns rightExpression
+        every {
+            rightExpressionSpec.toCriteriaExpression(
+                any(),
+                any<CriteriaQuery<*>>(),
+                any()
+            )
+        } returns rightExpression
 
         every { criteriaBuilder.greaterThan(any(), any<Expression<Int>>()) } returns greaterThanPredicate
 
@@ -118,7 +130,13 @@ internal class GreaterThanExpressionSpecTest : WithKotlinJdslAssertions {
         val greaterThanOrEqualToPredicate: Predicate = mockk()
 
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns rightExpression
+        every {
+            rightExpressionSpec.toCriteriaExpression(
+                any(),
+                any<CriteriaUpdate<*>>(),
+                any()
+            )
+        } returns rightExpression
 
         every {
             criteriaBuilder.greaterThanOrEqualTo(any(), any<Expression<Int>>())
@@ -157,7 +175,13 @@ internal class GreaterThanExpressionSpecTest : WithKotlinJdslAssertions {
         val greaterThanPredicate: Predicate = mockk()
 
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns rightExpression
+        every {
+            rightExpressionSpec.toCriteriaExpression(
+                any(),
+                any<CriteriaUpdate<*>>(),
+                any()
+            )
+        } returns rightExpression
 
         every { criteriaBuilder.greaterThan(any(), any<Expression<Int>>()) } returns greaterThanPredicate
 
@@ -194,7 +218,13 @@ internal class GreaterThanExpressionSpecTest : WithKotlinJdslAssertions {
         val greaterThanOrEqualToPredicate: Predicate = mockk()
 
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression
+        every {
+            rightExpressionSpec.toCriteriaExpression(
+                any(),
+                any<CriteriaDelete<*>>(),
+                any()
+            )
+        } returns rightExpression
 
         every {
             criteriaBuilder.greaterThanOrEqualTo(any(), any<Expression<Int>>())
@@ -233,7 +263,13 @@ internal class GreaterThanExpressionSpecTest : WithKotlinJdslAssertions {
         val greaterThanPredicate: Predicate = mockk()
 
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression
+        every {
+            rightExpressionSpec.toCriteriaExpression(
+                any(),
+                any<CriteriaDelete<*>>(),
+                any()
+            )
+        } returns rightExpression
 
         every { criteriaBuilder.greaterThan(any(), any<Expression<Int>>()) } returns greaterThanPredicate
 

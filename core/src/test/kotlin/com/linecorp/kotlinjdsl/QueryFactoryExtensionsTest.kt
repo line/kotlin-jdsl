@@ -116,6 +116,7 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
 
         // when
         val actual: TypedQuery<Data1> = queryFactory.selectQuery(dsl)
+
         @Suppress("DEPRECATION")
         val typedActual: TypedQuery<Data1> = queryFactory.typedQuery(dsl)
 

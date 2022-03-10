@@ -15,7 +15,7 @@ import javax.persistence.EntityManagerFactory
 
 @DataJpaTest
 @EntityScan("com.linecorp.kotlinjdsl.test.entity")
- internal open class KotlinJdslQueryProviderIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
+internal open class KotlinJdslQueryProviderIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
     @Autowired
     private lateinit var entityManagerFactory: EntityManagerFactory
 

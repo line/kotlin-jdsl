@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.querydsl.groupby
 
-import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.query.clause.groupby.GroupByClause
 import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
+import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test

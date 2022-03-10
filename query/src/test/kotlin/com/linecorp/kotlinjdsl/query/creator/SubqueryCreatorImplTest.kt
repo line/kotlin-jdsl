@@ -38,7 +38,7 @@ internal class SubqueryCreatorImplTest : WithAssertions {
     @MockK
     private lateinit var subquery: Subquery<Int>
 
-    data class TestSubquerySpec<T: Any>(
+    data class TestSubquerySpec<T : Any>(
         override val select: SubquerySelectClause<T>,
         override val from: FromClause<T>,
         override val join: JoinClause,

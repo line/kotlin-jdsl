@@ -1,6 +1,5 @@
 package com.linecorp.kotlinjdsl.spring.data.reactive
 
-import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.query.CriteriaQuerySpec
 import com.linecorp.kotlinjdsl.query.ReactiveQuery
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
@@ -24,11 +23,12 @@ import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.EqualValueSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
+import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.column
+import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactoryImpl
 import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataPageableLimitClause
 import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataPageableOrderByClause
-import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactoryImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
@@ -189,22 +189,23 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
         // given
         val pageable = PageRequest.of(0, 5)
 
-        val expectedPageableSpec: CriteriaQuerySpec<Data1, ReactiveQuery<Data1>> = ReactiveQueryDslImpl.CriteriaQuerySpecImpl(
-            select = SingleSelectClause(
-                Data1::class.java,
-                distinct = false,
-                EntitySpec(Data1::class.java)
-            ),
-            from = FromClause(EntitySpec(Data1::class.java)),
-            join = JoinClause(emptyList()),
-            where = WhereClause(PredicateSpec.empty),
-            groupBy = GroupByClause(emptyList()),
-            having = HavingClause(PredicateSpec.empty),
-            orderBy = SpringDataPageableOrderByClause(pageable),
-            limit = SpringDataPageableLimitClause(pageable),
-            jpaHint = JpaReactiveQueryHintClauseImpl(emptyMap()),
-            sqlHint = emptySqlHintClause(),
-        )
+        val expectedPageableSpec: CriteriaQuerySpec<Data1, ReactiveQuery<Data1>> =
+            ReactiveQueryDslImpl.CriteriaQuerySpecImpl(
+                select = SingleSelectClause(
+                    Data1::class.java,
+                    distinct = false,
+                    EntitySpec(Data1::class.java)
+                ),
+                from = FromClause(EntitySpec(Data1::class.java)),
+                join = JoinClause(emptyList()),
+                where = WhereClause(PredicateSpec.empty),
+                groupBy = GroupByClause(emptyList()),
+                having = HavingClause(PredicateSpec.empty),
+                orderBy = SpringDataPageableOrderByClause(pageable),
+                limit = SpringDataPageableLimitClause(pageable),
+                jpaHint = JpaReactiveQueryHintClauseImpl(emptyMap()),
+                sqlHint = emptySqlHintClause(),
+            )
 
         val expectedPageableCountSpec = ReactiveQueryDslImpl.CriteriaQuerySpecImpl(
             select = CountSingleSelectClause(
@@ -223,7 +224,15 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
         )
 
         val pageableQuery: ReactiveQuery<Data1> = mockk {
-            every { resultList } returns CompletableFuture.completedFuture(listOf(Data1(1), Data1(2), Data1(3), Data1(4), Data1(5)))
+            every { resultList } returns CompletableFuture.completedFuture(
+                listOf(
+                    Data1(1),
+                    Data1(2),
+                    Data1(3),
+                    Data1(4),
+                    Data1(5)
+                )
+            )
         }
 
         val pageableCountQuery: ReactiveQuery<Long> = mockk {
@@ -258,45 +267,55 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
         // given
         val pageable = PageRequest.of(0, 5)
 
-        val expectedPageableSpec: CriteriaQuerySpec<Data1, ReactiveQuery<Data1>> = ReactiveQueryDslImpl.CriteriaQuerySpecImpl(
-            select = SingleSelectClause(
-                Data1::class.java,
-                distinct = false,
-                EntitySpec(Data1::class.java)
-            ),
-            from = FromClause(EntitySpec(Data1::class.java)),
-            join = JoinClause(emptyList()),
-            where = WhereClause(PredicateSpec.empty),
-            groupBy = GroupByClause(emptyList()),
-            having = HavingClause(PredicateSpec.empty),
-            orderBy = SpringDataPageableOrderByClause(pageable),
-            limit = SpringDataPageableLimitClause(pageable),
-            jpaHint = JpaReactiveQueryHintClauseImpl(emptyMap()),
-            sqlHint = emptySqlHintClause(),
-        )
-
-        val expectedPageableCountSpec: CriteriaQuerySpec<Long, ReactiveQuery<Long>> = ReactiveQueryDslImpl.CriteriaQuerySpecImpl(
-            select = SingleSelectClause(
-                returnType = Long::class.java,
-                distinct = false,
-                expression = CountSpec(
+        val expectedPageableSpec: CriteriaQuerySpec<Data1, ReactiveQuery<Data1>> =
+            ReactiveQueryDslImpl.CriteriaQuerySpecImpl(
+                select = SingleSelectClause(
+                    Data1::class.java,
                     distinct = false,
-                    expression = ColumnSpec<Long>(EntitySpec(Data1::class.java), "id")
-                )
-            ),
-            from = FromClause(EntitySpec(Data1::class.java)),
-            join = JoinClause(emptyList()),
-            where = WhereClause(PredicateSpec.empty),
-            groupBy = GroupByClause(emptyList()),
-            having = HavingClause(PredicateSpec.empty),
-            orderBy = OrderByClause(emptyList()),
-            limit = ReactiveLimitClause.empty(),
-            jpaHint = JpaReactiveQueryHintClauseImpl(emptyMap()),
-            sqlHint = emptySqlHintClause(),
-        )
+                    EntitySpec(Data1::class.java)
+                ),
+                from = FromClause(EntitySpec(Data1::class.java)),
+                join = JoinClause(emptyList()),
+                where = WhereClause(PredicateSpec.empty),
+                groupBy = GroupByClause(emptyList()),
+                having = HavingClause(PredicateSpec.empty),
+                orderBy = SpringDataPageableOrderByClause(pageable),
+                limit = SpringDataPageableLimitClause(pageable),
+                jpaHint = JpaReactiveQueryHintClauseImpl(emptyMap()),
+                sqlHint = emptySqlHintClause(),
+            )
+
+        val expectedPageableCountSpec: CriteriaQuerySpec<Long, ReactiveQuery<Long>> =
+            ReactiveQueryDslImpl.CriteriaQuerySpecImpl(
+                select = SingleSelectClause(
+                    returnType = Long::class.java,
+                    distinct = false,
+                    expression = CountSpec(
+                        distinct = false,
+                        expression = ColumnSpec<Long>(EntitySpec(Data1::class.java), "id")
+                    )
+                ),
+                from = FromClause(EntitySpec(Data1::class.java)),
+                join = JoinClause(emptyList()),
+                where = WhereClause(PredicateSpec.empty),
+                groupBy = GroupByClause(emptyList()),
+                having = HavingClause(PredicateSpec.empty),
+                orderBy = OrderByClause(emptyList()),
+                limit = ReactiveLimitClause.empty(),
+                jpaHint = JpaReactiveQueryHintClauseImpl(emptyMap()),
+                sqlHint = emptySqlHintClause(),
+            )
 
         val pageableQuery: ReactiveQuery<Data1> = mockk {
-            every { resultList } returns CompletableFuture.completedFuture(listOf(Data1(1), Data1(2), Data1(3), Data1(4), Data1(5)))
+            every { resultList } returns CompletableFuture.completedFuture(
+                listOf(
+                    Data1(1),
+                    Data1(2),
+                    Data1(3),
+                    Data1(4),
+                    Data1(5)
+                )
+            )
         }
 
         val pageableCountQuery: ReactiveQuery<Long> = mockk {

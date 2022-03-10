@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.querydsl.set
 
-import com.linecorp.kotlinjdsl.query.spec.expression.*
+import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.*
 import io.mockk.impl.annotations.MockK

@@ -1,7 +1,6 @@
 package com.linecorp.kotlinjdsl
 
 import com.linecorp.kotlinjdsl.query.ReactiveQuery
-import com.linecorp.kotlinjdsl.query.creator.ReactiveCriteriaQueryCreator
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
 import com.linecorp.kotlinjdsl.querydsl.CriteriaDeleteQueryDsl
 import com.linecorp.kotlinjdsl.querydsl.CriteriaQueryDsl

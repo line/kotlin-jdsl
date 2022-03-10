@@ -12,7 +12,8 @@ interface SqlReactiveQueryHintClauseFactoryProvider {
     companion object {
         private val log = LoggerFactory.getLogger(SqlReactiveQueryHintClauseFactoryProvider::class.java)
         val loadedFactory by lazy {
-            ServiceLoader.load(SqlReactiveQueryHintClauseFactoryProvider::class.java).checkDuplicate().firstOrNull()?.factory<Any>()
+            ServiceLoader.load(SqlReactiveQueryHintClauseFactoryProvider::class.java).checkDuplicate().firstOrNull()
+                ?.factory<Any>()
         }
 
         private fun ServiceLoader<SqlReactiveQueryHintClauseFactoryProvider>.checkDuplicate(): ServiceLoader<SqlReactiveQueryHintClauseFactoryProvider> {

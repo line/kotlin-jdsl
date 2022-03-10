@@ -23,7 +23,10 @@ class SpringDataHibernateStageReactiveQueryFactory(
     fun <T> subquery(classType: Class<T>, dsl: SubqueryDsl<T>.() -> Unit) =
         subquery(classType, subqueryCreator, dsl)
 
-    fun <T> executeSessionWithFactory(session: Stage.Session, block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>) =
+    fun <T> executeSessionWithFactory(
+        session: Stage.Session,
+        block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>
+    ) =
         with(
             SpringDataReactiveQueryFactoryImpl(
                 subqueryCreator = subqueryCreator,

@@ -1,6 +1,5 @@
 package com.linecorp.kotlinjdsl.spring.reactive.querydsl
 
-import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.query.CriteriaQuerySpec
 import com.linecorp.kotlinjdsl.query.ReactiveQuery
 import com.linecorp.kotlinjdsl.query.clause.hint.JpaReactiveQueryHintClauseImpl
@@ -9,6 +8,7 @@ import com.linecorp.kotlinjdsl.query.clause.limit.QueryLimitClause
 import com.linecorp.kotlinjdsl.query.clause.limit.ReactiveLimitClause
 import com.linecorp.kotlinjdsl.query.clause.orderby.CriteriaQueryOrderByClause
 import com.linecorp.kotlinjdsl.query.clause.select.*
+import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataPageableLimitClause
 import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataPageableOrderByClause
 import org.springframework.data.domain.Pageable

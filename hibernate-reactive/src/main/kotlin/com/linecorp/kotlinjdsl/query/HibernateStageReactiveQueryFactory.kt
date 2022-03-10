@@ -1,11 +1,11 @@
 package com.linecorp.kotlinjdsl.query
 
-import com.linecorp.kotlinjdsl.subquery
 import com.linecorp.kotlinjdsl.ReactiveQueryFactory
 import com.linecorp.kotlinjdsl.ReactiveQueryFactoryImpl
 import com.linecorp.kotlinjdsl.query.creator.StageReactiveCriteriaQueryCreator
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreator
 import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
+import com.linecorp.kotlinjdsl.subquery
 import kotlinx.coroutines.future.await
 import org.hibernate.reactive.stage.Stage
 import org.hibernate.reactive.stage.Stage.SessionFactory

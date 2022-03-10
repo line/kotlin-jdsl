@@ -8,6 +8,7 @@ inline fun <reified T> emptySqlHintClause(): SqlQueryHintClause<T> = empty as Sq
 
 class EmptySqlReactiveQueryHintClause<T> : SqlQueryHintClause<T> {
     private val log = LoggerFactory.getLogger(EmptySqlReactiveQueryHintClause::class.java)
+
     companion object {
         val empty: SqlQueryHintClause<*> = EmptySqlReactiveQueryHintClause<Any>()
     }
