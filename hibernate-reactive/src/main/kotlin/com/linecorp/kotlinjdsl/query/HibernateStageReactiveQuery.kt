@@ -41,7 +41,8 @@ class HibernateStageReactiveQuery<R>(private val query: Stage.Query<R>) : Reacti
     }
 
     override fun setQueryHint(hintName: String, value: Any) {
-        // hint not supported in hibernate-reactive
+        // hibernate-reactive throws an exception as it currently does not support the JPA hint .
+        throw UnsupportedOperationException("Hibernate-reactive does not support JPA query hint yet.")
     }
 
     override val maxResults: Int
