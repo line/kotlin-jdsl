@@ -13,8 +13,6 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.updateQuery
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.future.await
 import org.hibernate.reactive.stage.Stage.SessionFactory
 import org.junit.jupiter.api.BeforeEach
@@ -34,16 +32,13 @@ internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, Wi
     @BeforeEach
     fun setUp() {
         queryFactory = HibernateStageReactiveQueryFactory(
-            sessionFactory = sessionFactory,
-            subqueryCreator = SubqueryCreatorImpl()
+            sessionFactory = sessionFactory, subqueryCreator = SubqueryCreatorImpl()
         )
         sequenceOf(order1, order2, order3, order4).forEach {
             runBlocking {
-                retryPersist {
-                    sessionFactory.withSession { session ->
-                        session.persist(it).thenCompose { session.flush() }
-                    }.await()
-                }
+                sessionFactory.withSession { session ->
+                    session.persist(it).thenCompose { session.flush() }
+                }.await()
             }
         }
     }
@@ -51,23 +46,19 @@ internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, Wi
     @Test
     fun executeWithFactory() = runBlocking {
         val order = order { purchaserId = 5000 }
-        flow<Order> {
-            emit(sessionFactory.withSession { session ->
-                queryFactory.executeSessionWithFactory(session) { factory ->
-                    session.persist(order).thenCompose { session.flush() }
-                        .thenCompose {
-                            factory.singleQuery<Order> {
-                                select(entity(Order::class))
-                                from(entity(Order::class))
-                                where(col(Order::purchaserId).equal(5000))
-                            }
-                        }
+        val actual = sessionFactory.withSession { session ->
+            queryFactory.executeSessionWithFactory(session) { factory ->
+                session.persist(order).thenCompose { session.flush() }.thenCompose {
+                    factory.singleQuery<Order> {
+                        select(entity(Order::class))
+                        from(entity(Order::class))
+                        where(col(Order::purchaserId).equal(5000))
+                    }
                 }
-            }.await())
-        }.retry(10).collect {
-            assertThat(it.id)
-                .isEqualTo(order.id)
-        }
+            }
+        }.await()
+
+        assertThat(actual.id).isEqualTo(order.id)
     }
 
     @Test
@@ -80,8 +71,7 @@ internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, Wi
         }
 
         // then
-        assertThat(actual.id)
-            .isEqualTo(order4.id)
+        assertThat(actual.id).isEqualTo(order4.id)
     }
 
     @Test
@@ -96,8 +86,7 @@ internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, Wi
         }
 
         // then
-        assertThat(actual)
-            .containsExactlyInAnyOrder(order1, order2, order3, order4)
+        assertThat(actual).containsExactlyInAnyOrder(order1, order2, order3, order4)
     }
 
     @Test
@@ -135,11 +124,9 @@ internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, Wi
             from(entity(Order::class))
             where(col(Order::purchaserId).equal(3000))
         }
-        assertThat(actual.id)
-            .isEqualTo(order4.id)
+        assertThat(actual.id).isEqualTo(order4.id)
 
-        assertThat(actual.purchaserId)
-            .isEqualTo(3000)
+        assertThat(actual.purchaserId).isEqualTo(3000)
     }
 
     @Test
@@ -157,12 +144,11 @@ internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, Wi
                     queryFactory.updateQuery<Order> {
                         where(col(Order::id).equal(orders.first().id))
                         set(col(Order::purchaserId), orders.first().purchaserId + 1)
-                    }.executeUpdate.thenApply { orders }
-                        .thenCompose {
-                            queryFactory.updateQuery<Order> {
-                                throw IllegalStateException("transaction rollback")
-                            }.executeUpdate.thenApply { orders }
-                        }
+                    }.executeUpdate.thenApply { orders }.thenCompose {
+                        queryFactory.updateQuery<Order> {
+                            throw IllegalStateException("transaction rollback")
+                        }.executeUpdate.thenApply { orders }
+                    }
                 }
             }
         } catch (e: IllegalStateException) {
@@ -196,8 +182,7 @@ internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, Wi
             associate(OrderItem::group)
             associate(OrderGroup::order)
         }
-        assertThat(actual)
-            .isEmpty()
+        assertThat(actual).isEmpty()
     }
 }
 

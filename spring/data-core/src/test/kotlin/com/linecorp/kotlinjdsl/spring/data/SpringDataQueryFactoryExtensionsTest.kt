@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest
 import java.util.stream.Stream
 import javax.persistence.Query
 import javax.persistence.TypedQuery
+import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
 internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {

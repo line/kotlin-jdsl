@@ -20,8 +20,6 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.StageSessionFactoryExtension
 import com.linecorp.kotlinjdsl.test.reactive.query.initFactory
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.future.await
 import org.hibernate.reactive.stage.Stage.SessionFactory
 import org.junit.jupiter.api.BeforeEach
@@ -53,9 +51,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
         )
         sequenceOf(order1, order2, order3, order4).forEach {
             runBlocking {
-                flow<Any> {
-                    sessionFactory.withSession { session -> session.persist(it).thenCompose { session.flush() } }.await()
-                }.retry(10).collect {}
+                sessionFactory.withSession { session -> session.persist(it).thenCompose { session.flush() } }.await()
             }
         }
     }
@@ -65,23 +61,19 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
         val order = order { purchaserId = 5000 }
         val sessionFactory = initFactory()
 
-        flow<Any> {
-            val actual: CompletionStage<Order> = sessionFactory.withSession { session ->
-                queryFactory.executeSessionWithFactory(session) { factory ->
+        val actual: CompletionStage<Order> = sessionFactory.withSession { session ->
+            queryFactory.executeSessionWithFactory(session) { factory ->
 
-                    session.persist(order).thenCompose { session.flush() }
-                        .thenCompose {
-                            factory.singleQuery<Order> {
-                                select(entity(Order::class))
-                                from(entity(Order::class))
-                                where(col(Order::purchaserId).equal(5000))
-                            }
-                        }
+                session.persist(order).thenCompose { session.flush() }.thenCompose {
+                    factory.singleQuery<Order> {
+                        select(entity(Order::class))
+                        from(entity(Order::class))
+                        where(col(Order::purchaserId).equal(5000))
+                    }
                 }
             }
-            assertThat(actual.await().id)
-                .isEqualTo(order.id)
-        }.retry(10).collect {}
+        }
+        assertThat(actual.await().id).isEqualTo(order.id)
 
         sessionFactory.close()
     }
@@ -96,8 +88,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
         }
 
         // then
-        assertThat(actual.id)
-            .isEqualTo(order4.id)
+        assertThat(actual.id).isEqualTo(order4.id)
     }
 
     @Test
@@ -112,8 +103,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
         }
 
         // then
-        assertThat(actual)
-            .containsExactlyInAnyOrder(order1, order2, order3, order4)
+        assertThat(actual).containsExactlyInAnyOrder(order1, order2, order3, order4)
     }
 
     @Test
@@ -151,11 +141,9 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
             from(entity(Order::class))
             where(col(Order::purchaserId).equal(3000))
         }
-        assertThat(actual.id)
-            .isEqualTo(order4.id)
+        assertThat(actual.id).isEqualTo(order4.id)
 
-        assertThat(actual.purchaserId)
-            .isEqualTo(3000)
+        assertThat(actual.purchaserId).isEqualTo(3000)
     }
 
     @Test
@@ -212,8 +200,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
             associate(OrderItem::group)
             associate(OrderGroup::order)
         }
-        assertThat(actual)
-            .isEmpty()
+        assertThat(actual).isEmpty()
     }
 
     @Test
@@ -279,8 +266,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
 
         // then
         assertThat(actual).hasSize(1)
-        assertThat(actual.content.first().id)
-            .isEqualTo(order4.id)
+        assertThat(actual.content.first().id).isEqualTo(order4.id)
     }
 }
 

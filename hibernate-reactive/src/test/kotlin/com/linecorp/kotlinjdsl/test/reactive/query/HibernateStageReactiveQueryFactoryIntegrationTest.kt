@@ -12,7 +12,6 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.StageSessionFactoryExtension
-import com.linecorp.kotlinjdsl.test.reactive.retryPersist
 import com.linecorp.kotlinjdsl.updateQuery
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.runBlocking
@@ -27,12 +26,10 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
     @Test
     fun listQuery(): Unit = runBlocking {
         val order = order {}
-        retryPersist {
-            factory.withSession { session ->
-                session.persist(order)
-                    .thenCompose { session.flush() }
-            }.await()
-        }
+        factory.withSession { session ->
+            session.persist(order)
+                .thenCompose { session.flush() }
+        }.await()
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -54,12 +51,10 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
     @Test
     fun singleQuery(): Unit = runBlocking {
         val order = order {}
-        retryPersist {
-            factory.withSession { session ->
-                session.persist(order)
-                    .thenCompose { session.flush() }
-            }.await()
-        }
+        factory.withSession { session ->
+            session.persist(order)
+                .thenCompose { session.flush() }
+        }.await()
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -82,12 +77,10 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
     @Test
     fun updateQuery(): Unit = runBlocking {
         val order = order {}
-        retryPersist {
-            factory.withSession { session ->
-                session.persist(order)
-                    .thenCompose { session.flush() }
-            }.await()
-        }
+        factory.withSession { session ->
+            session.persist(order)
+                .thenCompose { session.flush() }
+        }.await()
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -113,12 +106,10 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
     @Test
     fun deleteQuery(): Unit = runBlocking {
         val order = order {}
-        retryPersist {
-            factory.withSession { session ->
-                session.persist(order)
-                    .thenCompose { session.flush() }
-            }.await()
-        }
+        factory.withSession { session ->
+            session.persist(order)
+                .thenCompose { session.flush() }
+        }.await()
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -147,14 +138,12 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
             purchaserId = 2000
             groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1, orderItem2) })
         }
-        retryPersist {
-            factory.withSession { session ->
-                session.persist(order1)
-                    .thenCompose { session.persist(order2) }
-                    .thenCompose { session.persist(order3) }
-                    .thenCompose { session.flush() }
-            }.await()
-        }
+        factory.withSession { session ->
+            session.persist(order1)
+                .thenCompose { session.persist(order2) }
+                .thenCompose { session.persist(order3) }
+                .thenCompose { session.flush() }
+        }.await()
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -180,12 +169,10 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
     @Test
     fun testTransaction(): Unit = runBlocking {
         val order = order {}
-        retryPersist {
-            factory.withSession { session ->
-                session.persist(order)
-                    .thenCompose { session.flush() }
-            }.await()
-        }
+        factory.withSession { session ->
+            session.persist(order)
+                .thenCompose { session.flush() }
+        }.await()
 
         val producer = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
