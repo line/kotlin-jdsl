@@ -31,7 +31,8 @@ subprojects {
 
     apply<LocalPropertiesPlugin>()
 
-    val javaVersion = if (name.contains("hibernate-reactive")) JavaVersion.VERSION_11 else JavaVersion.VERSION_1_8
+    val jdk11Required = name.contains("hibernate-reactive")
+    val javaVersion = if (jdk11Required) JavaVersion.VERSION_11 else JavaVersion.VERSION_1_8
     java.sourceCompatibility = javaVersion
     java.targetCompatibility = javaVersion
 
@@ -54,7 +55,7 @@ subprojects {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all")
-            jvmTarget = "1.8"
+            jvmTarget = if (jdk11Required) "11" else "1.8"
         }
     }
 
