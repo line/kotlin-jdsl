@@ -55,7 +55,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
         )
         sequenceOf(order1, order2, order3, order4).forEach {
             runBlocking {
-                retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class)) {
+                retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)) {
                     sessionFactory.withSession { session -> session.persist(it).thenCompose { session.flush() } }
                         .await()
                 }
@@ -79,7 +79,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
     fun executeWithFactory() = runBlocking {
         val order = order { purchaserId = 5000 }
         val sessionFactory = initFactory()
-        retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class)) {
+        retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)) {
             val actual: CompletionStage<Order> = sessionFactory.withSession { session ->
                 queryFactory.executeSessionWithFactory(session) { factory ->
 

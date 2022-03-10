@@ -37,7 +37,7 @@ internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, Wi
         )
         sequenceOf(order1, order2, order3, order4).forEach {
             runBlocking {
-                retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class)) {
+                retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)) {
                     sessionFactory.withSession { session ->
                         session.persist(it).thenCompose { session.flush() }
                     }.await()
@@ -50,7 +50,7 @@ internal class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, Wi
     fun executeWithFactory() = runBlocking {
         val order = order { purchaserId = 5000 }
         val sessionFactory = initFactory()
-        retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class)) {
+        retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)) {
             val actual = sessionFactory.withSession { session ->
                 queryFactory.executeSessionWithFactory(session) { factory ->
                     session.persist(order).thenCompose { session.flush() }.thenCompose {
