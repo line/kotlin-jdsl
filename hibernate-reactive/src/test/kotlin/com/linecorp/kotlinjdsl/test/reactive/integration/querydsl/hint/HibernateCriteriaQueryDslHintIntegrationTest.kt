@@ -50,7 +50,7 @@ internal class HibernateCriteriaQueryDslHintIntegrationTest :
                     hints("org.hibernate.comment" to "comment")
                 }
             }
-        } catch (e: UnsupportedOperationException) {
+        } catch (e: Throwable) {
             // then
             assertThat(e).hasMessage("Hibernate-reactive does not support JPA query hint yet.")
         }
