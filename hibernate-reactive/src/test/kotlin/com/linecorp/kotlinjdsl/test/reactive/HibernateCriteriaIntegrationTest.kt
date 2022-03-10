@@ -48,14 +48,6 @@ interface HibernateCriteriaIntegrationTest : CriteriaQueryDslIntegrationTest<Ses
             sessionFactory = factory,
             subqueryCreator = SubqueryCreatorImpl()
         ).withFactory(block)
-
-    private fun getRootCause(throwable: Throwable): Throwable {
-        var rootCause: Throwable = throwable
-        while (rootCause.cause != null && rootCause.cause !== rootCause) {
-            rootCause = rootCause.cause!!
-        }
-        return rootCause
-    }
 }
 
 suspend fun retryPersist(block: suspend FlowCollector<Any>.() -> Unit) {
