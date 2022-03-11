@@ -11,25 +11,52 @@ import com.linecorp.kotlinjdsl.test.entity.EntityDsl
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
+import com.linecorp.kotlinjdsl.test.reactive.HibernateCriteriaIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.StageSessionFactoryExtension
+import com.linecorp.kotlinjdsl.test.reactive.retry
 import com.linecorp.kotlinjdsl.updateQuery
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.runBlocking
 import org.hibernate.reactive.stage.Stage
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import javax.persistence.EntityManagerFactory
 
 @ExtendWith(StageSessionFactoryExtension::class)
-class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
-    lateinit var factory: Stage.SessionFactory
+class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJdslAssertions,
+    HibernateCriteriaIntegrationTest {
+    override lateinit var factory: Stage.SessionFactory
+    override lateinit var entityManagerFactory: EntityManagerFactory
+
+    @Test
+    fun executeWithFactory() = runBlocking {
+        val queryFactory = HibernateStageReactiveQueryFactory(
+            sessionFactory = factory, subqueryCreator = SubqueryCreatorImpl()
+        )
+        val order = order { purchaserId = 5000 }
+        val sessionFactory = initFactory()
+        retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)) {
+            val actual = sessionFactory.withSession { session ->
+                queryFactory.executeSessionWithFactory(session) { factory ->
+                    session.persist(order).thenCompose { session.flush() }.thenCompose {
+                        factory.singleQuery<Order> {
+                            select(entity(Order::class))
+                            from(entity(Order::class))
+                            where(col(Order::purchaserId).equal(5000))
+                        }
+                    }
+                }
+            }.await()
+
+            assertThat(actual.id).isEqualTo(order.id)
+        }
+        sessionFactory.close()
+    }
 
     @Test
     fun listQuery(): Unit = runBlocking {
         val order = order {}
-        factory.withSession { session ->
-            session.persist(order)
-                .thenCompose { session.flush() }
-        }.await()
+        persist(order)
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -51,10 +78,7 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
     @Test
     fun singleQuery(): Unit = runBlocking {
         val order = order {}
-        factory.withSession { session ->
-            session.persist(order)
-                .thenCompose { session.flush() }
-        }.await()
+        persist(order)
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -77,10 +101,7 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
     @Test
     fun updateQuery(): Unit = runBlocking {
         val order = order {}
-        factory.withSession { session ->
-            session.persist(order)
-                .thenCompose { session.flush() }
-        }.await()
+        persist(order)
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -106,10 +127,7 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
     @Test
     fun deleteQuery(): Unit = runBlocking {
         val order = order {}
-        factory.withSession { session ->
-            session.persist(order)
-                .thenCompose { session.flush() }
-        }.await()
+        persist(order)
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -138,12 +156,7 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
             purchaserId = 2000
             groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1, orderItem2) })
         }
-        factory.withSession { session ->
-            session.persist(order1)
-                .thenCompose { session.persist(order2) }
-                .thenCompose { session.persist(order3) }
-                .thenCompose { session.flush() }
-        }.await()
+        persistAll(order1, order2, order3)
 
         val queryFactory = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,
@@ -169,10 +182,7 @@ class HibernateStageReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJ
     @Test
     fun testTransaction(): Unit = runBlocking {
         val order = order {}
-        factory.withSession { session ->
-            session.persist(order)
-                .thenCompose { session.flush() }
-        }.await()
+        persist(order)
 
         val producer = HibernateStageReactiveQueryFactory(
             sessionFactory = factory,

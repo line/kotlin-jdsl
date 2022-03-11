@@ -22,6 +22,7 @@ class StageSessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback
     private lateinit var sessionFactory: SessionFactory
     private lateinit var entityManagerFactory: EntityManagerFactory
     private val sessionFactoryType = SessionFactory::class.createType()
+    private val entityManagerFactoryType = EntityManagerFactory::class.createType()
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun postProcessTestInstance(testInstance: Any, context: ExtensionContext) {
@@ -42,6 +43,7 @@ class StageSessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback
             .unwrap(SessionFactory::class.java)
 
         injectProperty(testInstance, sessionFactory, sessionFactoryType)
+        injectProperty(testInstance, entityManagerFactory, entityManagerFactoryType)
     }
 
     override fun afterAll(context: ExtensionContext) {

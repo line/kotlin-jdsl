@@ -14,10 +14,13 @@ import kotlin.reflect.KClass
 @ExtendWith(StageSessionFactoryExtension::class)
 interface HibernateCriteriaIntegrationTest : CriteriaQueryDslIntegrationTest<SessionFactory> {
     override suspend fun persist(entity: Any) {
-        retry(10, retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)) {
-            factory.withSession { session ->
-                session.persist(entity).thenCompose { session.flush() }
-            }.await()
+        entityManagerFactory.createEntityManager().apply {
+            transaction.apply {
+                begin()
+                persist(entity)
+                flush()
+                commit()
+            }
         }
     }
 
