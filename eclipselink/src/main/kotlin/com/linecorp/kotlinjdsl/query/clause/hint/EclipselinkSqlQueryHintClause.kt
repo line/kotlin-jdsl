@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import javax.persistence.Query
 
 data class EclipselinkSqlQueryHintClause(
-    val queryHints: List<String>
+    private val queryHints: List<String>
 ) : SqlQueryHintClause<Query> {
     companion object {
         private val log = LoggerFactory.getLogger(EclipselinkSqlQueryHintClause::class.java)

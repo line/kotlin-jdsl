@@ -5,7 +5,7 @@ import org.hibernate.reactive.mutiny.Mutiny
 import org.slf4j.LoggerFactory
 
 data class HibernateSqlMutinyReactiveQueryHintClause<R>(
-    val queryHints: List<String>
+    private val queryHints: List<String>
 ) : SqlQueryHintClause<ReactiveQuery<R>> {
     companion object {
         private val log = LoggerFactory.getLogger(HibernateSqlMutinyReactiveQueryHintClause::class.java)
