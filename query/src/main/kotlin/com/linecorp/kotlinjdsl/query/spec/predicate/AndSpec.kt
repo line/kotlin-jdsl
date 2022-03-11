@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class AndSpec(
-    val predicates: List<PredicateSpec?>,
+    private val predicates: List<PredicateSpec?>,
 ) : PredicateSpec {
     override fun toCriteriaPredicate(
         froms: Froms,

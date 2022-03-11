@@ -6,8 +6,8 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class SubqueryExpressionSpec<T>(
-    val spec: SubquerySpec<T>,
-    val subqueryCreator: SubqueryCreator,
+    private val spec: SubquerySpec<T>,
+    private val subqueryCreator: SubqueryCreator,
 ) : ExpressionSpec<T> {
     override fun toCriteriaExpression(
         froms: Froms,

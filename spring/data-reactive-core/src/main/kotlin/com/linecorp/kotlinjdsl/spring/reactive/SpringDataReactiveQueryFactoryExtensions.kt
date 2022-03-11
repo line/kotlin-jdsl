@@ -8,6 +8,10 @@ inline fun <reified T> SpringDataReactiveQueryFactory.singleQuery(
     noinline dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
 ) = selectQuery(dsl).singleResult
 
+inline fun <reified T> SpringDataReactiveQueryFactory.singleQueryOrNull(
+    noinline dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
+) = selectQuery(dsl).singleResultOrNull
+
 inline fun <reified T> SpringDataReactiveQueryFactory.listQuery(
     noinline dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
 ) = selectQuery(dsl).resultList

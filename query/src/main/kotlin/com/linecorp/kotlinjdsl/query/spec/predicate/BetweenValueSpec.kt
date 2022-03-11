@@ -6,9 +6,9 @@ import javax.persistence.criteria.*
 
 @Suppress("TYPE_MISMATCH_WARNING")
 data class BetweenValueSpec<T, R>(
-    val left: ExpressionSpec<T>,
-    val right1: R,
-    val right2: R,
+    private val left: ExpressionSpec<T>,
+    private val right1: R,
+    private val right2: R,
 ) : PredicateSpec where R : Comparable<R>, R : Any, T : R? {
     override fun toCriteriaPredicate(
         froms: Froms,

@@ -5,8 +5,8 @@ import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.*
 
 data class EqualExpressionSpec<T>(
-    val left: ExpressionSpec<T>,
-    val right: ExpressionSpec<T>,
+    private val left: ExpressionSpec<T>,
+    private val right: ExpressionSpec<T>,
 ) : PredicateSpec {
     override fun toCriteriaPredicate(
         froms: Froms,

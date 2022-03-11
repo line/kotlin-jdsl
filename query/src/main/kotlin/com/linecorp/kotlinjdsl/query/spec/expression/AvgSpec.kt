@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class AvgSpec<T : Number?>(
-    val expression: ExpressionSpec<T>
+    private val expression: ExpressionSpec<T>
 ) : ExpressionSpec<Double> {
     override fun toCriteriaExpression(
         froms: Froms,

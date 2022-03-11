@@ -5,8 +5,8 @@ import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import javax.persistence.criteria.*
 
 data class CaseSpec<T>(
-    val whens: List<WhenSpec<out T>>,
-    val `else`: ExpressionSpec<out T>,
+    private val whens: List<WhenSpec<out T>>,
+    private val `else`: ExpressionSpec<out T>,
 ) : ExpressionSpec<T> {
     override fun toCriteriaExpression(
         froms: Froms,

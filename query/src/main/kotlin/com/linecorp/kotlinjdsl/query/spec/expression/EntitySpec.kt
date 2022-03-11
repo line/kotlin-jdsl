@@ -5,7 +5,7 @@ import javax.persistence.criteria.*
 
 data class EntitySpec<T>(
     val type: Class<T>,
-    val alias: String = "$DEFAULT_ALIAS_TOKEN${type.name}"
+    private val alias: String = "$DEFAULT_ALIAS_TOKEN${type.name}"
 ) : ExpressionSpec<T> {
     companion object {
         private const val DEFAULT_ALIAS_TOKEN = "\\"

@@ -5,9 +5,9 @@ import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.*
 
 data class GreaterThanExpressionSpec<T : Comparable<T>>(
-    val left: ExpressionSpec<T>,
-    val right: ExpressionSpec<T>,
-    val inclusive: Boolean,
+    private val left: ExpressionSpec<T>,
+    private val right: ExpressionSpec<T>,
+    private val inclusive: Boolean,
 ) : PredicateSpec {
     override fun toCriteriaPredicate(
         froms: Froms,

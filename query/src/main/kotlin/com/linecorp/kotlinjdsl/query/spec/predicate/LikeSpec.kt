@@ -6,8 +6,8 @@ import javax.persistence.criteria.*
 
 @Suppress("UNCHECKED_CAST")
 data class LikeSpec(
-    val left: ExpressionSpec<out String?>,
-    val right: String
+    private val left: ExpressionSpec<out String?>,
+    private val right: String
 ) : PredicateSpec {
     override fun toCriteriaPredicate(
         froms: Froms,

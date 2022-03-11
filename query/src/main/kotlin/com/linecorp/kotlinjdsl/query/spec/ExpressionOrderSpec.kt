@@ -6,8 +6,8 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Order
 
 data class ExpressionOrderSpec(
-    val expression: ExpressionSpec<*>,
-    val ascending: Boolean,
+    private val expression: ExpressionSpec<*>,
+    private val ascending: Boolean,
 ) : OrderSpec {
     override fun toCriteriaOrder(
         froms: Froms,

@@ -4,9 +4,9 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class FunctionSpec<T>(
-    val name: String,
-    val returnType: Class<T>,
-    val expressions: List<ExpressionSpec<*>>,
+    private val name: String,
+    private val returnType: Class<T>,
+    private val expressions: List<ExpressionSpec<*>>,
 ) : ExpressionSpec<T> {
     override fun toCriteriaExpression(
         froms: Froms,

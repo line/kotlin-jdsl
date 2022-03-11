@@ -97,6 +97,51 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
     }
 
     @Test
+    fun singleQueryOrNull(): Unit = runBlocking {
+        val order = order {}
+        persist(order)
+
+        val queryFactory = HibernateMutinyReactiveQueryFactory(
+            sessionFactory = factory,
+            subqueryCreator = SubqueryCreatorImpl()
+        )
+
+        val actualOrder = queryFactory.singleQueryOrNull<Order> {
+            select(entity(Order::class))
+            from(entity(Order::class))
+            fetch(Order::groups)
+            fetch(OrderGroup::items)
+            fetch(OrderGroup::address)
+            where(col(Order::id).equal(order.id))
+        }
+
+        assertThat(actualOrder)
+            .isEqualTo(order)
+    }
+
+    @Test
+    fun `singleQueryOrNull null`(): Unit = runBlocking {
+        val order = order {}
+        persist(order)
+
+        val queryFactory = HibernateMutinyReactiveQueryFactory(
+            sessionFactory = factory,
+            subqueryCreator = SubqueryCreatorImpl()
+        )
+
+        val actualOrder = queryFactory.singleQueryOrNull<Order> {
+            select(entity(Order::class))
+            from(entity(Order::class))
+            fetch(Order::groups)
+            fetch(OrderGroup::items)
+            fetch(OrderGroup::address)
+            where(col(Order::id).isNull())
+        }
+
+        assertThat(actualOrder).isNull()
+    }
+
+    @Test
     fun updateQuery(): Unit = runBlocking {
         val order = order {}
         persist(order)
