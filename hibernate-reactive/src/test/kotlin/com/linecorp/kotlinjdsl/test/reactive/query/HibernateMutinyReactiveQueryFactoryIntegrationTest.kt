@@ -16,7 +16,7 @@ import com.linecorp.kotlinjdsl.test.reactive.MutinySessionFactoryExtension
 import com.linecorp.kotlinjdsl.test.reactive.retry
 import com.linecorp.kotlinjdsl.updateQuery
 import io.smallrye.mutiny.Uni
-import kotlinx.coroutines.future.await
+import io.smallrye.mutiny.coroutines.awaitSuspending
 import kotlinx.coroutines.runBlocking
 import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.Test
@@ -48,7 +48,7 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
                             }
                         })
                     }
-            }.subscribeAsCompletionStage().await()
+            }.awaitSuspending()
 
             assertThat(actual.id).isEqualTo(order.id)
         }

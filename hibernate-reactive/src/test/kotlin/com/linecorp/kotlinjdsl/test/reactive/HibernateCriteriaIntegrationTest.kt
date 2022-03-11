@@ -3,6 +3,7 @@ package com.linecorp.kotlinjdsl.test.reactive
 import com.linecorp.kotlinjdsl.ReactiveQueryFactory
 import com.linecorp.kotlinjdsl.query.HibernateMutinyReactiveQueryFactory
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreatorImpl
+import io.smallrye.mutiny.coroutines.awaitSuspending
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.future.await
 import org.hibernate.reactive.mutiny.Mutiny
@@ -39,7 +40,7 @@ interface HibernateCriteriaIntegrationTest : CriteriaQueryDslIntegrationTest<Mut
                 session.merge(entity)
                     .flatMap { session.remove(it) }
                     .flatMap { session.flush() }
-            }.subscribeAsCompletionStage().await()
+            }.awaitSuspending()
         }
     }
 

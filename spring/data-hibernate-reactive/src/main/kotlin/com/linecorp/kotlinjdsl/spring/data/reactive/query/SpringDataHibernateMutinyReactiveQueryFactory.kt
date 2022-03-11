@@ -7,7 +7,7 @@ import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactory
 import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactoryImpl
 import com.linecorp.kotlinjdsl.subquery
 import io.smallrye.mutiny.Uni
-import kotlinx.coroutines.future.await
+import io.smallrye.mutiny.coroutines.awaitSuspending
 import org.hibernate.reactive.mutiny.Mutiny
 import java.util.concurrent.CompletionStage
 import java.util.function.Supplier
@@ -17,11 +17,11 @@ class SpringDataHibernateMutinyReactiveQueryFactory(
 ) {
     suspend fun <T> withFactory(block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>): T =
         sessionFactory.withSession { session -> executeSessionWithFactory(session, block) }
-            .subscribeAsCompletionStage().await()
+            .awaitSuspending()
 
     suspend fun <T> transactionWithFactory(block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>): T =
         sessionFactory.withTransaction { session -> executeSessionWithFactory(session, block) }
-            .subscribeAsCompletionStage().await()
+            .awaitSuspending()
 
     fun <T> subquery(classType: Class<T>, dsl: SubqueryDsl<T>.() -> Unit) = subquery(classType, subqueryCreator, dsl)
 
