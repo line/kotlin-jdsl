@@ -10,6 +10,8 @@ import org.hibernate.reactive.stage.Stage.SessionFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Mono
+import java.util.concurrent.CompletionStage
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -17,11 +19,8 @@ class BookController(
     private val bookService: BookService,
 ) {
     @PostMapping
-    suspend fun createBook(@RequestBody spec: BookService.CreateBookSpec): ResponseEntity<Long> {
-        val book = bookService.create(spec)
-
-        return ResponseEntity.ok(book.id)
-    }
+    fun createBook(@RequestBody spec: BookService.CreateBookSpec): Mono<ResponseEntity<Long>> =
+        Mono.fromCompletionStage { bookService.create(spec) }.map { ResponseEntity.ok().body(it.id) }
 
     @GetMapping("/{bookId}")
     suspend fun findById(@PathVariable bookId: Long): ResponseEntity<Book> {
@@ -43,10 +42,10 @@ class BookService(
     private val sessionFactory: SessionFactory,
     private val queryFactory: SpringDataHibernateStageReactiveQueryFactory,
 ) {
-    suspend fun create(spec: CreateBookSpec): Book {
-        return Book(name = spec.name).also {
-            sessionFactory.withSession { session -> session.persist(it).thenCompose { session.flush() } }.await()
-        }
+    fun create(spec: CreateBookSpec): CompletionStage<Book> {
+        val book = Book(name = spec.name)
+        return sessionFactory.withSession { session -> session.persist(book).thenCompose { session.flush() } }
+            .thenApply { book }
     }
 
     suspend fun findById(id: Long): Book {
