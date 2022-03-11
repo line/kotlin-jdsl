@@ -2,20 +2,20 @@ package com.linecorp.kotlinjdsl.spring.data.reactive.querydsl.predicate
 
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.*
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.springframework.data.domain.Range
 
-internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplPredicateTest : WithKotlinJdslAssertions {
     @Test
     fun not() {
         val predicateSpec: PredicateSpec = mockk()
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = not(predicateSpec)
         }
 
@@ -29,7 +29,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = and(predicateSpec1, predicateSpec2)
         }
 
@@ -43,7 +43,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = and(listOf(predicateSpec1, predicateSpec2))
         }
 
@@ -57,7 +57,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = or(predicateSpec1, predicateSpec2)
         }
 
@@ -71,7 +71,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = or(listOf(predicateSpec1, predicateSpec2))
         }
 
@@ -85,7 +85,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.equal(value)
         }
 
@@ -99,7 +99,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.equal(expressionSpec2)
         }
 
@@ -113,7 +113,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.notEqual(value)
         }
 
@@ -127,7 +127,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.notEqual(expressionSpec2)
         }
 
@@ -142,7 +142,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.`in`(value1, value2)
         }
 
@@ -157,7 +157,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.`in`(listOf(value1, value2))
         }
 
@@ -172,7 +172,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.`in`(expressionSpec2, expressionSpec3)
         }
 
@@ -187,7 +187,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.`in`(listOf(expressionSpec2, expressionSpec3))
         }
 
@@ -201,7 +201,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.greaterThanOrEqualTo(value)
         }
 
@@ -215,7 +215,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.greaterThan(value)
         }
 
@@ -229,7 +229,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.greaterThan(value, inclusive = true)
         }
 
@@ -243,7 +243,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.greaterThanOrEqualTo(expressionSpec2)
         }
 
@@ -257,7 +257,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.greaterThan(expressionSpec2)
         }
 
@@ -271,7 +271,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.greaterThan(expressionSpec2, inclusive = true)
         }
 
@@ -285,7 +285,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.greaterThan(bound)
         }
 
@@ -299,7 +299,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.greaterThan(bound)
         }
 
@@ -313,7 +313,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.lessThanOrEqualTo(value)
         }
 
@@ -327,7 +327,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.lessThan(value)
         }
 
@@ -341,7 +341,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.lessThan(value, inclusive = true)
         }
 
@@ -355,7 +355,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.lessThanOrEqualTo(expressionSpec2)
         }
 
@@ -369,7 +369,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.lessThan(expressionSpec2)
         }
 
@@ -383,7 +383,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.lessThan(expressionSpec2, inclusive = true)
         }
 
@@ -397,7 +397,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.lessThan(bound)
         }
 
@@ -411,7 +411,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.greaterThan(bound)
         }
 
@@ -426,7 +426,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.between(value1, value2)
         }
 
@@ -441,7 +441,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec1.between(expressionSpec2, expressionSpec3)
         }
 
@@ -455,7 +455,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.between(range)
         }
 
@@ -476,7 +476,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.between(range)
         }
 
@@ -491,7 +491,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.isTrue()
         }
 
@@ -504,7 +504,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.isFalse()
         }
 
@@ -517,7 +517,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.isNull()
         }
 
@@ -530,7 +530,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.isNotNull()
         }
 
@@ -544,7 +544,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.like(value)
         }
 
@@ -558,7 +558,7 @@ internal class SpringDataQueryDslImplPredicateTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = expressionSpec.notLike(value)
         }
 

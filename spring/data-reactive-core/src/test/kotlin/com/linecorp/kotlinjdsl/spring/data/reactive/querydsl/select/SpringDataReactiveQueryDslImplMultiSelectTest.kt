@@ -5,15 +5,15 @@ import com.linecorp.kotlinjdsl.query.clause.select.MultiSelectClause
 import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.querydsl.expression.column
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 
-internal class SpringDataQueryDslImplMultiSelectTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplMultiSelectTest : WithKotlinJdslAssertions {
     @Test
     fun select() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Row::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Row::class.java).apply {
             select(distinct = true, listOf(column(Data1::id), column(Data1::name)))
             from(entity(Data1::class))
         }
@@ -67,7 +67,7 @@ internal class SpringDataQueryDslImplMultiSelectTest : WithKotlinJdslAssertions 
     @Test
     fun selectNonDistinct() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Row::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Row::class.java).apply {
             select(listOf(column(Data1::id), column(Data1::name)))
             from(entity(Data1::class))
         }
@@ -121,7 +121,7 @@ internal class SpringDataQueryDslImplMultiSelectTest : WithKotlinJdslAssertions 
     @Test
     fun selectDistinct() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Row::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Row::class.java).apply {
             selectDistinct(listOf(column(Data1::id), column(Data1::name)))
             from(entity(Data1::class))
         }
@@ -175,7 +175,7 @@ internal class SpringDataQueryDslImplMultiSelectTest : WithKotlinJdslAssertions 
     @Test
     fun selectMulti() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Row::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Row::class.java).apply {
             selectMulti(distinct = true, listOf(column(Data1::id), column(Data1::name)))
             from(entity(Data1::class))
         }
@@ -229,7 +229,7 @@ internal class SpringDataQueryDslImplMultiSelectTest : WithKotlinJdslAssertions 
     @Test
     fun selectMultiNonDistinctVararg() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Row::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Row::class.java).apply {
             selectMulti(column(Data1::id), column(Data1::name))
             from(entity(Data1::class))
         }
@@ -283,7 +283,7 @@ internal class SpringDataQueryDslImplMultiSelectTest : WithKotlinJdslAssertions 
     @Test
     fun selectMultiNonDistinctList() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Row::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Row::class.java).apply {
             selectMulti(listOf(column(Data1::id), column(Data1::name)))
             from(entity(Data1::class))
         }
@@ -337,7 +337,7 @@ internal class SpringDataQueryDslImplMultiSelectTest : WithKotlinJdslAssertions 
     @Test
     fun selectMultiDistinctVararg() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Row::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Row::class.java).apply {
             selectDistinctMulti(column(Data1::id), column(Data1::name))
             from(entity(Data1::class))
         }
@@ -391,7 +391,7 @@ internal class SpringDataQueryDslImplMultiSelectTest : WithKotlinJdslAssertions 
     @Test
     fun selectMultiDistinctList() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Row::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Row::class.java).apply {
             selectDistinctMulti(listOf(column(Data1::id), column(Data1::name)))
             from(entity(Data1::class))
         }

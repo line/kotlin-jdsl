@@ -2,15 +2,15 @@ package com.linecorp.kotlinjdsl.spring.data.reactive.querydsl.from
 
 import com.linecorp.kotlinjdsl.query.clause.from.FromClause
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 
-internal class SpringDataQueryDslImplFromTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplFromTest : WithKotlinJdslAssertions {
     @Test
     fun fromJavaClass() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(Data1::class.java)
         }
@@ -44,7 +44,7 @@ internal class SpringDataQueryDslImplFromTest : WithKotlinJdslAssertions {
     @Test
     fun fromKotlinClass() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(Data1::class)
         }
@@ -78,7 +78,7 @@ internal class SpringDataQueryDslImplFromTest : WithKotlinJdslAssertions {
     @Test
     fun fromEntitySpec() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class, "data1"))
         }

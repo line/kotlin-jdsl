@@ -10,7 +10,7 @@ import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.predicate.PredicateDsl
 import org.springframework.data.domain.Range
 
-interface SpringDataPredicateDsl : PredicateDsl {
+interface SpringDataReactivePredicateDsl : PredicateDsl {
     fun <T, R> ExpressionSpec<T>.greaterThan(bound: Range.Bound<R>) where R : Comparable<R>, R : Any, T : R? =
         if (bound.isBounded) {
             GreaterThanValueSpec<T, R>(this, bound.value.get(), bound.isInclusive)

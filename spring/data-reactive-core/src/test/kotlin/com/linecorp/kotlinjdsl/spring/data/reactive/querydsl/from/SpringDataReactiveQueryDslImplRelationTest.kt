@@ -1,16 +1,16 @@
 package com.linecorp.kotlinjdsl.spring.data.reactive.querydsl.from
 
 import com.linecorp.kotlinjdsl.querydsl.from.Relation
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 
-internal class SpringDataQueryDslImplRelationTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplRelationTest : WithKotlinJdslAssertions {
     @Test
     fun on() {
         val actual: Relation<Data1, Data2>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = on(Data1::data2)
         }
 
@@ -21,7 +21,7 @@ internal class SpringDataQueryDslImplRelationTest : WithKotlinJdslAssertions {
     fun onCollection() {
         val actual: Relation<Data1, Data2>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = on(Data1::data2List)
         }
 

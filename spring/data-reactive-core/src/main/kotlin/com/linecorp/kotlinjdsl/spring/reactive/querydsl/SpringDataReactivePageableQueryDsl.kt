@@ -8,7 +8,7 @@ import com.linecorp.kotlinjdsl.querydsl.hint.HintDsl
 import com.linecorp.kotlinjdsl.querydsl.select.MultiSelectDsl
 import com.linecorp.kotlinjdsl.querydsl.select.SingleSelectDsl
 import com.linecorp.kotlinjdsl.querydsl.where.WhereDsl
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.predicate.SpringDataPredicateDsl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.predicate.SpringDataReactivePredicateDsl
 
 /**
  * DSL for Spring Data JPA Pageable
@@ -16,9 +16,9 @@ import com.linecorp.kotlinjdsl.spring.reactive.querydsl.predicate.SpringDataPred
  * Pageable DSL does not support Fetch and GroupBy clause because they have to load a lot of data to memory.
  * To use the Fetch and GroupBy clause for pagination, separate the query.
  */
-interface SpringDataPageableQueryDsl<T> :
+interface SpringDataReactivePageableQueryDsl<T> :
     ExpressionDsl,
-    SpringDataPredicateDsl,
+    SpringDataReactivePredicateDsl,
     SingleSelectDsl<T>,
     MultiSelectDsl<T>,
     FromDsl,

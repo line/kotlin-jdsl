@@ -3,16 +3,16 @@ package com.linecorp.kotlinjdsl.spring.data.reactive.querydsl.from
 import com.linecorp.kotlinjdsl.query.clause.from.JoinClause
 import com.linecorp.kotlinjdsl.query.spec.FetchJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 import javax.persistence.criteria.JoinType
 
-internal class SpringDataQueryDslImplFetchTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplFetchTest : WithKotlinJdslAssertions {
     @Test
     fun fetch() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(Data1::class.java)
             fetch(entity(Data1::class), entity(Data2::class), on(Data1::data2), JoinType.LEFT)

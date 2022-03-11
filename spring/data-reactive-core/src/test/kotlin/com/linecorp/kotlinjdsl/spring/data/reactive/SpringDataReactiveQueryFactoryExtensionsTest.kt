@@ -39,7 +39,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         every { queryFactory.selectQuery<Data1>(any(), any()) } returns reactiveQuery
         every { reactiveQuery.singleResult } returns CompletableFuture.completedFuture(Data1())
 
-        val dsl: SpringDataCriteriaQueryDsl<Data1>.() -> Unit = {
+        val dsl: SpringDataReactiveCriteriaQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
             from(entity(Data1::class))
         }
@@ -64,7 +64,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         every { queryFactory.selectQuery<Data1>(any(), any()) } returns reactiveQuery
         every { reactiveQuery.resultList } returns CompletableFuture.completedFuture(listOf(Data1()))
 
-        val dsl: SpringDataCriteriaQueryDsl<Data1>.() -> Unit = {
+        val dsl: SpringDataReactiveCriteriaQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
             from(entity(Data1::class))
         }
@@ -88,7 +88,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         // given
         every { queryFactory.selectQuery<Data1>(any(), any()) } returns reactiveQuery
 
-        val dsl: SpringDataCriteriaQueryDsl<Data1>.() -> Unit = {
+        val dsl: SpringDataReactiveCriteriaQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
             from(entity(Data1::class))
         }
@@ -111,7 +111,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         // given
         every { queryFactory.updateQuery<Data1>(any(), any()) } returns reactiveQuery
 
-        val dsl: SpringDataCriteriaUpdateQueryDsl.() -> Unit = {
+        val dsl: SpringDataReactiveCriteriaUpdateQueryDsl.() -> Unit = {
             set(col(Data1::id), 1)
             where(col(Data1::id).equal(2))
         }
@@ -134,7 +134,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         // given
         every { queryFactory.deleteQuery<Data1>(any(), any()) } returns reactiveQuery
 
-        val dsl: SpringDataCriteriaDeleteQueryDsl.() -> Unit = {
+        val dsl: SpringDataReactiveCriteriaDeleteQueryDsl.() -> Unit = {
             where(col(Data1::id).equal(1))
         }
 
@@ -156,7 +156,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         // given
         every { queryFactory.subquery<Data1>(any(), any()) } returns subqueryExpressionSpec
 
-        val dsl: SpringDataSubqueryDsl<Data1>.() -> Unit = {
+        val dsl: SpringDataReactiveSubqueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
             from(entity(Data1::class))
         }
@@ -181,7 +181,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
 
         val pageable = PageRequest.of(1, 10)
 
-        val dsl: SpringDataPageableQueryDsl<Data1>.() -> Unit = {
+        val dsl: SpringDataReactivePageableQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
             from(entity(Data1::class))
         }
@@ -208,12 +208,12 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
 
         val pageable = PageRequest.of(1, 10)
 
-        val dsl: SpringDataPageableQueryDsl<Data1>.() -> Unit = {
+        val dsl: SpringDataReactivePageableQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
             from(entity(Data1::class))
         }
 
-        val countProjection: SpringDataPageableQueryDsl<Long>.() -> SingleSelectClause<Long> = {
+        val countProjection: SpringDataReactivePageableQueryDsl<Long>.() -> SingleSelectClause<Long> = {
             select(count(column(Data1::id)))
         }
 

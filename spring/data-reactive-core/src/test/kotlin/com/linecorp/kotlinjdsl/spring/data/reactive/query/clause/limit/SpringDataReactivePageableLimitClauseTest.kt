@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.spring.data.reactive.query.clause.limit
 
 import com.linecorp.kotlinjdsl.query.ReactiveQuery
-import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataPageableLimitClause
+import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataReactivePageableLimitClause
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.confirmVerified
 import io.mockk.every
@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 @ExtendWith(MockKExtension::class)
-internal class SpringDataPageableLimitClauseTest : WithKotlinJdslAssertions {
+internal class SpringDataReactivePageableLimitClauseTest : WithKotlinJdslAssertions {
     @MockK
     private lateinit var query: ReactiveQuery<Int>
 
@@ -27,7 +27,7 @@ internal class SpringDataPageableLimitClauseTest : WithKotlinJdslAssertions {
         every { query.setMaxResults(10) } returns query
 
         // when
-        SpringDataPageableLimitClause<Int>(pageable).apply(query)
+        SpringDataReactivePageableLimitClause<Int>(pageable).apply(query)
 
         // then
         verify(exactly = 1) {
@@ -44,7 +44,7 @@ internal class SpringDataPageableLimitClauseTest : WithKotlinJdslAssertions {
         val pageable = Pageable.unpaged()
 
         // when
-        SpringDataPageableLimitClause<Int>(pageable).apply(query)
+        SpringDataReactivePageableLimitClause<Int>(pageable).apply(query)
 
         // then
         confirmVerified(query)

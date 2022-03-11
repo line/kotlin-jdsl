@@ -2,15 +2,15 @@ package com.linecorp.kotlinjdsl.spring.data.reactive.querydsl.hint
 
 import com.linecorp.kotlinjdsl.query.ReactiveQuery
 import com.linecorp.kotlinjdsl.query.clause.hint.JpaReactiveQueryHintClauseImpl
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 
-internal class SpringDataQueryDslImplHintTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplHintTest : WithKotlinJdslAssertions {
     @Test
     fun noHints() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
         }
@@ -38,7 +38,7 @@ internal class SpringDataQueryDslImplHintTest : WithKotlinJdslAssertions {
     @Test
     fun hintsVararg() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             hints("hint1" to true, "hint2" to "comment")
@@ -74,7 +74,7 @@ internal class SpringDataQueryDslImplHintTest : WithKotlinJdslAssertions {
     @Test
     fun hintsMap() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             hints(mapOf("hint1" to true, "hint2" to "comment"))

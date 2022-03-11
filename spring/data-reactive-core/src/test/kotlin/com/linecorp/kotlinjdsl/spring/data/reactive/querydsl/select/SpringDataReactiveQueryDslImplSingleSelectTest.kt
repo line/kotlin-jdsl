@@ -6,15 +6,15 @@ import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.CountSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.querydsl.expression.column
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 
-internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplSingleSelectTest : WithKotlinJdslAssertions {
     @Test
     fun noSelect() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             from(entity(Data1::class))
         }
 
@@ -47,7 +47,7 @@ internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions
     @Test
     fun selectEntity() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
         }
@@ -81,7 +81,7 @@ internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions
     @Test
     fun selectExpression() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             select(distinct = true, column(Data1::id))
             from(entity(Data1::class))
         }
@@ -115,7 +115,7 @@ internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions
     @Test
     fun selectNonDistinctEntity() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
         }
@@ -149,7 +149,7 @@ internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions
     @Test
     fun selectNonDistinctExpression() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             select(column(Data1::id))
             from(entity(Data1::class))
         }
@@ -183,7 +183,7 @@ internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions
     @Test
     fun selectDistinctEntity() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             selectDistinct(Data1::class.java)
             from(entity(Data1::class))
         }
@@ -217,7 +217,7 @@ internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions
     @Test
     fun selectDistinctExpression() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             selectDistinct(column(Data1::id))
             from(entity(Data1::class))
         }
@@ -253,12 +253,12 @@ internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions
         val countSelectClause: SingleSelectClause<Long>
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             selectDistinct(column(Data1::id))
             from(entity(Data1::class))
         }
 
-        SpringDataReactiveQueryDslImpl(Long::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Long::class.java).apply {
             countSelectClause = select(count(column(Data1::name)))
         }
 

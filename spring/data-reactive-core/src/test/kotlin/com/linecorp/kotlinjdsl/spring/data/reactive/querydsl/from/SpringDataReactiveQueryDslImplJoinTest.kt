@@ -9,20 +9,20 @@ import com.linecorp.kotlinjdsl.query.spec.SimpleJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import javax.persistence.criteria.JoinType
 
-internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplJoinTest : WithKotlinJdslAssertions {
     @Test
     fun on() {
         val predicateSpec: PredicateSpec = mockk()
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = on(predicateSpec)
         }
 
@@ -35,7 +35,7 @@ internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
 
         val actual: PredicateSpec
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = on { predicateSpec }
         }
 
@@ -45,7 +45,7 @@ internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
     @Test
     fun join() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(Data1::class.java)
             join(entity(Data1::class), entity(Data2::class), on(Data1::data2), JoinType.LEFT)
@@ -90,7 +90,7 @@ internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
     @Test
     fun associate() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(Data1::class.java)
             associate(entity(Data1::class), entity(Data2::class), on(Data1::data2), JoinType.LEFT)
@@ -134,7 +134,7 @@ internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
     @Test
     fun updateAssociate() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(Data1::class.java)
             associate(entity(Data1::class), entity(Data2::class), on(Data1::data2), JoinType.LEFT)
@@ -178,7 +178,7 @@ internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
     @Test
     fun updateAssociateOnlyAllowsSimpleAssociatedJoinSpec() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(Data1::class.java)
             associate(entity(Data1::class), entity(Data2::class), on(Data1::data2), JoinType.LEFT)
@@ -200,7 +200,7 @@ internal class SpringDataQueryDslImplJoinTest : WithKotlinJdslAssertions {
         val predicateSpec2: PredicateSpec = mockk()
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(Data1::class.java)
             join(Data2::class, on(predicateSpec1))

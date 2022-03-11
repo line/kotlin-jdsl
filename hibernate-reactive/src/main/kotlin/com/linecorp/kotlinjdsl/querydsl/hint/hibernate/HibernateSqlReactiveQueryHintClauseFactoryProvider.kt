@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.query.clause.hint.HibernateSqlReactiveQueryHintCl
 import com.linecorp.kotlinjdsl.query.clause.hint.SqlQueryHintClause
 import com.linecorp.kotlinjdsl.querydsl.hint.SqlReactiveQueryHintClauseFactoryProvider
 
-class HibernateSqlQueryHintClauseFactoryProvider : SqlReactiveQueryHintClauseFactoryProvider {
+class HibernateSqlReactiveQueryHintClauseFactoryProvider : SqlReactiveQueryHintClauseFactoryProvider {
     override fun <T> factory(): (List<String>) -> SqlQueryHintClause<ReactiveQuery<T>> =
         { HibernateSqlReactiveQueryHintClause(it) }
 

@@ -1,19 +1,19 @@
 package com.linecorp.kotlinjdsl.spring.data.reactive.querydsl.limit
 
 import com.linecorp.kotlinjdsl.query.clause.limit.ReactiveLimitClause
-import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataPageableLimitClause
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataReactivePageableLimitClause
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import javax.persistence.Query
 
-internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplLimitTest : WithKotlinJdslAssertions {
     @Test
     fun noLimit() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
         }
@@ -28,7 +28,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
+            SpringDataReactivePageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -41,7 +41,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
     @Test
     fun offset() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             offset(10)
@@ -57,7 +57,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
+            SpringDataReactivePageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -70,7 +70,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
     @Test
     fun maxResults() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             maxResults(10)
@@ -86,7 +86,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
+            SpringDataReactivePageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -99,7 +99,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
     @Test
     fun limitMaxResults() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             limit(10)
@@ -115,7 +115,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
+            SpringDataReactivePageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -128,7 +128,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
     @Test
     fun limitOffsetAndMaxResults() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             limit(1, 10)
@@ -144,7 +144,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause<Query>(Pageable.unpaged())
+            SpringDataReactivePageableLimitClause<Query>(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -160,7 +160,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val pageable = PageRequest.of(1, 10)
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             this.pageable = pageable
@@ -176,7 +176,7 @@ internal class SpringDataQueryDslImplLimitTest : WithKotlinJdslAssertions {
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.limit).isEqualTo(
-            SpringDataPageableLimitClause<Query>(pageable)
+            SpringDataReactivePageableLimitClause<Query>(pageable)
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()

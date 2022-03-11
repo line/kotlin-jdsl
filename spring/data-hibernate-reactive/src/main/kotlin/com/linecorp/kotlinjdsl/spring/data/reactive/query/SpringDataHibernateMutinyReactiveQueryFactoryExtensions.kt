@@ -6,19 +6,19 @@ import com.linecorp.kotlinjdsl.querydsl.CriteriaUpdateQueryDsl
 import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
 import com.linecorp.kotlinjdsl.spring.reactive.deleteQuery
 import com.linecorp.kotlinjdsl.spring.reactive.listQuery
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataCriteriaQueryDsl
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataPageableQueryDsl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveCriteriaQueryDsl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactivePageableQueryDsl
 import com.linecorp.kotlinjdsl.spring.reactive.singleQuery
 import com.linecorp.kotlinjdsl.spring.reactive.updateQuery
 import org.springframework.data.domain.Pageable
 
 
 suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.singleQuery(
-    noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
+    noinline dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
 ) = withFactory { it.singleQuery(dsl) }
 
 suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.listQuery(
-    noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
+    noinline dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
 ) = withFactory { it.listQuery(dsl) }
 
 suspend inline fun <reified T : Any> SpringDataHibernateMutinyReactiveQueryFactory.updateQuery(
@@ -35,11 +35,11 @@ inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.subquery(
 
 suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.pageQuery(
     pageable: Pageable,
-    noinline dsl: SpringDataPageableQueryDsl<T>.() -> Unit
+    noinline dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit
 ) = withFactory { it.pageQuery(T::class.java, pageable, dsl) }
 
 suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.pageQuery(
     pageable: Pageable,
-    noinline dsl: SpringDataPageableQueryDsl<T>.() -> Unit,
-    noinline countProjection: SpringDataPageableQueryDsl<Long>.() -> SingleSelectClause<Long>
+    noinline dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit,
+    noinline countProjection: SpringDataReactivePageableQueryDsl<Long>.() -> SingleSelectClause<Long>
 ) = withFactory { it.pageQuery(T::class.java, pageable, dsl, countProjection) }

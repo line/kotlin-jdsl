@@ -3,16 +3,16 @@ package com.linecorp.kotlinjdsl.spring.data.reactive.querydsl.where
 import com.linecorp.kotlinjdsl.query.clause.where.WhereClause
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 
-internal class SpringDataQueryDslImplWhereTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplWhereTest : WithKotlinJdslAssertions {
     @Test
     fun noWhere() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
         }
@@ -49,7 +49,7 @@ internal class SpringDataQueryDslImplWhereTest : WithKotlinJdslAssertions {
         val predicateSpec: PredicateSpec = mockk()
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
             where(predicateSpec)
@@ -88,7 +88,7 @@ internal class SpringDataQueryDslImplWhereTest : WithKotlinJdslAssertions {
         val predicateSpec2: PredicateSpec = mockk()
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
             where(predicateSpec1)

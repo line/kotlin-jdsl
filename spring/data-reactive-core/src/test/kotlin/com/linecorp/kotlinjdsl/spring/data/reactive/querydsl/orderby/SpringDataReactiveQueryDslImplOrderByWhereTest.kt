@@ -4,19 +4,19 @@ import com.linecorp.kotlinjdsl.query.clause.orderby.OrderByClause
 import com.linecorp.kotlinjdsl.query.spec.ExpressionOrderSpec
 import com.linecorp.kotlinjdsl.query.spec.OrderSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
-import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataPageableOrderByClause
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataReactivePageableOrderByClause
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
-internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions {
     @Test
     fun noOrderBy() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
         }
@@ -31,7 +31,7 @@ internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.orderBy).isEqualTo(
-            SpringDataPageableOrderByClause(Pageable.unpaged())
+            SpringDataReactivePageableOrderByClause(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -48,7 +48,7 @@ internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions
         val orderSpec2: OrderSpec = mockk()
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             orderBy(orderSpec1, orderSpec2)
@@ -64,7 +64,7 @@ internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.orderBy).isEqualTo(
-            SpringDataPageableOrderByClause(Pageable.unpaged())
+            SpringDataReactivePageableOrderByClause(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -81,7 +81,7 @@ internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions
         val orderSpec2: OrderSpec = mockk()
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             orderBy(listOf(orderSpec1, orderSpec2))
@@ -97,7 +97,7 @@ internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.orderBy).isEqualTo(
-            SpringDataPageableOrderByClause(Pageable.unpaged())
+            SpringDataReactivePageableOrderByClause(Pageable.unpaged())
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -113,7 +113,7 @@ internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions
         val pageable = PageRequest.of(10, 10)
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             this.pageable = pageable
@@ -129,7 +129,7 @@ internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions
         val pageableQuerySpec = actual.createPageableQuerySpec()
 
         assertThat(pageableQuerySpec.orderBy).isEqualTo(
-            SpringDataPageableOrderByClause(pageable)
+            SpringDataReactivePageableOrderByClause(pageable)
         )
 
         val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
@@ -145,7 +145,7 @@ internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions
 
         val actual: OrderSpec
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = expressionSpec.asc()
         }
 
@@ -158,7 +158,7 @@ internal class SpringDataQueryDslImplOrderByWhereTest : WithKotlinJdslAssertions
 
         val actual: OrderSpec
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = expressionSpec.desc()
         }
 

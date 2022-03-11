@@ -2,10 +2,11 @@ package com.linecorp.kotlinjdsl.spring.data.reactive.query
 
 import com.linecorp.kotlinjdsl.query.creator.MutinyReactiveCriteriaQueryCreator
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreator
-import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
+import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
 import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactory
 import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactoryImpl
-import com.linecorp.kotlinjdsl.subquery
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveSubqueryDsl
 import io.smallrye.mutiny.Uni
 import io.smallrye.mutiny.coroutines.awaitSuspending
 import org.hibernate.reactive.mutiny.Mutiny
@@ -23,7 +24,11 @@ class SpringDataHibernateMutinyReactiveQueryFactory(
         sessionFactory.withTransaction { session -> executeSessionWithFactory(session, block) }
             .awaitSuspending()
 
-    fun <T> subquery(classType: Class<T>, dsl: SubqueryDsl<T>.() -> Unit) = subquery(classType, subqueryCreator, dsl)
+    fun <T> subquery(classType: Class<T>, dsl: SpringDataReactiveSubqueryDsl<T>.() -> Unit) =
+        SubqueryExpressionSpec(
+            spec = SpringDataReactiveReactiveQueryDslImpl(classType).apply(dsl).createSubquerySpec(),
+            subqueryCreator = subqueryCreator
+        )
 
     fun <T> executeSessionWithFactory(
         session: Mutiny.Session, block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>

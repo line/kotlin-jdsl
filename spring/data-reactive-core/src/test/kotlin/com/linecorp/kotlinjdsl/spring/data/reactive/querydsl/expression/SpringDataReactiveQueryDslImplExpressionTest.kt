@@ -3,17 +3,17 @@ package com.linecorp.kotlinjdsl.spring.data.reactive.querydsl.expression
 import com.linecorp.kotlinjdsl.query.spec.expression.*
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.expression.WhenDsl
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 
-internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     @Test
     fun entity() {
         val actual: ExpressionSpec<Data1>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = entity(Data1::class)
         }
 
@@ -24,7 +24,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun entityWithAlias() {
         val actual: ExpressionSpec<Data1>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = entity(Data1::class, "data1")
         }
 
@@ -35,7 +35,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun alias() {
         val actual: ExpressionSpec<Data1>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = Data1::class.alias("data1")
         }
 
@@ -46,7 +46,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun literal() {
         val actual: ExpressionSpec<Int>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = literal(10)
         }
 
@@ -57,7 +57,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun nullLiteral() {
         val actual: ExpressionSpec<Int?>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = nullLiteral(Int::class.java)
         }
 
@@ -68,7 +68,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun col() {
         val actual: ExpressionSpec<Int>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = col(entity(Data1::class), Data1::id)
         }
 
@@ -79,7 +79,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun column() {
         val actual: ExpressionSpec<Int>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = column(entity(Data1::class), Data1::id)
         }
 
@@ -90,7 +90,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun max() {
         val actual: ExpressionSpec<Int>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = max(col(entity(Data1::class), Data1::id))
         }
 
@@ -103,7 +103,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun min() {
         val actual: ExpressionSpec<Int>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = min(col(entity(Data1::class), Data1::id))
         }
 
@@ -116,7 +116,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun avg() {
         val actual: ExpressionSpec<Double>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = avg(col(entity(Data1::class), Data1::id))
         }
 
@@ -129,7 +129,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun sum() {
         val actual: ExpressionSpec<Int>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = sum(col(entity(Data1::class), Data1::id))
         }
 
@@ -142,7 +142,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun count() {
         val actual: ExpressionSpec<Long>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = count(distinct = true, col(entity(Data1::class), Data1::id))
         }
 
@@ -155,7 +155,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun countNonDistinct() {
         val actual: ExpressionSpec<Long>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = count(col(entity(Data1::class), Data1::id))
         }
 
@@ -168,7 +168,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun countDistinct() {
         val actual: ExpressionSpec<Long>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = countDistinct(col(entity(Data1::class), Data1::id))
         }
 
@@ -181,7 +181,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun greatest() {
         val actual: ExpressionSpec<Int>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = greatest(col(entity(Data1::class), Data1::id))
         }
 
@@ -194,7 +194,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun least() {
         val actual: ExpressionSpec<Int>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = least(col(entity(Data1::class), Data1::id))
         }
 
@@ -213,7 +213,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
 
         val actual: ExpressionSpec<String?>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = case(
                 listOf(
                     `when`(predicate1).then(expression1),
@@ -243,7 +243,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
 
         val actual: ExpressionSpec<String?>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = case(
                 `when`(predicate1).then(expression1),
                 `when`(predicate2).then(expression2),
@@ -268,7 +268,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
 
         val actual: CaseSpec.WhenSpec<String>
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = `when`(predicate1, expression1)
         }
 
@@ -281,7 +281,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
 
         val actual: WhenDsl
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = `when`(predicate1)
         }
 
@@ -294,7 +294,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
 
         val actual: WhenDsl
 
-        SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             actual = `when` { predicate1 }
         }
 
@@ -306,7 +306,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun functionVarArg() {
         // when
         val actual: FunctionSpec<String>
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = function(
                 "substring",
                 String::class.java,
@@ -334,7 +334,7 @@ internal class SpringDataQueryDslImplExpressionTest : WithKotlinJdslAssertions {
     fun functionList() {
         // when
         val actual: FunctionSpec<String>
-        SpringDataReactiveQueryDslImpl(String::class.java).apply {
+        SpringDataReactiveReactiveQueryDslImpl(String::class.java).apply {
             actual = function(
                 "substring",
                 String::class.java,

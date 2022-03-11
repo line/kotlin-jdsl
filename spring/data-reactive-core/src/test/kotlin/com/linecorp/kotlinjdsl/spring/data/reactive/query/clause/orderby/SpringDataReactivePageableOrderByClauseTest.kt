@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.spring.data.reactive.query.clause.orderby
 
 import com.linecorp.kotlinjdsl.query.spec.Froms
-import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataPageableOrderByClause
+import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataReactivePageableOrderByClause
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -17,7 +17,7 @@ import javax.persistence.criteria.Order
 import javax.persistence.criteria.Root
 
 @ExtendWith(MockKExtension::class)
-internal class SpringDataPageableOrderByClauseTest : WithAssertions {
+internal class SpringDataReactivePageableOrderByClauseTest : WithAssertions {
     @MockK
     private lateinit var froms: Froms
 
@@ -43,7 +43,7 @@ internal class SpringDataPageableOrderByClauseTest : WithAssertions {
         every { query.orderBy(listOf(order)) } returns query
 
         // when
-        SpringDataPageableOrderByClause(pageable).apply(froms, query, criteriaBuilder)
+        SpringDataReactivePageableOrderByClause(pageable).apply(froms, query, criteriaBuilder)
 
         // then
         verify(exactly = 1) {

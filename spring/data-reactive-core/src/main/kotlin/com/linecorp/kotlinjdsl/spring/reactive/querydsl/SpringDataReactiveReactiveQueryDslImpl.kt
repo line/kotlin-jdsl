@@ -9,8 +9,8 @@ import com.linecorp.kotlinjdsl.query.clause.limit.ReactiveLimitClause
 import com.linecorp.kotlinjdsl.query.clause.orderby.CriteriaQueryOrderByClause
 import com.linecorp.kotlinjdsl.query.clause.select.*
 import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
-import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataPageableLimitClause
-import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataPageableOrderByClause
+import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataReactivePageableLimitClause
+import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataReactivePageableOrderByClause
 import org.springframework.data.domain.Pageable
 
 /**
@@ -19,11 +19,11 @@ import org.springframework.data.domain.Pageable
  * Don't use this directly because it's an <string>INTERNAL</strong> class.
  * It does not support backward compatibility.
  */
-class SpringDataReactiveQueryDslImpl<T>(
+class SpringDataReactiveReactiveQueryDslImpl<T>(
     returnType: Class<T>,
 ) : ReactiveQueryDslImpl<T>(returnType),
-    SpringDataCriteriaQueryDsl<T>, SpringDataSubqueryDsl<T>, SpringDataPageableQueryDsl<T>,
-    SpringDataCriteriaUpdateQueryDsl, SpringDataCriteriaDeleteQueryDsl {
+    SpringDataReactiveCriteriaQueryDsl<T>, SpringDataReactiveSubqueryDsl<T>, SpringDataReactivePageableQueryDsl<T>,
+    SpringDataReactiveCriteriaUpdateQueryDsl, SpringDataReactiveCriteriaDeleteQueryDsl {
     var pageable: Pageable = Pageable.unpaged()
 
     fun createPageableQuerySpec(): CriteriaQuerySpec<T, ReactiveQuery<T>> {
@@ -66,10 +66,10 @@ class SpringDataReactiveQueryDslImpl<T>(
     }
 
     private fun getPageableOrderByClause(): CriteriaQueryOrderByClause {
-        return SpringDataPageableOrderByClause(pageable)
+        return SpringDataReactivePageableOrderByClause(pageable)
     }
 
     private fun <Q> getPageableLimitClause(): QueryLimitClause<ReactiveQuery<Q>> {
-        return SpringDataPageableLimitClause(pageable)
+        return SpringDataReactivePageableLimitClause(pageable)
     }
 }

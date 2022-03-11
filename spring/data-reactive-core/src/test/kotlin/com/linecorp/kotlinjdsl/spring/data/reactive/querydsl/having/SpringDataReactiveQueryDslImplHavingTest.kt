@@ -3,16 +3,16 @@ package com.linecorp.kotlinjdsl.spring.data.reactive.querydsl.having
 import com.linecorp.kotlinjdsl.query.clause.having.HavingClause
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveQueryDslImpl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 
-internal class SpringDataQueryDslImplHavingTest : WithKotlinJdslAssertions {
+internal class SpringDataReactiveQueryDslImplHavingTest : WithKotlinJdslAssertions {
     @Test
     fun noHaving() {
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
         }
@@ -49,7 +49,7 @@ internal class SpringDataQueryDslImplHavingTest : WithKotlinJdslAssertions {
         val predicateSpec: PredicateSpec = mockk()
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             having(predicateSpec)
@@ -88,7 +88,7 @@ internal class SpringDataQueryDslImplHavingTest : WithKotlinJdslAssertions {
         val predicateSpec2: PredicateSpec = mockk()
 
         // when
-        val actual = SpringDataReactiveQueryDslImpl(Data1::class.java).apply {
+        val actual = SpringDataReactiveReactiveQueryDslImpl(Data1::class.java).apply {
             select(Data1::class.java)
             from(entity(Data1::class))
             having(predicateSpec1)

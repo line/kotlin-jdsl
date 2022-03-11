@@ -9,8 +9,8 @@ import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.where.WhereDsl
 import com.linecorp.kotlinjdsl.spring.data.reactive.query.*
 import com.linecorp.kotlinjdsl.spring.reactive.listQuery
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataCriteriaQueryDsl
-import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataPageableQueryDsl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveCriteriaQueryDsl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactivePageableQueryDsl
 import com.linecorp.kotlinjdsl.spring.reactive.singleQuery
 import com.linecorp.kotlinjdsl.spring.reactive.updateQuery
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
@@ -225,13 +225,13 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
         val pageable = PageRequest.of(0, 10)
         fun WhereDsl.equalValueSpec() = column(Order::purchaserId).equal(1000L)
 
-        val dsl: SpringDataPageableQueryDsl<Order>.() -> Unit = {
+        val dsl: SpringDataReactivePageableQueryDsl<Order>.() -> Unit = {
             select(entity(Order::class))
             from(entity(Order::class))
             where(equalValueSpec())
         }
 
-        val dslCriteria: SpringDataCriteriaQueryDsl<Order>.() -> Unit = {
+        val dslCriteria: SpringDataReactiveCriteriaQueryDsl<Order>.() -> Unit = {
             select(entity(Order::class))
             from(entity(Order::class))
             where(equalValueSpec())
@@ -251,12 +251,12 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
         // given
         val pageable = PageRequest.of(0, 1, Sort.by(Sort.Direction.DESC, Order::id.name))
 
-        val dsl: SpringDataPageableQueryDsl<Order>.() -> Unit = {
+        val dsl: SpringDataReactivePageableQueryDsl<Order>.() -> Unit = {
             select(entity(Order::class))
             from(entity(Order::class))
         }
 
-        val countProjection: SpringDataPageableQueryDsl<Long>.() -> SingleSelectClause<Long> = {
+        val countProjection: SpringDataReactivePageableQueryDsl<Long>.() -> SingleSelectClause<Long> = {
             select(count(column(Order::purchaserId)))
         }
 
