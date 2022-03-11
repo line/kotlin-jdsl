@@ -15,7 +15,6 @@ import com.linecorp.kotlinjdsl.test.reactive.HibernateCriteriaIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.MutinySessionFactoryExtension
 import com.linecorp.kotlinjdsl.test.reactive.retry
 import com.linecorp.kotlinjdsl.updateQuery
-import io.smallrye.mutiny.Uni
 import io.smallrye.mutiny.coroutines.awaitSuspending
 import kotlinx.coroutines.runBlocking
 import org.hibernate.reactive.mutiny.Mutiny
@@ -40,13 +39,13 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
             val actual = sessionFactory.withSession { session ->
                 session.persist(order).flatMap { session.flush() }
                     .flatMap {
-                        Uni.createFrom().completionStage(queryFactory.executeSessionWithFactory(session) { factory ->
+                        queryFactory.executeSessionWithFactory(session) { factory ->
                             factory.singleQuery<Order> {
                                 select(entity(Order::class))
                                 from(entity(Order::class))
                                 where(col(Order::purchaserId).equal(5000))
                             }
-                        })
+                        }
                     }
             }.awaitSuspending()
 

@@ -36,8 +36,7 @@ class SpringDataHibernateMutinyReactiveQueryFactory(
         )
     }
 
-}
-
-fun <T> uni(stageSupplier: Supplier<CompletionStage<T>>): Uni<T> {
-    return Uni.createFrom().completionStage(stageSupplier)
+    private fun <T> uni(stageSupplier: Supplier<CompletionStage<T>>): Uni<T> {
+        return Uni.createFrom().completionStage(stageSupplier)
+    }
 }
