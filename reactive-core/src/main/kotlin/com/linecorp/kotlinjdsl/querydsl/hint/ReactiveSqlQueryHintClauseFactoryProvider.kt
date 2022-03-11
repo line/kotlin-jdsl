@@ -24,7 +24,7 @@ interface SqlReactiveQueryHintClauseFactoryProvider {
     }
 }
 
-object SqlQueryHintClauseProvider {
+object SqlReactiveQueryHintClauseProvider {
     @Suppress("UNCHECKED_CAST")
     fun <T> provide(hints: List<String>): SqlQueryHintClause<ReactiveQuery<T>> {
         val factory = (SqlReactiveQueryHintClauseFactoryProvider.loadedFactory
