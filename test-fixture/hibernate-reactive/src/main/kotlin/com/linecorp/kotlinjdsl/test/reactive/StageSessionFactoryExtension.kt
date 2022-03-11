@@ -27,7 +27,7 @@ class StageSessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback
     override fun postProcessTestInstance(testInstance: Any, context: ExtensionContext) {
         // hibernate-reactive does not support h2 db officially.
         // So, we initialize the table by using the schema generation function of h2 db in synchronous method existing in hibernate-core.
-        // The reason is that the create-drop function is not a core function of our library.
+        // The reason is that the create function is not a core function of our library.
         val persistenceUnitName = "order"
         val unit = PersistenceXmlParser.locatePersistenceUnits(emptyMap<String, String>()).first { it.name == persistenceUnitName }
         unit.providerClassName = HibernatePersistenceProvider::class.qualifiedName
@@ -39,12 +39,7 @@ class StageSessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback
                 this.javaClass.classLoader
             ).build()
         sessionFactory = Persistence.createEntityManagerFactory(persistenceUnitName)
-            .unwrap(SessionFactory::class.java).apply {
-                // warm up
-                logger.info("warmup order count: ${withSession {
-                    it.createQuery<Long>("SELECT COUNT(o) FROM Order o").singleResult
-                }.toCompletableFuture().get()}")
-            }
+            .unwrap(SessionFactory::class.java)
 
         injectProperty(testInstance, sessionFactory, sessionFactoryType)
     }
