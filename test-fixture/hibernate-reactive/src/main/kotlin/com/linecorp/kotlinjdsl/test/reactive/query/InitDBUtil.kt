@@ -1,15 +1,13 @@
 package com.linecorp.kotlinjdsl.test.reactive.query
 
-import com.linecorp.kotlinjdsl.test.reactive.StageSessionFactoryExtension
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.jpa.HibernatePersistenceProvider
 import org.hibernate.jpa.boot.internal.PersistenceXmlParser
 import org.hibernate.jpa.boot.spi.Bootstrap
-import org.hibernate.reactive.stage.Stage
 import javax.persistence.Persistence
 
 
-fun initFactory(): Stage.SessionFactory {
+inline fun <reified T> initFactory(): T {
     val persistenceUnitName = "order"
     val unit =
         PersistenceXmlParser.locatePersistenceUnits(emptyMap<String, String>()).first { it.name == persistenceUnitName }
@@ -21,8 +19,8 @@ fun initFactory(): Stage.SessionFactory {
     Bootstrap.getEntityManagerFactoryBuilder(
         unit,
         mapOf<Any, Any>(AvailableSettings.HBM2DDL_AUTO to "create"),
-        (StageSessionFactoryExtension::class as Any).javaClass.classLoader
+        (T::class as Any).javaClass.classLoader
     ).build()
     return Persistence.createEntityManagerFactory(persistenceUnitName)
-        .unwrap(Stage.SessionFactory::class.java)
+        .unwrap(T::class.java)
 }

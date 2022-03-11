@@ -6,7 +6,9 @@ dependencies {
 
     compileOnly(Dependencies.hibernateReactive)
     compileOnly(Dependencies.slf4j)
+    compileOnly(Dependencies.mutiny)
 
+    testImplementation(Dependencies.mutiny)
     testImplementation(Modules.testFixtureIntegrationReactive)
     testImplementation(Modules.testFixtureHibernateReactive)
     testImplementation(Dependencies.hibernateReactive)

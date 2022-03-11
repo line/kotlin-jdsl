@@ -6,13 +6,13 @@ import com.linecorp.kotlinjdsl.querydsl.expression.min
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.reactive.HibernateCriteriaIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
-import org.hibernate.reactive.stage.Stage
+import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import javax.persistence.EntityManagerFactory
 
 internal class HibernateCriteriaQueryDslHintIntegrationTest : HibernateCriteriaIntegrationTest {
-    override lateinit var factory: Stage.SessionFactory
+    override lateinit var factory: Mutiny.SessionFactory
     override lateinit var entityManagerFactory: EntityManagerFactory
     private val order1 = order { purchaserId = 1000 }
     private val order2 = order { purchaserId = 1000 }

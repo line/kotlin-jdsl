@@ -12,34 +12,34 @@ import kotlin.reflect.KClass
 interface SpringDataReactiveQueryFactory {
     fun <T> selectQuery(
         returnType: Class<T>,
-        dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
+        dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
     ): ReactiveQuery<T>
 
     fun <T : Any> updateQuery(
         target: KClass<T>,
-        dsl: SpringDataCriteriaUpdateQueryDsl.() -> Unit
+        dsl: SpringDataReactiveCriteriaUpdateQueryDsl.() -> Unit
     ): ReactiveQuery<T>
 
     fun <T : Any> deleteQuery(
         target: KClass<T>,
-        dsl: SpringDataCriteriaDeleteQueryDsl.() -> Unit
+        dsl: SpringDataReactiveCriteriaDeleteQueryDsl.() -> Unit
     ): ReactiveQuery<T>
 
     fun <T> subquery(
         returnType: Class<T>,
-        dsl: SpringDataSubqueryDsl<T>.() -> Unit
+        dsl: SpringDataReactiveSubqueryDsl<T>.() -> Unit
     ): SubqueryExpressionSpec<T>
 
     fun <T> pageQuery(
         returnType: Class<T>,
         pageable: Pageable,
-        dsl: SpringDataPageableQueryDsl<T>.() -> Unit
+        dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit
     ): CompletionStage<Page<T>>
 
     fun <T> pageQuery(
         returnType: Class<T>,
         pageable: Pageable,
-        dsl: SpringDataPageableQueryDsl<T>.() -> Unit,
-        countProjection: SpringDataPageableQueryDsl<Long>.() -> SingleSelectClause<Long>
+        dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit,
+        countProjection: SpringDataReactivePageableQueryDsl<Long>.() -> SingleSelectClause<Long>
     ): CompletionStage<Page<T>>
 }

@@ -27,8 +27,8 @@ import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactoryImpl
-import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataPageableLimitClause
-import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataPageableOrderByClause
+import com.linecorp.kotlinjdsl.spring.reactive.query.clause.limit.SpringDataReactivePageableLimitClause
+import com.linecorp.kotlinjdsl.spring.reactive.query.clause.orderby.SpringDataReactivePageableOrderByClause
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
@@ -201,8 +201,8 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
                 where = WhereClause(PredicateSpec.empty),
                 groupBy = GroupByClause(emptyList()),
                 having = HavingClause(PredicateSpec.empty),
-                orderBy = SpringDataPageableOrderByClause(pageable),
-                limit = SpringDataPageableLimitClause(pageable),
+                orderBy = SpringDataReactivePageableOrderByClause(pageable),
+                limit = SpringDataReactivePageableLimitClause(pageable),
                 jpaHint = JpaReactiveQueryHintClauseImpl(emptyMap()),
                 sqlHint = emptySqlHintClause(),
             )
@@ -279,8 +279,8 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
                 where = WhereClause(PredicateSpec.empty),
                 groupBy = GroupByClause(emptyList()),
                 having = HavingClause(PredicateSpec.empty),
-                orderBy = SpringDataPageableOrderByClause(pageable),
-                limit = SpringDataPageableLimitClause(pageable),
+                orderBy = SpringDataReactivePageableOrderByClause(pageable),
+                limit = SpringDataReactivePageableLimitClause(pageable),
                 jpaHint = JpaReactiveQueryHintClauseImpl(emptyMap()),
                 sqlHint = emptySqlHintClause(),
             )

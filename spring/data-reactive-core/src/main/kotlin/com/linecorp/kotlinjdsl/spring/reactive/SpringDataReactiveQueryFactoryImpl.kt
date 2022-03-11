@@ -19,18 +19,18 @@ class SpringDataReactiveQueryFactoryImpl(
 ) : SpringDataReactiveQueryFactory {
     override fun <T> selectQuery(
         returnType: Class<T>,
-        dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
+        dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
     ): ReactiveQuery<T> {
-        val criteriaQuerySpec = SpringDataReactiveQueryDslImpl(returnType).apply(dsl).createCriteriaQuerySpec()
+        val criteriaQuerySpec = SpringDataReactiveReactiveQueryDslImpl(returnType).apply(dsl).createCriteriaQuerySpec()
 
         return criteriaQueryCreator.createQuery(criteriaQuerySpec)
     }
 
     override fun <T : Any> updateQuery(
         target: KClass<T>,
-        dsl: SpringDataCriteriaUpdateQueryDsl.() -> Unit
+        dsl: SpringDataReactiveCriteriaUpdateQueryDsl.() -> Unit
     ): ReactiveQuery<T> {
-        val criteriaQuerySpec = SpringDataReactiveQueryDslImpl(target.java).apply(dsl).apply {
+        val criteriaQuerySpec = SpringDataReactiveReactiveQueryDslImpl(target.java).apply(dsl).apply {
             from(target)
         }.createCriteriaUpdateQuerySpec()
 
@@ -39,19 +39,19 @@ class SpringDataReactiveQueryFactoryImpl(
 
     override fun <T : Any> deleteQuery(
         target: KClass<T>,
-        dsl: SpringDataCriteriaDeleteQueryDsl.() -> Unit
+        dsl: SpringDataReactiveCriteriaDeleteQueryDsl.() -> Unit
     ): ReactiveQuery<T> {
         return criteriaQueryCreator.createQuery(
-            SpringDataReactiveQueryDslImpl(target.java).apply(dsl).apply { from(target) }
+            SpringDataReactiveReactiveQueryDslImpl(target.java).apply(dsl).apply { from(target) }
                 .createCriteriaDeleteQuerySpec()
         )
     }
 
     override fun <T> subquery(
         returnType: Class<T>,
-        dsl: SpringDataSubqueryDsl<T>.() -> Unit
+        dsl: SpringDataReactiveSubqueryDsl<T>.() -> Unit
     ): SubqueryExpressionSpec<T> {
-        val subquerySpec = SpringDataReactiveQueryDslImpl(returnType).apply(dsl).createSubquerySpec()
+        val subquerySpec = SpringDataReactiveReactiveQueryDslImpl(returnType).apply(dsl).createSubquerySpec()
 
         return SubqueryExpressionSpec(subquerySpec, subqueryCreator)
     }
@@ -59,9 +59,9 @@ class SpringDataReactiveQueryFactoryImpl(
     override fun <T> pageQuery(
         returnType: Class<T>,
         pageable: Pageable,
-        dsl: SpringDataPageableQueryDsl<T>.() -> Unit
+        dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit
     ): CompletionStage<Page<T>> {
-        val appliedDsl = SpringDataReactiveQueryDslImpl(returnType).apply { dsl(); this.pageable = pageable }
+        val appliedDsl = SpringDataReactiveReactiveQueryDslImpl(returnType).apply { dsl(); this.pageable = pageable }
 
         val pageableQuery = criteriaQueryCreator.createQuery(appliedDsl.createPageableQuerySpec())
         return pageableQuery.resultList.thenCompose { pageList ->
@@ -77,11 +77,11 @@ class SpringDataReactiveQueryFactoryImpl(
     override fun <T> pageQuery(
         returnType: Class<T>,
         pageable: Pageable,
-        dsl: SpringDataPageableQueryDsl<T>.() -> Unit,
-        countProjection: SpringDataPageableQueryDsl<Long>.() -> SingleSelectClause<Long>,
+        dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit,
+        countProjection: SpringDataReactivePageableQueryDsl<Long>.() -> SingleSelectClause<Long>,
     ): CompletionStage<Page<T>> {
-        val appliedDsl = SpringDataReactiveQueryDslImpl(returnType).apply { dsl(); this.pageable = pageable }
-        val countSelectClause = SpringDataReactiveQueryDslImpl(Long::class.java).run(countProjection)
+        val appliedDsl = SpringDataReactiveReactiveQueryDslImpl(returnType).apply { dsl(); this.pageable = pageable }
+        val countSelectClause = SpringDataReactiveReactiveQueryDslImpl(Long::class.java).run(countProjection)
 
         val pageableQuery = criteriaQueryCreator.createQuery(appliedDsl.createPageableQuerySpec())
         return pageableQuery.resultList.thenCompose { pageList ->

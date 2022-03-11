@@ -1,3 +1,7 @@
+coverage {
+    exclude(project)
+}
+
 dependencies {
     implementation(Modules.testFixtureEntity)
     implementation(Dependencies.coroutineJdk8)

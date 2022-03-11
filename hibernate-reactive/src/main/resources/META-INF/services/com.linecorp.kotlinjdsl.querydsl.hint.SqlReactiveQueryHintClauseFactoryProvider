@@ -1,1 +1,1 @@
-com.linecorp.kotlinjdsl.querydsl.hint.hibernate.HibernateSqlQueryHintClauseFactoryProvider
+com.linecorp.kotlinjdsl.querydsl.hint.hibernate.HibernateSqlReactiveQueryHintClauseFactoryProvider
