@@ -19,6 +19,7 @@ dependencies {
     implementation(Dependencies.hibernateReactive)
     implementation(Dependencies.coroutineJdk8)
     implementation(Dependencies.coroutineReactor)
+    implementation(Dependencies.mutiny)
 
     implementation(Modules.testFixtureHibernateReactive)
 
