@@ -13,7 +13,6 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.HibernateCriteriaIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.MutinySessionFactoryExtension
-import com.linecorp.kotlinjdsl.test.reactive.retry
 import com.linecorp.kotlinjdsl.updateQuery
 import io.smallrye.mutiny.coroutines.awaitSuspending
 import kotlinx.coroutines.runBlocking
@@ -35,22 +34,20 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
         )
         val order = order { purchaserId = 5000 }
         val sessionFactory = initFactory<Mutiny.SessionFactory>()
-        retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)) {
-            val actual = sessionFactory.withSession { session ->
-                session.persist(order).flatMap { session.flush() }
-                    .flatMap {
-                        queryFactory.executeSessionWithFactory(session) { factory ->
-                            factory.singleQuery<Order> {
-                                select(entity(Order::class))
-                                from(entity(Order::class))
-                                where(col(Order::purchaserId).equal(5000))
-                            }
+        val actual = sessionFactory.withSession { session ->
+            session.persist(order).flatMap { session.flush() }
+                .flatMap {
+                    queryFactory.executeSessionWithFactory(session) { factory ->
+                        factory.singleQuery<Order> {
+                            select(entity(Order::class))
+                            from(entity(Order::class))
+                            where(col(Order::purchaserId).equal(5000))
                         }
                     }
-            }.awaitSuspending()
+                }
+        }.awaitSuspending()
 
-            assertThat(actual.id).isEqualTo(order.id)
-        }
+        assertThat(actual.id).isEqualTo(order.id)
         sessionFactory.close()
     }
 

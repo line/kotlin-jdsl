@@ -4,13 +4,9 @@ import com.linecorp.kotlinjdsl.ReactiveQueryFactory
 import com.linecorp.kotlinjdsl.query.HibernateMutinyReactiveQueryFactory
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreatorImpl
 import io.smallrye.mutiny.coroutines.awaitSuspending
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.future.await
 import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.extension.ExtendWith
-import org.slf4j.LoggerFactory
 import java.util.concurrent.CompletionStage
-import kotlin.reflect.KClass
 
 @ExtendWith(MutinySessionFactoryExtension::class)
 interface HibernateCriteriaIntegrationTest : CriteriaQueryDslIntegrationTest<Mutiny.SessionFactory> {
@@ -52,18 +48,4 @@ interface HibernateCriteriaIntegrationTest : CriteriaQueryDslIntegrationTest<Mut
             sessionFactory = factory,
             subqueryCreator = SubqueryCreatorImpl()
         ).withFactory(block)
-}
-
-private val log = LoggerFactory.getLogger(HibernateCriteriaIntegrationTest::class.java)
-
-suspend fun retry(maxTries: Long = 0, delayInMillis: Long = 100, retryExceptions: List<KClass<*>>, block: suspend () -> Unit) {
-    runCatching {
-        block()
-    }.onFailure {
-        if (maxTries > 0 && it::class in retryExceptions) {
-            log.warn("Exception occured, retry remain : ${maxTries - 1}", it)
-            delay(delayInMillis)
-            retry(maxTries - 1, delayInMillis, retryExceptions, block)
-        }
-    }
 }
