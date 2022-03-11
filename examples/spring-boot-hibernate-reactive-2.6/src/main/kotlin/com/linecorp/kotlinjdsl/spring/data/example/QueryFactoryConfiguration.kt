@@ -3,16 +3,21 @@ package com.linecorp.kotlinjdsl.spring.data.example
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreatorImpl
 import com.linecorp.kotlinjdsl.spring.data.reactive.query.SpringDataHibernateStageReactiveQueryFactory
 import kotlinx.coroutines.runBlocking
+import org.hibernate.reactive.mutiny.Mutiny
 import org.hibernate.reactive.stage.Stage.SessionFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 
 @Configuration
 class QueryFactoryConfiguration {
     @Bean
-    fun sessionFactory(): SessionFactory =
-        Persistence.createEntityManagerFactory("book").unwrap(SessionFactory::class.java)
+    fun entityManagerFactory() = Persistence.createEntityManagerFactory("book")
+
+    @Bean
+    fun sessionFactory(entityManagerFactory: EntityManagerFactory): SessionFactory =
+        entityManagerFactory.unwrap(SessionFactory::class.java)
             .apply {
                 runBlocking {
                     withSession {
@@ -30,6 +35,10 @@ class QueryFactoryConfiguration {
                     }
                 }
             }
+
+    @Bean
+    fun mutinySessionFactory(entityManagerFactory: EntityManagerFactory) =
+        entityManagerFactory.unwrap(Mutiny.SessionFactory::class.java)
 
     @Bean
     fun queryFactory(sessionFactory: SessionFactory): SpringDataHibernateStageReactiveQueryFactory {

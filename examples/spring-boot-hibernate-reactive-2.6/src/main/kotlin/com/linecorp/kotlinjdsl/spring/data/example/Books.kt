@@ -5,8 +5,7 @@ import com.linecorp.kotlinjdsl.spring.data.example.entity.Book
 import com.linecorp.kotlinjdsl.spring.data.reactive.query.SpringDataHibernateStageReactiveQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.reactive.query.listQuery
 import com.linecorp.kotlinjdsl.spring.data.reactive.query.singleQuery
-import kotlinx.coroutines.future.await
-import org.hibernate.reactive.stage.Stage.SessionFactory
+import org.hibernate.reactive.mutiny.Mutiny
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.*
@@ -39,13 +38,14 @@ class BookController(
 
 @Service
 class BookService(
-    private val sessionFactory: SessionFactory,
+    private val mutinySessionFactory: Mutiny.SessionFactory,
     private val queryFactory: SpringDataHibernateStageReactiveQueryFactory,
 ) {
     fun create(spec: CreateBookSpec): CompletionStage<Book> {
         val book = Book(name = spec.name)
-        return sessionFactory.withSession { session -> session.persist(book).thenCompose { session.flush() } }
-            .thenApply { book }
+        return mutinySessionFactory.withSession { session -> session.persist(book).flatMap { session.flush() } }
+            .map { book }
+            .subscribeAsCompletionStage()
     }
 
     suspend fun findById(id: Long): Book {
