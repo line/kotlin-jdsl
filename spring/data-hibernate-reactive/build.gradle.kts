@@ -13,6 +13,7 @@ dependencies {
     testImplementation(Modules.testFixtureCore)
     testImplementation(Modules.testFixtureEntity)
     testImplementation(Modules.testFixtureHibernateReactive)
+    testImplementation(Modules.testFixtureIntegrationReactive)
     testImplementation(Dependencies.springBootTest)
     testImplementation(Dependencies.springJpa)
     testImplementation(Dependencies.hibernateReactive)

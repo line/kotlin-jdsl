@@ -2,7 +2,7 @@ package com.linecorp.kotlinjdsl.spring.data.example
 
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.spring.data.example.entity.Book
-import com.linecorp.kotlinjdsl.spring.data.reactive.query.SpringDataHibernateStageReactiveQueryFactory
+import com.linecorp.kotlinjdsl.spring.data.reactive.query.SpringDataHibernateMutinyReactiveQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.reactive.query.listQuery
 import com.linecorp.kotlinjdsl.spring.data.reactive.query.singleQuery
 import org.hibernate.reactive.mutiny.Mutiny
@@ -39,7 +39,7 @@ class BookController(
 @Service
 class BookService(
     private val mutinySessionFactory: Mutiny.SessionFactory,
-    private val queryFactory: SpringDataHibernateStageReactiveQueryFactory,
+    private val queryFactory: SpringDataHibernateMutinyReactiveQueryFactory,
 ) {
     fun create(spec: CreateBookSpec): CompletionStage<Book> {
         val book = Book(name = spec.name)

@@ -4,7 +4,7 @@ import org.hibernate.cfg.AvailableSettings
 import org.hibernate.jpa.HibernatePersistenceProvider
 import org.hibernate.jpa.boot.internal.PersistenceXmlParser
 import org.hibernate.jpa.boot.spi.Bootstrap
-import org.hibernate.reactive.stage.Stage.SessionFactory
+import org.hibernate.reactive.mutiny.Mutiny.SessionFactory
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.TestInstancePostProcessor
@@ -18,7 +18,7 @@ import kotlin.reflect.full.createType
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
-class StageSessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback {
+class MutinySessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback {
     private lateinit var sessionFactory: SessionFactory
     private lateinit var entityManagerFactory: EntityManagerFactory
     private val sessionFactoryType = SessionFactory::class.createType()
@@ -28,7 +28,7 @@ class StageSessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback
     override fun postProcessTestInstance(testInstance: Any, context: ExtensionContext) {
         // hibernate-reactive does not support h2 db officially.
         // So, we initialize the table by using the schema generation function of h2 db in synchronous method existing in hibernate-core.
-        // The reason is that the create function is not a core function of our library.
+        // The reason is that the create-drop function is not a core function of our library.
         val persistenceUnitName = "order"
         val unit = PersistenceXmlParser.locatePersistenceUnits(emptyMap<String, String>()).first { it.name == persistenceUnitName }
         unit.providerClassName = HibernatePersistenceProvider::class.qualifiedName
@@ -36,7 +36,7 @@ class StageSessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback
         entityManagerFactory =
             Bootstrap.getEntityManagerFactoryBuilder(
                 unit,
-                mapOf<Any, Any>(AvailableSettings.HBM2DDL_AUTO to "create"),
+                mapOf<Any, Any>(AvailableSettings.HBM2DDL_AUTO to "create-drop"),
                 this.javaClass.classLoader
             ).build()
         sessionFactory = Persistence.createEntityManagerFactory(persistenceUnitName)

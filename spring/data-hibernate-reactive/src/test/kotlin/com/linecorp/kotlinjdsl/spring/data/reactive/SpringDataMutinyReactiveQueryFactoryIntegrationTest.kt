@@ -18,11 +18,13 @@ import com.linecorp.kotlinjdsl.test.entity.EntityDsl
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
-import com.linecorp.kotlinjdsl.test.reactive.StageSessionFactoryExtension
+import com.linecorp.kotlinjdsl.test.reactive.MutinySessionFactoryExtension
 import com.linecorp.kotlinjdsl.test.reactive.query.initFactory
+import com.linecorp.kotlinjdsl.test.reactive.runBlocking
+import io.smallrye.mutiny.Uni
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.future.await
-import org.hibernate.reactive.stage.Stage.SessionFactory
+import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -30,16 +32,13 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
-import java.util.concurrent.CompletionStage
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 
-@ExtendWith(StageSessionFactoryExtension::class)
-internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
-    private lateinit var sessionFactory: SessionFactory
+@ExtendWith(MutinySessionFactoryExtension::class)
+internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
+    private lateinit var sessionFactory: Mutiny.SessionFactory
 
-    private lateinit var queryFactory: SpringDataHibernateStageReactiveQueryFactory
+    private lateinit var queryFactory: SpringDataHibernateMutinyReactiveQueryFactory
 
     private val order1 = order { purchaserId = 1000 }
     private val order2 = order { purchaserId = 1000 }
@@ -49,20 +48,29 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
 
     @BeforeEach
     fun setUp() {
-        queryFactory = SpringDataHibernateStageReactiveQueryFactory(
+        queryFactory = SpringDataHibernateMutinyReactiveQueryFactory(
             sessionFactory = sessionFactory,
             subqueryCreator = SubqueryCreatorImpl()
         )
         sequenceOf(order1, order2, order3, order4).forEach {
             runBlocking {
-                retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)) {
-                    sessionFactory.withSession { session -> session.persist(it).thenCompose { session.flush() } }
-                        .await()
+                retry(
+                    maxTries = 10,
+                    retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)
+                ) {
+                    sessionFactory.withSession { session -> session.persist(it).flatMap { session.flush() } }
+                        .subscribeAsCompletionStage().await()
                 }
             }
         }
     }
-    private suspend fun retry(maxTries: Long = 0, delayInMillis: Long = 100, retryExceptions: List<KClass<*>>, block: suspend () -> Unit) {
+
+    private suspend fun retry(
+        maxTries: Long = 0,
+        delayInMillis: Long = 100,
+        retryExceptions: List<KClass<*>>,
+        block: suspend () -> Unit
+    ) {
         runCatching {
             block()
         }.onFailure {
@@ -78,12 +86,11 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
     @Test
     fun executeWithFactory() = runBlocking {
         val order = order { purchaserId = 5000 }
-        val sessionFactory = initFactory()
+        val sessionFactory = initFactory<Mutiny.SessionFactory>()
         retry(maxTries = 10, retryExceptions = listOf(NullPointerException::class, IllegalStateException::class)) {
-            val actual: CompletionStage<Order> = sessionFactory.withSession { session ->
+            val actual: Uni<Order> = sessionFactory.withSession { session ->
                 queryFactory.executeSessionWithFactory(session) { factory ->
-
-                    session.persist(order).thenCompose { session.flush() }.thenCompose {
+                    session.persist(order).flatMap { session.flush() }.subscribeAsCompletionStage().thenCompose {
                         factory.singleQuery<Order> {
                             select(entity(Order::class))
                             from(entity(Order::class))
@@ -92,7 +99,7 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
                     }
                 }
             }
-            assertThat(actual.await().id).isEqualTo(order.id)
+            assertThat(actual.subscribeAsCompletionStage().await().id).isEqualTo(order.id)
         }
 
         sessionFactory.close()
@@ -287,11 +294,5 @@ internal class SpringDataReactiveQueryFactoryIntegrationTest : EntityDsl, WithKo
         // then
         assertThat(actual).hasSize(1)
         assertThat(actual.content.first().id).isEqualTo(order4.id)
-    }
-}
-
-fun runBlocking(context: CoroutineContext = EmptyCoroutineContext, block: suspend () -> Unit) {
-    kotlinx.coroutines.runBlocking(context) {
-        block()
     }
 }

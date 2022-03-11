@@ -19,18 +19,18 @@ import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import org.hibernate.reactive.stage.Stage
+import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
-internal class StageReactiveCriteriaQueryCreatorTest : WithKotlinJdslAssertions {
+internal class MutinyReactiveCriteriaQueryCreatorTest : WithKotlinJdslAssertions {
     @InjectMockKs
-    private lateinit var sut: StageReactiveCriteriaQueryCreator
+    private lateinit var sut: MutinyReactiveCriteriaQueryCreator
 
     @MockK
-    private lateinit var session: Stage.Session
+    private lateinit var session: Mutiny.Session
 
     @MockK
     private lateinit var froms: Froms
@@ -54,8 +54,8 @@ internal class StageReactiveCriteriaQueryCreatorTest : WithKotlinJdslAssertions 
         ) : CriteriaQuerySpec<T, ReactiveQuery<T>>
         // given
         val createdQuery: CriteriaQuery<Int> = mockk()
-        val query = slot<HibernateStageReactiveQuery<Int>>()
-        val stageQuery: Stage.Query<Int> = mockk()
+        val query = slot<HibernateMutinyReactiveQuery<Int>>()
+        val stageQuery: Mutiny.Query<Int> = mockk()
 
         val select: CriteriaQuerySelectClause<Int> = mockk {
             every { returnType } returns Int::class.java
@@ -136,8 +136,8 @@ internal class StageReactiveCriteriaQueryCreatorTest : WithKotlinJdslAssertions 
         ) : CriteriaUpdateQuerySpec<T, ReactiveQuery<T>>
         // given
         val createdQuery: CriteriaUpdate<Int> = mockk()
-        val query = slot<HibernateStageReactiveQuery<Int>>()
-        val stageQuery: Stage.Query<Int> = mockk()
+        val query = slot<HibernateMutinyReactiveQuery<Int>>()
+        val stageQuery: Mutiny.Query<Int> = mockk()
 
         val from: FromClause<Int> = mockk()
         val associate = SimpleAssociatedJoinClause(emptyList())
@@ -202,8 +202,8 @@ internal class StageReactiveCriteriaQueryCreatorTest : WithKotlinJdslAssertions 
         ) : CriteriaDeleteQuerySpec<T, ReactiveQuery<T>>
         // given
         val createdQuery: CriteriaDelete<Int> = mockk()
-        val query = slot<HibernateStageReactiveQuery<Int>>()
-        val stageQuery: Stage.Query<Int> = mockk()
+        val query = slot<HibernateMutinyReactiveQuery<Int>>()
+        val stageQuery: Mutiny.Query<Int> = mockk()
 
         val from: FromClause<Int> = mockk()
         val associate = SimpleAssociatedJoinClause(emptyList())

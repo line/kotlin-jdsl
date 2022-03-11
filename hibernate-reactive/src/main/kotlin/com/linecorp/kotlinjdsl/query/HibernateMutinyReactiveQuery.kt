@@ -1,19 +1,19 @@
 package com.linecorp.kotlinjdsl.query
 
-import org.hibernate.reactive.stage.Stage
+import org.hibernate.reactive.mutiny.Mutiny
 import java.util.concurrent.CompletionStage
 import javax.persistence.Parameter
 import kotlin.reflect.KClass
 
-class HibernateStageReactiveQuery<R>(private val query: Stage.Query<R>) : ReactiveQuery<R> {
+class HibernateMutinyReactiveQuery<R>(private val query: Mutiny.Query<R>) : ReactiveQuery<R> {
     override val singleResult: CompletionStage<R>
-        get() = query.singleResult
+        get() = query.singleResult.subscribeAsCompletionStage()
     override val resultList: CompletionStage<List<R>>
-        get() = query.resultList
+        get() = query.resultList.subscribeAsCompletionStage()
     override val singleResultOrNull: CompletionStage<R?>
-        get() = query.singleResultOrNull
+        get() = query.singleResultOrNull.subscribeAsCompletionStage()
     override val executeUpdate: CompletionStage<Int>
-        get() = query.executeUpdate()
+        get() = query.executeUpdate().subscribeAsCompletionStage()
 
     override fun setParameter(position: Int, value: Any?): ReactiveQuery<R> {
         query.setParameter(position, value)

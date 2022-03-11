@@ -3,6 +3,7 @@ apply<PublishPlugin>()
 dependencies {
     api(Modules.reactiveCore)
     implementation(Dependencies.coroutineJdk8)
+    implementation(Dependencies.mutiny)
 
     compileOnly(Dependencies.hibernateReactive)
     compileOnly(Dependencies.slf4j)

@@ -1,24 +1,24 @@
 package com.linecorp.kotlinjdsl.query.creator
 
 import com.linecorp.kotlinjdsl.query.*
-import org.hibernate.reactive.stage.Stage
+import org.hibernate.reactive.mutiny.Mutiny
 import javax.persistence.criteria.CriteriaBuilder
 
-class StageReactiveCriteriaQueryCreator(
-    private val criteriaBuilder: CriteriaBuilder, private val session: Stage.Session
+class MutinyReactiveCriteriaQueryCreator(
+    private val criteriaBuilder: CriteriaBuilder, private val session: Mutiny.Session
 ) : ReactiveCriteriaQueryCreator {
     override fun <T> createQuery(spec: CriteriaQuerySpec<T, ReactiveQuery<T>>): ReactiveQuery<T> =
         JpaCriteriaQueryBuilder.createQuery(spec = spec, criteriaBuilder = criteriaBuilder) {
-            HibernateStageReactiveQuery(session.createQuery(it))
+            HibernateMutinyReactiveQuery(session.createQuery(it))
         }
 
     override fun <T> createQuery(spec: CriteriaUpdateQuerySpec<T, ReactiveQuery<T>>) =
         JpaCriteriaQueryBuilder.createQuery(spec = spec, criteriaBuilder = criteriaBuilder) {
-            HibernateStageReactiveQuery(session.createQuery(it))
+            HibernateMutinyReactiveQuery(session.createQuery(it))
         }
 
     override fun <T> createQuery(spec: CriteriaDeleteQuerySpec<T, ReactiveQuery<T>>) =
         JpaCriteriaQueryBuilder.createQuery(spec = spec, criteriaBuilder = criteriaBuilder) {
-            HibernateStageReactiveQuery(session.createQuery(it))
+            HibernateMutinyReactiveQuery(session.createQuery(it))
         }
 }

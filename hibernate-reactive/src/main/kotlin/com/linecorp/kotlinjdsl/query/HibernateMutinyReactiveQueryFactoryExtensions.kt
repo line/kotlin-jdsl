@@ -9,23 +9,23 @@ import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
 import com.linecorp.kotlinjdsl.singleQuery
 import com.linecorp.kotlinjdsl.updateQuery
 
-suspend inline fun <reified T> HibernateStageReactiveQueryFactory.singleQuery(
+suspend inline fun <reified T> HibernateMutinyReactiveQueryFactory.singleQuery(
     noinline dsl: CriteriaQueryDsl<T>.() -> Unit
 ) = withFactory { it.singleQuery(dsl) }
 
-suspend inline fun <reified T> HibernateStageReactiveQueryFactory.listQuery(
+suspend inline fun <reified T> HibernateMutinyReactiveQueryFactory.listQuery(
     noinline dsl: CriteriaQueryDsl<T>.() -> Unit
 ) = withFactory { it.listQuery(dsl) }
 
-suspend inline fun <reified T : Any> HibernateStageReactiveQueryFactory.updateQuery(
+suspend inline fun <reified T : Any> HibernateMutinyReactiveQueryFactory.updateQuery(
     noinline dsl: CriteriaUpdateQueryDsl.() -> Unit
 ) = withFactory { it.updateQuery<T>(dsl).executeUpdate }
 
-suspend inline fun <reified T : Any> HibernateStageReactiveQueryFactory.deleteQuery(
+suspend inline fun <reified T : Any> HibernateMutinyReactiveQueryFactory.deleteQuery(
     noinline dsl: CriteriaDeleteQueryDsl.() -> Unit
 ) = withFactory { it.deleteQuery<T>(dsl).executeUpdate }
 
-inline fun <reified T> HibernateStageReactiveQueryFactory.subquery(
+inline fun <reified T> HibernateMutinyReactiveQueryFactory.subquery(
     noinline dsl: SubqueryDsl<T>.() -> Unit
 ) = subquery(T::class.java, dsl)
 

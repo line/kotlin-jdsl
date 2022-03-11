@@ -2,11 +2,11 @@ package com.linecorp.kotlinjdsl.test.reactive.integration.querydsl.expression
 
 import com.linecorp.kotlinjdsl.test.reactive.HibernateCriteriaIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.querydsl.expression.AbstractCriteriaQueryDslExpressionIntegrationTest
-import org.hibernate.reactive.stage.Stage
+import org.hibernate.reactive.mutiny.Mutiny
 import javax.persistence.EntityManagerFactory
 
 internal class HibernateCriteriaQueryDslExpressionIntegrationTest :
-    HibernateCriteriaIntegrationTest, AbstractCriteriaQueryDslExpressionIntegrationTest<Stage.SessionFactory>() {
-    override lateinit var factory: Stage.SessionFactory
+    HibernateCriteriaIntegrationTest, AbstractCriteriaQueryDslExpressionIntegrationTest<Mutiny.SessionFactory>() {
+    override lateinit var factory: Mutiny.SessionFactory
     override lateinit var entityManagerFactory: EntityManagerFactory
 }

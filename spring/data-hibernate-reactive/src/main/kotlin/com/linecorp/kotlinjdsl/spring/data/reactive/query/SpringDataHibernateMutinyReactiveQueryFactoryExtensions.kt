@@ -13,32 +13,32 @@ import com.linecorp.kotlinjdsl.spring.reactive.updateQuery
 import org.springframework.data.domain.Pageable
 
 
-suspend inline fun <reified T> SpringDataHibernateStageReactiveQueryFactory.singleQuery(
+suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.singleQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
 ) = withFactory { it.singleQuery(dsl) }
 
-suspend inline fun <reified T> SpringDataHibernateStageReactiveQueryFactory.listQuery(
+suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.listQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
 ) = withFactory { it.listQuery(dsl) }
 
-suspend inline fun <reified T : Any> SpringDataHibernateStageReactiveQueryFactory.updateQuery(
+suspend inline fun <reified T : Any> SpringDataHibernateMutinyReactiveQueryFactory.updateQuery(
     noinline dsl: CriteriaUpdateQueryDsl.() -> Unit
 ) = withFactory { it.updateQuery<T>(dsl).executeUpdate }
 
-suspend inline fun <reified T : Any> SpringDataHibernateStageReactiveQueryFactory.deleteQuery(
+suspend inline fun <reified T : Any> SpringDataHibernateMutinyReactiveQueryFactory.deleteQuery(
     noinline dsl: CriteriaDeleteQueryDsl.() -> Unit
 ) = withFactory { it.deleteQuery<T>(dsl).executeUpdate }
 
-inline fun <reified T> SpringDataHibernateStageReactiveQueryFactory.subquery(
+inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.subquery(
     noinline dsl: SubqueryDsl<T>.() -> Unit
 ) = subquery(T::class.java, dsl)
 
-suspend inline fun <reified T> SpringDataHibernateStageReactiveQueryFactory.pageQuery(
+suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.pageQuery(
     pageable: Pageable,
     noinline dsl: SpringDataPageableQueryDsl<T>.() -> Unit
 ) = withFactory { it.pageQuery(T::class.java, pageable, dsl) }
 
-suspend inline fun <reified T> SpringDataHibernateStageReactiveQueryFactory.pageQuery(
+suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.pageQuery(
     pageable: Pageable,
     noinline dsl: SpringDataPageableQueryDsl<T>.() -> Unit,
     noinline countProjection: SpringDataPageableQueryDsl<Long>.() -> SingleSelectClause<Long>
