@@ -13,7 +13,7 @@ import javax.persistence.criteria.Subquery
  * It does not support backward compatibility.
  */
 data class HavingClause(
-    val predicate: PredicateSpec,
+    private val predicate: PredicateSpec,
 ) : CriteriaQueryHavingClause, SubqueryHavingClause {
     override fun apply(froms: Froms, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder) {
         applyInternally(froms, query, criteriaBuilder)

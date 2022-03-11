@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable
 import javax.persistence.Query
 
 data class SpringDataPageableLimitClause<Q : Query>(
-    val pageable: Pageable
+    private val pageable: Pageable
 ) : QueryLimitClause<Q> {
     override fun apply(query: Q) {
         if (pageable.isPaged) {

@@ -12,7 +12,7 @@ import javax.persistence.criteria.CriteriaUpdate
  * It does not support backward compatibility.
  */
 data class FromClause<T>(
-    val entity: EntitySpec<T>,
+    private val entity: EntitySpec<T>,
 ) {
     fun join(joinClause: JoinClause, query: AbstractQuery<*>): Froms {
         return Joiner(entity, joinClause.joins, query).joinAll()

@@ -11,7 +11,7 @@ import javax.persistence.criteria.CriteriaQuery
  * It does not support backward compatibility.
  */
 data class OrderByClause(
-    val orders: List<OrderSpec>,
+    private val orders: List<OrderSpec>,
 ) : CriteriaQueryOrderByClause {
     companion object {
         val empty = OrderByClause(emptyList())

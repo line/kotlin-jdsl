@@ -10,7 +10,7 @@ import javax.persistence.criteria.*
  * It does not support backward compatibility.
  */
 data class WhereClause(
-    val predicate: PredicateSpec
+    private val predicate: PredicateSpec
 ) : CriteriaQueryWhereClause, SubqueryWhereClause {
     override fun <T> apply(froms: Froms, query: CriteriaQuery<T>, criteriaBuilder: CriteriaBuilder) {
         applyInternally(froms, query, criteriaBuilder)

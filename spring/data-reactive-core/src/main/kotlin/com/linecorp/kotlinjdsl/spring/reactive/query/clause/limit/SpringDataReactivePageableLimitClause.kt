@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.query.clause.limit.QueryLimitClause
 import org.springframework.data.domain.Pageable
 
 data class SpringDataReactivePageableLimitClause<Q>(
-    val pageable: Pageable
+    private val pageable: Pageable
 ) : QueryLimitClause<ReactiveQuery<Q>> {
     override fun apply(query: ReactiveQuery<Q>) {
         if (pageable.isPaged) {

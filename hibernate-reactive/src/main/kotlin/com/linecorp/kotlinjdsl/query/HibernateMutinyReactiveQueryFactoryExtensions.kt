@@ -28,4 +28,3 @@ suspend inline fun <reified T : Any> HibernateMutinyReactiveQueryFactory.deleteQ
 inline fun <reified T> HibernateMutinyReactiveQueryFactory.subquery(
     noinline dsl: SubqueryDsl<T>.() -> Unit
 ) = subquery(T::class.java, dsl)
-

@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 
 data class SpringDataPageableOrderByClause(
-    val pageable: Pageable
+    private val pageable: Pageable
 ) : CriteriaQueryOrderByClause {
     override fun apply(froms: Froms, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder) {
         query.orderBy(QueryUtils.toOrders(pageable.sort, froms.root, criteriaBuilder))
