@@ -15,4 +15,3 @@ interface CriteriaQueryDslIntegrationTest<S> : EntityDsl, WithKotlinJdslAssertio
     suspend fun removeAll(entities: Collection<Any>)
     suspend fun <T> withFactory(block: (ReactiveQueryFactory) -> CompletionStage<T>): T
 }
-

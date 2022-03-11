@@ -6,7 +6,6 @@ import org.hibernate.jpa.boot.internal.PersistenceXmlParser
 import org.hibernate.jpa.boot.spi.Bootstrap
 import org.hibernate.reactive.stage.Stage.SessionFactory
 import org.junit.jupiter.api.extension.AfterAllCallback
-import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.TestInstancePostProcessor
 import org.slf4j.LoggerFactory
@@ -36,11 +35,16 @@ class StageSessionFactoryExtension : TestInstancePostProcessor, AfterAllCallback
         entityManagerFactory =
             Bootstrap.getEntityManagerFactoryBuilder(
                 unit,
-                mapOf<Any, Any>(AvailableSettings.HBM2DDL_AUTO to "create-drop"),
+                mapOf<Any, Any>(AvailableSettings.HBM2DDL_AUTO to "create"),
                 this.javaClass.classLoader
             ).build()
         sessionFactory = Persistence.createEntityManagerFactory(persistenceUnitName)
-            .unwrap(SessionFactory::class.java)
+            .unwrap(SessionFactory::class.java).apply {
+                // warm up
+                logger.info("warmup order count: ${withSession {
+                    it.createQuery<Long>("SELECT COUNT(o) FROM Order o").singleResult
+                }.toCompletableFuture().get()}")
+            }
 
         injectProperty(testInstance, sessionFactory, sessionFactoryType)
     }

@@ -20,9 +20,14 @@ fun initFactory(): Stage.SessionFactory {
     // The reason is that the create-drop function is not a core function of our library.
     Bootstrap.getEntityManagerFactoryBuilder(
         unit,
-        mapOf<Any, Any>(AvailableSettings.HBM2DDL_AUTO to "create-drop"),
+        mapOf<Any, Any>(AvailableSettings.HBM2DDL_AUTO to "create"),
         (StageSessionFactoryExtension::class as Any).javaClass.classLoader
     ).build()
     return Persistence.createEntityManagerFactory(persistenceUnitName)
-        .unwrap(Stage.SessionFactory::class.java)
+        .unwrap(Stage.SessionFactory::class.java).apply {
+            // warm up
+            withSession {
+                it.createQuery<Long>("SELECT COUNT(o) FROM Order o").singleResult
+            }.toCompletableFuture().get()
+        }
 }
