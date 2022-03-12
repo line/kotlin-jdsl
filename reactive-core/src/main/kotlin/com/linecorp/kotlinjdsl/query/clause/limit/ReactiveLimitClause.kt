@@ -4,8 +4,8 @@ import com.linecorp.kotlinjdsl.query.ReactiveQuery
 
 
 data class ReactiveLimitClause<R>(
-    val offset: Int?,
-    val maxResults: Int?,
+    private val offset: Int?,
+    private val maxResults: Int?,
 ) : QueryLimitClause<ReactiveQuery<R>> {
     companion object {
         val empty = ReactiveLimitClause<Any>(null, null)
