@@ -20,7 +20,7 @@ internal class EclipselinkSqlQueryHintClauseTest {
         assertDoesNotThrow { sut.apply(persistenceQuery) }
 
         verify {
-            query setProperty DatabaseQuery::setHintString.name value "hint"
+            query.hintString = "hint"
             persistenceQuery.unwrap(DatabaseQuery::class.java)
         }
     }
