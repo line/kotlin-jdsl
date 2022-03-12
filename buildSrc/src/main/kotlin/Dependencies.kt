@@ -51,7 +51,7 @@ object Dependencies {
 
     const val h2 = "com.h2database:h2:1.4.200"
 
-    const val mutinyVersion = "1.3.1"
+    const val mutinyVersion = "1.4.0"
     const val mutinyCore = "io.smallrye.reactive:mutiny:$mutinyVersion"
     const val mutinyKotlin = "io.smallrye.reactive:mutiny-kotlin:$mutinyVersion"
     val mutiny = listOf(mutinyCore, mutinyKotlin)
