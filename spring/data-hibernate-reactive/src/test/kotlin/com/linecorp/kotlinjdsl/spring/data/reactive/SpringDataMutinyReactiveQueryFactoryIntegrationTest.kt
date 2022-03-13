@@ -63,16 +63,16 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
         val sessionFactory = initFactory<Mutiny.SessionFactory>()
         val actual: Uni<Order> = sessionFactory.withSession { session ->
             queryFactory.executeSessionWithFactory(session) { factory ->
-                session.persist(order).flatMap { session.flush() }.subscribeAsCompletionStage().thenCompose {
-                    factory.singleQuery<Order> {
-                        select(entity(Order::class))
-                        from(entity(Order::class))
-                        where(col(Order::purchaserId).equal(5000))
-                    }
-                }
+                session.persist(order).flatMap { session.flush() }.awaitSuspending()
+
+                factory.singleQuery<Order> {
+                    select(entity(Order::class))
+                    from(entity(Order::class))
+                    where(col(Order::purchaserId).equal(5000))
+                }.await()
             }
         }
-        assertThat(actual.subscribeAsCompletionStage().await().id).isEqualTo(order.id)
+        assertThat(actual.awaitSuspending().id).isEqualTo(order.id)
 
         sessionFactory.close()
     }
@@ -176,23 +176,22 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
         // when
         try {
             queryFactory.transactionWithFactory { queryFactory ->
-                queryFactory.listQuery<Order> {
+                val orders = queryFactory.listQuery<Order> {
                     select(entity(Order::class))
                     from(entity(Order::class))
                     fetch(Order::groups)
                     fetch(OrderGroup::items)
                     fetch(OrderGroup::address)
-                }.thenCompose { orders ->
-                    queryFactory.updateQuery<Order> {
-                        where(col(Order::id).equal(orders.first().id))
-                        set(col(Order::purchaserId), orders.first().purchaserId + 1)
-                    }.executeUpdate.thenApply { orders }
-                        .thenCompose {
-                            queryFactory.updateQuery<Order> {
-                                throw IllegalStateException("transaction rollback")
-                            }.executeUpdate.thenApply { orders }
-                        }
-                }
+                }.await()
+
+                queryFactory.updateQuery<Order> {
+                    where(col(Order::id).equal(orders.first().id))
+                    set(col(Order::purchaserId), orders.first().purchaserId + 1)
+                }.executeUpdate.await()
+
+                queryFactory.updateQuery<Order> {
+                    throw IllegalStateException("transaction rollback")
+                }.executeUpdate.await()
             }
         } catch (e: IllegalStateException) {
             assertThat(e).hasMessage("transaction rollback")
@@ -206,7 +205,7 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
                 fetch(OrderGroup::items)
                 fetch(OrderGroup::address)
                 where(col(Order::id).equal(order1.id))
-            }
+            }.await()
         }).isEqualTo(order1)
     }
 

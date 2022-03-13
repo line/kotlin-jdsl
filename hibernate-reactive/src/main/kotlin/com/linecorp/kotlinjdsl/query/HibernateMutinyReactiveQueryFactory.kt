@@ -7,40 +7,42 @@ import com.linecorp.kotlinjdsl.query.creator.SubqueryCreator
 import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
 import com.linecorp.kotlinjdsl.subquery
 import io.smallrye.mutiny.Uni
+import io.smallrye.mutiny.coroutines.asUni
 import io.smallrye.mutiny.coroutines.awaitSuspending
+import kotlinx.coroutines.*
 import org.hibernate.reactive.mutiny.Mutiny
 import org.hibernate.reactive.mutiny.Mutiny.SessionFactory
-import java.util.concurrent.CompletionStage
-import java.util.function.Supplier
 
 class HibernateMutinyReactiveQueryFactory(
     private val sessionFactory: SessionFactory,
     private val subqueryCreator: SubqueryCreator,
 ) {
-    suspend fun <T> withFactory(block: (ReactiveQueryFactory) -> CompletionStage<T>): T =
-        sessionFactory.withSession { session -> executeSessionWithFactory(session, block) }
-            .awaitSuspending()
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    suspend fun <T> withFactory(block: suspend (ReactiveQueryFactory) -> T): T =
+        sessionFactory.withSession {
+            makeFactory(it).let { GlobalScope.async(Dispatchers.Unconfined) { block(it) } }.asUni()
+        }.awaitSuspending()
 
-    suspend fun <T> transactionWithFactory(block: (ReactiveQueryFactory) -> CompletionStage<T>): T =
-        sessionFactory.withTransaction { session -> executeSessionWithFactory(session, block) }
-            .awaitSuspending()
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    suspend fun <T> transactionWithFactory(block: suspend (ReactiveQueryFactory) -> T): T =
+        sessionFactory.withTransaction { session ->
+            makeFactory(session).let { GlobalScope.async(Dispatchers.Unconfined) { block(it) } }.asUni()
+        }.awaitSuspending()
 
     fun <T> subquery(classType: Class<T>, dsl: SubqueryDsl<T>.() -> Unit) = subquery(classType, subqueryCreator, dsl)
 
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
     fun <T> executeSessionWithFactory(
         session: Mutiny.Session,
-        block: (ReactiveQueryFactory) -> CompletionStage<T>
+        block: suspend (ReactiveQueryFactory) -> T
     ): Uni<T> =
-        uni {
-            with(
-                ReactiveQueryFactoryImpl(
-                    subqueryCreator = subqueryCreator,
-                    criteriaQueryCreator = MutinyReactiveCriteriaQueryCreator(sessionFactory.criteriaBuilder, session)
-                ), block
-            )
-        }
+        GlobalScope.async(Dispatchers.Unconfined) { block(makeFactory(session)) }.asUni()
 
-    private fun <T> uni(stageSupplier: Supplier<CompletionStage<T>>): Uni<T> {
-        return Uni.createFrom().completionStage(stageSupplier)
-    }
+    private fun makeFactory(it: Mutiny.Session) = ReactiveQueryFactoryImpl(
+        subqueryCreator = subqueryCreator,
+        criteriaQueryCreator = MutinyReactiveCriteriaQueryCreator(sessionFactory.criteriaBuilder, it)
+    )
 }

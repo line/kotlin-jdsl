@@ -3,7 +3,6 @@ package com.linecorp.kotlinjdsl.test.reactive
 import com.linecorp.kotlinjdsl.ReactiveQueryFactory
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.EntityDsl
-import java.util.concurrent.CompletionStage
 import javax.persistence.EntityManagerFactory
 
 interface CriteriaQueryDslIntegrationTest<S> : EntityDsl, WithKotlinJdslAssertions {
@@ -15,5 +14,5 @@ interface CriteriaQueryDslIntegrationTest<S> : EntityDsl, WithKotlinJdslAssertio
     suspend fun persistAll(entities: Collection<Any>)
     suspend fun removeAll(vararg entities: Any)
     suspend fun removeAll(entities: Collection<Any>)
-    suspend fun <T> withFactory(block: (ReactiveQueryFactory) -> CompletionStage<T>): T
+    suspend fun <T> withFactory(block: suspend (ReactiveQueryFactory) -> T): T
 }

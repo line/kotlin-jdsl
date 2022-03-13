@@ -6,6 +6,7 @@ import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
+import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.Test
 
 abstract class AbstractLimitDslTest<S> : CriteriaQueryDslIntegrationTest<S>, WithKotlinJdslAssertions {
@@ -25,7 +26,7 @@ abstract class AbstractLimitDslTest<S> : CriteriaQueryDslIntegrationTest<S>, Wit
                 from(entity(Order::class))
                 orderBy(col(Order::purchaserId).asc())
                 offset(1)
-            }
+            }.await()
         }
 
         // then
@@ -48,7 +49,7 @@ abstract class AbstractLimitDslTest<S> : CriteriaQueryDslIntegrationTest<S>, Wit
                 from(entity(Order::class))
                 orderBy(col(Order::purchaserId).asc())
                 maxResults(2)
-            }
+            }.await()
         }
 
         // then

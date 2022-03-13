@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
+import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -46,7 +47,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 from(entity(Order::class))
                 where(not(col(Order::purchaserId).equal(1000)))
                 orderBy(col(Order::id).asc())
-            }
+            }.await()
         }
 
         // then
@@ -66,7 +67,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                         col(OrderItem::price).equal(10.toBigDecimal())
                     )
                 )
-            }
+            }.await()
         }
 
         // then
@@ -86,7 +87,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                         col(OrderItem::price).equal(20.toBigDecimal())
                     )
                 )
-            }
+            }.await()
         }
 
         // then
@@ -101,7 +102,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::id).equal(orderItem1.id))
-            }
+            }.await()
         }
 
         // then
@@ -116,7 +117,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(Order::id))
                 from(entity(Order::class))
                 where(col(Order::purchaserId).notEqual(1000))
-            }
+            }.await()
         }
 
         // then
@@ -131,7 +132,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::id).`in`(orderItem1.id, orderItem2.id))
-            }
+            }.await()
         }
 
         // then
@@ -146,7 +147,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).lessThanOrEqualTo(20.toBigDecimal()))
-            }
+            }.await()
         }
 
         // then
@@ -161,7 +162,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).lessThan(20.toBigDecimal()))
-            }
+            }.await()
         }
 
         // then
@@ -176,7 +177,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).greaterThanOrEqualTo(20.toBigDecimal()))
-            }
+            }.await()
         }
 
         // then
@@ -191,7 +192,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).greaterThan(20.toBigDecimal()))
-            }
+            }.await()
         }
 
         // then
@@ -206,7 +207,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).between(20.toBigDecimal(), 40.toBigDecimal()))
-            }
+            }.await()
         }
 
         // then
@@ -221,7 +222,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::claimed).isTrue())
-            }
+            }.await()
         }
 
         // then
@@ -236,7 +237,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::claimed).isFalse())
-            }
+            }.await()
         }
 
         // then
@@ -251,7 +252,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::productImage).isNull())
-            }
+            }.await()
         }
 
         // then
@@ -266,7 +267,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::productImage).isNotNull())
-            }
+            }.await()
         }
 
         // then
@@ -281,7 +282,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::productName).like("test%"))
-            }
+            }.await()
         }
 
         // then
@@ -296,7 +297,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::productName).notLike("test%"))
-            }
+            }.await()
         }
 
         // then

@@ -11,6 +11,7 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
+import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.Test
 
 abstract class AbstractJoinDslTest<S> : CriteriaQueryDslIntegrationTest<S>, WithKotlinJdslAssertions {
@@ -29,7 +30,7 @@ abstract class AbstractJoinDslTest<S> : CriteriaQueryDslIntegrationTest<S>, With
                 select(col(OrderAddress::id))
                 from(entity(OrderGroup::class))
                 join(OrderGroup::class, OrderAddress::class, on(OrderGroup::address))
-            }
+            }.await()
         }
 
         // then
@@ -54,7 +55,7 @@ abstract class AbstractJoinDslTest<S> : CriteriaQueryDslIntegrationTest<S>, With
                 select(col(OrderItem::productId))
                 from(entity(OrderGroup::class))
                 join(OrderGroup::class, OrderItem::class, on(OrderGroup::items))
-            }
+            }.await()
         }
 
         // then
@@ -83,7 +84,7 @@ abstract class AbstractJoinDslTest<S> : CriteriaQueryDslIntegrationTest<S>, With
                 select(col(Delivery::id))
                 from(entity(Order::class))
                 join(Delivery::class, on { col(Delivery::orderId).equal(col(Order::id)) })
-            }
+            }.await()
         }
 
         // then
@@ -107,7 +108,7 @@ abstract class AbstractJoinDslTest<S> : CriteriaQueryDslIntegrationTest<S>, With
                 select(col(Address::zipCode))
                 from(entity(OrderAddress::class))
                 associate(OrderAddress::class, Address::class, on(OrderAddress::address))
-            }
+            }.await()
         }
 
         // then

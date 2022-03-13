@@ -6,7 +6,6 @@ import com.linecorp.kotlinjdsl.query.creator.SubqueryCreatorImpl
 import io.smallrye.mutiny.coroutines.awaitSuspending
 import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.extension.ExtendWith
-import java.util.concurrent.CompletionStage
 
 @ExtendWith(MutinySessionFactoryExtension::class)
 interface HibernateCriteriaIntegrationTest : CriteriaQueryDslIntegrationTest<Mutiny.SessionFactory> {
@@ -43,7 +42,8 @@ interface HibernateCriteriaIntegrationTest : CriteriaQueryDslIntegrationTest<Mut
     override suspend fun removeAll(entities: Collection<Any>) {
         removeAll(entities.toTypedArray())
     }
-    override suspend fun <T> withFactory(block: (ReactiveQueryFactory) -> CompletionStage<T>): T =
+
+    override suspend fun <T> withFactory(block: suspend (ReactiveQueryFactory) -> T): T =
         HibernateMutinyReactiveQueryFactory(
             sessionFactory = factory,
             subqueryCreator = SubqueryCreatorImpl()

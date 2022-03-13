@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
 import com.linecorp.kotlinjdsl.updateQuery
+import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -30,7 +31,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
                 select(col(Order::purchaserId))
                 from(entity(Order::class))
                 groupBy(col(Order::purchaserId))
-            }
+            }.await()
         }
 
         assertThat(purchaserIds).containsOnly(1000, 2000)
@@ -39,7 +40,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
             queryFactory.updateQuery<Order> {
                 where(col(Order::purchaserId).`in`(1000, 2000))
                 setParams(col(Order::purchaserId) to 3000)
-            }.executeUpdate
+            }.executeUpdate.await()
         }
 
         // then
@@ -48,7 +49,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
                 select(col(Order::purchaserId))
                 from(entity(Order::class))
                 groupBy(col(Order::purchaserId))
-            }
+            }.await()
         }).containsOnly(3000)
     }
 
@@ -67,7 +68,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
                 associate(OrderAddress::class, Address::class, on(OrderAddress::address))
                 set(col(Address::zipCode), "test")
                 set(col(Address::baseAddress), "base")
-            }.executeUpdate
+            }.executeUpdate.await()
         }
 
         // when
@@ -77,7 +78,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
                 from(entity(OrderGroup::class))
                 where(col(OrderAddress::id).equal(address1.id))
                 fetch(OrderGroup::class, OrderAddress::class, on(OrderGroup::address))
-            }
+            }.await()
         }
 
         // then

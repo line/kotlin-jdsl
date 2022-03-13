@@ -15,6 +15,7 @@ import com.linecorp.kotlinjdsl.test.reactive.HibernateCriteriaIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.MutinySessionFactoryExtension
 import com.linecorp.kotlinjdsl.updateQuery
 import io.smallrye.mutiny.coroutines.awaitSuspending
+import kotlinx.coroutines.future.await
 import kotlinx.coroutines.runBlocking
 import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.Test
@@ -28,9 +29,10 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
     override lateinit var entityManagerFactory: EntityManagerFactory
 
     @Test
-    fun executeWithFactory() = runBlocking {
+    fun executeSessionWithFactory() = runBlocking {
         val queryFactory = HibernateMutinyReactiveQueryFactory(
-            sessionFactory = factory, subqueryCreator = SubqueryCreatorImpl()
+            sessionFactory = factory,
+            subqueryCreator = SubqueryCreatorImpl()
         )
         val order = order { purchaserId = 5000 }
         val sessionFactory = initFactory<Mutiny.SessionFactory>()
@@ -42,10 +44,38 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
                             select(entity(Order::class))
                             from(entity(Order::class))
                             where(col(Order::purchaserId).equal(5000))
-                        }
+                        }.await()
                     }
                 }
         }.awaitSuspending()
+
+        assertThat(actual.id).isEqualTo(order.id)
+        sessionFactory.close()
+    }
+
+    @Test
+    fun withFactoryMultiOperations() = runBlocking {
+        val sessionFactory = initFactory<Mutiny.SessionFactory>()
+        val queryFactory = HibernateMutinyReactiveQueryFactory(
+            sessionFactory = factory, subqueryCreator = SubqueryCreatorImpl()
+        )
+        val order = order { purchaserId = 5000 }
+        persist(order)
+        val actual = queryFactory.withFactory { factory ->
+            val firstOrder = factory.singleQuery<Order> {
+                select(entity(Order::class))
+                from(entity(Order::class))
+                where(col(Order::purchaserId).equal(5000))
+            }.await()
+
+            assertThat(firstOrder.id).isEqualTo(order.id)
+
+            factory.singleQuery<Order> {
+                select(entity(Order::class))
+                from(entity(Order::class))
+                where(col(Order::purchaserId).equal(5000))
+            }.await()
+        }
 
         assertThat(actual.id).isEqualTo(order.id)
         sessionFactory.close()
@@ -233,23 +263,22 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
         )
         try {
             producer.transactionWithFactory { queryFactory ->
-                queryFactory.listQuery<Order> {
+                val orders = queryFactory.listQuery<Order> {
                     select(entity(Order::class))
                     from(entity(Order::class))
                     fetch(Order::groups)
                     fetch(OrderGroup::items)
                     fetch(OrderGroup::address)
-                }.thenCompose { orders ->
-                    queryFactory.updateQuery<Order> {
-                        where(col(Order::id).equal(orders.first().id))
-                        set(col(Order::purchaserId), orders.first().purchaserId + 1)
-                    }.executeUpdate.thenApply { orders }
-                        .thenCompose {
-                            queryFactory.updateQuery<Order> {
-                                throw IllegalStateException("transaction rollback")
-                            }.executeUpdate.thenApply { orders }
-                        }
-                }
+                }.await()
+
+                queryFactory.updateQuery<Order> {
+                    where(col(Order::id).equal(orders.first().id))
+                    set(col(Order::purchaserId), orders.first().purchaserId + 1)
+                }.executeUpdate.await()
+
+                queryFactory.updateQuery<Order> {
+                    throw IllegalStateException("transaction rollback")
+                }.executeUpdate.await()
             }
         } catch (e: IllegalStateException) {
             assertThat(e).hasMessage("transaction rollback")
@@ -263,7 +292,51 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
                 fetch(OrderGroup::items)
                 fetch(OrderGroup::address)
                 where(col(Order::id).equal(order.id))
+            }.await()
+        }).isEqualTo(order)
+    }
+
+    @Test
+    fun suspendTransactionWithFactory(): Unit = runBlocking {
+        val order = order {}
+        persist(order)
+
+        val producer = HibernateMutinyReactiveQueryFactory(
+            sessionFactory = factory,
+            subqueryCreator = SubqueryCreatorImpl()
+        )
+        try {
+            producer.transactionWithFactory { queryFactory ->
+                val orders = queryFactory.listQuery<Order> {
+                    select(entity(Order::class))
+                    from(entity(Order::class))
+                    fetch(Order::groups)
+                    fetch(OrderGroup::items)
+                    fetch(OrderGroup::address)
+                }.await()
+
+                queryFactory.updateQuery<Order> {
+                    where(col(Order::id).equal(orders.first().id))
+                    set(col(Order::purchaserId), orders.first().purchaserId + 1)
+                }.executeUpdate.await()
+
+                queryFactory.updateQuery<Order> {
+                    throw IllegalStateException("transaction rollback")
+                }.executeUpdate.await()
             }
+        } catch (e: IllegalStateException) {
+            assertThat(e).hasMessage("transaction rollback")
+        }
+
+        assertThat(producer.transactionWithFactory { queryFactory ->
+            queryFactory.singleQuery<Order> {
+                select(entity(Order::class))
+                from(entity(Order::class))
+                fetch(Order::groups)
+                fetch(OrderGroup::items)
+                fetch(OrderGroup::address)
+                where(col(Order::id).equal(order.id))
+            }.await()
         }).isEqualTo(order)
     }
 }

@@ -11,6 +11,7 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
+import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.math.sqrt
@@ -38,7 +39,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
             queryFactory.singleQuery<Long> {
                 select(max(Order::id))
                 from(entity(Order::class))
-            }
+            }.await()
         }
 
         // then
@@ -53,7 +54,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
                 select(entity(Order::class))
                 from(entity(Order::class))
                 orderBy(col(Order::id).asc())
-            }
+            }.await()
         }
 
         // then
@@ -68,7 +69,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
                 select(col(Order::id))
                 from(entity(Order::class))
                 orderBy(col(Order::id).asc())
-            }
+            }.await()
         }
 
         // then
@@ -83,7 +84,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
                 select(count(Order::id))
                 from(entity(Order::class))
                 groupBy(col(Order::purchaserId))
-            }
+            }.await()
         }
 
         // then
@@ -97,7 +98,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
                 selectDistinct(col(Order::purchaserId))
                 from(entity(Order::class))
                 orderBy(col(Order::purchaserId).asc())
-            }
+            }.await()
         }
 
         // then
@@ -122,7 +123,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
                 select(subquery)
                 from(entity(Order::class))
                 orderBy(col(Order::id).asc())
-            }
+            }.await()
         }
 
         // then
@@ -137,7 +138,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
                 from(entity(Order::class))
                 where(col(Order::purchaserId).equal(order1.purchaserId))
                 maxResults(1)
-            }
+            }.await()
         }
 
         // then
@@ -151,7 +152,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
                 select(function("substring", col(OrderItem::productName), literal(1), literal(2)))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::id).equal(order1.groups.first().items.first().id))
-            }
+            }.await()
         }
 
         // then

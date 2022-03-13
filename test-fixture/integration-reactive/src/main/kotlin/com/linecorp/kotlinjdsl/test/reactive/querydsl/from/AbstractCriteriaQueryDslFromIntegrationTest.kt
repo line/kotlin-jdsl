@@ -13,6 +13,7 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
+import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -45,7 +46,7 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest<S> : CriteriaQueryDsl
                 join(Order::groups)
                 join(OrderGroup::items)
                 where(col(OrderItem::price).greaterThanOrEqualTo(20.toBigDecimal()))
-            }
+            }.await()
         }
 
         // then
@@ -69,7 +70,7 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest<S> : CriteriaQueryDsl
                 from(entity(Delivery::class))
                 join(Order::class, on { col(Delivery::orderId).equal(col(Order::id)) })
                 where(col(Order::purchaserId).equal(1000))
-            }
+            }.await()
         }
 
         // then
@@ -96,7 +97,7 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest<S> : CriteriaQueryDsl
                 join(OrderGroup::address)
                 associate(OrderAddress::class, Address::class, on(OrderAddress::address))
                 where(col(Order::purchaserId).equal(1000))
-            }
+            }.await()
         }
 
         // then
@@ -115,7 +116,7 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest<S> : CriteriaQueryDsl
                 from(entity(Order::class))
                 fetch(Order::groups)
                 where(col(Order::id).equal(order1.id))
-            }
+            }.await()
         }
 
         // then

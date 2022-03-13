@@ -8,21 +8,27 @@ import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactoryImp
 import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveSubqueryDsl
 import io.smallrye.mutiny.Uni
+import io.smallrye.mutiny.coroutines.asUni
 import io.smallrye.mutiny.coroutines.awaitSuspending
+import kotlinx.coroutines.*
 import org.hibernate.reactive.mutiny.Mutiny
-import java.util.concurrent.CompletionStage
-import java.util.function.Supplier
 
 class SpringDataHibernateMutinyReactiveQueryFactory(
     private val sessionFactory: Mutiny.SessionFactory, private val subqueryCreator: SubqueryCreator
 ) {
-    suspend fun <T> withFactory(block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>): T =
-        sessionFactory.withSession { session -> executeSessionWithFactory(session, block) }
-            .awaitSuspending()
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    suspend fun <T> withFactory(block: suspend (SpringDataReactiveQueryFactory) -> T): T =
+        sessionFactory.withSession {
+            makeFactory(it).let { GlobalScope.async(Dispatchers.Unconfined) { block(it) } }.asUni()
+        }.awaitSuspending()
 
-    suspend fun <T> transactionWithFactory(block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>): T =
-        sessionFactory.withTransaction { session -> executeSessionWithFactory(session, block) }
-            .awaitSuspending()
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    suspend fun <T> transactionWithFactory(block: suspend (SpringDataReactiveQueryFactory) -> T): T =
+        sessionFactory.withTransaction { session ->
+            makeFactory(session).let { GlobalScope.async(Dispatchers.Unconfined) { block(it) } }.asUni()
+        }.awaitSuspending()
 
     fun <T> subquery(classType: Class<T>, dsl: SpringDataReactiveSubqueryDsl<T>.() -> Unit) =
         SubqueryExpressionSpec(
@@ -30,18 +36,17 @@ class SpringDataHibernateMutinyReactiveQueryFactory(
             subqueryCreator = subqueryCreator
         )
 
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
     fun <T> executeSessionWithFactory(
-        session: Mutiny.Session, block: (SpringDataReactiveQueryFactory) -> CompletionStage<T>
-    ): Uni<T> = uni {
-        with(
-            SpringDataReactiveQueryFactoryImpl(
-                subqueryCreator = subqueryCreator,
-                criteriaQueryCreator = MutinyReactiveCriteriaQueryCreator(sessionFactory.criteriaBuilder, session)
-            ), block
-        )
-    }
+        session: Mutiny.Session,
+        block: suspend (SpringDataReactiveQueryFactory) -> T
+    ): Uni<T> =
+        GlobalScope.async(Dispatchers.Unconfined) { block(makeFactory(session)) }.asUni()
 
-    private fun <T> uni(stageSupplier: Supplier<CompletionStage<T>>): Uni<T> {
-        return Uni.createFrom().completionStage(stageSupplier)
-    }
+
+    private fun makeFactory(it: Mutiny.Session) = SpringDataReactiveQueryFactoryImpl(
+        subqueryCreator = subqueryCreator,
+        criteriaQueryCreator = MutinyReactiveCriteriaQueryCreator(sessionFactory.criteriaBuilder, it)
+    )
 }

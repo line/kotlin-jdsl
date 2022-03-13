@@ -5,6 +5,7 @@ import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
+import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -26,7 +27,7 @@ abstract class AbstractCriteriaQueryDslOrderByIntegrationTest<S> : CriteriaQuery
                 select(col(Order::id))
                 from(entity(Order::class))
                 orderBy(col(Order::id).asc())
-            }
+            }.await()
         }
 
         // then
@@ -41,7 +42,7 @@ abstract class AbstractCriteriaQueryDslOrderByIntegrationTest<S> : CriteriaQuery
                 select(col(Order::id))
                 from(entity(Order::class))
                 orderBy(col(Order::id).desc())
-            }
+            }.await()
         }
 
         // then

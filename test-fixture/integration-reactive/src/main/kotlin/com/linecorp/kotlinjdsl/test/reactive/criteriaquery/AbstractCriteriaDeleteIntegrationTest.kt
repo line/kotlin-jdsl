@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.test.entity.Address
 import com.linecorp.kotlinjdsl.test.entity.order.OrderAddress
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
+import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.Test
 
 abstract class AbstractCriteriaDeleteIntegrationTest<S> : CriteriaQueryDslIntegrationTest<S> {
@@ -30,7 +31,7 @@ abstract class AbstractCriteriaDeleteIntegrationTest<S> : CriteriaQueryDslIntegr
                 from(entity(OrderAddress::class))
                 where(col(OrderAddress::id).equal(address1.id))
                 associate(OrderAddress::class, Address::class, on(OrderAddress::address))
-            }
+            }.await()
         }
 
         // then
@@ -53,7 +54,7 @@ abstract class AbstractCriteriaDeleteIntegrationTest<S> : CriteriaQueryDslIntegr
                     )
                 )
                 associate(OrderAddress::class, Address::class, on(OrderAddress::address))
-            }.executeUpdate
+            }.executeUpdate.await()
         }
 
         // when
@@ -68,7 +69,7 @@ abstract class AbstractCriteriaDeleteIntegrationTest<S> : CriteriaQueryDslIntegr
                     )
                 )
                 associate(OrderAddress::class, Address::class, on(OrderAddress::address))
-            }
+            }.await()
         }
 
         // then
