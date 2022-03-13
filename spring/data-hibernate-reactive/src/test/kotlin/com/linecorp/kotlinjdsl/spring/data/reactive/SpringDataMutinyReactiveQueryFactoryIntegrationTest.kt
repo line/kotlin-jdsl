@@ -73,6 +73,19 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
     }
 
     @Test
+    fun executeWithFactory() = runBlocking {
+        val actual = queryFactory.withFactory { factory ->
+            factory.singleQuery<Order> {
+                select(entity(Order::class))
+                from(entity(Order::class))
+                where(col(Order::purchaserId).equal(2000))
+            }.await()
+        }
+
+        assertThat(actual.id).isEqualTo(order4.id)
+    }
+
+    @Test
     fun singleQuery() = runBlocking {
         // when
         val actual = queryFactory.singleQuery<Order> {
