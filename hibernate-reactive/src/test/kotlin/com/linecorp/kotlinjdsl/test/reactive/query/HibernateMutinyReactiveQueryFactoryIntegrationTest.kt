@@ -30,9 +30,8 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
 
     @Test
     fun executeSessionWithFactory() = runBlocking {
-        val sessionFactory = initFactory<Mutiny.SessionFactory>()
         val queryFactory = HibernateMutinyReactiveQueryFactory(
-            sessionFactory = sessionFactory, subqueryCreator = SubqueryCreatorImpl()
+            sessionFactory = factory, subqueryCreator = SubqueryCreatorImpl()
         )
         val order = order { purchaserId = 5000 }
         val actual = factory.withSession { session ->
@@ -49,7 +48,7 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
         }.awaitSuspending()
 
         assertThat(actual.id).isEqualTo(order.id)
-        sessionFactory.close()
+        Unit
     }
 
     @Test
