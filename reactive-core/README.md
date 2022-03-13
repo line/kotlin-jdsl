@@ -6,7 +6,10 @@ Kotlin JDSL Reactive is a module in Kotlin JDSL that generates Reactive based JP
 
 Currently, there is no JPA standard for Reactive.  
 However, the only Reactive implementation of JPA, [hibernate-reactive](https://hibernate.org/reactive) exists.  
-so, our implementation of Kotlin JDSL Reactive is heavily inspired by hibernate-reactive.
+so, our implementation of Kotlin JDSL Reactive is heavily inspired by hibernate-reactive.  
+For reactive-core module, there is no dependency on hibernate reactive, so the minimum JDK version is 8 same as the existing core module.  
+However, the minimum specification for hibernate reactive is [hibernate-reactive#compatibility](https://github.com/hibernate/hibernate-reactive#compatibility) JDK 11.  
+As a result, all modules related to hibernate-reactive of jdsl must be JDK 11 or higher to use normally.
 
 The current Reactive module has the following structure.
 
@@ -46,7 +49,7 @@ interface ReactiveQuery<R> {
 
 As written above, ReactiveQuery is similar to JPA 2.2's [TypedQuery](https://docs.oracle.com/javaee/6/api/javax/persistence/TypedQuery.html), but with many missing parts.  
 It is also similar to Hibernate's [ReactiveQuery](https://hibernate.org/reactive/documentation/1.1/javadocs/org/hibernate/reactive/session/ReactiveQuery.html), but similarly, many parts are omitted.  
-If so, what should I do with the rest of the query methods used in JPA or Hibernate?   
+If so, what should you do with the rest of the query methods used in JPA or Hibernate?   
 The answer is right there in the unwrap method.  
 You can check the example code using unwrap in the description a little further below.  
 
