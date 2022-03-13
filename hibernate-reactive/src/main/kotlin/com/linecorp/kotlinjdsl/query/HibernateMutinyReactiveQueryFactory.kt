@@ -42,7 +42,6 @@ class HibernateMutinyReactiveQueryFactory(
         sessionFactory.withSession { makeFactory(it).let { makeScope().async { block(it) } }.asUni() }
             .awaitSuspending()
 
-
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun <T> transactionWithFactory(block: suspend (ReactiveQueryFactory) -> T): T =
