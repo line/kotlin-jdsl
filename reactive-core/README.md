@@ -291,6 +291,33 @@ Be sure to fetch in advance using methods such as fetch and associate so that an
 
 If you want to execute logic in parallel inside the withSession or withTransaction or executeSessionWithFactory methods, it is not recommended. For more information, see [hibernate-reactive sessions-and-vertx-contexts](https://github.com/hibernate/hibernate-reactive/blob/main/documentation/src/main/asciidoc/reference/introduction.adoc#sessions-and-vertx-contexts).
 
+You can use the unwrapped Query directly, not the ReactiveQuery we made.
+
+```kotlin
+val queryFactory = HibernateMutinyReactiveQueryFactory(
+    sessionFactory = sessionFactory, subqueryCreator = SubqueryCreatorImpl()
+)
+val order = Order(...initialize code)
+persist(order)
+val actual: List<Order> = queryFactory.withFactory { factory ->
+    val query: Mutiny.Query<Order> = factory.selectQuery<Order> {
+        select(entity(Order::class))
+        from(entity(Order::class))
+        where(col(Order::purchaserId).equal(5000))
+    }
+    // unwrap cannot recognize erased generics, so direct typecasting is required.,
+    .unwrap(Mutiny.Query::class) as Mutiny.Query<Order>
+    // After unwrap, you can proceed with the Mutiny.Query you want.
+    query.flushMode = FlushMode.ALWAYS
+
+    // As in the other examples above, you should finish DB operations inside withFactory {} and always return the result without blocking.
+    query.resultList.awaitSuspending()
+}
+
+assertThat(actual.map { it.id }).containsOnly(order.id)
+sessionFactory.close()
+```
+
 ### Spring Data
 If you use Spring Boot & Data Frameworks
 See [more](../spring/data-reactive-core/README.md)
