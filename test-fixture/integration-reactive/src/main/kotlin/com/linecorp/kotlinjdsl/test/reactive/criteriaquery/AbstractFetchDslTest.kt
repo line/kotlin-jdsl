@@ -7,7 +7,6 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
-import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.Test
 
 abstract class AbstractFetchDslTest<S> : CriteriaQueryDslIntegrationTest<S>, WithKotlinJdslAssertions {
@@ -26,7 +25,7 @@ abstract class AbstractFetchDslTest<S> : CriteriaQueryDslIntegrationTest<S>, Wit
                 select(entity(OrderGroup::class))
                 from(entity(OrderGroup::class))
                 fetch(OrderGroup::class, OrderAddress::class, on(OrderGroup::address))
-            }.await()
+            }
         }
 
         // then
@@ -52,7 +51,7 @@ abstract class AbstractFetchDslTest<S> : CriteriaQueryDslIntegrationTest<S>, Wit
                 selectDistinct(entity(OrderGroup::class))
                 from(entity(OrderGroup::class))
                 fetch(OrderGroup::class, OrderItem::class, on(OrderGroup::items))
-            }.await()
+            }
         }
 
         // then

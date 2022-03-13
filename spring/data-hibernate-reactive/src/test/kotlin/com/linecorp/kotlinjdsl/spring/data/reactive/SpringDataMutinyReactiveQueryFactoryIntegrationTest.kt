@@ -21,7 +21,6 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.MutinySessionFactoryExtension
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
 import io.smallrye.mutiny.coroutines.awaitSuspending
-import kotlinx.coroutines.future.await
 import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -66,7 +65,7 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
                 select(entity(Order::class))
                 from(entity(Order::class))
                 where(col(Order::purchaserId).equal(5000))
-            }.await()
+            }
         }
 
         assertThat(actual.id).isEqualTo(order.id)
@@ -79,7 +78,7 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
                 select(entity(Order::class))
                 from(entity(Order::class))
                 where(col(Order::purchaserId).equal(2000))
-            }.await()
+            }
         }
 
         assertThat(actual.id).isEqualTo(order4.id)
@@ -192,16 +191,16 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
                     fetch(Order::groups)
                     fetch(OrderGroup::items)
                     fetch(OrderGroup::address)
-                }.await()
+                }
 
                 queryFactory.updateQuery<Order> {
                     where(col(Order::id).equal(orders.first().id))
                     set(col(Order::purchaserId), orders.first().purchaserId + 1)
-                }.executeUpdate.await()
+                }.executeUpdate()
 
                 queryFactory.updateQuery<Order> {
                     throw IllegalStateException("transaction rollback")
-                }.executeUpdate.await()
+                }.executeUpdate()
             }
         } catch (e: IllegalStateException) {
             assertThat(e).hasMessage("transaction rollback")
@@ -215,7 +214,7 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
                 fetch(OrderGroup::items)
                 fetch(OrderGroup::address)
                 where(col(Order::id).equal(order1.id))
-            }.await()
+            }
         }).isEqualTo(order1)
     }
 

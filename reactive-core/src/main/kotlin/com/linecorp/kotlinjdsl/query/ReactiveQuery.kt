@@ -1,14 +1,13 @@
 package com.linecorp.kotlinjdsl.query
 
-import java.util.concurrent.CompletionStage
 import javax.persistence.Parameter
 import kotlin.reflect.KClass
 
 interface ReactiveQuery<R> {
-    val singleResult: CompletionStage<R>
-    val resultList: CompletionStage<List<R>>
-    val singleResultOrNull: CompletionStage<R?>
-    val executeUpdate: CompletionStage<Int>
+    suspend fun singleResult(): R
+    suspend fun resultList(): List<R>
+    suspend fun singleResultOrNull(): R?
+    suspend fun executeUpdate(): Int
     fun setParameter(position: Int, value: Any?): ReactiveQuery<R>
     fun setParameter(name: String, value: Any?): ReactiveQuery<R>
     fun <T> setParameter(parameter: Parameter<T>, value: T?): ReactiveQuery<R>

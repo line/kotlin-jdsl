@@ -34,13 +34,11 @@ import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.future.await
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
-import java.util.concurrent.CompletableFuture
 
 @ExtendWith(MockKExtension::class)
 internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions {
@@ -224,7 +222,7 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
         )
 
         val pageableQuery: ReactiveQuery<Data1> = mockk {
-            every { resultList } returns CompletableFuture.completedFuture(
+            coEvery { resultList() } returns (
                 listOf(
                     Data1(1),
                     Data1(2),
@@ -236,7 +234,7 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
         }
 
         val pageableCountQuery: ReactiveQuery<Long> = mockk {
-            every { resultList } returns CompletableFuture.completedFuture(listOf(50L))
+            coEvery { resultList() } returns listOf(50L)
         }
 
         coEvery { criteriaQueryCreator.createQuery(expectedPageableSpec) } returns pageableQuery
@@ -246,7 +244,7 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
         val actual = sut.pageQuery(Data1::class.java, pageable) {
             select(entity(Data1::class))
             from(entity(Data1::class))
-        }.await()
+        }
 
         // then
         assertThat(actual).isEqualTo(PageImpl(listOf(Data1(1), Data1(2), Data1(3), Data1(4), Data1(5)), pageable, 50))
@@ -255,8 +253,8 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
             criteriaQueryCreator.createQuery(expectedPageableSpec)
             criteriaQueryCreator.createQuery(expectedPageableCountSpec)
 
-            pageableQuery.resultList
-            pageableCountQuery.resultList
+            pageableQuery.resultList()
+            pageableCountQuery.resultList()
         }
 
         confirmVerified(pageableQuery, pageableCountQuery, criteriaQueryCreator)
@@ -307,7 +305,7 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
             )
 
         val pageableQuery: ReactiveQuery<Data1> = mockk {
-            every { resultList } returns CompletableFuture.completedFuture(
+            coEvery { resultList() } returns (
                 listOf(
                     Data1(1),
                     Data1(2),
@@ -319,7 +317,7 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
         }
 
         val pageableCountQuery: ReactiveQuery<Long> = mockk {
-            every { resultList } returns CompletableFuture.completedFuture(listOf(50L))
+            coEvery { resultList() } returns listOf(50L)
         }
 
         every { criteriaQueryCreator.createQuery(expectedPageableSpec) } returns pageableQuery
@@ -331,7 +329,7 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
             from(entity(Data1::class))
         }, countProjection = {
             select(count(column(Data1::id)))
-        }).await()
+        })
 
         // then
         assertThat(actual).isEqualTo(PageImpl(listOf(Data1(1), Data1(2), Data1(3), Data1(4), Data1(5)), pageable, 50))
@@ -340,8 +338,8 @@ internal class SpringDataReactiveQueryFactoryImplTest : WithKotlinJdslAssertions
             criteriaQueryCreator.createQuery(expectedPageableSpec)
             criteriaQueryCreator.createQuery(expectedPageableCountSpec)
 
-            pageableQuery.resultList
-            pageableCountQuery.resultList
+            pageableQuery.resultList()
+            pageableCountQuery.resultList()
         }
 
         confirmVerified(pageableQuery, pageableCountQuery, criteriaQueryCreator)

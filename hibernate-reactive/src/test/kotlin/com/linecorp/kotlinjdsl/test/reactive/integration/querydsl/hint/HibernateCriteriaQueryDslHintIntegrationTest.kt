@@ -6,7 +6,6 @@ import com.linecorp.kotlinjdsl.querydsl.expression.min
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.reactive.HibernateCriteriaIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
-import kotlinx.coroutines.future.await
 import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,7 +34,7 @@ internal class HibernateCriteriaQueryDslHintIntegrationTest : HibernateCriteriaI
                 // See org.hibernate.dialect.hint.IndexQueryHintHandler
                 where(col(Order::id).`in`(order1.id, order2.id, order3.id))
                 sqlHints("idx1")
-            }.await()
+            }
         }
 
         // then
@@ -50,7 +49,7 @@ internal class HibernateCriteriaQueryDslHintIntegrationTest : HibernateCriteriaI
                 select(col(Order::purchaserId))
                 from(entity(Order::class))
                 hints("org.hibernate.comment" to "comment")
-            }.await()
+            }
         }
 
         assertThat(actual).hasSize(3)

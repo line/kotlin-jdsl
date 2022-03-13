@@ -2,13 +2,13 @@ apply<PublishPlugin>()
 
 dependencies {
     api(Modules.reactiveCore)
-    implementation(Dependencies.coroutineJdk8)
 
     compileOnly(Dependencies.hibernateReactive)
     compileOnly(Dependencies.slf4j)
     compileOnly(Dependencies.mutiny)
 
     testImplementation(Dependencies.mutiny)
+    testImplementation(Dependencies.coroutineJdk8)
     testImplementation(Modules.testFixtureIntegrationReactive)
     testImplementation(Modules.testFixtureHibernateReactive)
     testImplementation(Dependencies.hibernateReactive)

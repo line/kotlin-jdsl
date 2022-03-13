@@ -8,7 +8,6 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.entity.test.TestTable
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
-import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
@@ -46,7 +45,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.listQuery<Order> {
                 select(entity(Order::class))
                 from(entity(Order::class))
-            }.await()
+            }
         }
 
         // then
@@ -61,7 +60,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
                 val entity = entity(Order::class, "orderAlias")
                 select(entity)
                 from(entity)
-            }.await()
+            }
         }
 
         // then
@@ -75,7 +74,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.listQuery<Int> {
                 select(literal(10))
                 from(entity(Order::class))
-            }.await()
+            }
         }
 
         // then
@@ -89,7 +88,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.listQuery<Int?> {
                 select(nullLiteral(Int::class.java))
                 from(entity(Order::class))
-            }.await()
+            }
         }
 
         // then
@@ -103,7 +102,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.listQuery<Long> {
                 select(column(Order::id))
                 from(entity(Order::class))
-            }.await()
+            }
         }
 
         // then
@@ -117,7 +116,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.singleQuery<BigDecimal> {
                 select(max(OrderItem::price))
                 from(entity(OrderItem::class))
-            }.await()
+            }
         }
 
         // then
@@ -131,7 +130,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.singleQuery<BigDecimal> {
                 select(min(OrderItem::price))
                 from(entity(OrderItem::class))
-            }.await()
+            }
         }
 
         // then
@@ -145,7 +144,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.singleQuery<Double> {
                 select(avg(OrderItem::price))
                 from(entity(OrderItem::class))
-            }.await()
+            }
         }
 
         // then
@@ -159,7 +158,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.singleQuery<BigDecimal> {
                 select(sum(OrderItem::price))
                 from(entity(OrderItem::class))
-            }.await()
+            }
         }
 
         // then
@@ -195,7 +194,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
                 groupBy(
                     col(TestTable::id),
                 )
-            }.await()
+            }
         }
 
         // then
@@ -211,7 +210,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.singleQuery<Long> {
                 select(count(OrderItem::id))
                 from(entity(OrderItem::class))
-            }.await()
+            }
         }
         // then
         assertThat(count).isEqualTo(4)
@@ -226,7 +225,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
                     count(literal(1))
                 )
                 from(entity(Order::class))
-            }.await()
+            }
         }
 
         // then
@@ -240,7 +239,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.singleQuery<Long> {
                 select(countDistinct(OrderItem::productName))
                 from(entity(OrderItem::class))
-            }.await()
+            }
         }
 
         // then
@@ -254,7 +253,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.singleQuery<String> {
                 select(greatest(OrderItem::productName))
                 from(entity(OrderItem::class))
-            }.await()
+            }
         }
 
         // then
@@ -268,7 +267,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
             queryFactory.singleQuery<String> {
                 select(least(OrderItem::productName))
                 from(entity(OrderItem::class))
-            }.await()
+            }
         }
 
         // then
@@ -289,7 +288,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
                 )
                 from(entity(OrderItem::class))
                 orderBy(col(OrderItem::productName).asc())
-            }.await()
+            }
         }
 
         // then

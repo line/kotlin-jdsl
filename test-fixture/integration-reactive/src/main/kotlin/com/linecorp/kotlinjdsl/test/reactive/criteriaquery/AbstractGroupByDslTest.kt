@@ -9,7 +9,6 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
-import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.Test
 
 abstract class AbstractGroupByDslTest<S> : CriteriaQueryDslIntegrationTest<S>, WithKotlinJdslAssertions {
@@ -45,7 +44,7 @@ abstract class AbstractGroupByDslTest<S> : CriteriaQueryDslIntegrationTest<S>, W
                 join(Order::groups)
                 join(OrderGroup::items)
                 groupBy(col(Order::purchaserId))
-            }.await()
+            }
         }
 
         // then
@@ -85,7 +84,7 @@ abstract class AbstractGroupByDslTest<S> : CriteriaQueryDslIntegrationTest<S>, W
                 join(OrderGroup::items)
                 groupBy(col(Order::purchaserId))
                 having(sum(col(OrderItem::quantity)).greaterThan(4))
-            }.await()
+            }
         }
 
         // then

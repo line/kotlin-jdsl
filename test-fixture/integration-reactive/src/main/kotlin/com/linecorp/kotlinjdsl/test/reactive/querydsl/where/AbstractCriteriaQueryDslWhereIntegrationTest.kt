@@ -9,7 +9,6 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
-import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
@@ -35,7 +34,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest<S> : CriteriaQueryDs
                 fetch(Order::groups)
                 fetch(OrderGroup::items)
                 fetch(OrderGroup::address)
-            }.await()
+            }
         }
 
         // then
@@ -60,7 +59,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest<S> : CriteriaQueryDs
                 select(col(Order::id))
                 from(entity(Order::class))
                 where(col(Order::id).`in`(subquery))
-            }.await()
+            }
         }
 
         // then

@@ -10,4 +10,5 @@ dependencies {
     testImplementation(Modules.testFixtureEntity)
     testImplementation(Dependencies.javaPersistenceApi)
     testImplementation(Dependencies.h2)
+    testImplementation(Dependencies.coroutineJdk8)
 }

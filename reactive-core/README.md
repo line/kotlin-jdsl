@@ -31,10 +31,10 @@ ReactiveQuery is as below.
 
 ```kotlin
 interface ReactiveQuery<R> {
-    val singleResult: CompletionStage<R>
-    val resultList: CompletionStage<List<R>>
-    val singleResultOrNull: CompletionStage<R?>
-    val executeUpdate: CompletionStage<Int>
+    suspend fun singleResult(): R
+    suspend fun resultList(): List<R>
+    suspend fun singleResultOrNull(): R?
+    suspend fun executeUpdate(): Int
     fun setParameter(position: Int, value: Any?): ReactiveQuery<R>
     fun setParameter(name: String, value: Any?): ReactiveQuery<R>
     fun <T> setParameter(parameter: Parameter<T>, value: T?): ReactiveQuery<R>
@@ -151,9 +151,6 @@ suspend fun example(sessionFactory: Mutiny.SessionFactory, subqueryCreator: Subq
             from(entity(Order::class))
             where(col(Order::purchaserId).equal(5000))
         }
-        // You must obtain and process the final result of all DB processing in the withFactory method with a non blocking method such as await, not a blocking method such as get() or join(). 
-        // Persistence context and DB connection are valid only within withFactory {} scope.        
-        .await()
 
         // You can check all the execution results within this withFactory scope. 
         // One thing to keep in mind is that it is recommended not to write code that can block in this scope or that can consume CPU operation for a long time. 
@@ -166,7 +163,7 @@ suspend fun example(sessionFactory: Mutiny.SessionFactory, subqueryCreator: Subq
             select(entity(Order::class))
             from(entity(Order::class))
             where(col(Order::purchaserId).equal(5000))
-        }.await()
+        }
     }
 
     assertThat(actual.id).isEqualTo(order.id)
@@ -195,18 +192,18 @@ fun testTransaction(): Unit = runBlocking {
                 fetch(Order::groups)
                 fetch(OrderGroup::items)
                 fetch(OrderGroup::address)
-            }.await()
+            }
 
             // First, the update is done within the transaction. Before committing, of course.
             queryFactory.updateQuery<Order> {
                 where(col(Order::id).equal(orders.first().id))
                 set(col(Order::purchaserId), orders.first().purchaserId + 1)
-            }.executeUpdate.await()
+            }.executeUpdate()
             
             // Afterwards, if an exception occurs while executing another operation, all operations that occurred in withTransaction {} are rolled back.
             queryFactory.updateQuery<Order> {
                 throw IllegalStateException("transaction rollback")
-            }.executeUpdate.await()
+            }.executeUpdate()
         }
     } catch (e: IllegalStateException) {
         assertThat(e).hasMessage("transaction rollback")
@@ -221,7 +218,7 @@ fun testTransaction(): Unit = runBlocking {
             fetch(OrderGroup::items)
             fetch(OrderGroup::address)
             where(col(Order::id).equal(order.id))
-        }.await()
+        }
     }).isEqualTo(order)
     Unit
 }
@@ -249,7 +246,7 @@ fun executeSessionWithFactory() = runBlocking {
             select(entity(Order::class))
             from(entity(Order::class))
             where(col(Order::purchaserId).equal(5000))
-        }.await()
+        }
     }
 
     assertThat(actual.id).isEqualTo(order.id)
@@ -269,9 +266,6 @@ fun listQuery(): Unit = runBlocking {
         subqueryCreator = SubqueryCreatorImpl()
     )
 
-    // This method does not require a call to the await method.
-    // This is because you performed listQuery which is an extension method of HibernateMutinyReactiveQueryFactory.
-    // Please refer to HibernateMutinyReactiveQueryFactoryExtensions.
     val orders = queryFactory.listQuery<Order> {
         select(entity(Order::class))
         from(entity(Order::class))

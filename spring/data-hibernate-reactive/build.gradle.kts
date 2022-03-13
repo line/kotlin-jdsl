@@ -8,7 +8,6 @@ dependencies {
     api(Modules.reactiveCore)
     api(Modules.hibernateReactive)
     api(Modules.springDataReactiveCore)
-    implementation(Dependencies.coroutineJdk8)
     implementation(Dependencies.javaPersistenceApi)
 
     testImplementation(Modules.testFixtureCore)
@@ -20,4 +19,5 @@ dependencies {
     testImplementation(Dependencies.springJpa)
     testImplementation(Dependencies.hibernateReactive)
     testImplementation(Dependencies.h2)
+    testImplementation(Dependencies.coroutineJdk8)
 }

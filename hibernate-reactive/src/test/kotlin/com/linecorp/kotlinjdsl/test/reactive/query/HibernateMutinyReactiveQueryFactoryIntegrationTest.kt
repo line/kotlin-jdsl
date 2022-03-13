@@ -16,7 +16,6 @@ import com.linecorp.kotlinjdsl.test.reactive.HibernateCriteriaIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.MutinySessionFactoryExtension
 import com.linecorp.kotlinjdsl.updateQuery
 import io.smallrye.mutiny.coroutines.awaitSuspending
-import kotlinx.coroutines.future.await
 import kotlinx.coroutines.runBlocking
 import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.Test
@@ -43,7 +42,7 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
                 select(entity(Order::class))
                 from(entity(Order::class))
                 where(col(Order::purchaserId).equal(5000))
-            }.await()
+            }
         }
 
         assertThat(actual.id).isEqualTo(order.id)
@@ -63,7 +62,7 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
                 select(entity(Order::class))
                 from(entity(Order::class))
                 where(col(Order::purchaserId).equal(5000))
-            }.await()
+            }
 
             assertThat(firstOrder.id).isEqualTo(order.id)
 
@@ -71,7 +70,7 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
                 select(entity(Order::class))
                 from(entity(Order::class))
                 where(col(Order::purchaserId).equal(5000))
-            }.await()
+            }
         }
 
         assertThat(actual.id).isEqualTo(order.id)
@@ -268,16 +267,16 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
                     fetch(Order::groups)
                     fetch(OrderGroup::items)
                     fetch(OrderGroup::address)
-                }.await()
+                }
 
                 queryFactory.updateQuery<Order> {
                     where(col(Order::id).equal(orders.first().id))
                     set(col(Order::purchaserId), orders.first().purchaserId + 1)
-                }.executeUpdate.await()
+                }.executeUpdate()
 
                 queryFactory.updateQuery<Order> {
                     throw IllegalStateException("transaction rollback")
-                }.executeUpdate.await()
+                }.executeUpdate()
             }
         } catch (e: IllegalStateException) {
             assertThat(e).hasMessage("transaction rollback")
@@ -291,7 +290,7 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
                 fetch(OrderGroup::items)
                 fetch(OrderGroup::address)
                 where(col(Order::id).equal(order.id))
-            }.await()
+            }
         }).isEqualTo(order)
     }
 

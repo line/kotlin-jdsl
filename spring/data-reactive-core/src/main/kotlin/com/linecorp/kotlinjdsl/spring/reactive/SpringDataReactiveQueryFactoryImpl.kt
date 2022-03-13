@@ -9,8 +9,6 @@ import com.linecorp.kotlinjdsl.spring.reactive.querydsl.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.support.PageableExecutionUtils
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.CompletionStage
 import kotlin.reflect.KClass
 
 class SpringDataReactiveQueryFactoryImpl(
@@ -56,40 +54,40 @@ class SpringDataReactiveQueryFactoryImpl(
         return SubqueryExpressionSpec(subquerySpec, subqueryCreator)
     }
 
-    override fun <T> pageQuery(
+    override suspend fun <T> pageQuery(
         returnType: Class<T>,
         pageable: Pageable,
         dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit
-    ): CompletionStage<Page<T>> {
+    ): Page<T> {
         val appliedDsl = SpringDataReactiveReactiveQueryDslImpl(returnType).apply { dsl(); this.pageable = pageable }
 
         val pageableQuery = criteriaQueryCreator.createQuery(appliedDsl.createPageableQuerySpec())
-        return pageableQuery.resultList.thenCompose { pageList ->
-            criteriaQueryCreator.createQuery(appliedDsl.createPageableCountQuerySpec()).resultList
-                .thenCompose { pageableCountTotals ->
-                    CompletableFuture.completedFuture(PageableExecutionUtils.getPage(pageList, pageable) {
+        return pageableQuery.resultList().let { pageList ->
+            criteriaQueryCreator.createQuery(appliedDsl.createPageableCountQuerySpec()).resultList()
+                .let { pageableCountTotals ->
+                    PageableExecutionUtils.getPage(pageList, pageable) {
                         executeCountQuery(pageableCountTotals)
-                    })
+                    }
                 }
         }
     }
 
-    override fun <T> pageQuery(
+    override suspend fun <T> pageQuery(
         returnType: Class<T>,
         pageable: Pageable,
         dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit,
         countProjection: SpringDataReactivePageableQueryDsl<Long>.() -> SingleSelectClause<Long>,
-    ): CompletionStage<Page<T>> {
+    ): Page<T> {
         val appliedDsl = SpringDataReactiveReactiveQueryDslImpl(returnType).apply { dsl(); this.pageable = pageable }
         val countSelectClause = SpringDataReactiveReactiveQueryDslImpl(Long::class.java).run(countProjection)
 
         val pageableQuery = criteriaQueryCreator.createQuery(appliedDsl.createPageableQuerySpec())
-        return pageableQuery.resultList.thenCompose { pageList ->
-            criteriaQueryCreator.createQuery(appliedDsl.createPageableCountQuerySpec(countSelectClause)).resultList
-                .thenCompose { pageableCountTotals ->
-                    CompletableFuture.completedFuture(PageableExecutionUtils.getPage(pageList, pageable) {
+        return pageableQuery.resultList().let { pageList ->
+            criteriaQueryCreator.createQuery(appliedDsl.createPageableCountQuerySpec(countSelectClause)).resultList()
+                .let { pageableCountTotals ->
+                    PageableExecutionUtils.getPage(pageList, pageable) {
                         executeCountQuery(pageableCountTotals)
-                    })
+                    }
                 }
         }
     }

@@ -5,7 +5,6 @@ import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
-import kotlinx.coroutines.future.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -28,7 +27,7 @@ abstract class AbstractCriteriaQueryDslGroupByIntegrationTest<S> : CriteriaQuery
                 select(col(Order::purchaserId))
                 from(entity(Order::class))
                 groupBy(col(Order::purchaserId))
-            }.await()
+            }
         }
 
         // then

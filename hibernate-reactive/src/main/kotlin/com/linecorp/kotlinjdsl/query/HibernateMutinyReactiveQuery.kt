@@ -1,20 +1,16 @@
 package com.linecorp.kotlinjdsl.query
 
+import io.smallrye.mutiny.coroutines.awaitSuspending
 import org.hibernate.reactive.mutiny.Mutiny
-import java.util.concurrent.CompletionStage
 import javax.persistence.Parameter
 import kotlin.reflect.KClass
 import org.hibernate.reactive.session.ReactiveQuery as HibernateReactiveQuery
 
 class HibernateMutinyReactiveQuery<R>(private val query: Mutiny.Query<R>) : ReactiveQuery<R> {
-    override val singleResult: CompletionStage<R>
-        get() = query.singleResult.subscribeAsCompletionStage()
-    override val resultList: CompletionStage<List<R>>
-        get() = query.resultList.subscribeAsCompletionStage()
-    override val singleResultOrNull: CompletionStage<R?>
-        get() = query.singleResultOrNull.subscribeAsCompletionStage()
-    override val executeUpdate: CompletionStage<Int>
-        get() = query.executeUpdate().subscribeAsCompletionStage()
+    override suspend fun singleResult(): R = query.singleResult.awaitSuspending()
+    override suspend fun resultList(): List<R> = query.resultList.awaitSuspending()
+    override suspend fun singleResultOrNull(): R? = query.singleResultOrNull.awaitSuspending()
+    override suspend fun executeUpdate(): Int = query.executeUpdate().awaitSuspending()
 
     private val exception = UnsupportedOperationException("Hibernate-reactive does not support JPA query hint yet.")
 

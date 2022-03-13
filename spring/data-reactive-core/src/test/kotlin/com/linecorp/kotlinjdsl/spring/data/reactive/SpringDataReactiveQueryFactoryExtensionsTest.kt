@@ -11,13 +11,11 @@ import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.future.await
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import java.util.concurrent.CompletableFuture
 
 @ExtendWith(MockKExtension::class)
 internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
@@ -37,7 +35,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
     fun singleQuery(): Unit = runBlocking {
         // given
         every { queryFactory.selectQuery<Data1>(any(), any()) } returns reactiveQuery
-        every { reactiveQuery.singleResult } returns CompletableFuture.completedFuture(Data1())
+        coEvery { reactiveQuery.singleResult() } returns Data1()
 
         val dsl: SpringDataReactiveCriteriaQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
@@ -45,14 +43,17 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         }
 
         // when
-        val actual: Data1 = queryFactory.singleQuery(dsl).await()
+        val actual: Data1 = queryFactory.singleQuery(dsl)
 
         // then
         assertThat(actual).isEqualTo(Data1())
 
         verify(exactly = 1) {
             queryFactory.selectQuery(Data1::class.java, dsl)
-            reactiveQuery.singleResult
+        }
+
+        coVerify(exactly = 1) {
+            reactiveQuery.singleResult()
         }
 
         confirmVerified(queryFactory, reactiveQuery)
@@ -62,7 +63,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
     fun listQuery(): Unit = runBlocking {
         // given
         every { queryFactory.selectQuery<Data1>(any(), any()) } returns reactiveQuery
-        every { reactiveQuery.resultList } returns CompletableFuture.completedFuture(listOf(Data1()))
+        coEvery { reactiveQuery.resultList() } returns listOf(Data1())
 
         val dsl: SpringDataReactiveCriteriaQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
@@ -70,14 +71,17 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         }
 
         // when
-        val actual: List<Data1> = queryFactory.listQuery(dsl).await()
+        val actual: List<Data1> = queryFactory.listQuery(dsl)
 
         // then
         assertThat(actual).isEqualTo(listOf(Data1()))
 
         verify(exactly = 1) {
             queryFactory.selectQuery(Data1::class.java, dsl)
-            reactiveQuery.resultList
+        }
+
+        coVerify(exactly = 1) {
+            reactiveQuery.resultList()
         }
 
         confirmVerified(queryFactory, reactiveQuery)
@@ -177,7 +181,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
     @Test
     fun pageQuery() = runBlocking {
         // given
-        every { queryFactory.pageQuery<Data1>(any(), any(), any()) } returns CompletableFuture.completedFuture(page)
+        coEvery { queryFactory.pageQuery<Data1>(any(), any(), any()) } returns page
 
         val pageable = PageRequest.of(1, 10)
 
@@ -187,7 +191,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         }
 
         // when
-        val actual: Page<Data1> = queryFactory.pageQuery(pageable, dsl).await()
+        val actual: Page<Data1> = queryFactory.pageQuery(pageable, dsl)
 
         // then
         assertThat(actual).isEqualTo(page)
@@ -202,9 +206,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
     @Test
     fun `pageQuery with countProjection`() = runBlocking {
         // given
-        coEvery { queryFactory.pageQuery<Data1>(any(), any(), any(), any()) } returns CompletableFuture.completedFuture(
-            page
-        )
+        coEvery { queryFactory.pageQuery<Data1>(any(), any(), any(), any()) } returns page
 
         val pageable = PageRequest.of(1, 10)
 
@@ -218,7 +220,7 @@ internal class SpringDataReactiveQueryFactoryExtensionsTest : WithKotlinJdslAsse
         }
 
         // when
-        val actual: Page<Data1> = queryFactory.pageQuery(pageable, dsl, countProjection).await()
+        val actual: Page<Data1> = queryFactory.pageQuery(pageable, dsl, countProjection)
 
         // then
         assertThat(actual).isEqualTo(page)

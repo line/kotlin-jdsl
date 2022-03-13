@@ -8,14 +8,12 @@ import com.linecorp.kotlinjdsl.querydsl.CriteriaUpdateQueryDsl
 import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
-import io.mockk.confirmVerified
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import java.util.concurrent.CompletableFuture
 
 @ExtendWith(MockKExtension::class)
 internal class ReactiveQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
@@ -29,10 +27,10 @@ internal class ReactiveQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
     private lateinit var subqueryExpressionSpec: SubqueryExpressionSpec<Data1>
 
     @Test
-    fun singleQuery() {
+    fun singleQuery() = runBlocking {
         // given
         every { queryFactory.selectQuery<Data1>(any(), any()) } returns query
-        every { query.singleResult } returns CompletableFuture.completedFuture(Data1())
+        coEvery { query.singleResult() } returns Data1()
 
         val dsl: CriteriaQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
@@ -40,24 +38,27 @@ internal class ReactiveQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         }
 
         // when
-        val actual: Data1 = queryFactory.singleQuery(dsl).toCompletableFuture().get()
+        val actual: Data1 = queryFactory.singleQuery(dsl)
 
         // then
         assertThat(actual).isEqualTo(Data1())
 
         verify(exactly = 1) {
             queryFactory.selectQuery(Data1::class.java, dsl)
-            query.singleResult
+        }
+
+        coVerify(exactly = 1) {
+            query.singleResult()
         }
 
         confirmVerified(queryFactory, query)
     }
 
     @Test
-    fun listQuery() {
+    fun listQuery() = runBlocking {
         // given
         every { queryFactory.selectQuery<Data1>(any(), any()) } returns query
-        every { query.resultList } returns CompletableFuture.completedFuture(listOf(Data1()))
+        coEvery { query.resultList() } returns listOf(Data1())
 
         val dsl: CriteriaQueryDsl<Data1>.() -> Unit = {
             select(entity(Data1::class))
@@ -65,14 +66,17 @@ internal class ReactiveQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         }
 
         // when
-        val actual: List<Data1> = queryFactory.listQuery(dsl).toCompletableFuture().get()
+        val actual: List<Data1> = queryFactory.listQuery(dsl)
 
         // then
         assertThat(actual).isEqualTo(listOf(Data1()))
 
         verify(exactly = 1) {
             queryFactory.selectQuery(Data1::class.java, dsl)
-            query.resultList
+        }
+
+        coVerify(exactly = 1) {
+            query.resultList()
         }
 
         confirmVerified(queryFactory, query)
