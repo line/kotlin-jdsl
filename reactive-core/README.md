@@ -200,7 +200,7 @@ fun testTransaction(): Unit = runBlocking {
                 set(col(Order::purchaserId), orders.first().purchaserId + 1)
             }.executeUpdate()
             
-            // Afterwards, if an exception occurs while executing another operation, all operations that occurred in withTransaction {} are rolled back.
+            // Afterwards, if an exception occurs while executing another operation, all operations that occurred in transactionWithFactory {} are rolled back.
             queryFactory.updateQuery<Order> {
                 throw IllegalStateException("transaction rollback")
             }.executeUpdate()
@@ -282,7 +282,7 @@ fun listQuery(): Unit = runBlocking {
 In the above example, since the Persistence Context is immediately terminated within the listQuery method, LazyInitializationException may occur when non-fetched entities are used outside the session.  
 Be sure to fetch in advance using methods such as fetch and associate so that an exception does not occur after loading DB data.
 
-If you want to execute logic in parallel inside the withSession or withTransaction or executeSessionWithFactory methods, it is not recommended. For more information, see [hibernate-reactive sessions-and-vertx-contexts](https://github.com/hibernate/hibernate-reactive/blob/main/documentation/src/main/asciidoc/reference/introduction.adoc#sessions-and-vertx-contexts).
+If you want to execute logic in parallel inside the withFactory or transactionWithFactory methods, it is not recommended. For more information, see [hibernate-reactive sessions-and-vertx-contexts](https://github.com/hibernate/hibernate-reactive/blob/main/documentation/src/main/asciidoc/reference/introduction.adoc#sessions-and-vertx-contexts).
 
 You can use the unwrapped Query directly, not the ReactiveQuery we made.
 
