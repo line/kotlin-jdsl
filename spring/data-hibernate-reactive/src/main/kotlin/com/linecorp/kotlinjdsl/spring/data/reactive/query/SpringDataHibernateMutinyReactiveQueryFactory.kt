@@ -12,23 +12,29 @@ import io.smallrye.mutiny.coroutines.asUni
 import io.smallrye.mutiny.coroutines.awaitSuspending
 import kotlinx.coroutines.*
 import org.hibernate.reactive.mutiny.Mutiny
+import kotlin.coroutines.CoroutineContext
 
 class SpringDataHibernateMutinyReactiveQueryFactory(
-    private val sessionFactory: Mutiny.SessionFactory, private val subqueryCreator: SubqueryCreator
+    /**
+     * When methods such as withSession and withTransaction are executed, the scope responsible for the actual DB processing must always be executed in the thread where the withXXX method is executed.
+     * For this, we will use Unconfined Dispatcher by default.
+     * However, we prevent hard-coding the dispatcher and inject and process executeQueryContext so that we can change it to a separate CoroutineContext when we want to change it.
+     */
+    private val executeQueryContext: CoroutineContext = Dispatchers.Unconfined,
+    private val sessionFactory: Mutiny.SessionFactory,
+    private val subqueryCreator: SubqueryCreator
 ) {
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
-    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun <T> withFactory(block: suspend (SpringDataReactiveQueryFactory) -> T): T =
-        sessionFactory.withSession {
-            makeFactory(it).let { GlobalScope.async(Dispatchers.Unconfined) { block(it) } }.asUni()
-        }.awaitSuspending()
+        sessionFactory.withSession { makeFactory(it).let { makeScope().async { block(it) } }.asUni() }
+            .awaitSuspending()
 
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
-    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun <T> transactionWithFactory(block: suspend (SpringDataReactiveQueryFactory) -> T): T =
-        sessionFactory.withTransaction { session ->
-            makeFactory(session).let { GlobalScope.async(Dispatchers.Unconfined) { block(it) } }.asUni()
-        }.awaitSuspending()
+        sessionFactory.withTransaction { session -> makeFactory(session).let { makeScope().async { block(it) } }.asUni() }
+            .awaitSuspending()
 
     fun <T> subquery(classType: Class<T>, dsl: SpringDataReactiveSubqueryDsl<T>.() -> Unit) =
         SubqueryExpressionSpec(
@@ -37,13 +43,14 @@ class SpringDataHibernateMutinyReactiveQueryFactory(
         )
 
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
-    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun <T> executeSessionWithFactory(
         session: Mutiny.Session,
         block: suspend (SpringDataReactiveQueryFactory) -> T
     ): Uni<T> =
-        GlobalScope.async(Dispatchers.Unconfined) { block(makeFactory(session)) }.asUni()
+        makeScope().async { block(makeFactory(session)) }.asUni()
 
+    private fun makeScope() = CoroutineScope(SupervisorJob() + executeQueryContext)
 
     private fun makeFactory(it: Mutiny.Session) = SpringDataReactiveQueryFactoryImpl(
         subqueryCreator = subqueryCreator,
