@@ -30,13 +30,12 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
 
     @Test
     fun executeSessionWithFactory() = runBlocking {
+        val sessionFactory = initFactory<Mutiny.SessionFactory>()
         val queryFactory = HibernateMutinyReactiveQueryFactory(
-            sessionFactory = factory,
-            subqueryCreator = SubqueryCreatorImpl()
+            sessionFactory = sessionFactory, subqueryCreator = SubqueryCreatorImpl()
         )
         val order = order { purchaserId = 5000 }
-        val sessionFactory = initFactory<Mutiny.SessionFactory>()
-        val actual = sessionFactory.withSession { session ->
+        val actual = factory.withSession { session ->
             session.persist(order).flatMap { session.flush() }
                 .flatMap {
                     queryFactory.executeSessionWithFactory(session) { factory ->
@@ -57,7 +56,7 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
     fun withFactoryMultiOperations() = runBlocking {
         val sessionFactory = initFactory<Mutiny.SessionFactory>()
         val queryFactory = HibernateMutinyReactiveQueryFactory(
-            sessionFactory = factory, subqueryCreator = SubqueryCreatorImpl()
+            sessionFactory = sessionFactory, subqueryCreator = SubqueryCreatorImpl()
         )
         val order = order { purchaserId = 5000 }
         persist(order)
