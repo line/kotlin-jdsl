@@ -1,10 +1,10 @@
 package com.linecorp.kotlinjdsl.query
 
 import org.hibernate.reactive.mutiny.Mutiny
-import org.hibernate.reactive.session.ReactiveQuery as HibernateReactiveQuery
 import java.util.concurrent.CompletionStage
 import javax.persistence.Parameter
 import kotlin.reflect.KClass
+import org.hibernate.reactive.session.ReactiveQuery as HibernateReactiveQuery
 
 class HibernateMutinyReactiveQuery<R>(private val query: Mutiny.Query<R>) : ReactiveQuery<R> {
     override val singleResult: CompletionStage<R>

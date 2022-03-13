@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -63,7 +64,7 @@ subprojects {
         useJUnitPlatform()
         testLogging {
             showExceptions = true
-            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+            exceptionFormat = FULL
             showCauses = true
             showStackTraces = true
             events = setOf(FAILED)
