@@ -102,7 +102,7 @@ class ReactiveQueryFactoryImpl(
 ```
 
 The key to the code above is the ReactiveCriteriaQueryCreator.  
-There is currently only one implementation of ReactiveCriteriaQueryCreator, the MutinyReactiveCriteriaQueryCreator class.  
+There is currently only one type implementation of ReactiveCriteriaQueryCreator, the Mutiny(Stateless)ReactiveCriteriaQueryCreator class.  
 Therefore, we will develop the story based on MutinyReactiveCriteriaQueryCreator.
 Please refer to the [Quick Start](#Quick Start) below
 

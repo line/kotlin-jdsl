@@ -3,10 +3,10 @@ package com.linecorp.kotlinjdsl.query
 import com.linecorp.kotlinjdsl.ReactiveQueryFactory
 import com.linecorp.kotlinjdsl.ReactiveQueryFactoryImpl
 import com.linecorp.kotlinjdsl.query.creator.MutinyReactiveCriteriaQueryCreator
+import com.linecorp.kotlinjdsl.query.creator.MutinyStatelessReactiveCriteriaQueryCreator
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreator
 import com.linecorp.kotlinjdsl.querydsl.SubqueryDsl
 import com.linecorp.kotlinjdsl.subquery
-import io.smallrye.mutiny.Uni
 import io.smallrye.mutiny.coroutines.asUni
 import io.smallrye.mutiny.coroutines.awaitSuspending
 import kotlinx.coroutines.*
@@ -32,9 +32,16 @@ class HibernateMutinyReactiveQueryFactory(
 
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
     @OptIn(ExperimentalCoroutinesApi::class)
+    suspend fun <T> statelessWithFactory(block: suspend (ReactiveQueryFactory) -> T): T =
+        sessionFactory.withStatelessSession { makeFactory(it).let { makeScope().async { block(it) } }.asUni() }
+            .awaitSuspending()
+
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun <T> withFactory(block: suspend (ReactiveQueryFactory) -> T): T =
         sessionFactory.withSession { makeFactory(it).let { makeScope().async { block(it) } }.asUni() }
             .awaitSuspending()
+
 
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -55,5 +62,10 @@ class HibernateMutinyReactiveQueryFactory(
     private fun makeFactory(it: Mutiny.Session) = ReactiveQueryFactoryImpl(
         subqueryCreator = subqueryCreator,
         criteriaQueryCreator = MutinyReactiveCriteriaQueryCreator(sessionFactory.criteriaBuilder, it)
+    )
+
+    private fun makeFactory(it: Mutiny.StatelessSession) = ReactiveQueryFactoryImpl(
+        subqueryCreator = subqueryCreator,
+        criteriaQueryCreator = MutinyStatelessReactiveCriteriaQueryCreator(sessionFactory.criteriaBuilder, it)
     )
 }

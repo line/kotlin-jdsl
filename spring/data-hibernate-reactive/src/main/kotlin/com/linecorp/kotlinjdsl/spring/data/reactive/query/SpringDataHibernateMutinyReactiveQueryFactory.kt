@@ -1,6 +1,7 @@
 package com.linecorp.kotlinjdsl.spring.data.reactive.query
 
 import com.linecorp.kotlinjdsl.query.creator.MutinyReactiveCriteriaQueryCreator
+import com.linecorp.kotlinjdsl.query.creator.MutinyStatelessReactiveCriteriaQueryCreator
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreator
 import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
 import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactory
@@ -32,6 +33,12 @@ class SpringDataHibernateMutinyReactiveQueryFactory(
 
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
     @OptIn(ExperimentalCoroutinesApi::class)
+    suspend fun <T> statelessWithFactory(block: suspend (SpringDataReactiveQueryFactory) -> T): T =
+        sessionFactory.withStatelessSession { makeFactory(it).let { makeScope().async { block(it) } }.asUni() }
+            .awaitSuspending()
+
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun <T> withFactory(block: suspend (Mutiny.Session, SpringDataReactiveQueryFactory) -> T): T =
         sessionFactory.withSession { session -> makeFactory(session).let { makeScope().async { block(session, it) } }.asUni() }
             .awaitSuspending()
@@ -59,5 +66,10 @@ class SpringDataHibernateMutinyReactiveQueryFactory(
     private fun makeFactory(it: Mutiny.Session) = SpringDataReactiveQueryFactoryImpl(
         subqueryCreator = subqueryCreator,
         criteriaQueryCreator = MutinyReactiveCriteriaQueryCreator(sessionFactory.criteriaBuilder, it)
+    )
+
+    private fun makeFactory(it: Mutiny.StatelessSession) = SpringDataReactiveQueryFactoryImpl(
+        subqueryCreator = subqueryCreator,
+        criteriaQueryCreator = MutinyStatelessReactiveCriteriaQueryCreator(sessionFactory.criteriaBuilder, it)
     )
 }

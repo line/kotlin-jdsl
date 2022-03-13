@@ -13,23 +13,23 @@ import org.springframework.data.domain.Pageable
 
 suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.singleQuery(
     noinline dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
-) = withFactory { factory -> factory.singleQuery(dsl).await() }
+) = statelessWithFactory { factory -> factory.singleQuery(dsl).await() }
 
 suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.singleQueryOrNull(
     noinline dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
-) = withFactory { factory -> factory.singleQueryOrNull(dsl).await() }
+) = statelessWithFactory { factory -> factory.singleQueryOrNull(dsl).await() }
 
 suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.listQuery(
     noinline dsl: SpringDataReactiveCriteriaQueryDsl<T>.() -> Unit
-) = withFactory { factory -> factory.listQuery(dsl).await() }
+) = statelessWithFactory { factory -> factory.listQuery(dsl).await() }
 
 suspend inline fun <reified T : Any> SpringDataHibernateMutinyReactiveQueryFactory.updateQuery(
     noinline dsl: CriteriaUpdateQueryDsl.() -> Unit
-) = withFactory { factory -> factory.updateQuery<T>(dsl).executeUpdate.await() }
+) = statelessWithFactory { factory -> factory.updateQuery<T>(dsl).executeUpdate.await() }
 
 suspend inline fun <reified T : Any> SpringDataHibernateMutinyReactiveQueryFactory.deleteQuery(
     noinline dsl: CriteriaDeleteQueryDsl.() -> Unit
-) = withFactory { factory -> factory.deleteQuery<T>(dsl).executeUpdate.await() }
+) = statelessWithFactory { factory -> factory.deleteQuery<T>(dsl).executeUpdate.await() }
 
 inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.subquery(
     noinline dsl: SubqueryDsl<T>.() -> Unit
@@ -38,10 +38,10 @@ inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.subquery(
 suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.pageQuery(
     pageable: Pageable,
     noinline dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit
-) = withFactory { factory -> factory.pageQuery(T::class.java, pageable, dsl).await() }
+) = statelessWithFactory { factory -> factory.pageQuery(T::class.java, pageable, dsl).await() }
 
 suspend inline fun <reified T> SpringDataHibernateMutinyReactiveQueryFactory.pageQuery(
     pageable: Pageable,
     noinline dsl: SpringDataReactivePageableQueryDsl<T>.() -> Unit,
     noinline countProjection: SpringDataReactivePageableQueryDsl<Long>.() -> SingleSelectClause<Long>
-) = withFactory { factory -> factory.pageQuery(T::class.java, pageable, dsl, countProjection).await() }
+) = statelessWithFactory { factory -> factory.pageQuery(T::class.java, pageable, dsl, countProjection).await() }
