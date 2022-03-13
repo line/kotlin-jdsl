@@ -16,7 +16,7 @@ dependencies {
 ```
 Unfortunately, kotlin-jdsl's data-reactive-core does not support Spring's declarative Transaction and Autoconfigure, unlike data-core.  
 The reason is that EntityManagerFactory must be created through ReactivePersistenceProvider, but Spring does not support this part.  
-Also, since there is also no ReactivePlatformTransactionManager, it is difficult to support declarative transactions.  
+Also, since there is also no ReactiveTransactionManager, it is difficult to support declarative transactions.  
 Therefore, we currently **only support integration with Spring Data Commons** (integrate with Page, Pageable, Range.Bound).
 
 This part will be updated when support for Hibernate Reactive is added in Spring in the future.  
