@@ -297,28 +297,30 @@ If you want to execute logic in parallel inside the withSession or withTransacti
 You can use the unwrapped Query directly, not the ReactiveQuery we made.
 
 ```kotlin
-val queryFactory = HibernateMutinyReactiveQueryFactory(
-    sessionFactory = sessionFactory, subqueryCreator = SubqueryCreatorImpl()
-)
 val order = Order(...initialize code)
 persist(order)
-val actual: List<Order> = queryFactory.withFactory { factory ->
-    val query: Mutiny.Query<Order> = factory.selectQuery<Order> {
-        select(entity(Order::class))
-        from(entity(Order::class))
-        where(col(Order::purchaserId).equal(5000))
-    }
-    // unwrap cannot recognize erased generics, so direct typecasting is required.,
-    .unwrap(Mutiny.Query::class) as Mutiny.Query<Order>
-    // After unwrap, you can proceed with the Mutiny.Query you want.
-    query.flushMode = FlushMode.ALWAYS
 
-    // As in the other examples above, you should finish DB operations inside withFactory {} and always return the result without blocking.
-    query.resultList.awaitSuspending()
+val factory = HibernateMutinyReactiveQueryFactory(
+    sessionFactory = factory,
+    subqueryCreator = SubqueryCreatorImpl()
+)
+
+val orderItem = factory.withFactory { queryFactory ->
+    val query: queryFactory.selectQuery<OrderItem> {
+        select(entity(OrderItem::class))
+        from(entity(OrderItem::class))
+        where(col(OrderItem::id).equal(order.groups.first().items.first().id))
+    }
+    // You can unwrap the query using ReactiveQuery extension in ReactiveQueryExtensions
+    .unwrap<Mutiny.Query<OrderItem>>()
+
+    // After unwrap, you can proceed with the Mutiny.Query you want.
+    query.isReadOnly = true
+
+    query.singleResult.awaitSuspending()
 }
 
-assertThat(actual.map { it.id }).containsOnly(order.id)
-sessionFactory.close()
+assertThat(orderItem.id).isEqualTo(order.groups.first().items.first().id)
 ```
 
 ### Spring Data

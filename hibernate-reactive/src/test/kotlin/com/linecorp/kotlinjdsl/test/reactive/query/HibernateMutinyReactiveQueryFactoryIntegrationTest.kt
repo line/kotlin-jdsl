@@ -5,6 +5,7 @@ import com.linecorp.kotlinjdsl.query.*
 import com.linecorp.kotlinjdsl.query.creator.SubqueryCreatorImpl
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
+import com.linecorp.kotlinjdsl.selectQuery
 import com.linecorp.kotlinjdsl.singleQuery
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import com.linecorp.kotlinjdsl.test.entity.EntityDsl
@@ -295,46 +296,27 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
     }
 
     @Test
-    fun suspendTransactionWithFactory(): Unit = runBlocking {
+    fun unwrap(): Unit = runBlocking {
         val order = order {}
         persist(order)
 
-        val producer = HibernateMutinyReactiveQueryFactory(
+        val factory = HibernateMutinyReactiveQueryFactory(
             sessionFactory = factory,
             subqueryCreator = SubqueryCreatorImpl()
         )
-        try {
-            producer.transactionWithFactory { queryFactory ->
-                val orders = queryFactory.listQuery<Order> {
-                    select(entity(Order::class))
-                    from(entity(Order::class))
-                    fetch(Order::groups)
-                    fetch(OrderGroup::items)
-                    fetch(OrderGroup::address)
-                }.await()
 
-                queryFactory.updateQuery<Order> {
-                    where(col(Order::id).equal(orders.first().id))
-                    set(col(Order::purchaserId), orders.first().purchaserId + 1)
-                }.executeUpdate.await()
+        val orderItem = factory.withFactory { queryFactory ->
+            val query: Mutiny.Query<OrderItem> = queryFactory.selectQuery<OrderItem> {
+                select(entity(OrderItem::class))
+                from(entity(OrderItem::class))
+                where(col(OrderItem::id).equal(order.groups.first().items.first().id))
+            }.unwrap()
 
-                queryFactory.updateQuery<Order> {
-                    throw IllegalStateException("transaction rollback")
-                }.executeUpdate.await()
-            }
-        } catch (e: IllegalStateException) {
-            assertThat(e).hasMessage("transaction rollback")
+            query.isReadOnly = true
+
+            query.singleResult.awaitSuspending()
         }
 
-        assertThat(producer.transactionWithFactory { queryFactory ->
-            queryFactory.singleQuery<Order> {
-                select(entity(Order::class))
-                from(entity(Order::class))
-                fetch(Order::groups)
-                fetch(OrderGroup::items)
-                fetch(OrderGroup::address)
-                where(col(Order::id).equal(order.id))
-            }.await()
-        }).isEqualTo(order)
+        assertThat(orderItem.id).isEqualTo(order.groups.first().items.first().id)
     }
 }
