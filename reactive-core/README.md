@@ -228,7 +228,7 @@ fun testTransaction(): Unit = runBlocking {
 
 ```
 
-If you want to perform DB operations while using Hibernate's Session directly, you can use executeSessionWithFactory as shown below.
+If you want to perform DB operations while using Hibernate's Session directly, you can use withSession(or withTransaction) as shown below.
 
 ```kotlin
 @Test
@@ -236,27 +236,23 @@ fun executeSessionWithFactory() = runBlocking {
     val sessionFactory = Persistence.createEntityManagerFactory("persistenceUnitName")
         .unwrap(Mutiny.SessionFactory::class.java)
     val queryFactory = HibernateMutinyReactiveQueryFactory(
-        sessionFactory = sessionFactory, subqueryCreator = SubqueryCreatorImpl()
+        sessionFactory = factory, subqueryCreator = SubqueryCreatorImpl()
     )
     val order = Order(...initialize code)
-    val actual = sessionFactory.withSession { session ->
-        session.persist(order).flatMap { session.flush() }
-            .flatMap {
-                queryFactory.executeSessionWithFactory(session) { factory ->
-                    factory.singleQuery<Order> {
-                        select(entity(Order::class))
-                        from(entity(Order::class))
-                        where(col(Order::purchaserId).equal(5000))
-                    }
-                    // You must obtain and process the final result of all DB processing in the executeSessionWithFactory method with a non blocking method such as await, not a blocking method such as get() or join(). 
-                    // Persistence context and DB connection are valid only within executeSessionWithFactory {} scope.
-                    .await()
-                }
-            }
-    }.awaitSuspending()
+    val actual = queryFactory.withFactory { session, factory ->
+        // Similarly, all operations should be non-blocking using awaitSuspend when receiving and processing a session. 
+        // Never use get() or join().
+        session.persist(order).awaitSuspending()
+        session.flush().awaitSuspending()
+
+        factory.singleQuery<Order> {
+            select(entity(Order::class))
+            from(entity(Order::class))
+            where(col(Order::purchaserId).equal(5000))
+        }.await()
+    }
 
     assertThat(actual.id).isEqualTo(order.id)
-    sessionFactory.close()
 }
 ```
 

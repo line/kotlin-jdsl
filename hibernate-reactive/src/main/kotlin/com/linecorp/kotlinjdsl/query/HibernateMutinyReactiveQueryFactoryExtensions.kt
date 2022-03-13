@@ -9,23 +9,23 @@ import kotlinx.coroutines.future.await
 
 suspend inline fun <reified T> HibernateMutinyReactiveQueryFactory.singleQuery(
     noinline dsl: CriteriaQueryDsl<T>.() -> Unit
-) = withFactory { it.singleQuery(dsl).await() }
+) = withFactory { queryFactory -> queryFactory.singleQuery(dsl).await() }
 
 suspend inline fun <reified T> HibernateMutinyReactiveQueryFactory.singleQueryOrNull(
     noinline dsl: CriteriaQueryDsl<T>.() -> Unit
-) = withFactory { it.singleQueryOrNull(dsl).await() }
+) = withFactory { queryFactory -> queryFactory.singleQueryOrNull(dsl).await() }
 
 suspend inline fun <reified T> HibernateMutinyReactiveQueryFactory.listQuery(
     noinline dsl: CriteriaQueryDsl<T>.() -> Unit
-) = withFactory { it.listQuery(dsl).await() }
+) = withFactory { queryFactory -> queryFactory.listQuery(dsl).await() }
 
 suspend inline fun <reified T : Any> HibernateMutinyReactiveQueryFactory.updateQuery(
     noinline dsl: CriteriaUpdateQueryDsl.() -> Unit
-) = withFactory { it.updateQuery<T>(dsl).executeUpdate.await() }
+) = withFactory { queryFactory -> queryFactory.updateQuery<T>(dsl).executeUpdate.await() }
 
 suspend inline fun <reified T : Any> HibernateMutinyReactiveQueryFactory.deleteQuery(
     noinline dsl: CriteriaDeleteQueryDsl.() -> Unit
-) = withFactory { it.deleteQuery<T>(dsl).executeUpdate.await() }
+) = withFactory { queryFactory -> queryFactory.deleteQuery<T>(dsl).executeUpdate.await() }
 
 inline fun <reified T> HibernateMutinyReactiveQueryFactory.subquery(
     noinline dsl: SubqueryDsl<T>.() -> Unit

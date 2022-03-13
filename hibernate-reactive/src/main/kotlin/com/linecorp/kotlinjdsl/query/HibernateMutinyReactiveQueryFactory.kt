@@ -26,6 +26,12 @@ class HibernateMutinyReactiveQueryFactory(
 ) {
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
     @OptIn(ExperimentalCoroutinesApi::class)
+    suspend fun <T> withFactory(block: suspend (Mutiny.Session, ReactiveQueryFactory) -> T): T =
+        sessionFactory.withSession { session -> makeFactory(session).let { makeScope().async { block(session, it) } }.asUni() }
+            .awaitSuspending()
+
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun <T> withFactory(block: suspend (ReactiveQueryFactory) -> T): T =
         sessionFactory.withSession { makeFactory(it).let { makeScope().async { block(it) } }.asUni() }
             .awaitSuspending()
@@ -36,15 +42,13 @@ class HibernateMutinyReactiveQueryFactory(
         sessionFactory.withTransaction { session -> makeFactory(session).let { makeScope().async { block(it) } }.asUni() }
             .awaitSuspending()
 
-    fun <T> subquery(classType: Class<T>, dsl: SubqueryDsl<T>.() -> Unit) = subquery(classType, subqueryCreator, dsl)
-
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun <T> executeSessionWithFactory(
-        session: Mutiny.Session,
-        block: suspend (ReactiveQueryFactory) -> T
-    ): Uni<T> =
-        makeScope().async { block(makeFactory(session)) }.asUni()
+    suspend fun <T> transactionWithFactory(block: suspend (Mutiny.Session, ReactiveQueryFactory) -> T): T =
+        sessionFactory.withTransaction { session -> makeFactory(session).let { makeScope().async { block(session, it) } }.asUni() }
+            .awaitSuspending()
+
+    fun <T> subquery(classType: Class<T>, dsl: SubqueryDsl<T>.() -> Unit) = subquery(classType, subqueryCreator, dsl)
 
     private fun makeScope() = CoroutineScope(SupervisorJob() + executeQueryContext)
 

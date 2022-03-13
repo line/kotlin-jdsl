@@ -32,8 +32,20 @@ class SpringDataHibernateMutinyReactiveQueryFactory(
 
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
     @OptIn(ExperimentalCoroutinesApi::class)
+    suspend fun <T> withFactory(block: suspend (Mutiny.Session, SpringDataReactiveQueryFactory) -> T): T =
+        sessionFactory.withSession { session -> makeFactory(session).let { makeScope().async { block(session, it) } }.asUni() }
+            .awaitSuspending()
+
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun <T> transactionWithFactory(block: suspend (SpringDataReactiveQueryFactory) -> T): T =
         sessionFactory.withTransaction { session -> makeFactory(session).let { makeScope().async { block(it) } }.asUni() }
+            .awaitSuspending()
+
+    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+    @OptIn(ExperimentalCoroutinesApi::class)
+    suspend fun <T> transactionWithFactory(block: suspend (Mutiny.Session, SpringDataReactiveQueryFactory) -> T): T =
+        sessionFactory.withTransaction { session -> makeFactory(session).let { makeScope().async { block(session, it) } }.asUni() }
             .awaitSuspending()
 
     fun <T> subquery(classType: Class<T>, dsl: SpringDataReactiveSubqueryDsl<T>.() -> Unit) =
@@ -41,14 +53,6 @@ class SpringDataHibernateMutinyReactiveQueryFactory(
             spec = SpringDataReactiveReactiveQueryDslImpl(classType).apply(dsl).createSubquerySpec(),
             subqueryCreator = subqueryCreator
         )
-
-    @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun <T> executeSessionWithFactory(
-        session: Mutiny.Session,
-        block: suspend (SpringDataReactiveQueryFactory) -> T
-    ): Uni<T> =
-        makeScope().async { block(makeFactory(session)) }.asUni()
 
     private fun makeScope() = CoroutineScope(SupervisorJob() + executeQueryContext)
 

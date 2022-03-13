@@ -19,9 +19,7 @@ import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.MutinySessionFactoryExtension
-import com.linecorp.kotlinjdsl.test.reactive.query.initFactory
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
-import io.smallrye.mutiny.Uni
 import io.smallrye.mutiny.coroutines.awaitSuspending
 import kotlinx.coroutines.future.await
 import org.hibernate.reactive.mutiny.Mutiny
@@ -58,23 +56,20 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
     }
 
     @Test
-    fun executeWithFactory() = runBlocking {
+    fun executeSessionWithFactory() = runBlocking {
         val order = order { purchaserId = 5000 }
-        val sessionFactory = initFactory<Mutiny.SessionFactory>()
-        val actual: Uni<Order> = sessionFactory.withSession { session ->
-            queryFactory.executeSessionWithFactory(session) { factory ->
-                session.persist(order).flatMap { session.flush() }.awaitSuspending()
+        val actual = queryFactory.withFactory { session, factory ->
+            session.persist(order).awaitSuspending()
+            session.flush().awaitSuspending()
 
-                factory.singleQuery<Order> {
-                    select(entity(Order::class))
-                    from(entity(Order::class))
-                    where(col(Order::purchaserId).equal(5000))
-                }.await()
-            }
+            factory.singleQuery<Order> {
+                select(entity(Order::class))
+                from(entity(Order::class))
+                where(col(Order::purchaserId).equal(5000))
+            }.await()
         }
-        assertThat(actual.awaitSuspending().id).isEqualTo(order.id)
 
-        sessionFactory.close()
+        assertThat(actual.id).isEqualTo(order.id)
     }
 
     @Test
@@ -175,7 +170,9 @@ internal class SpringDataMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, 
     fun transaction() = runBlocking {
         // when
         try {
-            queryFactory.transactionWithFactory { queryFactory ->
+            queryFactory.transactionWithFactory { session, queryFactory ->
+                session.merge(order1).awaitSuspending()
+
                 val orders = queryFactory.listQuery<Order> {
                     select(entity(Order::class))
                     from(entity(Order::class))

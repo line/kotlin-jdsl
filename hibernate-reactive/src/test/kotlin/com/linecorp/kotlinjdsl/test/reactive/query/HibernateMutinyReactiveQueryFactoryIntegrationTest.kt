@@ -35,18 +35,16 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
             sessionFactory = factory, subqueryCreator = SubqueryCreatorImpl()
         )
         val order = order { purchaserId = 5000 }
-        val actual = factory.withSession { session ->
-            session.persist(order).flatMap { session.flush() }
-                .flatMap {
-                    queryFactory.executeSessionWithFactory(session) { factory ->
-                        factory.singleQuery<Order> {
-                            select(entity(Order::class))
-                            from(entity(Order::class))
-                            where(col(Order::purchaserId).equal(5000))
-                        }.await()
-                    }
-                }
-        }.awaitSuspending()
+        val actual = queryFactory.withFactory { session, factory ->
+            session.persist(order).awaitSuspending()
+            session.flush().awaitSuspending()
+
+            factory.singleQuery<Order> {
+                select(entity(Order::class))
+                from(entity(Order::class))
+                where(col(Order::purchaserId).equal(5000))
+            }.await()
+        }
 
         assertThat(actual.id).isEqualTo(order.id)
         Unit
@@ -261,7 +259,9 @@ class HibernateMutinyReactiveQueryFactoryIntegrationTest : EntityDsl, WithKotlin
             subqueryCreator = SubqueryCreatorImpl()
         )
         try {
-            producer.transactionWithFactory { queryFactory ->
+            producer.transactionWithFactory { session, queryFactory ->
+                session.merge(order).awaitSuspending()
+
                 val orders = queryFactory.listQuery<Order> {
                     select(entity(Order::class))
                     from(entity(Order::class))
