@@ -49,7 +49,7 @@ interface ReactiveQuery<R> {
 
 As written above, ReactiveQuery is similar to JPA 2.2's [TypedQuery](https://docs.oracle.com/javaee/6/api/javax/persistence/TypedQuery.html), but with many missing parts.  
 It is also similar to Hibernate's [ReactiveQuery](https://hibernate.org/reactive/documentation/1.1/javadocs/org/hibernate/reactive/session/ReactiveQuery.html), but similarly, many parts are omitted.  
-If so, what should you do with the rest of the query methods used in JPA or Hibernate?   
+If so, what if you need to directly use the query object (e.g: Mutiny.Query), which is the actual implementation of Reactive Query?   
 The answer is right there in the unwrap method.  
 You can check the example code using unwrap in the description a little further below.  
 
@@ -284,7 +284,9 @@ Be sure to fetch in advance using methods such as fetch and associate so that an
 
 If you want to execute logic in parallel inside the withFactory or transactionWithFactory methods, it is not recommended. For more information, see [hibernate-reactive sessions-and-vertx-contexts](https://github.com/hibernate/hibernate-reactive/blob/main/documentation/src/main/asciidoc/reference/introduction.adoc#sessions-and-vertx-contexts).
 
-You can use the unwrapped Query directly, not the ReactiveQuery we made.
+You can use the unwrapped Query directly, not the ReactiveQuery we made.  
+Currently, there is only one real implementation of our ReactiveQuery, Mutiny.Query.  
+so please be aware that unwrap is not possible with other types.
 
 ```kotlin
 val order = Order(...initialize code)
