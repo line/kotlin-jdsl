@@ -45,6 +45,7 @@ import javax.persistence.criteria.JoinType
  *
  * Don't use this directly because it's an <string>INTERNAL</strong> class.
  * It does not support backward compatibility.
+ * This class should be used with the understanding that it is not thread safe and therefore not suitable for parallel processing.
  */
 open class QueryDslImpl<T>(
     private val returnType: Class<T>,
@@ -52,16 +53,16 @@ open class QueryDslImpl<T>(
     private var singleSelectClause: SingleSelectClause<T>? = null
     private var multiSelectClause: MultiSelectClause<T>? = null
     private var fromClause: FromClause<*>? = null
-    private var joins: MutableList<JoinSpec<*>> = mutableListOf()
-    private var wheres: MutableList<PredicateSpec> = mutableListOf()
-    private var groupBys: MutableList<ExpressionSpec<*>> = mutableListOf()
-    private var havings: MutableList<PredicateSpec> = mutableListOf()
-    private var orderBys: MutableList<OrderSpec> = mutableListOf()
+    private var joins: Lazy<MutableList<JoinSpec<*>>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
+    private var wheres: Lazy<MutableList<PredicateSpec>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
+    private var groupBys: Lazy<MutableList<ExpressionSpec<*>>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
+    private var havings: Lazy<MutableList<PredicateSpec>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
+    private var orderBys: Lazy<MutableList<OrderSpec>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
     private var offset: Int? = null
     private var maxResults: Int? = null
-    private var sqlHints: MutableList<String> = mutableListOf()
-    private var jpaHints: MutableMap<String, Any> = mutableMapOf()
-    private var params: MutableMap<ColumnSpec<*>, Any?> = mutableMapOf()
+    private var sqlHints: Lazy<MutableList<String>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
+    private var jpaHints: Lazy<MutableMap<String, Any>> = lazy(LazyThreadSafetyMode.NONE) { mutableMapOf() }
+    private var params: Lazy<MutableMap<ColumnSpec<*>, Any?>> = lazy(LazyThreadSafetyMode.NONE) { mutableMapOf() }
 
     override fun select(distinct: Boolean, expression: ExpressionSpec<T>): SingleSelectClause<T> {
         return SingleSelectClause(
@@ -84,12 +85,12 @@ open class QueryDslImpl<T>(
     }
 
     override fun <T, R> join(left: EntitySpec<T>, right: EntitySpec<R>, relation: Relation<T, R?>, joinType: JoinType) {
-        joins.add(SimpleJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
+        joins.value.add(SimpleJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
     override fun <T> join(entity: EntitySpec<T>, predicate: PredicateSpec) {
-        joins.add(CrossJoinSpec(entity))
-        wheres.add(predicate)
+        joins.value.add(CrossJoinSpec(entity))
+        wheres.value.add(predicate)
     }
 
     override fun <T, R> associate(
@@ -98,7 +99,7 @@ open class QueryDslImpl<T>(
         relation: Relation<T, R?>,
         joinType: JoinType
     ) {
-        joins.add(SimpleAssociatedJoinSpec(left = left, right = right, path = relation.path))
+        joins.value.add(SimpleAssociatedJoinSpec(left = left, right = right, path = relation.path))
     }
 
     override fun <T, R> fetch(
@@ -107,23 +108,23 @@ open class QueryDslImpl<T>(
         relation: Relation<T, R?>,
         joinType: JoinType
     ) {
-        joins.add(FetchJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
+        joins.value.add(FetchJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
     override fun where(predicate: PredicateSpec) {
-        wheres.add(predicate)
+        wheres.value.add(predicate)
     }
 
     override fun groupBy(columns: List<ExpressionSpec<*>>) {
-        groupBys.addAll(columns)
+        groupBys.value.addAll(columns)
     }
 
     override fun having(predicate: PredicateSpec) {
-        havings.add(predicate)
+        havings.value.add(predicate)
     }
 
     override fun orderBy(orders: List<OrderSpec>) {
-        orderBys.addAll(orders)
+        orderBys.value.addAll(orders)
     }
 
     override fun offset(offset: Int) {
@@ -135,19 +136,19 @@ open class QueryDslImpl<T>(
     }
 
     override fun sqlHints(hints: List<String>) {
-        sqlHints.addAll(hints)
+        sqlHints.value.addAll(hints)
     }
 
     override fun hints(hints: Map<String, Any>) {
-        jpaHints.putAll(hints)
+        jpaHints.value.putAll(hints)
     }
 
     override fun setParams(params: Map<ColumnSpec<*>, Any?>) {
-        this.params.putAll(params)
+        this.params.value.putAll(params)
     }
 
     override fun set(column: ColumnSpec<*>, value: Any?) {
-        params[column] = value
+        params.value[column] = value
     }
 
     fun createCriteriaQuerySpec(): CriteriaQuerySpec<T, TypedQuery<T>> {
@@ -174,9 +175,12 @@ open class QueryDslImpl<T>(
             where = getWhereClause(),
             sqlHint = getSqlQueryHintClause(),
             jpaHint = getJpaQueryHintClause(),
-            set = SetClause(params)
+            set = getSetClause()
         )
     }
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected fun getSetClause() = SetClause(params.orEmpty())
 
     @Suppress("UNCHECKED_CAST")
     fun createCriteriaDeleteQuerySpec(): CriteriaDeleteQuerySpec<T, Query> {
@@ -224,17 +228,19 @@ open class QueryDslImpl<T>(
 
     @Suppress("MemberVisibilityCanBePrivate")
     protected fun getJoinClause(): JoinClause {
-        return JoinClause(joins)
+        return JoinClause(joins.orEmpty())
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
     protected fun getJoinClauseDoesNotHaveFetch(): JoinClause {
-        mustBe(joins.filterIsInstance<FetchJoinSpec<*, *>>().isEmpty()) { "This query does not support fetch" }
+        mustBe(joins.orEmpty().filterIsInstance<FetchJoinSpec<*, *>>().isEmpty()) { "This query does not support fetch" }
 
         return getJoinClause()
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun getSimpleAssociatedJoinClauseOnly(): SimpleAssociatedJoinClause {
+        val joins = joins.orEmpty()
         return joins.filterIsInstance<SimpleAssociatedJoinSpec<*, *>>().let {
             mustBe(it.size == joins.size) { "This query only support associate" }
             SimpleAssociatedJoinClause(it)
@@ -242,12 +248,12 @@ open class QueryDslImpl<T>(
     }
 
     protected fun getWhereClause(): WhereClause {
-        return WhereClause(wheres.merge())
+        return WhereClause(wheres.orEmpty().merge())
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
     protected fun getGroupByClause(): GroupByClause {
-        return GroupByClause(groupBys)
+        return GroupByClause(groupBys.orEmpty())
     }
 
     protected fun getEmptyGroupByClause(): GroupByClause {
@@ -256,7 +262,7 @@ open class QueryDslImpl<T>(
 
     @Suppress("MemberVisibilityCanBePrivate")
     protected fun getHavingClause(): HavingClause {
-        return HavingClause(havings.merge())
+        return HavingClause(havings.orEmpty().merge())
     }
 
     protected fun getEmptyHavingClause(): HavingClause {
@@ -265,7 +271,7 @@ open class QueryDslImpl<T>(
 
     @Suppress("MemberVisibilityCanBePrivate")
     protected fun getOrderByClause(): CriteriaQueryOrderByClause {
-        return OrderByClause(orderBys)
+        return OrderByClause(orderBys.orEmpty())
     }
 
     protected fun getEmptyOrderByClause(): CriteriaQueryOrderByClause {
@@ -282,12 +288,12 @@ open class QueryDslImpl<T>(
     }
 
     protected fun <Q : Query> getJpaQueryHintClause(): JpaQueryHintClause<Q> {
-        return JpaQueryHintClauseImpl(jpaHints)
+        return JpaQueryHintClauseImpl(jpaHints.orEmpty())
     }
 
     @Suppress("UNCHECKED_CAST")
     protected fun <Q : Query> getSqlQueryHintClause(): SqlQueryHintClause<Q> {
-        return SqlQueryHintClauseProvider.provide(sqlHints) as SqlQueryHintClause<Q>
+        return SqlQueryHintClauseProvider.provide(sqlHints.orEmpty()) as SqlQueryHintClause<Q>
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
@@ -346,4 +352,7 @@ open class QueryDslImpl<T>(
         override val groupBy: SubqueryGroupByClause,
         override val having: SubqueryHavingClause
     ) : SubquerySpec<T>
+
+    private fun <T> Lazy<List<T>>.orEmpty() = if (isInitialized()) value else emptyList()
+    private fun <K, V> Lazy<Map<K, V>>.orEmpty() = if (isInitialized()) value else emptyMap()
 }
