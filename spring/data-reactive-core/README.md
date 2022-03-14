@@ -56,7 +56,7 @@ You need to create Hibernate Reactive versions of HibernateJpaVendorAdapter, Hib
 This is beyond our scope.
 
 Inject SpringDataHibernateMutinyReactiveQueryFactory in your service and query using it.  
-For more detailed usage, see [more](../../reactive-core/README.md#Quick Start)
+For more detailed usage, see [more](../../reactive-core/README.md#Quick-Start)
 
 ```kotlin
 @Service
