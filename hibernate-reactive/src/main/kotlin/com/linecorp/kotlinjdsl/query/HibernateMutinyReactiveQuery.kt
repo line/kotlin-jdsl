@@ -4,15 +4,12 @@ import io.smallrye.mutiny.coroutines.awaitSuspending
 import org.hibernate.reactive.mutiny.Mutiny
 import javax.persistence.Parameter
 import kotlin.reflect.KClass
-import org.hibernate.reactive.session.ReactiveQuery as HibernateReactiveQuery
 
 class HibernateMutinyReactiveQuery<R>(private val query: Mutiny.Query<R>) : ReactiveQuery<R> {
     override suspend fun singleResult(): R = query.singleResult.awaitSuspending()
     override suspend fun resultList(): List<R> = query.resultList.awaitSuspending()
     override suspend fun singleResultOrNull(): R? = query.singleResultOrNull.awaitSuspending()
     override suspend fun executeUpdate(): Int = query.executeUpdate().awaitSuspending()
-
-    private val exception = UnsupportedOperationException("Hibernate-reactive does not support JPA query hint yet.")
 
     override fun setParameter(position: Int, value: Any?): ReactiveQuery<R> {
         query.setParameter(position, value)
@@ -38,24 +35,8 @@ class HibernateMutinyReactiveQuery<R>(private val query: Mutiny.Query<R>) : Reac
         query.firstResult = firstResult
         return this
     }
-
-    /**
-     * Hibernate Reactive's Mutiny.Query does not support setQueryHint method officially.
-     * but org.hibernate.reactive.session.ReactiveQuery has a setQueryHint method.
-     * Mutiny.Query (MutinyQueryImpl to be exact) has an org.hibernate.reactive.session.ReactiveQuery instance
-     * to delegate to ReactiveQuery methods.
-     * So we support setQueryHint by calling ReactiveQuery.setQueryHint Method included in Mutiny.Query.
-     * This reflection call will be removed in the future to officially support setQueryHint in Mutiny.Query.
-     * @see org.hibernate.reactive.session.ReactiveQuery#setQueryHint
-     */
     override fun setQueryHint(hintName: String, value: Any) {
-        query::class.java.declaredFields
-            .find { it.type.name == HibernateReactiveQuery::class.qualifiedName }
-            ?.run {
-                isAccessible = true
-                (get(query) as HibernateReactiveQuery<*>).setQueryHint(hintName, value)
-                    ?: throw exception
-            } ?: throw exception
+        throw UnsupportedOperationException("Hibernate-reactive does not support JPA query hint yet. if hibernate-reactive setQueryHint method support officially please let us know. we will fix it")
     }
 
     override val maxResults: Int

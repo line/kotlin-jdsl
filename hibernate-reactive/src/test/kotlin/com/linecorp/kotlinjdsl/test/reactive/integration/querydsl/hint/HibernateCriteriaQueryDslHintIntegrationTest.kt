@@ -43,15 +43,18 @@ internal class HibernateCriteriaQueryDslHintIntegrationTest : HibernateCriteriaI
 
     @Test
     fun jpaHint() = runBlocking {
-        // when
-        val actual = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
-                select(col(Order::purchaserId))
-                from(entity(Order::class))
-                hints("org.hibernate.comment" to "comment")
+        try {
+            // when
+            withFactory { queryFactory ->
+                queryFactory.listQuery<Long> {
+                    select(col(Order::purchaserId))
+                    from(entity(Order::class))
+                    hints("org.hibernate.comment" to "comment")
+                }
             }
+        } catch (e: Throwable) {
+            // then
+            assertThat(e).hasMessage("Hibernate-reactive does not support JPA query hint yet. if hibernate-reactive setQueryHint method support officially please let us know. we will fix it")
         }
-
-        assertThat(actual).hasSize(3)
     }
 }
