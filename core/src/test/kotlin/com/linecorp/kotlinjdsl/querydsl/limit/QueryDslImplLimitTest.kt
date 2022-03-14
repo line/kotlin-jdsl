@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.clause.limit.LimitClause
 import com.linecorp.kotlinjdsl.querydsl.QueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
 import org.junit.jupiter.api.Test
+import javax.persistence.Query
 
 internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
     @Test
@@ -18,7 +19,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = null, maxResults = null)
+            LimitClause<Query>(offset = null, maxResults = null)
         )
     }
 
@@ -35,7 +36,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = 10, maxResults = null)
+            LimitClause<Query>(offset = 10, maxResults = null)
         )
     }
 
@@ -52,7 +53,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = null, maxResults = 10)
+            LimitClause<Query>(offset = null, maxResults = 10)
         )
     }
 
@@ -69,7 +70,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = null, maxResults = 10)
+            LimitClause<Query>(offset = null, maxResults = 10)
         )
     }
 
@@ -86,7 +87,7 @@ internal class QueryDslImplLimitTest : WithKotlinJdslAssertions {
         val criteriaQuerySpec = actual.createCriteriaQuerySpec()
 
         assertThat(criteriaQuerySpec.limit).isEqualTo(
-            LimitClause(offset = 1, maxResults = 10)
+            LimitClause<Query>(offset = 1, maxResults = 10)
         )
     }
 

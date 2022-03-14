@@ -4,8 +4,8 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class CountSpec<T>(
-    val distinct: Boolean = false,
-    val expression: ExpressionSpec<T>,
+    private val distinct: Boolean = false,
+    private val expression: ExpressionSpec<T>,
 ) : ExpressionSpec<Long> {
     override fun toCriteriaExpression(
         froms: Froms,

@@ -127,7 +127,8 @@ internal class OrSpecTest : WithKotlinJdslAssertions {
         every { criteriaBuilder.conjunction() } returns andPredicate
 
         // when
-        val actual = OrSpec(listOf(predicateSpec1, predicateSpec2)).toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
+        val actual =
+            OrSpec(listOf(predicateSpec1, predicateSpec2)).toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
 
         // then
         assertThat(actual).isEqualTo(andPredicate)
@@ -182,7 +183,8 @@ internal class OrSpecTest : WithKotlinJdslAssertions {
         every { criteriaBuilder.conjunction() } returns andPredicate
 
         // when
-        val actual = OrSpec(listOf(predicateSpec1, predicateSpec2)).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
+        val actual =
+            OrSpec(listOf(predicateSpec1, predicateSpec2)).toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
 
         // then
         assertThat(actual).isEqualTo(andPredicate)

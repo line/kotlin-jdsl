@@ -26,7 +26,7 @@ internal class SpringDataPageableLimitClauseTest : WithKotlinJdslAssertions {
         every { query.setMaxResults(10) } returns query
 
         // when
-        SpringDataPageableLimitClause(pageable).apply(query)
+        SpringDataPageableLimitClause<Query>(pageable).apply(query)
 
         // then
         verify(exactly = 1) {
@@ -43,7 +43,7 @@ internal class SpringDataPageableLimitClauseTest : WithKotlinJdslAssertions {
         val pageable = Pageable.unpaged()
 
         // when
-        SpringDataPageableLimitClause(pageable).apply(query)
+        SpringDataPageableLimitClause<Query>(pageable).apply(query)
 
         // then
         confirmVerified(query)

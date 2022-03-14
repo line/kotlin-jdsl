@@ -11,18 +11,18 @@ import javax.persistence.criteria.CriteriaUpdate
  * Don't use this directly because it's an <string>INTERNAL</strong>.
  * It does not support backward compatibility.
  */
-data class FromClause(
-    val entity: EntitySpec<*>,
+data class FromClause<T>(
+    private val entity: EntitySpec<T>,
 ) {
     fun join(joinClause: JoinClause, query: AbstractQuery<*>): Froms {
         return Joiner(entity, joinClause.joins, query).joinAll()
     }
 
-    fun associate(joinClause: SimpleAssociatedJoinClause, query: CriteriaUpdate<in Any>, targetEntity: Class<*>): Froms {
-        return SimpleAssociator(entity, joinClause.joins, query.from(targetEntity)).associateAll()
+    fun associate(joinClause: SimpleAssociatedJoinClause, query: CriteriaUpdate<T>): Froms {
+        return SimpleAssociator(entity, joinClause.joins, query.from(entity.type)).associateAll()
     }
 
-    fun associate(joinClause: SimpleAssociatedJoinClause, query: CriteriaDelete<in Any>, targetEntity: Class<*>): Froms {
-        return SimpleAssociator(entity, joinClause.joins, query.from(targetEntity)).associateAll()
+    fun associate(joinClause: SimpleAssociatedJoinClause, query: CriteriaDelete<T>): Froms {
+        return SimpleAssociator(entity, joinClause.joins, query.from(entity.type)).associateAll()
     }
 }

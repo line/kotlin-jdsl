@@ -8,7 +8,7 @@ import com.linecorp.kotlinjdsl.test.entity.order.OrderGroupTestBuilder
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItemTestBuilder
 import com.linecorp.kotlinjdsl.test.entity.order.OrderTestBuilder
 
-abstract class EntityDsl {
+interface EntityDsl {
     fun order(customize: OrderTestBuilder.() -> Unit) = OrderTestBuilder().apply(customize).build()
     fun orderGroup(customize: OrderGroupTestBuilder.() -> Unit) = OrderGroupTestBuilder().apply(customize).build()
     fun orderItem(customize: OrderItemTestBuilder.() -> Unit) = OrderItemTestBuilder().apply(customize).build()

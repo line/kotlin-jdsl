@@ -11,8 +11,8 @@ import javax.persistence.criteria.CriteriaQuery
  * It does not support backward compatibility.
  */
 data class CountSingleSelectClause(
-    val distinct: Boolean,
-    val expression: ExpressionSpec<*>,
+    private val distinct: Boolean,
+    private val expression: ExpressionSpec<*>,
 ) : CriteriaQuerySelectClause<Long> {
     override val returnType: Class<Long> = Long::class.java
 

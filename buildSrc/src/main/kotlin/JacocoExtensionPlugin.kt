@@ -24,7 +24,7 @@ class JacocoExtensionPlugin : AbstractRootPlugin(apply {
 
         reports {
             xml.required.set(true)
-            html.required.set(false)
+            html.required.set(true)
             csv.required.set(false)
         }
     }

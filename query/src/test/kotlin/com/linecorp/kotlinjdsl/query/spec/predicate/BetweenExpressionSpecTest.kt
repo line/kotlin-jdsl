@@ -44,8 +44,20 @@ internal class BetweenExpressionSpecTest : WithKotlinJdslAssertions {
         val betweenPredicate: Predicate = mockk()
 
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec1.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns rightExpression1
-        every { rightExpressionSpec2.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns rightExpression2
+        every {
+            rightExpressionSpec1.toCriteriaExpression(
+                any(),
+                any<CriteriaQuery<*>>(),
+                any()
+            )
+        } returns rightExpression1
+        every {
+            rightExpressionSpec2.toCriteriaExpression(
+                any(),
+                any<CriteriaQuery<*>>(),
+                any()
+            )
+        } returns rightExpression2
 
         every { criteriaBuilder.between(any(), any<Expression<Int>>(), any()) } returns betweenPredicate
 
@@ -89,8 +101,20 @@ internal class BetweenExpressionSpecTest : WithKotlinJdslAssertions {
         val betweenPredicate: Predicate = mockk()
 
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec1.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns rightExpression1
-        every { rightExpressionSpec2.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns rightExpression2
+        every {
+            rightExpressionSpec1.toCriteriaExpression(
+                any(),
+                any<CriteriaUpdate<*>>(),
+                any()
+            )
+        } returns rightExpression1
+        every {
+            rightExpressionSpec2.toCriteriaExpression(
+                any(),
+                any<CriteriaUpdate<*>>(),
+                any()
+            )
+        } returns rightExpression2
 
         every { criteriaBuilder.between(any(), any<Expression<Int>>(), any()) } returns betweenPredicate
 
@@ -134,8 +158,20 @@ internal class BetweenExpressionSpecTest : WithKotlinJdslAssertions {
         val betweenPredicate: Predicate = mockk()
 
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec1.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression1
-        every { rightExpressionSpec2.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression2
+        every {
+            rightExpressionSpec1.toCriteriaExpression(
+                any(),
+                any<CriteriaDelete<*>>(),
+                any()
+            )
+        } returns rightExpression1
+        every {
+            rightExpressionSpec2.toCriteriaExpression(
+                any(),
+                any<CriteriaDelete<*>>(),
+                any()
+            )
+        } returns rightExpression2
 
         every { criteriaBuilder.between(any(), any<Expression<Int>>(), any()) } returns betweenPredicate
 

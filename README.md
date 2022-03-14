@@ -15,6 +15,9 @@ There are several libraries in the easy way to use JPA. However, those libraries
 
 ## Quick start
 
+### Reactive
+If you are interested in JPA Reactive See [more](./reactive-core/README.md)
+
 ### Hibernate
 
 Add Hibernate Kotlin JDSL and Hibernate to dependencies

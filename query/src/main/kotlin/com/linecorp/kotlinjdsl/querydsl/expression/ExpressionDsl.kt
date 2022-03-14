@@ -35,6 +35,7 @@ interface ExpressionDsl {
 
     fun <T> function(name: String, returnType: Class<T>, vararg expressions: ExpressionSpec<*>) =
         function(name, returnType, expressions.toList())
+
     fun <T> function(name: String, returnType: Class<T>, expressions: List<ExpressionSpec<*>>) =
         FunctionSpec(name, returnType, expressions)
 }

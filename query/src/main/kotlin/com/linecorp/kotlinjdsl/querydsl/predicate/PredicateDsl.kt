@@ -26,34 +26,34 @@ interface PredicateDsl {
     fun <R> ExpressionSpec<R>.`in`(expressions: List<ExpressionSpec<R>>) = InExpressionSpec(this, expressions)
 
     fun <T, R> ExpressionSpec<T>.greaterThanOrEqualTo(value: R)
-            where R : Comparable<R>, R : Any, T : R? = greaterThan<T, R>(value, true)
+        where R : Comparable<R>, R : Any, T : R? = greaterThan<T, R>(value, true)
 
     fun <T, R> ExpressionSpec<T>.greaterThan(value: R, inclusive: Boolean = false)
-            where R : Comparable<R>, R : Any, T : R? = GreaterThanValueSpec<T, R>(this, value, inclusive)
+        where R : Comparable<R>, R : Any, T : R? = GreaterThanValueSpec<T, R>(this, value, inclusive)
 
     fun <T> ExpressionSpec<T>.greaterThanOrEqualTo(expression: ExpressionSpec<T>)
-            where T : Comparable<T> = greaterThan(expression, true)
+        where T : Comparable<T> = greaterThan(expression, true)
 
     fun <T> ExpressionSpec<T>.greaterThan(expression: ExpressionSpec<T>, inclusive: Boolean = false)
-            where T : Comparable<T> = GreaterThanExpressionSpec<T>(this, expression, inclusive)
+        where T : Comparable<T> = GreaterThanExpressionSpec<T>(this, expression, inclusive)
 
     fun <T, R> ExpressionSpec<T>.lessThanOrEqualTo(value: R)
-            where R : Comparable<R>, R : Any, T : R? = lessThan<T, R>(value, true)
+        where R : Comparable<R>, R : Any, T : R? = lessThan<T, R>(value, true)
 
     fun <T, R> ExpressionSpec<T>.lessThan(value: R, inclusive: Boolean = false)
-            where R : Comparable<R>, R : Any, T : R? = LessThanValueSpec<T, R>(this, value, inclusive)
+        where R : Comparable<R>, R : Any, T : R? = LessThanValueSpec<T, R>(this, value, inclusive)
 
     fun <T> ExpressionSpec<T>.lessThanOrEqualTo(expression: ExpressionSpec<T>)
-            where T : Comparable<T> = lessThan(expression, true)
+        where T : Comparable<T> = lessThan(expression, true)
 
     fun <T> ExpressionSpec<T>.lessThan(expression: ExpressionSpec<T>, inclusive: Boolean = false)
-            where T : Comparable<T> = LessThanExpressionSpec<T>(this, expression, inclusive)
+        where T : Comparable<T> = LessThanExpressionSpec<T>(this, expression, inclusive)
 
     fun <T, R> ExpressionSpec<T>.between(value1: R, value2: R)
-            where R : Comparable<R>, R : Any, T : R? = BetweenValueSpec<T, R>(this, value1, value2)
+        where R : Comparable<R>, R : Any, T : R? = BetweenValueSpec<T, R>(this, value1, value2)
 
     fun <T> ExpressionSpec<T>.between(expression1: ExpressionSpec<T>, expression2: ExpressionSpec<T>)
-            where T : Comparable<T> = BetweenExpressionSpec(this, expression1, expression2)
+        where T : Comparable<T> = BetweenExpressionSpec(this, expression1, expression2)
 
     fun ExpressionSpec<out Boolean?>.isTrue() = IsTrueSpec(this)
     fun ExpressionSpec<out Boolean?>.isFalse() = IsFalseSpec(this)

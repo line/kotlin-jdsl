@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -11,7 +13,7 @@ plugins {
 
 allprojects {
     group = "com.linecorp.kotlin-jdsl"
-    version = "1.3.0.RELEASE"
+    version = "2.0.0.RELEASE"
 
     repositories {
         mavenCentral()
@@ -30,8 +32,10 @@ subprojects {
 
     apply<LocalPropertiesPlugin>()
 
-    java.sourceCompatibility = JavaVersion.VERSION_1_8
-    java.targetCompatibility = JavaVersion.VERSION_1_8
+    val jdk11Required = name.contains("hibernate-reactive")
+    val javaVersion = if (jdk11Required) JavaVersion.VERSION_11 else JavaVersion.VERSION_1_8
+    java.sourceCompatibility = javaVersion
+    java.targetCompatibility = javaVersion
 
     dependencies {
         implementation(Dependencies.koltin)
@@ -52,11 +56,18 @@ subprojects {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all")
-            jvmTarget = "1.8"
+            jvmTarget = if (jdk11Required) "11" else "1.8"
         }
     }
 
     tasks.withType<Test> {
         useJUnitPlatform()
+        testLogging {
+            showExceptions = true
+            exceptionFormat = FULL
+            showCauses = true
+            showStackTraces = true
+            events = setOf(FAILED)
+        }
     }
 }

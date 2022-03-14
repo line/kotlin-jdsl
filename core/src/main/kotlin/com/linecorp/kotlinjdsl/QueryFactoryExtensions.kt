@@ -19,16 +19,19 @@ inline fun <reified T> QueryFactory.streamQuery(
 ): Stream<T> = selectQuery(T::class.java, dsl).resultStream
 
 
-@Deprecated(replaceWith = ReplaceWith(expression = "selectQuery"), message = "This method has been replaced with selectQuery.")
+@Deprecated(
+    replaceWith = ReplaceWith(expression = "selectQuery"),
+    message = "This method has been replaced with selectQuery."
+)
 inline fun <reified T> QueryFactory.typedQuery(noinline dsl: CriteriaQueryDsl<T>.() -> Unit) = selectQuery(dsl)
 
 inline fun <reified T> QueryFactory.selectQuery(noinline dsl: CriteriaQueryDsl<T>.() -> Unit) =
     selectQuery(T::class.java, dsl)
 
-inline fun <reified T: Any> QueryFactory.updateQuery(noinline dsl: CriteriaUpdateQueryDsl.() -> Unit) =
+inline fun <reified T : Any> QueryFactory.updateQuery(noinline dsl: CriteriaUpdateQueryDsl.() -> Unit) =
     updateQuery(T::class, dsl)
 
-inline fun <reified T: Any> QueryFactory.deleteQuery(noinline dsl: CriteriaDeleteQueryDsl.() -> Unit) =
+inline fun <reified T : Any> QueryFactory.deleteQuery(noinline dsl: CriteriaDeleteQueryDsl.() -> Unit) =
     deleteQuery(T::class, dsl)
 
 inline fun <reified T> QueryFactory.subquery(noinline dsl: SubqueryDsl<T>.() -> Unit) =

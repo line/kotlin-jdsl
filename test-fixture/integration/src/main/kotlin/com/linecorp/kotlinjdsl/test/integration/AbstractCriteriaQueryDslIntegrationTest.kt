@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.EntityManager
 
 @ExtendWith(EntityManagerExtension::class)
-abstract class AbstractCriteriaQueryDslIntegrationTest : EntityDsl(), WithKotlinJdslAssertions {
+abstract class AbstractCriteriaQueryDslIntegrationTest : EntityDsl, WithKotlinJdslAssertions {
     protected lateinit var entityManager: EntityManager
 
     protected val queryFactory: QueryFactory by lazy(LazyThreadSafetyMode.NONE) {

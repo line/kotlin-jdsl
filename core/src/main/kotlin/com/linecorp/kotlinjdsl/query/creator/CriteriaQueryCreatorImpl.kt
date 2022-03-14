@@ -6,56 +6,16 @@ import com.linecorp.kotlinjdsl.query.CriteriaUpdateQuerySpec
 import javax.persistence.EntityManager
 import javax.persistence.Query
 import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaDelete
-import javax.persistence.criteria.CriteriaUpdate
 
 class CriteriaQueryCreatorImpl(
     private val em: EntityManager,
 ) : CriteriaQueryCreator {
-    override fun <T> createQuery(spec: CriteriaQuerySpec<T, Query>): TypedQuery<T> {
-        val criteriaBuilder = em.criteriaBuilder
-        val query = criteriaBuilder.createQuery(spec.select.returnType)
-        val froms = spec.from.join(spec.join, query)
+    override fun <T> createQuery(spec: CriteriaQuerySpec<T, TypedQuery<T>>): TypedQuery<T> =
+        JpaCriteriaQueryBuilder.createQuery(spec, em.criteriaBuilder, em::createQuery)
 
-        spec.select.apply(froms, query, criteriaBuilder)
-        spec.where.apply(froms, query, criteriaBuilder)
-        spec.groupBy.apply(froms, query, criteriaBuilder)
-        spec.having.apply(froms, query, criteriaBuilder)
-        spec.orderBy.apply(froms, query, criteriaBuilder)
+    override fun <T> createQuery(spec: CriteriaUpdateQuerySpec<T, Query>): Query =
+        JpaCriteriaQueryBuilder.createQuery(spec, em.criteriaBuilder, em::createQuery)
 
-        return em.createQuery(query).apply {
-            spec.limit.apply(this)
-            spec.jpaHint.apply(this)
-            spec.sqlHint.apply(this)
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T> createQuery(spec: CriteriaUpdateQuerySpec<T, Query>): Query {
-        val criteriaBuilder = em.criteriaBuilder
-        val query = criteriaBuilder.createCriteriaUpdate(spec.targetEntity) as CriteriaUpdate<Any>
-        val froms = spec.from.associate(spec.associate, query, spec.targetEntity)
-
-        spec.where.apply(froms, query, criteriaBuilder)
-        spec.set.apply(froms, query, criteriaBuilder)
-
-        return em.createQuery(query).apply {
-            spec.jpaHint.apply(this)
-            spec.sqlHint.apply(this)
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T> createQuery(spec: CriteriaDeleteQuerySpec<T, Query>): Query {
-        val criteriaBuilder = em.criteriaBuilder
-        val query = criteriaBuilder.createCriteriaDelete(spec.targetEntity) as CriteriaDelete<Any>
-        val froms = spec.from.associate(spec.associate, query, spec.targetEntity)
-
-        spec.where.apply(froms, query, criteriaBuilder)
-
-        return em.createQuery(query).apply {
-            spec.jpaHint.apply(this)
-            spec.sqlHint.apply(this)
-        }
-    }
+    override fun <T> createQuery(spec: CriteriaDeleteQuerySpec<T, Query>): Query =
+        JpaCriteriaQueryBuilder.createQuery(spec, em.criteriaBuilder, em::createQuery)
 }

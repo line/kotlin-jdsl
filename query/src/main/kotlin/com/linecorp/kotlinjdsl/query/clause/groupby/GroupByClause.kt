@@ -13,7 +13,7 @@ import javax.persistence.criteria.Subquery
  * It does not support backward compatibility.
  */
 data class GroupByClause(
-    val expressions: List<ExpressionSpec<*>>,
+    private val expressions: List<ExpressionSpec<*>>,
 ) : CriteriaQueryGroupByClause, SubqueryGroupByClause {
     override fun apply(froms: Froms, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder) {
         applyInternally(froms, query, criteriaBuilder)

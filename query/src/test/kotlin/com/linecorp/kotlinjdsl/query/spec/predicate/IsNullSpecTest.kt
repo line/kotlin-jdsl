@@ -81,7 +81,7 @@ internal class IsNullSpecTest : WithKotlinJdslAssertions {
 
         confirmVerified(expressionSpec, froms, updateQuery, criteriaBuilder)
     }
-    
+
     @Test
     fun `delete toCriteriaPredicate`() {
         // given

@@ -1,0 +1,6 @@
+package com.linecorp.kotlinjdsl.spring.reactive.querydsl
+
+import com.linecorp.kotlinjdsl.querydsl.CriteriaDeleteQueryDsl
+import com.linecorp.kotlinjdsl.spring.reactive.querydsl.predicate.SpringDataReactivePredicateDsl
+
+interface SpringDataReactiveCriteriaDeleteQueryDsl : CriteriaDeleteQueryDsl, SpringDataReactivePredicateDsl

@@ -6,7 +6,7 @@ import javax.persistence.criteria.*
 
 @Suppress("UNCHECKED_CAST")
 data class IsFalseSpec(
-    val expression: ExpressionSpec<out Boolean?>
+    private val expression: ExpressionSpec<out Boolean?>
 ) : PredicateSpec {
     override fun toCriteriaPredicate(
         froms: Froms,

@@ -4,8 +4,8 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class ColumnSpec<T>(
-    val entity: EntitySpec<*>,
-    val path: String
+    private val entity: EntitySpec<*>,
+    private val path: String
 ) : ExpressionSpec<T> {
     override fun toCriteriaExpression(
         froms: Froms,

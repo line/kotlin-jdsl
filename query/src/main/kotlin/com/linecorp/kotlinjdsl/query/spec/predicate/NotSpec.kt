@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class NotSpec(
-    val predicate: PredicateSpec,
+    private val predicate: PredicateSpec,
 ) : PredicateSpec {
     override fun toCriteriaPredicate(
         froms: Froms,

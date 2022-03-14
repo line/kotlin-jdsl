@@ -9,11 +9,15 @@ data class Module(
 @Suppress("unused")
 object Modules {
     val core = module(":kotlin-jdsl-core")
+    val reactiveCore = module(":kotlin-jdsl-reactive-core")
     val hibernate = module(":hibernate-kotlin-jdsl")
+    val hibernateReactive = module(":hibernate-reactive-kotlin-jdsl")
     val eclipselink = module(":eclipselink-kotlin-jdsl")
     val query = module(":kotlin-jdsl-query")
 
     val springDataCore = module(":spring-data-kotlin-jdsl-core")
+    val springDataReactiveCore = module(":spring-data-kotlin-jdsl-reactive-core")
+    val springDataHibernateReactive = module(":spring-data-kotlin-jdsl-hibernate-reactive")
     val springBatchInfrastructure = module(":spring-batch-kotlin-jdsl-infrastructure")
     val springDataAutoconfigure = module(":spring-data-kotlin-jdsl-autoconfigure")
     val springDataStarter = module(":spring-data-kotlin-jdsl-starter")
@@ -21,6 +25,8 @@ object Modules {
     val testFixtureCore = module(":test-fixture-core")
     val testFixtureEntity = module(":test-fixture-entity")
     val testFixtureIntegration = module(":test-fixture-integration")
+    val testFixtureIntegrationReactive = module(":test-fixture-integration-reactive")
+    val testFixtureHibernateReactive = module(":test-fixture-hibernate-reactive")
 
     private fun module(name: String): Module = Module(name)
 }

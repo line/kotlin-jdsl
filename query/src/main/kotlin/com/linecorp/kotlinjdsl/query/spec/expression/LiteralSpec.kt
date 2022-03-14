@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
 data class LiteralSpec<T : Any>(
-    val value: T,
+    private val value: T,
 ) : ExpressionSpec<T> {
     override fun toCriteriaExpression(
         froms: Froms,

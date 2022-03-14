@@ -3,7 +3,10 @@ package com.linecorp.kotlinjdsl.query.clause.from
 import com.linecorp.kotlinjdsl.query.spec.*
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import java.util.*
-import javax.persistence.criteria.*
+import javax.persistence.criteria.AbstractQuery
+import javax.persistence.criteria.From
+import javax.persistence.criteria.JoinType
+import javax.persistence.criteria.Root
 
 /**
  * Internal Only

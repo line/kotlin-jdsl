@@ -1,9 +1,6 @@
 package com.linecorp.kotlinjdsl.spring.data
 
-import com.linecorp.kotlinjdsl.QueryFactory
 import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
-import com.linecorp.kotlinjdsl.querydsl.CriteriaDeleteQueryDsl
-import com.linecorp.kotlinjdsl.querydsl.CriteriaUpdateQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.querydsl.*
 import org.springframework.data.domain.Pageable
 import java.util.stream.Stream
@@ -20,17 +17,20 @@ inline fun <reified T> SpringDataQueryFactory.streamQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
 ): Stream<T> = selectQuery(T::class.java, dsl).resultStream
 
-@Deprecated(replaceWith = ReplaceWith(expression = "selectQuery"), message = "This method has been replaced with selectQuery.")
+@Deprecated(
+    replaceWith = ReplaceWith(expression = "selectQuery"),
+    message = "This method has been replaced with selectQuery."
+)
 inline fun <reified T> SpringDataQueryFactory.typedQuery(noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit) =
     selectQuery(dsl)
 
 inline fun <reified T> SpringDataQueryFactory.selectQuery(noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit) =
     selectQuery(T::class.java, dsl)
 
-inline fun <reified T: Any> SpringDataQueryFactory.updateQuery(noinline dsl: SpringDataCriteriaUpdateQueryDsl.() -> Unit) =
+inline fun <reified T : Any> SpringDataQueryFactory.updateQuery(noinline dsl: SpringDataCriteriaUpdateQueryDsl.() -> Unit) =
     updateQuery(T::class, dsl)
 
-inline fun <reified T: Any> SpringDataQueryFactory.deleteQuery(noinline dsl: SpringDataCriteriaDeleteQueryDsl.() -> Unit) =
+inline fun <reified T : Any> SpringDataQueryFactory.deleteQuery(noinline dsl: SpringDataCriteriaDeleteQueryDsl.() -> Unit) =
     deleteQuery(T::class, dsl)
 
 inline fun <reified T> SpringDataQueryFactory.subquery(noinline dsl: SpringDataSubqueryDsl<T>.() -> Unit) =

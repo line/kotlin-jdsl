@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.*
 
 data class IsNullSpec<T : Any?>(
-    val expression: ExpressionSpec<T>
+    private val expression: ExpressionSpec<T>
 ) : PredicateSpec {
     override fun toCriteriaPredicate(
         froms: Froms,

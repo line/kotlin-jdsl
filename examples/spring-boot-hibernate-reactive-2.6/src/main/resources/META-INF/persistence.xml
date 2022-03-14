@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+    <persistence-unit name="book">
+        <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
+        <class>com.linecorp.kotlinjdsl.spring.data.example.entity.Book</class>
+
+        <properties>
+            <property name="hibernate.vertx.pool.connect_timeout" value="30000"/>
+            <property name="hibernate.vertx.pool.class" value="com.linecorp.kotlinjdsl.vertx.configuration.H2ConnectionPool"/>
+            <property name="hibernate.vertx.pool.configuration_class" value="com.linecorp.kotlinjdsl.vertx.configuration.VertxH2DBConnectionPoolConfiguration"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:~/test;MODE=MySQL;DATABASE_TO_UPPER=false"/>
+            <property name="javax.persistence.jdbc.user" value="sa"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="none"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>

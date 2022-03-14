@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "test_order_group")
-data class OrderGroup(
+class OrderGroup(
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,21 @@ data class OrderGroup(
     @JoinColumn(name = "order_id")
     lateinit var order: Order
         internal set
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is OrderGroup) return false
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
+
 }
 
 data class OrderGroupTestBuilder(

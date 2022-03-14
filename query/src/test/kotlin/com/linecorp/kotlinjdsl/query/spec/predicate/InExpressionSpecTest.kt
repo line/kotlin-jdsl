@@ -45,8 +45,20 @@ internal class InExpressionSpecTest : WithKotlinJdslAssertions {
 
         every { criteriaBuilder.`in`(any<Expression<Int>>()) } returns `in`
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec1.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns rightExpression1
-        every { rightExpressionSpec2.toCriteriaExpression(any(), any<CriteriaQuery<*>>(), any()) } returns rightExpression2
+        every {
+            rightExpressionSpec1.toCriteriaExpression(
+                any(),
+                any<CriteriaQuery<*>>(),
+                any()
+            )
+        } returns rightExpression1
+        every {
+            rightExpressionSpec2.toCriteriaExpression(
+                any(),
+                any<CriteriaQuery<*>>(),
+                any()
+            )
+        } returns rightExpression2
 
         every { `in`.value(rightExpression1) } returns `in`
         every { `in`.value(rightExpression2) } returns `in`
@@ -115,8 +127,20 @@ internal class InExpressionSpecTest : WithKotlinJdslAssertions {
 
         every { criteriaBuilder.`in`(any<Expression<Int>>()) } returns `in`
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec1.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns rightExpression1
-        every { rightExpressionSpec2.toCriteriaExpression(any(), any<CriteriaUpdate<*>>(), any()) } returns rightExpression2
+        every {
+            rightExpressionSpec1.toCriteriaExpression(
+                any(),
+                any<CriteriaUpdate<*>>(),
+                any()
+            )
+        } returns rightExpression1
+        every {
+            rightExpressionSpec2.toCriteriaExpression(
+                any(),
+                any<CriteriaUpdate<*>>(),
+                any()
+            )
+        } returns rightExpression2
 
         every { `in`.value(rightExpression1) } returns `in`
         every { `in`.value(rightExpression2) } returns `in`
@@ -185,8 +209,20 @@ internal class InExpressionSpecTest : WithKotlinJdslAssertions {
 
         every { criteriaBuilder.`in`(any<Expression<Int>>()) } returns `in`
         every { leftExpressionSpec.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns leftExpression
-        every { rightExpressionSpec1.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression1
-        every { rightExpressionSpec2.toCriteriaExpression(any(), any<CriteriaDelete<*>>(), any()) } returns rightExpression2
+        every {
+            rightExpressionSpec1.toCriteriaExpression(
+                any(),
+                any<CriteriaDelete<*>>(),
+                any()
+            )
+        } returns rightExpression1
+        every {
+            rightExpressionSpec2.toCriteriaExpression(
+                any(),
+                any<CriteriaDelete<*>>(),
+                any()
+            )
+        } returns rightExpression2
 
         every { `in`.value(rightExpression1) } returns `in`
         every { `in`.value(rightExpression2) } returns `in`

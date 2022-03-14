@@ -21,5 +21,6 @@ inline fun <reified T, R : Comparable<R>?> Dsl.greatest(property: KProperty1<T, 
 inline fun <reified T, R : Comparable<R>?> Dsl.least(property: KProperty1<T, R>) = least(col(property))
 inline fun <reified T> Dsl.function(name: String, vararg expressions: ExpressionSpec<*>) =
     function<T>(name, expressions.toList())
+
 inline fun <reified T> Dsl.function(name: String, expressions: List<ExpressionSpec<*>>) =
     function(name, T::class.java, expressions)
