@@ -117,8 +117,9 @@ dependencies {
     implementation("io.smallrye.reactive:mutiny-kotlin:x.y.z")
 }
 ```
+Basically, configure the Persistence Unit referring to the setting [description](http://hibernate.org/reactive/documentation/1.0/reference/html_single/#_basic_configuration) of hibernate-reactive.
 
-For the basic DB operation method using withFactory, refer to the code below.  
+For the basic DB operation method using withFactory, refer to the code below.
 
 ```kotlin
 fun main() {
@@ -282,7 +283,7 @@ fun listQuery(): Unit = runBlocking {
 In the above example, since the Persistence Context is immediately terminated within the listQuery method, LazyInitializationException may occur when non-fetched entities are used outside the session.  
 Be sure to fetch in advance using methods such as fetch and associate so that an exception does not occur after loading DB data.
 
-If you want to execute logic in parallel inside the withFactory or transactionWithFactory methods, it is not recommended. For more information, see [hibernate-reactive sessions-and-vertx-contexts](https://github.com/hibernate/hibernate-reactive/blob/main/documentation/src/main/asciidoc/reference/introduction.adoc#sessions-and-vertx-contexts).
+If you want to execute logic in **parallel inside the withFactory or transactionWithFactory methods, it is prohibited**. For more information, see [hibernate-reactive sessions-and-vertx-contexts](https://github.com/hibernate/hibernate-reactive/blob/main/documentation/src/main/asciidoc/reference/introduction.adoc#sessions-and-vertx-contexts).
 
 You can use the unwrapped Query directly, not the ReactiveQuery we made.  
 Currently, there is only one real implementation of our ReactiveQuery, Mutiny.Query.  
