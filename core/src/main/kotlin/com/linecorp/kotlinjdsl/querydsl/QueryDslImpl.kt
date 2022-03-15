@@ -94,7 +94,7 @@ open class QueryDslImpl<T>(
     }
 
     override fun <T, R> join(left: EntitySpec<T>, right: EntitySpec<R>, relation: Relation<T, R?>, joinType: JoinType) {
-        (joins ?: mutableListOf<JoinSpec<*>>().apply { joins = this }).add(SimpleJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
+        lazyJoins().add(SimpleJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
     override fun <T> join(entity: EntitySpec<T>, predicate: PredicateSpec) {
