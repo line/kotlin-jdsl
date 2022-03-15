@@ -117,7 +117,7 @@ dependencies {
     implementation("io.smallrye.reactive:mutiny-kotlin:x.y.z")
 }
 ```
-Basically, configure the Persistence Unit referring to the setting [description](http://hibernate.org/reactive/documentation/1.0/reference/html_single/#_basic_configuration) of hibernate-reactive.
+Basically, configure the Persistence Unit referring to the setting [description](http://hibernate.org/reactive/documentation/1.1/reference/html_single/#_basic_configuration) of hibernate-reactive.
 
 For the basic DB operation method using withFactory, refer to the code below.
 
