@@ -48,16 +48,25 @@ open class ReactiveQueryDslImpl<T>(
     private var singleSelectClause: SingleSelectClause<T>? = null
     private var multiSelectClause: MultiSelectClause<T>? = null
     private var fromClause: FromClause<*>? = null
-    private var joins: Lazy<MutableList<JoinSpec<*>>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
-    private var wheres: Lazy<MutableList<PredicateSpec>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
-    private var groupBys: Lazy<MutableList<ExpressionSpec<*>>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
-    private var havings: Lazy<MutableList<PredicateSpec>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
-    private var orderBys: Lazy<MutableList<OrderSpec>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
+    private var joins: MutableList<JoinSpec<*>>? = null
+    private var wheres: MutableList<PredicateSpec>? = null
+    private var groupBys: MutableList<ExpressionSpec<*>>? = null
+    private var havings: MutableList<PredicateSpec>? = null
+    private var orderBys: MutableList<OrderSpec>? = null
     private var offset: Int? = null
     private var maxResults: Int? = null
-    private var sqlHints: Lazy<MutableList<String>> = lazy(LazyThreadSafetyMode.NONE) { mutableListOf() }
-    private var jpaHints: Lazy<MutableMap<String, Any>> = lazy(LazyThreadSafetyMode.NONE) { mutableMapOf() }
-    private var params: Lazy<MutableMap<ColumnSpec<*>, Any?>> = lazy(LazyThreadSafetyMode.NONE) { mutableMapOf() }
+    private var sqlHints: MutableList<String>? = null
+    private var jpaHints: MutableMap<String, Any>? = null
+    private var params: MutableMap<ColumnSpec<*>, Any?>? = null
+
+    private fun lazyJoins() = (joins ?: mutableListOf<JoinSpec<*>>().apply { joins = this })
+    private fun lazyWheres() = (wheres ?: mutableListOf<PredicateSpec>().apply { wheres = this })
+    private fun lazyGroupBys() = (groupBys ?: mutableListOf<ExpressionSpec<*>>().apply { groupBys = this })
+    private fun lazyHavings() = (havings ?: mutableListOf<PredicateSpec>().apply { havings = this })
+    private fun lazyOrderBys() = (orderBys ?: mutableListOf<OrderSpec>().apply { orderBys = this })
+    private fun lazySqlHints() = (sqlHints ?: mutableListOf<String>().apply { sqlHints = this })
+    private fun lazyJpaHints() = (jpaHints ?: mutableMapOf<String, Any>().apply { jpaHints = this })
+    private fun lazyParams() = (params ?: mutableMapOf<ColumnSpec<*>, Any?>().apply { params = this })
 
     override fun select(distinct: Boolean, expression: ExpressionSpec<T>): SingleSelectClause<T> {
         return SingleSelectClause(
@@ -80,12 +89,12 @@ open class ReactiveQueryDslImpl<T>(
     }
 
     override fun <T, R> join(left: EntitySpec<T>, right: EntitySpec<R>, relation: Relation<T, R?>, joinType: JoinType) {
-        joins.value.add(SimpleJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
+        lazyJoins().add(SimpleJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
     override fun <T> join(entity: EntitySpec<T>, predicate: PredicateSpec) {
-        joins.value.add(CrossJoinSpec(entity))
-        wheres.value.add(predicate)
+        lazyJoins().add(CrossJoinSpec(entity))
+        lazyWheres().add(predicate)
     }
 
     override fun <T, R> associate(
@@ -94,7 +103,7 @@ open class ReactiveQueryDslImpl<T>(
         relation: Relation<T, R?>,
         joinType: JoinType
     ) {
-        joins.value.add(SimpleAssociatedJoinSpec(left = left, right = right, path = relation.path))
+        lazyJoins().add(SimpleAssociatedJoinSpec(left = left, right = right, path = relation.path))
     }
 
     override fun <T, R> fetch(
@@ -103,23 +112,23 @@ open class ReactiveQueryDslImpl<T>(
         relation: Relation<T, R?>,
         joinType: JoinType
     ) {
-        joins.value.add(FetchJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
+        lazyJoins().add(FetchJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
     override fun where(predicate: PredicateSpec) {
-        wheres.value.add(predicate)
+        lazyWheres().add(predicate)
     }
 
     override fun groupBy(columns: List<ExpressionSpec<*>>) {
-        groupBys.value.addAll(columns)
+        lazyGroupBys().addAll(columns)
     }
 
     override fun having(predicate: PredicateSpec) {
-        havings.value.add(predicate)
+        lazyHavings().add(predicate)
     }
 
     override fun orderBy(orders: List<OrderSpec>) {
-        orderBys.value.addAll(orders)
+        lazyOrderBys().addAll(orders)
     }
 
     override fun offset(offset: Int) {
@@ -131,19 +140,19 @@ open class ReactiveQueryDslImpl<T>(
     }
 
     override fun sqlHints(hints: List<String>) {
-        sqlHints.value.addAll(hints)
+        lazySqlHints().addAll(hints)
     }
 
     override fun hints(hints: Map<String, Any>) {
-        jpaHints.value.putAll(hints)
+        lazyJpaHints().putAll(hints)
     }
 
     override fun setParams(params: Map<ColumnSpec<*>, Any?>) {
-        this.params.value.putAll(params)
+        lazyParams().putAll(params)
     }
 
     override fun set(column: ColumnSpec<*>, value: Any?) {
-        params.value[column] = value
+        lazyParams()[column] = value
     }
 
     fun createCriteriaQuerySpec(): CriteriaQuerySpec<T, ReactiveQuery<T>> {
@@ -348,7 +357,4 @@ open class ReactiveQueryDslImpl<T>(
         override val groupBy: SubqueryGroupByClause,
         override val having: SubqueryHavingClause
     ) : SubquerySpec<T>
-
-    private fun <T> Lazy<List<T>>.orEmpty() = if (isInitialized()) value else emptyList()
-    private fun <K, V> Lazy<Map<K, V>>.orEmpty() = if (isInitialized()) value else emptyMap()
 }
