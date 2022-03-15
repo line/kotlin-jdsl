@@ -63,7 +63,7 @@ For more detailed usage, see [more](../../reactive-core/README.md#Quick-Start)
 class Service(
     private val queryFactory: SpringDataHibernateMutinyReactiveQueryFactory,
 ) {
-    suspend fun findById(id: Long): Entity {
+    suspend fun findById(id: Long): Book {
         return queryFactory.singleQuery {
             select(entity(Book::class))
             from(entity(Book::class))
