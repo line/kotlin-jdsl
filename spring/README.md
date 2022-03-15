@@ -33,7 +33,7 @@ Inject SpringDataQueryFactory in your service and query using it
 class Service(
     private val queryFactory: SpringDataQueryFactory,
 ) {
-    fun findById(id: Long): Entity {
+    fun findById(id: Long): Book {
         return queryFactory.singleQuery {
             select(entity(Book::class))
             from(entity(Book::class))
