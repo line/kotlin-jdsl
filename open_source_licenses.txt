@@ -65,7 +65,7 @@ Copyright (c) 2012-2021 Pivotal, Inc.
 org.hibernate:hibernate-reactive (Apache-2.0)
 Copyright 2019-2022 the original author or authors.
 
-org.eclipse.persistence:org.eclipse.persistence.jpa (Eclipse Public License - v2.0)
+org.eclipse.persistence:org.eclipse.persistence.jpa (EPL-2.0)
 Copyright 2019-2022 the original author or authors.
 
 _________________________________________________________________________________________________________________________
