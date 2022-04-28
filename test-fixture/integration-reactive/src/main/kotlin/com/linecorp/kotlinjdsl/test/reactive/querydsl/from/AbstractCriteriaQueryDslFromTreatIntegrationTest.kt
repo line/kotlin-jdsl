@@ -48,7 +48,6 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest<S> : CriteriaQue
 
     @Test
     fun getByPartTimeAndContractEmployeesBySalary() = runBlocking {
-        // when
         withFactory { queryFactory ->
             // when
             val employees = queryFactory.listQuery<Employee> {
