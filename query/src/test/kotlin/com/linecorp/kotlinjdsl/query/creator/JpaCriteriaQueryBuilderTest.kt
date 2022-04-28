@@ -86,7 +86,7 @@ internal class JpaCriteriaQueryBuilderTest : WithKotlinJdslAssertions {
 
         every { em.createQuery(createdQuery) } returns typedQuery
         every { criteriaBuilder.createQuery(Int::class.java) } returns createdQuery
-        every { from.join(join, createdQuery) } returns froms
+        every { from.join(join, createdQuery, criteriaBuilder) } returns froms
         every { select.apply(froms, createdQuery, criteriaBuilder) } just runs
         every { where.apply(froms, createdQuery, criteriaBuilder) } just runs
         every { groupBy.apply(froms, createdQuery, criteriaBuilder) } just runs
@@ -105,7 +105,7 @@ internal class JpaCriteriaQueryBuilderTest : WithKotlinJdslAssertions {
         verify(exactly = 1) {
             em.createQuery(createdQuery)
             criteriaBuilder.createQuery(Int::class.java)
-            from.join(join, createdQuery)
+            from.join(join, createdQuery, criteriaBuilder)
             select.returnType
             select.apply(froms, createdQuery, criteriaBuilder)
             where.apply(froms, createdQuery, criteriaBuilder)

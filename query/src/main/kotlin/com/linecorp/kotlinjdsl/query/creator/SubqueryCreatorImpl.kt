@@ -14,7 +14,7 @@ class SubqueryCreatorImpl : SubqueryCreator {
         criteriaBuilder: CriteriaBuilder
     ): Subquery<T> {
         val subquery = criteria.subquery(spec.select.returnType)
-        val subqueryFroms = spec.from.join(spec.join, subquery) + froms
+        val subqueryFroms = spec.from.join(spec.join, subquery, criteriaBuilder) + froms
 
         spec.select.apply(subqueryFroms, subquery, criteriaBuilder)
         spec.where.apply(subqueryFroms, subquery, criteriaBuilder)

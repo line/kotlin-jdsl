@@ -111,6 +111,15 @@ open class QueryDslImpl<T>(
         lazyJoins().add(SimpleAssociatedJoinSpec(left = left, right = right, path = relation.path))
     }
 
+    override fun <P, C : P> treat(
+        root: ColumnSpec<*>,
+        parent: EntitySpec<P>,
+        child: EntitySpec<C>,
+        parentJoinType: JoinType
+    ) {
+        lazyJoins().add(TreatJoinSpec(parent, child, parentJoinType, root))
+    }
+
     override fun <T, R> fetch(
         left: EntitySpec<T>,
         right: EntitySpec<R>,

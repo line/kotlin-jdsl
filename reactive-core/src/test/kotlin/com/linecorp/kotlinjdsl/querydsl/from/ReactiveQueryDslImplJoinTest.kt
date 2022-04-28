@@ -6,13 +6,19 @@ import com.linecorp.kotlinjdsl.query.clause.where.WhereClause
 import com.linecorp.kotlinjdsl.query.spec.CrossJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.SimpleAssociatedJoinSpec
 import com.linecorp.kotlinjdsl.query.spec.SimpleJoinSpec
+import com.linecorp.kotlinjdsl.query.spec.TreatJoinSpec
+import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.ReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.test.WithKotlinJdslAssertions
+import com.linecorp.kotlinjdsl.test.entity.employee.Employee
+import com.linecorp.kotlinjdsl.test.entity.employee.FullTimeEmployee
+import com.linecorp.kotlinjdsl.test.entity.employee.Project
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 import javax.persistence.criteria.JoinType
 
 internal class ReactiveQueryDslImplJoinTest : WithKotlinJdslAssertions {
@@ -104,6 +110,49 @@ internal class ReactiveQueryDslImplJoinTest : WithKotlinJdslAssertions {
 
         assertThat(subquerySpec.join).isEqualTo(
             JoinClause(listOf(joinSpec, joinSpec, joinSpec, joinSpec))
+        )
+    }
+
+    @Test
+    fun treat() {
+        // when
+        val actual = ReactiveQueryDslImpl(FullTimeEmployee::class.java).apply {
+            val project: EntitySpec<Project> = Project::class.alias("project")
+            val fullTimeEmployee = FullTimeEmployee::class.alias("fe")
+            val employee = Employee::class.alias("e")
+
+            selectDistinct(fullTimeEmployee)
+            from(project)
+            treat(
+                root = ColumnSpec<FullTimeEmployee>(entity = project, path = Project::employees.name),
+                parent = employee,
+                child = fullTimeEmployee,
+                parentJoinType = JoinType.RIGHT
+            )
+            where(
+                ColumnSpec<BigDecimal>(fullTimeEmployee, FullTimeEmployee::annualSalary.name)
+                    .greaterThan(100000.toBigDecimal())
+            )
+        }
+
+        // then
+        val joinSpec = TreatJoinSpec(
+            left = EntitySpec(Employee::class.java, "e"),
+            right = EntitySpec(FullTimeEmployee::class.java, "fe"),
+            joinType = JoinType.RIGHT,
+            root = ColumnSpec<FullTimeEmployee>(EntitySpec(Project::class.java, "project"), Project::employees.name),
+        )
+
+        val criteriaQuerySpec = actual.createCriteriaQuerySpec()
+
+        assertThat(criteriaQuerySpec.join).isEqualTo(
+            JoinClause(listOf(joinSpec))
+        )
+
+        val subquerySpec = actual.createSubquerySpec()
+
+        assertThat(subquerySpec.join).isEqualTo(
+            JoinClause(listOf(joinSpec))
         )
     }
 
