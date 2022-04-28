@@ -85,7 +85,7 @@ internal class MutinyStatelessReactiveCriteriaQueryCreatorTest : WithKotlinJdslA
 
         every { session.createQuery(createdQuery) } returns stageQuery
         every { criteriaBuilder.createQuery(Int::class.java) } returns createdQuery
-        every { from.join(join, createdQuery) } returns froms
+        every { from.join(join, createdQuery, criteriaBuilder) } returns froms
         every { select.apply(froms, createdQuery, criteriaBuilder) } just runs
         every { where.apply(froms, createdQuery, criteriaBuilder) } just runs
         every { groupBy.apply(froms, createdQuery, criteriaBuilder) } just runs
@@ -104,7 +104,7 @@ internal class MutinyStatelessReactiveCriteriaQueryCreatorTest : WithKotlinJdslA
         verify(exactly = 1) {
             session.createQuery(createdQuery)
             criteriaBuilder.createQuery(Int::class.java)
-            from.join(join, createdQuery)
+            from.join(join, createdQuery, criteriaBuilder)
             select.returnType
             select.apply(froms, createdQuery, criteriaBuilder)
             where.apply(froms, createdQuery, criteriaBuilder)

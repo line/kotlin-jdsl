@@ -6,6 +6,12 @@
 
     <persistence-unit name="order">
         <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.ContractEmployee</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.Employee</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.FullTimeEmployee</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.PartTimeEmployee</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.Project</class>
+        
         <class>com.linecorp.kotlinjdsl.test.entity.Address</class>
 
         <class>com.linecorp.kotlinjdsl.test.entity.order.Order</class>

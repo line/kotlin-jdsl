@@ -1,12 +1,14 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.linecorp.kotlinjdsl.query.clause.from
 
 import com.linecorp.kotlinjdsl.query.spec.*
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import java.util.*
-import javax.persistence.criteria.AbstractQuery
-import javax.persistence.criteria.From
-import javax.persistence.criteria.JoinType
-import javax.persistence.criteria.Root
+import javax.persistence.criteria.*
+
+internal typealias ExplicitErasedParent = Number
+internal typealias ExplicitErasedChild = Int
 
 /**
  * Internal Only
@@ -16,7 +18,8 @@ import javax.persistence.criteria.Root
 class Joiner(
     fromEntity: EntitySpec<*>,
     joins: Collection<JoinSpec<*>>,
-    private val query: AbstractQuery<*>
+    private val query: AbstractQuery<*>,
+    private val criteriaBuilder: CriteriaBuilder
 ) {
     private val root: Root<*> = query.from(fromEntity.type)
 
@@ -27,14 +30,15 @@ class Joiner(
         joins.asSequence()
             .sortedWith(joinSpecComparator)
             .filter { !realized.contains(it.entity) }
-            .forEach {
-                when (it) {
-                    is CrossJoinSpec<*> -> realize(it)
+            .forEach { spec ->
+                when (spec) {
+                    is CrossJoinSpec<*> -> realize(spec)
+                    is TreatJoinSpec<*, *> -> treat(spec)
                     is AssociatedJoinSpec<*, *> -> {
-                        if (!realized.contains(it.left)) {
-                            realizeLazy(it)
+                        if (!realized.contains(spec.left)) {
+                            realizeLazy(spec)
                         } else {
-                            realize(it)
+                            realize(spec)
                         }
                     }
                 }
@@ -67,10 +71,31 @@ class Joiner(
     private fun join(spec: AssociatedJoinSpec<*, *>): From<*, *> =
         when (spec) {
             is SimpleJoinSpec, is SimpleAssociatedJoinSpec ->
-                realized.getValue(spec.left).join<Any, Any>(spec.path, spec.joinType)
+                realized.getValue(spec.left).join(spec.path, spec.joinType)
             is FetchJoinSpec ->
-                realized.getValue(spec.left).fetch(spec.path, spec.joinType)
+                realized.getValue(spec.left).fetch<Any, Any>(spec.path, spec.joinType)
+            else -> throw IllegalArgumentException()
         } as From<*, *>
+
+    private fun treat(spec: TreatJoinSpec<*, *>) {
+        realized[spec.right] = when (spec.root.entity == spec.left && spec.root.entity.type == root.javaType) {
+            true -> criteriaBuilder.treat(
+                root as Root<ExplicitErasedParent>,
+                spec.right.type as Class<ExplicitErasedChild>
+            )
+            false -> {
+                val join = realized.computeIfAbsent(spec.left) {
+                    realized.getValue(spec.root.entity)
+                        .join<ExplicitErasedParent, ExplicitErasedChild>(spec.path, spec.joinType)
+                } as Join<ExplicitErasedParent, ExplicitErasedChild>
+
+                criteriaBuilder.treat(
+                    join,
+                    spec.right.type as Class<ExplicitErasedChild>
+                )
+            }
+        } as From<*, *>
+    }
 
     fun joinAll(): Froms {
         if (realizedListeners.isNotEmpty()) {
@@ -97,6 +122,8 @@ class Joiner(
 
         private val outerJoinFirstComparator: Comparator<JoinSpec<*>> = Comparator { o1, o2 ->
             when {
+                o1 is TreatJoinSpec<*, *> && o2 !is TreatJoinSpec<*, *> -> 1
+                o1 !is TreatJoinSpec<*, *> && o2 is TreatJoinSpec<*, *> -> -1
                 o1 is CrossJoinSpec<*> -> -1
                 o2 is CrossJoinSpec<*> -> 1
                 o1 is AssociatedJoinSpec<*, *> && o1.joinType.isOuterJoin() -> -1
@@ -105,7 +132,16 @@ class Joiner(
             }
         }
 
-        private val joinSpecComparator = fetchJoinFirstComparator.thenComparing(outerJoinFirstComparator)
+        private val treatJoinOuterFirstComparator = Comparator<JoinSpec<*>> { o1, o2 ->
+            when {
+                o1 is TreatJoinSpec<* ,*> && o1.joinType.isOuterJoin() -> -1
+                o2 is TreatJoinSpec<* ,*> && o2.joinType.isOuterJoin() -> -1
+                else -> 0
+            }
+        }
+
+        private val joinSpecComparator =
+            fetchJoinFirstComparator.thenComparing(outerJoinFirstComparator).thenComparing(treatJoinOuterFirstComparator)
 
         private fun JoinType.isOuterJoin(): Boolean {
             return this === JoinType.LEFT || this === JoinType.RIGHT

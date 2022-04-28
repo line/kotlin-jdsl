@@ -249,6 +249,167 @@ val deletedRowCount = queryFactory.deleteQuery<OrderAddress> {
 }.executeUpdate()
 ```
 
+#### Treat (Downcasting)
+
+There may be situations where you need to downcast when using an Entity of an inheritance structure. In that case, you can use the code like below.
+
+
+```kotlin
+val employees = queryFactory.listQuery<Employee> {
+    selectDistinct(entity(Employee::class))
+    from(entity(Employee::class))
+    treat<Employee, PartTimeEmployee>()
+    where(
+        or(
+            col(PartTimeEmployee::weeklySalary).lessThan(1000.toBigDecimal()),
+        )
+    )
+}
+```
+
+If you are downcasting from the root entity (Project Entity in this case) that contains an entity with inheritance structure, you can do it as follows.
+
+```kotlin
+val projects = queryFactory.listQuery<Project> {
+    selectDistinct(entity(Project::class))
+    from(entity(Project::class))
+    
+    treat<Employee, FullTimeEmployee>(col(Project::employees))
+    where(
+        col(FullTimeEmployee::annualSalary).greaterThan(100000.toBigDecimal())
+    )
+}
+```
+
+For Hibernate, the issue at [issue](https://discourse.hibernate.org/t/jpa-downcast-criteria-treat-vs-jpql-treat/2231) is currently unresolved and an additional inner(left) join is added to make the result It may come out as a duplicate. 
+So you should always apply distinct to select above like examples
+
+If you are using Hibernate and want to fetch downcasting entities, the query cannot be executed normally. That is, the example below will result in a runtime error because of this [issue](https://discourse.hibernate.org/t/can-fetch-be-used-as-parameter-of-treat-for-downcasting/3301).
+
+```kotlin
+val sub = queryFactory.subquery<Long> {
+    select(col(Project::id))
+    from(entity(Project::class))
+
+    treat<Employee, FullTimeEmployee>(col(Project::employees))
+    treat<Employee, PartTimeEmployee>(col(Project::employees))
+    where(
+        or(
+            col(FullTimeEmployee::annualSalary).greaterThan(100000.toBigDecimal()),
+            col(PartTimeEmployee::weeklySalary).greaterThan(1000.toBigDecimal()),
+        )
+    )
+}
+val projects = queryFactory.listQuery<Project> {
+    val project = Project::class.alias("dedupeProject")
+    selectDistinct(project)
+    from(project)
+    val supervisor = Employee::class.alias("super")
+    val partTimeSuper = PartTimeEmployee::class.alias("partSuper")
+    // If you are using Hibernate and want to fetch downcasting entities, the query cannot be executed normally. That is, the example below will result in a runtime error.
+    fetch(project, supervisor, on(Project::supervisor))
+    treat(ColumnSpec<PartTimeEmployee>(project, Project::supervisor.name), supervisor, partTimeSuper)
+    where(
+        and(
+            col(project, Project::id).`in`(sub),
+            col(partTimeSuper, PartTimeEmployee::weeklySalary).equal(900.toBigDecimal()),
+        )
+    )
+}
+```
+
+If you want to use downcasting entity in select clause, Eclipselink does not support that function. An example is as follows.
+
+```kotlin
+val employees = queryFactory.listQuery<FullTimeEmployee> {
+    val project: EntitySpec<Project> = Project::class.alias("project")
+    val fullTimeEmployee = FullTimeEmployee::class.alias("fe")
+    val employee = Employee::class.alias("e")
+
+    selectDistinct(fullTimeEmployee)
+    from(project)
+    treat(ColumnSpec<FullTimeEmployee>(project, Project::employees.name), employee, fullTimeEmployee)
+    where(
+        ColumnSpec<BigDecimal>(fullTimeEmployee, FullTimeEmployee::annualSalary.name)
+            .greaterThan(100000.toBigDecimal())
+    )
+}
+
+```
+
+The Entity structure corresponds to the following structure.
+
+```kotlin
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Entity
+@Table(name = "employee")
+@DiscriminatorColumn(name = "EMP_TYPE")
+class Employee(
+    @Id
+    @GeneratedValue
+    val id: Long,
+    val name: String
+) {
+    override fun equals(other: Any?) = Objects.equals(id, (other as? Employee)?.id)
+    override fun hashCode() = Objects.hashCode(id)
+}
+
+@Entity
+@Table(name = "fulltime_employee")
+@DiscriminatorValue("F")
+class FullTimeEmployee(
+    val annualSalary: BigDecimal,
+    override val id: Long,
+    override val name: String
+) : Employee(id, name) {
+    override fun equals(other: Any?) = Objects.equals(id, (other as? FullTimeEmployee)?.id)
+    override fun hashCode() = Objects.hashCode(id)
+}
+
+@Entity
+@Table(name = "parttime_employee")
+@DiscriminatorValue("P")
+class PartTimeEmployee(
+    val weeklySalary: BigDecimal,
+    override val id: Long,
+    override val name: String
+) : Employee(id, name) {
+    override fun equals(other: Any?) = Objects.equals(id, (other as? PartTimeEmployee)?.id)
+    override fun hashCode() = Objects.hashCode(id)
+}
+
+@Entity
+@Table(name = "contract_employee")
+@DiscriminatorValue("C")
+class ContractEmployee(
+    val hourlyRate: BigDecimal,
+    override val id: Long,
+    override val name: String
+) : Employee(id, name) {
+    override fun equals(other: Any?) = Objects.equals(id, (other as? ContractEmployee)?.id)
+    override fun hashCode() = Objects.hashCode(id)
+}
+
+@Entity
+@Table(name = "project")
+class Project(
+    @Id
+    @GeneratedValue
+    val id: Long = 0,
+    val name: String,
+
+    @OneToMany(cascade = [CascadeType.ALL])
+    val employees: List<Employee>,
+
+    @OneToOne(cascade = [CascadeType.ALL], optional = false, fetch = FetchType.LAZY)
+    val supervisor: Employee
+) {
+    override fun equals(other: Any?) = Objects.equals(id, (other as? Project)?.id)
+    override fun hashCode() = Objects.hashCode(id)
+}
+
+```
+
 
 ## How it works
 

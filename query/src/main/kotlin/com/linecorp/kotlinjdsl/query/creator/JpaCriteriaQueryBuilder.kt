@@ -15,7 +15,7 @@ object JpaCriteriaQueryBuilder {
         queryBuilder: (CriteriaQuery<T>) -> Q
     ): Q {
         val query: CriteriaQuery<T> = criteriaBuilder.createQuery(spec.select.returnType)
-        val froms = spec.from.join(spec.join, query)
+        val froms = spec.from.join(spec.join, query, criteriaBuilder)
 
         spec.select.apply(froms, query, criteriaBuilder)
         spec.where.apply(froms, query, criteriaBuilder)

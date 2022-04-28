@@ -74,7 +74,7 @@ internal class SubqueryCreatorImplTest : WithAssertions {
         )
 
         every { criteriaQuery.subquery(Int::class.java) } returns createdQuery
-        every { from.join(join, createdQuery) } returns createdFroms
+        every { from.join(join, createdQuery, criteriaBuilder) } returns createdFroms
         every { createdFroms + froms } returns mergedFroms
         every { select.apply(mergedFroms, createdQuery, criteriaBuilder) } just runs
         every { where.apply(mergedFroms, createdQuery, criteriaBuilder) } just runs
@@ -89,7 +89,7 @@ internal class SubqueryCreatorImplTest : WithAssertions {
 
         verify(exactly = 1) {
             criteriaQuery.subquery(Int::class.java)
-            from.join(join, createdQuery)
+            from.join(join, createdQuery, criteriaBuilder)
             createdFroms + froms
             select.returnType
             select.apply(mergedFroms, createdQuery, criteriaBuilder)
@@ -133,7 +133,7 @@ internal class SubqueryCreatorImplTest : WithAssertions {
         )
 
         every { criteriaUpdate.subquery(Int::class.java) } returns createdQuery
-        every { from.join(join, createdQuery) } returns createdFroms
+        every { from.join(join, createdQuery, criteriaBuilder) } returns createdFroms
         every { createdFroms + froms } returns mergedFroms
         every { select.apply(mergedFroms, createdQuery, criteriaBuilder) } just runs
         every { where.apply(mergedFroms, createdQuery, criteriaBuilder) } just runs
@@ -148,7 +148,7 @@ internal class SubqueryCreatorImplTest : WithAssertions {
 
         verify(exactly = 1) {
             criteriaUpdate.subquery(Int::class.java)
-            from.join(join, createdQuery)
+            from.join(join, createdQuery, criteriaBuilder)
             createdFroms + froms
             select.returnType
             select.apply(mergedFroms, createdQuery, criteriaBuilder)
