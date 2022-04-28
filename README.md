@@ -260,9 +260,7 @@ val employees = queryFactory.listQuery<Employee> {
     from(entity(Employee::class))
     treat<Employee, PartTimeEmployee>()
     where(
-        or(
-            col(PartTimeEmployee::weeklySalary).lessThan(1000.toBigDecimal()),
-        )
+        col(PartTimeEmployee::weeklySalary).lessThan(1000.toBigDecimal()),
     )
 }
 ```
