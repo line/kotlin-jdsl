@@ -7,8 +7,11 @@ import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import java.util.*
 import javax.persistence.criteria.*
 
-internal typealias ExplicitErasedParent = Number
-internal typealias ExplicitErasedChild = Int
+// In the case of Treat, Type should be clearly treated as a parent/child relationship,
+// but it was used because it needed a parent/child relationship that can be cast forcibly due to the current structure that receives JoinSpec as *.
+// Since it is used only internally, it is declared as a private alias.
+private typealias ExplicitErasedParent = Number
+private typealias ExplicitErasedChild = Int
 
 /**
  * Internal Only

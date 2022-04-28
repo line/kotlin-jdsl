@@ -14,6 +14,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import javax.persistence.criteria.*
 
+
+private typealias ExplicitErasedParent = Number
+private typealias ExplicitErasedChild = Int
+
 @ExtendWith(MockKExtension::class)
 internal class FromClauseTest : WithKotlinJdslAssertions {
     @MockK
