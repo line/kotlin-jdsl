@@ -39,6 +39,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
             )
         }
 
+        // then
         assertThat(employees).containsExactlyInAnyOrder(
             *persistProjects.asSequence().flatMap { it.employees + it.supervisor }
                 .filter { it is PartTimeEmployee }
@@ -63,6 +64,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
             )
         }
 
+        // then
         assertThat(employees).containsExactlyInAnyOrder(
             *persistProjects.asSequence().flatMap { it.employees + it.supervisor }
                 .filter {
@@ -92,6 +94,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
             )
         }
 
+        // then
         assertThat(employees).containsExactlyInAnyOrder(*persistProjects.asSequence().flatMap { it.employees }
             .filter { it is FullTimeEmployee }
             .filter { (it as FullTimeEmployee).annualSalary > 100000.toBigDecimal() }
@@ -113,6 +116,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
             )
         }
 
+        // then
         assertThat(projects).containsExactlyInAnyOrder(*persistProjects.asSequence()
             .filter { it.employees.any { e -> e is FullTimeEmployee && e.annualSalary > 100000.toBigDecimal() } }
             .toList().toTypedArray())
@@ -136,6 +140,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
             )
         }
 
+        // then
         assertThat(projects).containsExactlyInAnyOrder(*persistProjects.asSequence()
             .filter {
                 it.employees.any { e -> e is FullTimeEmployee && e.annualSalary > 100000.toBigDecimal() }
@@ -156,6 +161,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
     }
 
     private fun getProjectsWithSupervisorSalaryEqualBySubqueryFullTimeEmployeesSalaryAndPartTimeEmployeeWeeklySalary(fetch: Boolean) {
+        // when
         val sub = queryFactory.subquery<Long> {
             select(col(Project::id))
             from(entity(Project::class))
@@ -187,6 +193,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
             )
         }
 
+        // then
         assertThat(projects).containsExactlyInAnyOrder(*persistProjects.asSequence()
             .filter {
                 it.employees.any { e -> e is FullTimeEmployee && e.annualSalary > 100000.toBigDecimal() }

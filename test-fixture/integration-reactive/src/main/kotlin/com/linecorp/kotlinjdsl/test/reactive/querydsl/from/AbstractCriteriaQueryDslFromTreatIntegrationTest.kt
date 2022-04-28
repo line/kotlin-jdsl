@@ -27,6 +27,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest<S> : CriteriaQue
     @Test
     fun getByPartTimeEmployeesWeeklySalary() = runBlocking {
         withFactory { queryFactory ->
+            // when
             val employees = queryFactory.listQuery<Employee> {
                 selectDistinct(entity(Employee::class))
                 from(entity(Employee::class))
@@ -35,6 +36,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest<S> : CriteriaQue
                 where(col(PartTimeEmployee::weeklySalary).lessThan(1000.toBigDecimal()))
             }
 
+            // then
             assertThat(employees).containsExactlyInAnyOrder(
                 *persistProjects.asSequence().flatMap { it.employees + it.supervisor }
                     .filter { it is PartTimeEmployee }
@@ -42,13 +44,13 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest<S> : CriteriaQue
                     .toList().toTypedArray()
             )
         }
-        // when
     }
 
     @Test
     fun getByPartTimeAndContractEmployeesBySalary() = runBlocking {
         // when
         withFactory { queryFactory ->
+            // when
             val employees = queryFactory.listQuery<Employee> {
                 selectDistinct(entity(Employee::class))
                 from(entity(Employee::class))
@@ -62,6 +64,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest<S> : CriteriaQue
                 )
             }
 
+            // then
             assertThat(employees).containsExactlyInAnyOrder(
                 *persistProjects.asSequence().flatMap { it.employees + it.supervisor }
                     .filter {
@@ -93,6 +96,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest<S> : CriteriaQue
                 )
             }
 
+            // then
             assertThat(employees).containsExactlyInAnyOrder(*persistProjects.asSequence().flatMap { it.employees }
                 .filter { it is FullTimeEmployee }
                 .filter { (it as FullTimeEmployee).annualSalary > 100000.toBigDecimal() }
@@ -114,6 +118,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest<S> : CriteriaQue
                 where(col(FullTimeEmployee::annualSalary).greaterThan(100000.toBigDecimal()))
             }
 
+            // then
             assertThat(projects).containsExactlyInAnyOrder(*persistProjects.asSequence()
                 .filter { it.employees.any { e -> e is FullTimeEmployee && e.annualSalary > 100000.toBigDecimal() } }
                 .toList().toTypedArray())
@@ -138,6 +143,8 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest<S> : CriteriaQue
                     )
                 )
             }
+
+            // then
             assertThat(projects).containsExactlyInAnyOrder(*persistProjects.asSequence()
                 .filter {
                     it.employees.any { e -> e is FullTimeEmployee && e.annualSalary > 100000.toBigDecimal() }
@@ -191,6 +198,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest<S> : CriteriaQue
                 )
             }
 
+            // then
             assertThat(projects).containsExactlyInAnyOrder(*persistProjects.asSequence()
                 .filter {
                     it.employees.any { e -> e is FullTimeEmployee && e.annualSalary > 100000.toBigDecimal() }
