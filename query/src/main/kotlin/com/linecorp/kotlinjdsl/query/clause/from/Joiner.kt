@@ -15,7 +15,7 @@ private typealias ExplicitErasedChild = Int
 
 /**
  * Internal Only
- * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * Don't use this directly because it's an **INTERNAL**.
  * It does not support backward compatibility.
  */
 class Joiner(

@@ -43,7 +43,7 @@ import javax.persistence.criteria.JoinType
 /**
  * Internal DSL Implementation
  *
- * Don't use this directly because it's an <string>INTERNAL</strong> class.
+ * Don't use this directly because it's an **INTERNAL** class.
  * It does not support backward compatibility.
  * This class should be used with the understanding that it is not thread safe and therefore not suitable for parallel processing.
  */

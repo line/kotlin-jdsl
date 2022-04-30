@@ -16,7 +16,7 @@ import org.springframework.data.domain.Pageable
 /**
  * Internal DSL Implementation which is integrated Spring Data JPA
  *
- * Don't use this directly because it's an <string>INTERNAL</strong> class.
+ * Don't use this directly because it's an **INTERNAL** class.
  * It does not support backward compatibility.
  */
 class SpringDataReactiveReactiveQueryDslImpl<T>(
