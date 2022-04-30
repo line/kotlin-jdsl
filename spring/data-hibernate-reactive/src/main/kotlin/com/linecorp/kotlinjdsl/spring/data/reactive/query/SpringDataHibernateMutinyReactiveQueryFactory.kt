@@ -8,7 +8,6 @@ import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactory
 import com.linecorp.kotlinjdsl.spring.reactive.SpringDataReactiveQueryFactoryImpl
 import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveReactiveQueryDslImpl
 import com.linecorp.kotlinjdsl.spring.reactive.querydsl.SpringDataReactiveSubqueryDsl
-import io.smallrye.mutiny.Uni
 import io.smallrye.mutiny.coroutines.asUni
 import io.smallrye.mutiny.coroutines.awaitSuspending
 import kotlinx.coroutines.*
