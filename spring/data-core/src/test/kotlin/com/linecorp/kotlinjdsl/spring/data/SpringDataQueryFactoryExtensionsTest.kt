@@ -211,8 +211,9 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
             from(entity(Order::class))
             where(col(Order::purchaserId).equal(1000))
         }.toList()
+
         // then
-        assertThat(actual).containsExactlyInAnyOrder(3, 2, 1)
+        assertThat(actual).containsExactly(1L, 2L, 3L)
     }
 
     @Test

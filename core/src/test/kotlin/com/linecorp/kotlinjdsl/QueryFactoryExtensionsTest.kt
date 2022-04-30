@@ -91,10 +91,10 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         }
 
         // when
-        queryFactory.streamQuery(dsl).use { actual ->
-            // then
-            assertThat(actual).contains(Data1())
-        }
+        val actual = queryFactory.streamQuery(dsl).toList()
+
+        // then
+        assertThat(actual).contains(Data1())
 
         verify(exactly = 1) {
             queryFactory.selectQuery(Data1::class.java, dsl)
