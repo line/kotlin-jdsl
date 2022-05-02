@@ -14,7 +14,7 @@ import javax.persistence.TypedQuery
 /**
  * Internal DSL Implementation which is integrated Spring Data JPA
  *
- * Don't use this directly because it's an <string>INTERNAL</strong> class.
+ * Don't use this directly because it's an **INTERNAL** class.
  * It does not support backward compatibility.
  */
 class SpringDataQueryDslImpl<T>(

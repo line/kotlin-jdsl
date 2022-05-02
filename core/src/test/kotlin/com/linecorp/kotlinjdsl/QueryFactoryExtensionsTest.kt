@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.util.stream.Stream
 import javax.persistence.Query
 import javax.persistence.TypedQuery
+import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
 internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
@@ -91,10 +92,10 @@ internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
         }
 
         // when
-        queryFactory.streamQuery(dsl).use { actual ->
-            // then
-            assertThat(actual).contains(Data1())
-        }
+        val actual = queryFactory.streamQuery(dsl).toList()
+
+        // then
+        assertThat(actual).contains(Data1())
 
         verify(exactly = 1) {
             queryFactory.selectQuery(Data1::class.java, dsl)

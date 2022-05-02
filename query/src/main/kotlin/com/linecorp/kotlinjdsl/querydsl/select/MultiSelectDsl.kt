@@ -6,7 +6,7 @@ import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 /**
  * This is Dsl which is used to select multiple column.
  *
- * <strong>notice</strong>: vararg is not supported with method name: select.
+ * **notice**: vararg is not supported with method name: select.
  * This is because wrong type inference is made when SingleSelectDsl and MultiSelectDsl are used together.
  */
 interface MultiSelectDsl<T> {

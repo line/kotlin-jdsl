@@ -8,7 +8,7 @@ import com.linecorp.kotlinjdsl.query.clause.where.CriteriaQueryWhereClause
 
 /**
  * Internal Only
- * Don't use this directly because it's an <string>INTERNAL</strong>.
+ * Don't use this directly because it's an **INTERNAL**.
  * It does not support backward compatibility.
  */
 interface CriteriaDeleteQuerySpec<T, Q> {
