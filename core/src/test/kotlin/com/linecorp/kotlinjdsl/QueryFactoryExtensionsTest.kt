@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.util.stream.Stream
 import javax.persistence.Query
 import javax.persistence.TypedQuery
+import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
 internal class QueryFactoryExtensionsTest : WithKotlinJdslAssertions {
