@@ -83,11 +83,32 @@ val books: List<Book> = queryFactory.listQuery {
 }
 ```
 
+### DTO Projections
 If you want to select the DTO, select columns in the order of constructor parameters.
 
+#### select
 ```kotlin
+data class Row(
+    val author: String,
+    val count: Long, 
+)
+
 val books: List<Row> = queryFactory.listQuery {
-    select(column(Book::author), count(column(Book::id)))
+    select(listOf(column(Book::author), count(column(Book::id))))
+    from(entity(Book::class))
+    groupBy(column(Book::author))
+}
+```
+
+#### selectMulti
+```kotlin
+data class Row(
+    val author: String,
+    val count: Long, 
+)
+
+val books: List<Row> = queryFactory.listQuery {
+    selectMulti(column(Book::author), count(column(Book::id)))
     from(entity(Book::class))
     groupBy(column(Book::author))
 }
@@ -207,7 +228,7 @@ val books = queryFactory.listQuery<Book> {
 val books = queryFactory.listQuery<Book> {
     select(entity(Book::class))
     from(entity(Book::class))
-    join(entity(Author::class) on(column(Book::authorId).equal(column(Author::id))))
+    join(entity(Author::class), on(column(Book::authorId).equal(column(Author::id))))
     // ...
 }
 ```
