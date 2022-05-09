@@ -9,9 +9,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup Node
-          uses: actions/setup-node@v2
-          with:
-            node-version: 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
       - name: Install dependencies
         run: npm install
       - name: Validate all commits from PR
