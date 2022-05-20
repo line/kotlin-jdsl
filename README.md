@@ -153,8 +153,8 @@ val greatest = greatest(column(Book::createdAt))
 
 ```kotlin
 val case = case(
-    `when`(column(Book::name).like("A%")).then(liternal(1)),
-    `when`(column(Book::name).like("B%")).then(liternal(2)),
+    `when`(column(Book::name).like("A%")).then(literal(1)),
+    `when`(column(Book::name).like("B%")).then(literal(2)),
     // ...
     `else` = literal(999)
 )
