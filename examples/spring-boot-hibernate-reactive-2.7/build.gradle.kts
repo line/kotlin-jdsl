@@ -1,5 +1,5 @@
 plugins {
-    id("org.springframework.boot") version "2.6.8"
+    id("org.springframework.boot") version Dependencies.springBootVersion
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
 }
@@ -23,11 +23,11 @@ dependencies {
 
     implementation(Modules.testFixtureHibernateReactive)
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:")
+    implementation(Dependencies.springBootWebflux)
+    implementation(Dependencies.springBootJpa)
     implementation(Dependencies.jacksonKotlinModule)
     implementation(Dependencies.h2)
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.6.8"))
+    implementation(platform(Dependencies.springBootBom))
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation(Dependencies.springBootTest)
 }
