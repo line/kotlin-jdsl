@@ -188,13 +188,23 @@ val condition = and(
 )
 ```
 
-### Join
+### (Inner) Join
 
 ```kotlin
 val books = queryFactory.listQuery<Book> {
     select(entity(Book::class))
     from(entity(Book::class))
     join(Book::author)
+    // ...
+}
+```
+
+### Left or Right Join
+```kotlin
+val books = queryFactory.listQuery<Book> {
+    select(entity(Book::class))
+    from(entity(Book::class))
+    join(entity(Book::class), entity(Author::class), on(Book::author), JoinType.LEFT) //Change JoinType
     // ...
 }
 ```
