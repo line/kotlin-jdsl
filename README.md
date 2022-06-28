@@ -194,7 +194,9 @@ val condition = and(
 val books = queryFactory.listQuery<Book> {
     select(entity(Book::class))
     from(entity(Book::class))
-    join(Book::author)
+    join(Book::author) //Default is `JoinType.INNER`
+    join(Book::publisher, JoinType.LEFT)
+    join(Book::seller, JoinType.RIGHT)
     // ...
 }
 ```

@@ -5,10 +5,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     jacoco
 
-    id("org.jetbrains.kotlin.plugin.noarg") version Dependencies.kotlinVersion
-    id("org.jetbrains.kotlin.plugin.allopen") version Dependencies.kotlinVersion
-
     kotlin("jvm") version Dependencies.kotlinVersion
+    kotlin("plugin.noarg") version Dependencies.kotlinVersion
+    kotlin("plugin.allopen") version Dependencies.kotlinVersion
 }
 
 allprojects {

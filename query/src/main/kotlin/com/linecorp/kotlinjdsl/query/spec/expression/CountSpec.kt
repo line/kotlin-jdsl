@@ -39,7 +39,7 @@ data class CountSpec<T>(
 
     private fun toCriteriaExpression(
         criteriaBuilder: CriteriaBuilder,
-        jpaExpression: Expression<T>
+        jpaExpression: Expression<out T>
     ): Expression<Long> {
         return if (distinct) {
             criteriaBuilder.countDistinct(jpaExpression)

@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.Expression
 import javax.persistence.criteria.Subquery
 
 /**
@@ -22,9 +23,10 @@ data class SingleSelectClause<T>(
             .distinct(distinct)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun apply(froms: Froms, query: Subquery<T>, criteriaBuilder: CriteriaBuilder) {
         query
-            .select(expression.toCriteriaExpression(froms, query, criteriaBuilder))
+            .select(expression.toCriteriaExpression(froms, query, criteriaBuilder) as Expression<T>)
             .distinct(distinct)
     }
 }

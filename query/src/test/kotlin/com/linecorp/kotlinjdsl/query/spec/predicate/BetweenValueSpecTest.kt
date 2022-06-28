@@ -37,7 +37,7 @@ internal class BetweenValueSpecTest : WithKotlinJdslAssertions {
         val right1 = 10
         val right2 = 20
 
-        val leftExpression: Expression<Int?> = mockk()
+        val leftExpression: Expression<out Int?> = mockk()
 
         val betweenPredicate: Predicate = mockk()
 
@@ -55,8 +55,7 @@ internal class BetweenValueSpecTest : WithKotlinJdslAssertions {
         verify(exactly = 1) {
             leftExpressionSpec.toCriteriaExpression(froms, query, criteriaBuilder)
 
-            @Suppress("TYPE_MISMATCH_WARNING")
-            criteriaBuilder.between<Int>(leftExpression, right1, right2)
+            criteriaBuilder.between(leftExpression, right1, right2)
         }
 
         confirmVerified(leftExpressionSpec, froms, query, criteriaBuilder)
@@ -69,7 +68,7 @@ internal class BetweenValueSpecTest : WithKotlinJdslAssertions {
         val right1 = 10
         val right2 = 20
 
-        val leftExpression: Expression<Int?> = mockk()
+        val leftExpression: Expression<out Int?> = mockk()
 
         val betweenPredicate: Predicate = mockk()
 
@@ -87,8 +86,7 @@ internal class BetweenValueSpecTest : WithKotlinJdslAssertions {
         verify(exactly = 1) {
             leftExpressionSpec.toCriteriaExpression(froms, updateQuery, criteriaBuilder)
 
-            @Suppress("TYPE_MISMATCH_WARNING")
-            criteriaBuilder.between<Int>(leftExpression, right1, right2)
+            criteriaBuilder.between(leftExpression, right1, right2)
         }
 
         confirmVerified(leftExpressionSpec, froms, updateQuery, criteriaBuilder)
@@ -101,7 +99,7 @@ internal class BetweenValueSpecTest : WithKotlinJdslAssertions {
         val right1 = 10
         val right2 = 20
 
-        val leftExpression: Expression<Int?> = mockk()
+        val leftExpression: Expression<out Int?> = mockk()
 
         val betweenPredicate: Predicate = mockk()
 
@@ -119,8 +117,7 @@ internal class BetweenValueSpecTest : WithKotlinJdslAssertions {
         verify(exactly = 1) {
             leftExpressionSpec.toCriteriaExpression(froms, deleteQuery, criteriaBuilder)
 
-            @Suppress("TYPE_MISMATCH_WARNING")
-            criteriaBuilder.between<Int>(leftExpression, right1, right2)
+            criteriaBuilder.between(leftExpression, right1, right2)
         }
 
         confirmVerified(leftExpressionSpec, froms, deleteQuery, criteriaBuilder)
