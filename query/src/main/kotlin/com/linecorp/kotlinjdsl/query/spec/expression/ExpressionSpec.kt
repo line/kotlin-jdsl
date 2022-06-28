@@ -8,17 +8,17 @@ interface ExpressionSpec<T> {
         froms: Froms,
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
-    ): Expression<T>
+    ): Expression<out T>
 
     fun toCriteriaExpression(
         froms: Froms,
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
-    ): Expression<T>
+    ): Expression<out T>
 
     fun toCriteriaExpression(
         froms: Froms,
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
-    ): Expression<T>
+    ): Expression<out T>
 }

@@ -39,15 +39,14 @@ data class GreaterThanValueSpec<T, R>(
         return toCriteriaPredicate(criteriaBuilder, leftExpression)
     }
 
-    @Suppress("TYPE_MISMATCH_WARNING")
     private fun toCriteriaPredicate(
         criteriaBuilder: CriteriaBuilder,
-        leftExpression: Expression<T>
+        leftExpression: Expression<out T>
     ): Predicate {
         return if (inclusive) {
-            criteriaBuilder.greaterThanOrEqualTo<R>(leftExpression, right)
+            criteriaBuilder.greaterThanOrEqualTo(leftExpression, right)
         } else {
-            criteriaBuilder.greaterThan<R>(leftExpression, right)
+            criteriaBuilder.greaterThan(leftExpression, right)
         }
     }
 }

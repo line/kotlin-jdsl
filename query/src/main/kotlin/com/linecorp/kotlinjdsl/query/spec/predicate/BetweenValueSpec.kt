@@ -4,7 +4,6 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.*
 
-@Suppress("TYPE_MISMATCH_WARNING")
 data class BetweenValueSpec<T, R>(
     private val left: ExpressionSpec<T>,
     private val right1: R,
@@ -15,7 +14,7 @@ data class BetweenValueSpec<T, R>(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        return criteriaBuilder.between<R>(left.toCriteriaExpression(froms, query, criteriaBuilder), right1, right2)
+        return criteriaBuilder.between(left.toCriteriaExpression(froms, query, criteriaBuilder), right1, right2)
     }
 
     override fun toCriteriaPredicate(
@@ -23,7 +22,7 @@ data class BetweenValueSpec<T, R>(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        return criteriaBuilder.between<R>(left.toCriteriaExpression(froms, query, criteriaBuilder), right1, right2)
+        return criteriaBuilder.between(left.toCriteriaExpression(froms, query, criteriaBuilder), right1, right2)
     }
 
     override fun toCriteriaPredicate(
@@ -31,6 +30,6 @@ data class BetweenValueSpec<T, R>(
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        return criteriaBuilder.between<R>(left.toCriteriaExpression(froms, query, criteriaBuilder), right1, right2)
+        return criteriaBuilder.between(left.toCriteriaExpression(froms, query, criteriaBuilder), right1, right2)
     }
 }

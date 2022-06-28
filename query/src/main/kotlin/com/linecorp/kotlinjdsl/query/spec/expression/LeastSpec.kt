@@ -10,7 +10,7 @@ data class LeastSpec<T : Comparable<T>?>(
         froms: Froms,
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
-    ): Expression<T> {
+    ): Expression<out T> {
         val expression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return criteriaBuilder.least(expression)
@@ -20,7 +20,7 @@ data class LeastSpec<T : Comparable<T>?>(
         froms: Froms,
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
-    ): Expression<T> {
+    ): Expression<out T> {
         val expression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return criteriaBuilder.least(expression)
@@ -30,7 +30,7 @@ data class LeastSpec<T : Comparable<T>?>(
         froms: Froms,
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
-    ): Expression<T> {
+    ): Expression<out T> {
         val expression = expression.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return criteriaBuilder.least(expression)

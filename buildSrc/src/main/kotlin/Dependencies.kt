@@ -3,7 +3,7 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 object Dependencies {
-    const val kotlinVersion = "1.6.21"
+    const val kotlinVersion = "1.7.0"
     const val springCoreVersion = "5.3.20"
     const val springBootVersion = "2.7.0"
     const val springDataJpaVersion = "2.7.0"

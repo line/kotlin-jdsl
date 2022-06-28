@@ -4,7 +4,6 @@ import com.linecorp.kotlinjdsl.query.spec.Froms
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import javax.persistence.criteria.*
 
-@Suppress("TYPE_MISMATCH_WARNING")
 data class LessThanValueSpec<T, R>(
     private val left: ExpressionSpec<T>,
     private val right: R,
@@ -15,7 +14,7 @@ data class LessThanValueSpec<T, R>(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        val leftExpression: Expression<T> = left.toCriteriaExpression(froms, query, criteriaBuilder)
+        val leftExpression: Expression<out T> = left.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return toCriteriaPredicate(criteriaBuilder, leftExpression)
     }
@@ -25,7 +24,7 @@ data class LessThanValueSpec<T, R>(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        val leftExpression: Expression<T> = left.toCriteriaExpression(froms, query, criteriaBuilder)
+        val leftExpression: Expression<out T> = left.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return toCriteriaPredicate(criteriaBuilder, leftExpression)
     }
@@ -35,19 +34,19 @@ data class LessThanValueSpec<T, R>(
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        val leftExpression: Expression<T> = left.toCriteriaExpression(froms, query, criteriaBuilder)
+        val leftExpression: Expression<out T> = left.toCriteriaExpression(froms, query, criteriaBuilder)
 
         return toCriteriaPredicate(criteriaBuilder, leftExpression)
     }
 
     private fun toCriteriaPredicate(
         criteriaBuilder: CriteriaBuilder,
-        leftExpression: Expression<T>
+        leftExpression: Expression<out T>
     ): Predicate {
         return if (inclusive) {
-            criteriaBuilder.lessThanOrEqualTo<R>(leftExpression, right)
+            criteriaBuilder.lessThanOrEqualTo(leftExpression, right)
         } else {
-            criteriaBuilder.lessThan<R>(leftExpression, right)
+            criteriaBuilder.lessThan(leftExpression, right)
         }
     }
 }
