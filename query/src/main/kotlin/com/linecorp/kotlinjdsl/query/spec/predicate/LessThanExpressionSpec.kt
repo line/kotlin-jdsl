@@ -44,8 +44,8 @@ data class LessThanExpressionSpec<T : Comparable<T>>(
 
     private fun toCriteriaPredicate(
         criteriaBuilder: CriteriaBuilder,
-        leftExpression: Expression<T>,
-        rightExpression: Expression<T>
+        leftExpression: Expression<out T>,
+        rightExpression: Expression<out T>
     ): Predicate {
         return if (inclusive) {
             criteriaBuilder.lessThanOrEqualTo(leftExpression, rightExpression)
