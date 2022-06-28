@@ -4,10 +4,10 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 
 object Dependencies {
     const val kotlinVersion = "1.7.0"
-    const val springCoreVersion = "5.3.20"
-    const val springBootVersion = "2.7.0"
-    const val springDataJpaVersion = "2.7.0"
-    const val coroutineVersion = "1.6.1"
+    const val springCoreVersion = "5.3.21"
+    const val springBootVersion = "2.7.1"
+    const val springDataJpaVersion = "2.7.1"
+    const val coroutineVersion = "1.6.3"
 
     // kotlin
     const val koltin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
@@ -49,9 +49,9 @@ object Dependencies {
     const val assertJ = "org.assertj:assertj-core:3.22.0"
     const val mockk = "io.mockk:mockk:1.12.4"
 
-    const val h2 = "com.h2database:h2:2.1.212"
+    const val h2 = "com.h2database:h2:2.1.214"
 
-    const val mutinyVersion = "1.5.0"
+    const val mutinyVersion = "1.6.0"
     const val mutinyCore = "io.smallrye.reactive:mutiny:$mutinyVersion"
     const val mutinyKotlin = "io.smallrye.reactive:mutiny-kotlin:$mutinyVersion"
     val mutiny = listOf(mutinyCore, mutinyKotlin)
