@@ -29,7 +29,7 @@ import javax.persistence.criteria.*
 
 @ExtendWith(MockKExtension::class)
 internal class JpaCriteriaQueryBuilderTest : WithKotlinJdslAssertions {
-    val sut = JpaCriteriaQueryBuilder
+    private val sut = JpaCriteriaQueryBuilder
 
     @MockK
     private lateinit var em: EntityManager
