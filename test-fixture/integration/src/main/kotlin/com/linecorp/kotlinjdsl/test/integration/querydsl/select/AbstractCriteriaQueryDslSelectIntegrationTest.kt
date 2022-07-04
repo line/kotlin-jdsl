@@ -132,7 +132,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
     }
 
     @Test
-    fun `function - substring function, mutliple parameters`() {
+    fun `function - substring function, multiple parameters`() {
         val result = queryFactory.singleQuery<String> {
             select(function("substring", col(OrderItem::productName), literal(1), literal(2)))
             from(entity(OrderItem::class))
