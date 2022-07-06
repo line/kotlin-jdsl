@@ -145,7 +145,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
     }
 
     @Test
-    fun `function - substring function, mutliple parameters`() = runBlocking {
+    fun `function - substring function, multiple parameters`() = runBlocking {
         val result = withFactory { queryFactory ->
             queryFactory.singleQuery<String> {
                 select(function("substring", col(OrderItem::productName), literal(1), literal(2)))

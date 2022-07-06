@@ -11,10 +11,10 @@ import javax.persistence.Persistence
 @Configuration
 class QueryFactoryConfiguration {
     @Bean
-    fun entityManagerFactory() = Persistence.createEntityManagerFactory("book")
+    fun entityManagerFactory(): EntityManagerFactory = Persistence.createEntityManagerFactory("book")
 
     @Bean
-    fun mutinySessionFactory(entityManagerFactory: EntityManagerFactory) =
+    fun mutinySessionFactory(entityManagerFactory: EntityManagerFactory): SessionFactory =
         entityManagerFactory.unwrap(SessionFactory::class.java)
             .apply {
                 withSession {

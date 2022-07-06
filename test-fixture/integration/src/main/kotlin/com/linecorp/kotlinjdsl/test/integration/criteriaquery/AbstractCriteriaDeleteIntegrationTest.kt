@@ -27,7 +27,7 @@ abstract class AbstractCriteriaDeleteIntegrationTest : AbstractCriteriaQueryDslI
         val query = queryFactory.selectQuery<OrderAddress> {
             select(entity(OrderAddress::class))
             from(entity(OrderAddress::class))
-            where(col(OrderAddress::id).equal(address1.id),)
+            where(col(OrderAddress::id).equal(address1.id))
             associate(OrderAddress::class, Address::class, on(OrderAddress::address))
         }
 
