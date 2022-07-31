@@ -129,8 +129,8 @@ open class QueryDslImpl<T>(
         lazyJoins().add(FetchJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
-    override fun where(predicate: PredicateSpec) {
-        lazyWheres().add(predicate)
+    override fun where(predicate: PredicateSpec?) {
+        predicate?.let { lazyWheres().add(it) }
     }
 
     override fun groupBy(columns: List<ExpressionSpec<*>>) {
