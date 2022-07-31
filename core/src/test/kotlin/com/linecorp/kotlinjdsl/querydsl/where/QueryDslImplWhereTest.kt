@@ -67,7 +67,7 @@ internal class QueryDslImplWhereTest : WithKotlinJdslAssertions {
         val actual = QueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
-            where(listOf(predicateSpec1,predicateSpec2))
+            where(predicateSpec1,predicateSpec2)
         }
 
         // then
@@ -95,7 +95,7 @@ internal class QueryDslImplWhereTest : WithKotlinJdslAssertions {
         val actual = QueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
-            where(listOf(predicateSpec1,predicateSpec2,predicateSpec3))
+            where(predicateSpec1,predicateSpec2,predicateSpec3)
         }
 
         // then

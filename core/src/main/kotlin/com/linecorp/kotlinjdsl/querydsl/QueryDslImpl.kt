@@ -129,11 +129,7 @@ open class QueryDslImpl<T>(
         lazyJoins().add(FetchJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
-    override fun where(predicate: PredicateSpec?) {
-        predicate?.let { lazyWheres().add(it) }
-    }
-
-    override fun where(predicates: List<PredicateSpec?>) {
+    override fun where(vararg predicates: PredicateSpec?) {
         for (p in predicates) p?.let { lazyWheres().add(it) }
     }
 
