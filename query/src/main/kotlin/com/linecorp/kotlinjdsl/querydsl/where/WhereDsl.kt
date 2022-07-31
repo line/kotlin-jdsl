@@ -6,4 +6,6 @@ import com.linecorp.kotlinjdsl.querydsl.predicate.PredicateDsl
 
 interface WhereDsl : ExpressionDsl, PredicateDsl {
     fun where(predicate: PredicateSpec?)
+
+    fun where(predicates: List<PredicateSpec?>)
 }

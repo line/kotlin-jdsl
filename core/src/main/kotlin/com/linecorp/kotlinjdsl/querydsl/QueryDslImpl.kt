@@ -133,6 +133,10 @@ open class QueryDslImpl<T>(
         predicate?.let { lazyWheres().add(it) }
     }
 
+    override fun where(predicates: List<PredicateSpec?>) {
+        for (p in predicates) p?.let { lazyWheres().add(it) }
+    }
+
     override fun groupBy(columns: List<ExpressionSpec<*>>) {
         lazyGroupBys().addAll(columns)
     }

@@ -67,8 +67,7 @@ internal class QueryDslImplWhereTest : WithKotlinJdslAssertions {
         val actual = QueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
-            where(predicateSpec1)
-            where(predicateSpec2)
+            where(listOf(predicateSpec1,predicateSpec2))
         }
 
         // then
@@ -82,6 +81,34 @@ internal class QueryDslImplWhereTest : WithKotlinJdslAssertions {
 
         assertThat(subquerySpec.where).isEqualTo(
             WhereClause(AndSpec(listOf(predicateSpec1, predicateSpec2)))
+        )
+    }
+
+    @Test
+    fun nullInFirstWheres() {
+        // given
+        val predicateSpec1: PredicateSpec? = null
+        val predicateSpec2: PredicateSpec = mockk()
+        val predicateSpec3: PredicateSpec = mockk()
+
+        // when
+        val actual = QueryDslImpl(Data1::class.java).apply {
+            select(distinct = true, Data1::class.java)
+            from(entity(Data1::class))
+            where(listOf(predicateSpec1,predicateSpec2,predicateSpec3))
+        }
+
+        // then
+        val criteriaQuerySpec = actual.createCriteriaQuerySpec()
+
+        assertThat(criteriaQuerySpec.where).isEqualTo(
+            WhereClause(AndSpec(listOf(predicateSpec2, predicateSpec3)))
+        )
+
+        val subquerySpec = actual.createSubquerySpec()
+
+        assertThat(subquerySpec.where).isEqualTo(
+            WhereClause(AndSpec(listOf(predicateSpec2, predicateSpec3)))
         )
     }
 
