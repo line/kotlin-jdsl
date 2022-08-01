@@ -33,6 +33,7 @@ import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
+import com.linecorp.kotlinjdsl.query.spec.predicate.OrSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.from.Relation
 import com.linecorp.kotlinjdsl.querydsl.hint.SqlQueryHintClauseProvider
@@ -129,8 +130,8 @@ open class QueryDslImpl<T>(
         lazyJoins().add(FetchJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
-    override fun where(vararg predicates: PredicateSpec?) {
-        for (p in predicates) p?.let { lazyWheres().add(it) }
+    override fun where(predicate: PredicateSpec?) {
+        predicate?.let { lazyWheres().add(it) }
     }
 
     override fun groupBy(columns: List<ExpressionSpec<*>>) {
