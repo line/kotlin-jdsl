@@ -134,6 +134,18 @@ open class QueryDslImpl<T>(
         predicate?.let { lazyWheres().add(it) }
     }
 
+    override fun whereAnd(predicates: List<PredicateSpec?>) {
+        predicates.filterNotNull()
+            .takeIf { it.isNotEmpty() }
+            ?.run { where(AndSpec(this)) }
+    }
+
+    override fun whereOr(predicates: List<PredicateSpec?>) {
+        predicates.filterNotNull()
+            .takeIf { it.isNotEmpty() }
+            ?.run { where(OrSpec(this)) }
+    }
+
     override fun groupBy(columns: List<ExpressionSpec<*>>) {
         lazyGroupBys().addAll(columns)
     }
