@@ -95,7 +95,7 @@ internal class QueryDslImplWhereTest : WithKotlinJdslAssertions {
         val actual = QueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
-            whereAnd(nullPredicateSpec, predicateSpec1,predicateSpec2)
+            whereAnd(nullPredicateSpec, predicateSpec1, predicateSpec2)
         }
 
         // then
@@ -123,7 +123,7 @@ internal class QueryDslImplWhereTest : WithKotlinJdslAssertions {
         val actual = QueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
-            whereAnd(listOf(nullPredicateSpec, predicateSpec1,predicateSpec2))
+            whereAnd(listOf(nullPredicateSpec, predicateSpec1, predicateSpec2))
         }
 
         // then
@@ -151,7 +151,7 @@ internal class QueryDslImplWhereTest : WithKotlinJdslAssertions {
         val actual = QueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
-            whereOr(nullPredicateSpec, predicateSpec1,predicateSpec2)
+            whereOr(nullPredicateSpec, predicateSpec1, predicateSpec2)
         }
 
         // then
@@ -179,7 +179,7 @@ internal class QueryDslImplWhereTest : WithKotlinJdslAssertions {
         val actual = QueryDslImpl(Data1::class.java).apply {
             select(distinct = true, Data1::class.java)
             from(entity(Data1::class))
-            whereOr(listOf(nullPredicateSpec, predicateSpec1,predicateSpec2))
+            whereOr(listOf(nullPredicateSpec, predicateSpec1, predicateSpec2))
         }
 
         // then
