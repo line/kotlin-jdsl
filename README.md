@@ -83,6 +83,35 @@ val books: List<Book> = queryFactory.listQuery {
 }
 ```
 
+#### with nullable condition
+
+```kotlin
+val books: List<Book> = queryFactory.listQuery {
+        select(entity(Book::class))
+        from(entity(Book::class))
+        where(
+            name?.run { column(Book::author).equal(this) }
+        )
+    }
+```
+
+#### with multi conditions
+
+```kotlin
+val books: List<Book> = queryFactory.listQuery {
+    select(entity(Book::class))
+    from(entity(Book::class))
+    whereOr(
+        column(Book::author).equal("Dan Brown"),
+        column(Book::author).equal("Hemingway")
+    )
+    whereAnd(
+        column(Book::viewCount).greaterThan(10000L),
+        column(Book::isBorrowed).isFalse()
+    )
+}
+```
+
 ### DTO Projections
 If you want to select the DTO, select columns in the order of constructor parameters.
 
