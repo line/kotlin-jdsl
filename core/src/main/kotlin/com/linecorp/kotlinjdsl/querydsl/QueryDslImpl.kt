@@ -131,7 +131,7 @@ open class QueryDslImpl<T>(
     }
 
     override fun where(predicate: PredicateSpec?) {
-        predicate?.let { lazyWheres().add(it) }
+        predicate?.run { lazyWheres().add(this) }
     }
 
     override fun whereAnd(predicates: List<PredicateSpec?>) {
