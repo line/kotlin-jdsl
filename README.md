@@ -85,6 +85,10 @@ val books: List<Book> = queryFactory.listQuery {
 
 #### with nullable condition
 
+Kotlin JDSL converts `null` in `where condition` to `EmptyPredicateSpec` object.
+
+_note that `EmptyPredicateSpec` turns into `1=1` sql_
+
 ```kotlin
 val books: List<Book> = queryFactory.listQuery {
         select(entity(Book::class))
@@ -96,6 +100,10 @@ val books: List<Book> = queryFactory.listQuery {
 ```
 
 #### with multi conditions
+
+You can chain conditions using the `whereAnd` or `whereOr` method.
+* `whereAnd` connects each condition with `and`, `whereOr` connects with `or`.
+* Each method is connected by `and`.
 
 ```kotlin
 val books: List<Book> = queryFactory.listQuery {
