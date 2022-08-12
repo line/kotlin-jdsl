@@ -83,6 +83,43 @@ val books: List<Book> = queryFactory.listQuery {
 }
 ```
 
+#### with nullable condition
+
+Kotlin JDSL converts `null` in `where condition` to `EmptyPredicateSpec` object.
+
+_note that `EmptyPredicateSpec` turns into `1=1` sql_
+
+```kotlin
+val books: List<Book> = queryFactory.listQuery {
+        select(entity(Book::class))
+        from(entity(Book::class))
+        where(
+            name?.run { column(Book::author).equal(this) }
+        )
+    }
+```
+
+#### with multi conditions
+
+You can chain conditions using the `whereAnd` or `whereOr` method.
+* `whereAnd` connects each condition with `and`, `whereOr` connects with `or`.
+* Each method is connected by `and`.
+
+```kotlin
+val books: List<Book> = queryFactory.listQuery {
+    select(entity(Book::class))
+    from(entity(Book::class))
+    whereOr(
+        column(Book::author).equal("Dan Brown"),
+        column(Book::author).equal("Hemingway")
+    )
+    whereAnd(
+        column(Book::viewCount).greaterThan(10000L),
+        column(Book::isBorrowed).isFalse()
+    )
+}
+```
+
 ### DTO Projections
 If you want to select the DTO, select columns in the order of constructor parameters.
 

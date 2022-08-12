@@ -30,6 +30,7 @@ import com.linecorp.kotlinjdsl.query.spec.expression.ColumnSpec
 import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.AndSpec
+import com.linecorp.kotlinjdsl.query.spec.predicate.OrSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.from.Relation
 import com.linecorp.kotlinjdsl.querydsl.hint.SqlReactiveQueryHintClauseProvider
@@ -124,8 +125,20 @@ open class ReactiveQueryDslImpl<T>(
         lazyJoins().add(FetchJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
-    override fun where(predicate: PredicateSpec) {
-        lazyWheres().add(predicate)
+    override fun where(predicate: PredicateSpec?) {
+        predicate?.run { lazyWheres().add(this) }
+    }
+
+    override fun whereAnd(predicates: List<PredicateSpec?>) {
+        predicates.filterNotNull()
+            .takeIf { it.isNotEmpty() }
+            ?.run { where(AndSpec(this)) }
+    }
+
+    override fun whereOr(predicates: List<PredicateSpec?>) {
+        predicates.filterNotNull()
+            .takeIf { it.isNotEmpty() }
+            ?.run { where(OrSpec(this)) }
     }
 
     override fun groupBy(columns: List<ExpressionSpec<*>>) {
