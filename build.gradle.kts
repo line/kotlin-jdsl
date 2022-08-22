@@ -12,7 +12,7 @@ plugins {
 
 allprojects {
     group = "com.linecorp.kotlin-jdsl"
-    version = "2.0.4.RELEASE"
+    version = "2.0.5.RELEASE"
 
     repositories {
         mavenCentral()
