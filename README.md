@@ -13,6 +13,9 @@ writing an SQL statement.
 
 There are several libraries in the easy way to use JPA. However, those libraries have to use APT. If you use APT, there is a problem that you have to compile again when the name or type of entity field is changed. So, in order not to use APT, we created this library using the KProperty created by the kotlin compiler.
 
+If you want to know more about the background of Kotlin JDSL, I recommend reading
+the [blog](https://engineering.linecorp.com/en/blog/kotlinjdsl-jpa-criteria-api-with-kotlin/)
+
 ## Quick start
 
 ### Reactive
