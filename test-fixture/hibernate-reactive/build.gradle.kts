@@ -4,12 +4,12 @@ coverage {
 
 dependencies {
     implementation(Modules.testFixtureEntity)
-    implementation(Dependencies.coroutineJdk8)
-    implementation(Dependencies.hibernateReactive)
-    implementation(Dependencies.slf4j)
-    implementation(Dependencies.kotlinReflect)
-    implementation(Dependencies.h2)
-    implementation(Dependencies.agroalPool)
-    implementation(Dependencies.vertxJdbcClient)
-    implementation(Dependencies.junit)
+    implementation(libs.coroutine.jdk8)
+    implementation(libs.hibernate.reactive)
+    implementation(libs.slf4j)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.h2)
+    implementation(libs.agroal.pool)
+    implementation(libs.vertx.jdbc.client)
+    implementation(libs.junit)
 }

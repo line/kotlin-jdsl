@@ -5,10 +5,10 @@ coverage {
 dependencies {
     api(Modules.testFixtureCore)
     api(Modules.testFixtureEntity)
-    api(Dependencies.javaPersistenceApi)
-    api(Dependencies.slf4j)
+    api(libs.java.persistence.api)
+    api(libs.slf4j)
 
-    implementation(Dependencies.kotlinReflect)
+    implementation(libs.kotlin.reflect)
 
     compileOnly(Modules.springDataCore)
     compileOnly(Modules.core)

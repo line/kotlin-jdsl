@@ -2,12 +2,13 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     jacoco
 
-    kotlin("jvm") version Dependencies.kotlinVersion
-    kotlin("plugin.noarg") version Dependencies.kotlinVersion
-    kotlin("plugin.allopen") version Dependencies.kotlinVersion
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.noarg)
+    alias(libs.plugins.kotlin.allopen)
 }
 
 allprojects {
@@ -37,7 +38,7 @@ subprojects {
     java.targetCompatibility = javaVersion
 
     dependencies {
-        implementation(Dependencies.koltin)
+        implementation(rootProject.libs.koltin)
     }
 
     allOpen {

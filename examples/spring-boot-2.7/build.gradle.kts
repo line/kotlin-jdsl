@@ -1,5 +1,6 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("org.springframework.boot") version Dependencies.springBootVersion
+    alias(libs.plugins.spring.boot)
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
 }
@@ -16,11 +17,11 @@ dependencies {
     // implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:x.y.z")
     implementation(Modules.springDataStarter)
 
-    implementation(Dependencies.springBootWeb)
-    implementation(Dependencies.springBootJpa)
-    implementation(Dependencies.jacksonKotlinModule)
-    implementation(Dependencies.h2)
-    implementation(platform(Dependencies.springBootBom))
+    implementation(libs.spring.boot.web)
+    implementation(libs.spring.boot.jpa)
+    implementation(libs.jackson.kotlin.module)
+    implementation(libs.h2)
+    implementation(platform(libs.spring.boot.bom))
 
-    testImplementation(Dependencies.springBootTest)
+    testImplementation(libs.spring.boot.test)
 }

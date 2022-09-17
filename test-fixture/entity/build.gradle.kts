@@ -3,5 +3,5 @@ coverage {
 }
 
 dependencies {
-    compileOnly(Dependencies.javaPersistenceApi)
+    compileOnly(libs.java.persistence.api)
 }

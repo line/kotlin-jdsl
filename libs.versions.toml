@@ -55,3 +55,7 @@ mitiny = ["mutiny-core", "mutiny-kotlin"]
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+
+kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
+kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

@@ -2,14 +2,14 @@ apply<PublishPlugin>()
 
 dependencies {
     compileOnly(Modules.core)
-    compileOnly(Dependencies.springJpa)
-    compileOnly(Dependencies.hibernate)
+    compileOnly(libs.spring.jpa)
+    compileOnly(libs.hibernate)
 
     testImplementation(Modules.core)
     testImplementation(Modules.testFixtureCore)
     testImplementation(Modules.testFixtureEntity)
-    testImplementation(Dependencies.springBootTest)
-    testImplementation(Dependencies.springJpa)
-    testImplementation(Dependencies.hibernate)
-    testImplementation(Dependencies.h2)
+    testImplementation(libs.spring.boot.test)
+    testImplementation(libs.spring.jpa)
+    testImplementation(libs.hibernate)
+    testImplementation(libs.h2)
 }
