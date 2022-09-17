@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.querydsl.expression.max
 import com.linecorp.kotlinjdsl.singleQuery
 import com.linecorp.kotlinjdsl.subquery
 import com.linecorp.kotlinjdsl.test.entity.order.Order
+import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
@@ -156,5 +157,18 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
 
         // then
         assertThat(result).isEqualTo(order1.groups.first().items.first().productName.take(2))
+    }
+
+    @Test
+    fun `nestedCol - ref key fetch`() = runBlocking {
+        val result = withFactory { queryFactory ->
+            queryFactory.listQuery {
+                select(nestedCol(col(OrderGroup::order), Order::id))
+                from(entity(OrderGroup::class))
+            }
+        }
+
+        // then
+        assertThat(result).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted())
     }
 }

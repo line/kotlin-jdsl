@@ -15,7 +15,7 @@ interface ExpressionDsl {
     fun <R> nullLiteral(type: Class<R>) = NullLiteralSpec(type)
     fun <T, R> col(entity: EntitySpec<T>, property: KProperty1<T, R>) = column(entity, property)
     fun <T, R> column(entity: EntitySpec<T>, property: KProperty1<T, R>) = ColumnSpec<R>(entity, property.name)
-
+    fun <C, R> nestedCol(columnSpec: ColumnSpec<C>, property: KProperty1<C, R>) = NestedColumnSpec<R>(columnSpec, property.name)
     fun <N : Number?> max(expression: ExpressionSpec<N>) = MaxSpec(expression)
     fun <N : Number?> min(expression: ExpressionSpec<N>) = MinSpec(expression)
     fun <N : Number?> avg(expression: ExpressionSpec<N>) = AvgSpec(expression)
