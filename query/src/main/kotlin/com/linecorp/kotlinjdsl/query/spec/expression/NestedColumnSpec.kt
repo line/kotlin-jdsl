@@ -3,6 +3,8 @@ package com.linecorp.kotlinjdsl.query.spec.expression
 import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
 
+private fun <T> ColumnSpec<T>.outerPath(froms: Froms): Path<T> = froms[entity].get(path)
+
 data class NestedColumnSpec<T>(
     val nestedColumnSpec: ColumnSpec<*>,
     val path: String
@@ -12,7 +14,7 @@ data class NestedColumnSpec<T>(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> {
-        return nestedColumnSpec.path(froms).get(path)
+        return nestedColumnSpec.outerPath(froms).get(path)
     }
 
     override fun toCriteriaExpression(
@@ -20,7 +22,7 @@ data class NestedColumnSpec<T>(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> {
-        return nestedColumnSpec.path(froms).get(path)
+        return nestedColumnSpec.outerPath(froms).get(path)
     }
 
     override fun toCriteriaExpression(
@@ -28,6 +30,6 @@ data class NestedColumnSpec<T>(
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Expression<T> {
-        return nestedColumnSpec.path(froms).get(path)
+        return nestedColumnSpec.outerPath(froms).get(path)
     }
 }

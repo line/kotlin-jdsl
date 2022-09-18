@@ -32,7 +32,7 @@ data class ColumnSpec<T>(
         return path(froms)
     }
 
-    fun path(froms: Froms): Path<T> =
+    private fun path(froms: Froms): Path<T> =
         froms[entity].get(path)
 
     fun <NT> nested(property: KProperty1<T, NT>): NestedColumnSpec<NT> = NestedColumnSpec(
