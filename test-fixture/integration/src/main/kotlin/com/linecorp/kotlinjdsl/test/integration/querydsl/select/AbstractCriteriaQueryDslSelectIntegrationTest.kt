@@ -158,6 +158,18 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
     }
 
     @Test
+    fun `nestedCol - ref key fetch nested function`() {
+        val result = queryFactory.listQuery {
+            select(col(OrderGroup::order).nested(Order::id))
+            from(entity(OrderGroup::class))
+            orderBy(nestedCol(col(OrderGroup::order), Order::id).asc())
+        }
+
+        // then
+        assertThat(result).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted())
+    }
+
+    @Test
     fun `nestedCol - implicit join and fetch column value`() {
         // when
         val result = queryFactory.listQuery<Long> {

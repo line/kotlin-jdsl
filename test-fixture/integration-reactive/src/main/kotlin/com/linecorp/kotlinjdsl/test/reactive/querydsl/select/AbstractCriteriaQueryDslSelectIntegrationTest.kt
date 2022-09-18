@@ -5,6 +5,7 @@ import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.count
 import com.linecorp.kotlinjdsl.querydsl.expression.function
 import com.linecorp.kotlinjdsl.querydsl.expression.max
+import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.singleQuery
 import com.linecorp.kotlinjdsl.subquery
 import com.linecorp.kotlinjdsl.test.entity.order.Order
@@ -170,5 +171,34 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest<S> : CriteriaQueryD
 
         // then
         assertThat(result).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted())
+    }
+
+    @Test
+    fun `nestedCol - ref key fetch nested function`() = runBlocking {
+        val result = withFactory { queryFactory ->
+            queryFactory.listQuery {
+                select(col(OrderGroup::order).nested(Order::id))
+                from(entity(OrderGroup::class))
+            }
+        }
+
+        // then
+        assertThat(result).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted())
+    }
+
+    @Test
+    fun `nestedCol - implicit join and fetch column value`() = runBlocking {
+        // when
+        val result = withFactory { queryFactory ->
+            queryFactory.listQuery<Long> {
+                select(nestedCol(col(OrderGroup::order), Order::purchaserId))
+                from(entity(OrderGroup::class))
+                join(OrderGroup::address)
+                orderBy(nestedCol(col(OrderGroup::order), Order::purchaserId).asc())
+            }
+        }
+
+        // then
+        assertThat(result).isEqualTo(listOf(order1.purchaserId, order2.purchaserId, order3.purchaserId).sorted())
     }
 }

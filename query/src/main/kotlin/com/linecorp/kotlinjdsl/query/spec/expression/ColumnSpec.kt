@@ -2,6 +2,7 @@ package com.linecorp.kotlinjdsl.query.spec.expression
 
 import com.linecorp.kotlinjdsl.query.spec.Froms
 import javax.persistence.criteria.*
+import kotlin.reflect.KProperty1
 
 data class ColumnSpec<T>(
     val entity: EntitySpec<*>,
@@ -33,4 +34,9 @@ data class ColumnSpec<T>(
 
     fun path(froms: Froms): Path<T> =
         froms[entity].get(path)
+
+    fun <NT> nested(property: KProperty1<T, NT>): NestedColumnSpec<NT> = NestedColumnSpec(
+        this,
+        property.name
+    )
 }
