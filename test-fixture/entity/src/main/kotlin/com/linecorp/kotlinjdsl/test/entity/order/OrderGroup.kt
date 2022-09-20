@@ -10,6 +10,8 @@ class OrderGroup(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
+    val orderGroupName: String,
+
     @OneToMany(mappedBy = "group", cascade = [CascadeType.PERSIST], orphanRemoval = true)
     val items: Set<OrderItem>,
 
@@ -45,10 +47,12 @@ class OrderGroup(
 
 data class OrderGroupTestBuilder(
     var items: Set<OrderItem> = hashSetOf(OrderItemTestBuilder().build()),
-    var address: OrderAddress = OrderAddressTestBuilder().build()
+    var address: OrderAddress = OrderAddressTestBuilder().build(),
+    var orderGroupName: String = "orderGroupName",
 ) {
     fun build() = OrderGroup(
         items = items,
         address = address,
+        orderGroupName = orderGroupName,
     )
 }
