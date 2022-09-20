@@ -215,6 +215,26 @@ val authors: List<Author> = queryFactory.listQuery {
 }
 ```
 
+#### NestedColumn(Foreign Key)
+
+You can use the `nestedCol` function to get the `foreign Key` value.
+
+```kotlin
+val orderIdsInOrderGroupTable = queryFactory.listQuery {
+    select(nestedCol(col(OrderGroup::order), Order::id))
+    from(entity(OrderGroup::class))
+}
+```
+
+You can get the value of `foreign Key` using `nested`, an extension function in `ColumnSpec`.
+
+```kotlin
+val orderIdsInOrderGroupTable = queryFactory.listQuery<Long> {
+    select(col(OrderGroup::order).nested(Order::id))
+    from(entity(OrderGroup::class))
+}
+```
+
 ### Predicate
 
 Kotlin JDSL supports various predicates.
