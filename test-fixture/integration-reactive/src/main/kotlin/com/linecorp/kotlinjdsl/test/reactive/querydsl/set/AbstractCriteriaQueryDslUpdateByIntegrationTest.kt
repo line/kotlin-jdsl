@@ -2,6 +2,7 @@ package com.linecorp.kotlinjdsl.test.reactive.querydsl.set
 
 import com.linecorp.kotlinjdsl.listQuery
 import com.linecorp.kotlinjdsl.querydsl.expression.col
+import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.test.entity.Address
 import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderAddress
@@ -86,5 +87,43 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
             assertThat(baseAddress).isEqualTo("base")
         }
 
+    }
+
+    @Test
+    fun updateByRefKey() = runBlocking {
+        // given
+        val orderItem1 = orderItem { }
+        val order1 = order {
+            groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1) })
+        }
+
+        persistAll(order1)
+
+        // when
+        withFactory { queryFactory ->
+            queryFactory.updateQuery<OrderGroup> {
+                where(nestedCol(col(OrderGroup::order), Order::id).`in`(order1.id))
+                setParams(col(OrderGroup::orderGroupName) to "newGroupName")
+            }.executeUpdate()
+        }
+
+        // then
+        assertThat(withFactory { queryFactory ->
+            queryFactory.listQuery<String> {
+                select(col(OrderGroup::orderGroupName))
+                from(entity(OrderGroup::class))
+                join(OrderGroup::order)
+                where(col(Order::id).equal(order1.id))
+            }
+        }).containsOnly("newGroupName")
+
+        assertThat(withFactory { queryFactory ->
+            queryFactory.listQuery<String> {
+                select(col(OrderGroup::orderGroupName))
+                from(entity(OrderGroup::class))
+                join(OrderGroup::order)
+                where(col(Order::id).notEqual(order1.id))
+            }
+        }).containsOnly("orderGroupName")
     }
 }

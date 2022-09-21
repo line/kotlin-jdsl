@@ -4,7 +4,9 @@ import com.linecorp.kotlinjdsl.deleteQuery
 import com.linecorp.kotlinjdsl.listQuery
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.test.entity.Address
+import com.linecorp.kotlinjdsl.test.entity.order.Order
 import com.linecorp.kotlinjdsl.test.entity.order.OrderAddress
+import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
 import org.junit.jupiter.api.Test
@@ -74,5 +76,62 @@ abstract class AbstractCriteriaDeleteIntegrationTest<S> : CriteriaQueryDslIntegr
         // then
         assertThat(query).isEmpty()
 
+    }
+
+    @Test
+    fun deleteByRefKey() = runBlocking {
+        // given
+        val order1 = order {
+            groups = hashSetOf(
+                orderGroup {
+                    items = hashSetOf()
+                    orderGroupName = "testOrderGroup"
+                }
+            )
+        }
+
+        val order2 = order {
+            groups = hashSetOf(
+                orderGroup {
+                    items = hashSetOf()
+                    orderGroupName = "orderGroup1"
+                }
+            )
+        }
+        val order3 = order {
+            groups = hashSetOf(
+                orderGroup {
+                    items = hashSetOf()
+                    orderGroupName = "orderGroup2"
+                }
+            )
+        }
+
+        persistAll(order1, order2, order3)
+
+        // when
+        withFactory { queryFactory ->
+            queryFactory.deleteQuery<OrderGroup> {
+                where(nestedCol(col(OrderGroup::order), Order::id).equal(order1.id))
+            }.executeUpdate()
+        }
+
+        // then
+        assertThat(withFactory { queryFactory ->
+            queryFactory.listQuery<String> {
+                select(col(OrderGroup::orderGroupName))
+                from(entity(OrderGroup::class))
+            }
+        })
+            .containsOnly("orderGroup1", "orderGroup2")
+            .hasSize(2)
+
+        assertThat(withFactory { queryFactory ->
+            queryFactory.listQuery<String> {
+                select(col(OrderGroup::orderGroupName))
+                from(entity(OrderGroup::class))
+                where(col(OrderGroup::orderGroupName).equal("testOrderGroup"))
+            }
+        }).isEmpty()
     }
 }

@@ -5,9 +5,11 @@ import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.count
 import com.linecorp.kotlinjdsl.querydsl.expression.function
 import com.linecorp.kotlinjdsl.querydsl.expression.max
+import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.singleQuery
 import com.linecorp.kotlinjdsl.subquery
 import com.linecorp.kotlinjdsl.test.entity.order.Order
+import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import org.junit.jupiter.api.BeforeEach
@@ -141,5 +143,43 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
 
         // then
         assertThat(result).isEqualTo(order1.groups.first().items.first().productName.take(2))
+    }
+
+    @Test
+    fun `nestedCol - ref key fetch`() {
+        val result = queryFactory.listQuery {
+            select(nestedCol(col(OrderGroup::order), Order::id))
+            from(entity(OrderGroup::class))
+            orderBy(nestedCol(col(OrderGroup::order), Order::id).asc())
+        }
+
+        // then
+        assertThat(result).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted())
+    }
+
+    @Test
+    fun `nestedCol - ref key fetch nested function`() {
+        val result = queryFactory.listQuery {
+            select(col(OrderGroup::order).nested(Order::id))
+            from(entity(OrderGroup::class))
+            orderBy(nestedCol(col(OrderGroup::order), Order::id).asc())
+        }
+
+        // then
+        assertThat(result).isEqualTo(listOf(order1.id, order2.id, order3.id).sorted())
+    }
+
+    @Test
+    fun `nestedCol - implicit join and fetch column value`() {
+        // when
+        val result = queryFactory.listQuery<Long> {
+            select(nestedCol(col(OrderGroup::order), Order::purchaserId))
+            from(entity(OrderGroup::class))
+            join(OrderGroup::address)
+            orderBy(nestedCol(col(OrderGroup::order), Order::purchaserId).asc())
+        }
+
+        // then
+        assertThat(result).isEqualTo(listOf(order1.purchaserId, order2.purchaserId, order3.purchaserId).sorted())
     }
 }

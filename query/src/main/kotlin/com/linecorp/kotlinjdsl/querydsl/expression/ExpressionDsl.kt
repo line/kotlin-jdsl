@@ -10,12 +10,17 @@ interface ExpressionDsl {
     fun <T : Any, R : T?> entity(entity: KClass<T>) = EntitySpec(entity.java as Class<R>)
     fun <T : Any> entity(entity: KClass<T>, alias: String) = EntitySpec(entity.java, alias)
     fun <T : Any> KClass<T>.alias(alias: String) = EntitySpec(this.java, alias)
+    fun <T, R> ColumnSpec<T>.nested(property: KProperty1<T, R>): NestedColumnSpec<R> = NestedColumnSpec(
+        this,
+        property.name
+    )
 
     fun <R : Any> literal(value: R) = LiteralSpec(value)
     fun <R> nullLiteral(type: Class<R>) = NullLiteralSpec(type)
     fun <T, R> col(entity: EntitySpec<T>, property: KProperty1<T, R>) = column(entity, property)
     fun <T, R> column(entity: EntitySpec<T>, property: KProperty1<T, R>) = ColumnSpec<R>(entity, property.name)
 
+    fun <C, R> nestedCol(columnSpec: ColumnSpec<C>, property: KProperty1<C, R>) = NestedColumnSpec<R>(columnSpec, property.name)
     fun <N : Number?> max(expression: ExpressionSpec<N>) = MaxSpec(expression)
     fun <N : Number?> min(expression: ExpressionSpec<N>) = MinSpec(expression)
     fun <N : Number?> avg(expression: ExpressionSpec<N>) = AvgSpec(expression)
