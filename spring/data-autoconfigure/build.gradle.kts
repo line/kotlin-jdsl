@@ -3,6 +3,6 @@ apply<PublishPlugin>()
 dependencies {
     compileOnly(Modules.core)
     compileOnly(Modules.springDataCore)
-    compileOnly(Dependencies.javaPersistenceApi)
-    compileOnly(Dependencies.springBootAutoconfigure)
+    compileOnly(libs.java.persistence.api)
+    compileOnly(libs.spring.boot.autoconfigure)
 }

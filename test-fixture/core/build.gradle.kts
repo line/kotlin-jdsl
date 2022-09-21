@@ -3,8 +3,8 @@ coverage {
 }
 
 dependencies {
-    api(Dependencies.junit)
-    api(Dependencies.mockk)
-    api(Dependencies.assertJ)
-    api(Dependencies.logback)
+    api(libs.junit)
+    api(libs.mockk)
+    api(libs.assertJ)
+    api(libs.logback)
 }

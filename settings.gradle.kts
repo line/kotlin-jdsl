@@ -50,3 +50,11 @@ modules.forEach {
     include(it.name)
     project(it.name).projectDir = file(it.path)
 }
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("libs.versions.toml"))
+        }
+    }
+}

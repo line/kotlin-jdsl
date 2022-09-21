@@ -4,10 +4,10 @@ coverage {
 
 dependencies {
     implementation(Modules.eclipselink)
-    implementation(Dependencies.eclipselink)
-    implementation(Dependencies.javaPersistenceApi)
-    implementation(Dependencies.logback)
-    implementation(Dependencies.h2)
+    implementation(libs.eclipselink)
+    implementation(libs.java.persistence.api)
+    implementation(libs.logback)
+    implementation(libs.h2)
 
     testImplementation(Modules.testFixtureCore)
 }

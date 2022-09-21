@@ -1,23 +1,23 @@
 apply<PublishPlugin>()
 
 dependencies {
-    compileOnly(Dependencies.springJpa)
-    compileOnly(Dependencies.hibernateReactive)
-    compileOnly(Dependencies.mutiny)
+    compileOnly(libs.spring.jpa)
+    compileOnly(libs.hibernate.reactive)
+    compileOnly(libs.bundles.mitiny)
 
     api(Modules.reactiveCore)
     api(Modules.hibernateReactive)
     api(Modules.springDataReactiveCore)
-    implementation(Dependencies.javaPersistenceApi)
+    implementation(libs.java.persistence.api)
 
     testImplementation(Modules.testFixtureCore)
     testImplementation(Modules.testFixtureEntity)
     testImplementation(Modules.testFixtureHibernateReactive)
     testImplementation(Modules.testFixtureIntegrationReactive)
-    testImplementation(Dependencies.mutiny)
-    testImplementation(Dependencies.springBootTest)
-    testImplementation(Dependencies.springJpa)
-    testImplementation(Dependencies.hibernateReactive)
-    testImplementation(Dependencies.h2)
-    testImplementation(Dependencies.coroutineJdk8)
+    testImplementation(libs.bundles.mitiny)
+    testImplementation(libs.spring.boot.test)
+    testImplementation(libs.spring.jpa)
+    testImplementation(libs.hibernate.reactive)
+    testImplementation(libs.h2)
+    testImplementation(libs.coroutine.jdk8)
 }

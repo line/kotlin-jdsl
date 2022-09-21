@@ -4,9 +4,9 @@ coverage {
 
 dependencies {
     implementation(Modules.hibernate)
-    implementation(Dependencies.hibernate)
-    implementation(Dependencies.logback)
-    implementation(Dependencies.h2)
+    implementation(libs.hibernate)
+    implementation(libs.logback)
+    implementation(libs.h2)
 
     testImplementation(Modules.testFixtureCore)
 }

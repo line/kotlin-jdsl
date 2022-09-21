@@ -1,14 +1,14 @@
 apply<PublishPlugin>()
 
 dependencies {
-    compileOnly(Dependencies.springJpa)
+    compileOnly(libs.spring.jpa)
     implementation(Modules.reactiveCore)
-    implementation(Dependencies.javaPersistenceApi)
+    implementation(libs.java.persistence.api)
 
     testImplementation(Modules.testFixtureCore)
     testImplementation(Modules.testFixtureEntity)
-    testImplementation(Dependencies.springBootTest)
-    testImplementation(Dependencies.springJpa)
-    testImplementation(Dependencies.h2)
-    testImplementation(Dependencies.coroutineJdk8)
+    testImplementation(libs.spring.boot.test)
+    testImplementation(libs.spring.jpa)
+    testImplementation(libs.h2)
+    testImplementation(libs.coroutine.jdk8)
 }

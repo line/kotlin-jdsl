@@ -1,0 +1,61 @@
+[versions]
+kotlin = "1.7.0"
+spring-core = "5.3.21"
+spring-boot = "2.7.1"
+spring-data-jpa = "2.7.1"
+coroutine = "1.6.3"
+mutiny = "1.6.0"
+
+[libraries]
+# kotlin
+koltin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+
+# Common
+java-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
+slf4j = { module = "org.slf4j:slf4j-api", version = "1.7.36" }
+logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
+hibernate = { module = "org.hibernate:hibernate-core", version = "5.6.9.Final" }
+hibernate-reactive = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.6.Final" }
+eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.10" }
+jackson-kotlin-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+agroal-pool = { module = "io.agroal:agroal-pool", version = "2.0" }
+vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.3.1" }
+coroutine-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutine" }
+coroutine-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "coroutine" }
+
+# SpringBoot
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
+spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "spring-boot" }
+spring-boot-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }
+spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+
+# Spring
+spring-core = { module = "org.springframework:spring-core", version.ref = "spring-core" }
+spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-core" }
+spring-jpa = { module = "org.springframework.data:spring-data-jpa", version.ref = "spring-data-jpa" }
+spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.3.6" }
+
+# Test
+junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.8.2" }
+assertJ = { module = "org.assertj:assertj-core", version = "3.22.0" }
+mockk = { module = "io.mockk:mockk", version = "1.12.4" }
+
+h2 = { module = "com.h2database:h2", version = "2.1.214" }
+
+mutiny-core = { module = "io.smallrye.reactive:mutiny", version.ref = "mutiny" }
+mutiny-kotlin = { module = "io.smallrye.reactive:mutiny-kotlin", version.ref = "mutiny" }
+
+[bundles]
+mitiny = ["mutiny-core", "mutiny-kotlin"]
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+
+kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
+kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

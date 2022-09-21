@@ -3,13 +3,13 @@ apply<PublishPlugin>()
 dependencies {
     api(Modules.core)
 
-    compileOnly(Dependencies.eclipselink)
-    compileOnly(Dependencies.javaPersistenceApi)
-    compileOnly(Dependencies.slf4j)
+    compileOnly(libs.eclipselink)
+    compileOnly(libs.java.persistence.api)
+    compileOnly(libs.slf4j)
 
     testImplementation(Modules.core)
     testImplementation(Modules.testFixtureIntegration)
-    testImplementation(Dependencies.eclipselink)
-    testImplementation(Dependencies.javaPersistenceApi)
-    testImplementation(Dependencies.h2)
+    testImplementation(libs.eclipselink)
+    testImplementation(libs.java.persistence.api)
+    testImplementation(libs.h2)
 }
