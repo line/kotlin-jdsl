@@ -1,7 +1,7 @@
 {
   "name": "jdsl-commitlint-node-package",
   "devDependencies": {
-    "@commitlint/cli": "^16.2.4",
-    "@commitlint/config-conventional": "^16.2.4"
+    "@commitlint/cli": "17.1.2",
+    "@commitlint/config-conventional": "17.1.0"
   }
 }
