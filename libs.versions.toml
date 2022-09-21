@@ -20,7 +20,7 @@ hibernate-reactive = { module = "org.hibernate.reactive:hibernate-reactive-core"
 eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.10" }
 jackson-kotlin-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 agroal-pool = { module = "io.agroal:agroal-pool", version = "2.0" }
-vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.3.1" }
+vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.3.3" }
 coroutine-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutine" }
 coroutine-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "coroutine" }
 
