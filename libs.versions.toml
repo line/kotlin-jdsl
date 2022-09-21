@@ -1,7 +1,7 @@
 [versions]
 kotlin = "1.7.0"
 spring-core = "5.3.21"
-spring-boot = "2.7.1"
+spring-boot = "2.7.3"
 spring-data-jpa = "2.7.1"
 coroutine = "1.6.3"
 mutiny = "1.6.0"
