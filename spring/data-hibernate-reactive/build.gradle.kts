@@ -3,7 +3,7 @@ apply<PublishPlugin>()
 dependencies {
     compileOnly(libs.spring.jpa)
     compileOnly(libs.hibernate.reactive)
-    compileOnly(libs.bundles.mitiny)
+    compileOnly(libs.bundles.mutiny)
 
     api(Modules.reactiveCore)
     api(Modules.hibernateReactive)
@@ -14,7 +14,7 @@ dependencies {
     testImplementation(Modules.testFixtureEntity)
     testImplementation(Modules.testFixtureHibernateReactive)
     testImplementation(Modules.testFixtureIntegrationReactive)
-    testImplementation(libs.bundles.mitiny)
+    testImplementation(libs.bundles.mutiny)
     testImplementation(libs.spring.boot.test)
     testImplementation(libs.spring.jpa)
     testImplementation(libs.hibernate.reactive)
