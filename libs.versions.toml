@@ -43,7 +43,7 @@ spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch
 # Test
 junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.8.2" }
 assertJ = { module = "org.assertj:assertj-core", version = "3.22.0" }
-mockk = { module = "io.mockk:mockk", version = "1.12.4" }
+mockk = { module = "io.mockk:mockk", version = "1.12.8" }
 
 h2 = { module = "com.h2database:h2", version = "2.1.214" }
 
