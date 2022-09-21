@@ -28,7 +28,7 @@ jobs:
       - name: CodeCoverage(with test) with Gradle
         run: ./gradlew codeCoverageReport
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         if: github.event_name != 'pull_request'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
