@@ -20,6 +20,7 @@
 | refactor    | Not a bug fix or add feature, just refactoring code     |
 | test        | Add Test case or fix wrong test case                    |
 | style       | Only change the code style(ex. white-space, formatting) |
+| chore       | It refers to minor tasks such as library version upgrade, typo correction, etc. |
 
 * If you want to add some more `commit type` please describe it on the **Pull Request**
 

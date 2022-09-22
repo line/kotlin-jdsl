@@ -4,7 +4,7 @@ spring-core = "5.3.23"
 spring-boot = "2.7.3"
 spring-data-jpa = "2.7.3"
 coroutine = "1.6.4"
-mutiny = "1.6.0"
+mutiny = "1.7.0"
 
 [libraries]
 # kotlin
@@ -51,7 +51,7 @@ mutiny-core = { module = "io.smallrye.reactive:mutiny", version.ref = "mutiny" }
 mutiny-kotlin = { module = "io.smallrye.reactive:mutiny-kotlin", version.ref = "mutiny" }
 
 [bundles]
-mitiny = ["mutiny-core", "mutiny-kotlin"]
+mutiny = ["mutiny-core", "mutiny-kotlin"]
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

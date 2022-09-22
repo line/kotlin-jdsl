@@ -5,9 +5,9 @@ dependencies {
 
     compileOnly(libs.hibernate.reactive)
     compileOnly(libs.slf4j)
-    compileOnly(libs.bundles.mitiny)
+    compileOnly(libs.bundles.mutiny)
 
-    testImplementation(libs.bundles.mitiny)
+    testImplementation(libs.bundles.mutiny)
     testImplementation(libs.coroutine.jdk8)
     testImplementation(Modules.testFixtureIntegrationReactive)
     testImplementation(Modules.testFixtureHibernateReactive)
