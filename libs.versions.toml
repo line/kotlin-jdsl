@@ -38,7 +38,7 @@ spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test
 spring-core = { module = "org.springframework:spring-core", version.ref = "spring-core" }
 spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-core" }
 spring-jpa = { module = "org.springframework.data:spring-data-jpa", version.ref = "spring-data-jpa" }
-spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.3.6" }
+spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.3.7" }
 
 # Test
 junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.8.2" }
