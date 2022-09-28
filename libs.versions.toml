@@ -16,7 +16,7 @@ java-persistence-api = { module = "javax.persistence:javax.persistence-api", ver
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.2" }
 logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 hibernate = { module = "org.hibernate:hibernate-core", version = "5.6.12.Final" }
-hibernate-reactive = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.7.Final" }
+hibernate-reactive = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.8.Final" }
 eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.11" }
 jackson-kotlin-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 agroal-pool = { module = "io.agroal:agroal-pool", version = "2.0" }
