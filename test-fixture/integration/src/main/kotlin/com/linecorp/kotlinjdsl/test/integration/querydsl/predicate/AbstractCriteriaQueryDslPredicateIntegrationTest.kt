@@ -1,9 +1,12 @@
 package com.linecorp.kotlinjdsl.test.integration.querydsl.predicate
 
 import com.linecorp.kotlinjdsl.listQuery
+import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.singleQuery
+import com.linecorp.kotlinjdsl.subquery
 import com.linecorp.kotlinjdsl.test.entity.order.Order
+import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import org.junit.jupiter.api.BeforeEach
@@ -17,15 +20,15 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
 
     private val order1 = order {
         purchaserId = 1000
-        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1, orderItem2) })
+        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1, orderItem2); orderGroupName = "orderGroup1" })
     }
     private val order2 = order {
         purchaserId = 1000
-        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem3) })
+        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem3); orderGroupName = "orderGroup2" })
     }
     private val order3 = order {
         purchaserId = 2000
-        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem4) })
+        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem4); orderGroupName = "orderGroup3" })
     }
 
     private val orders = listOf(order1, order2, order3)
@@ -266,5 +269,55 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
 
         // then
         assertThat(orderItemIds).isEmpty()
+    }
+
+    @Test
+    fun `exists - subquery`() {
+
+        val existFoundOrders = queryFactory.listQuery<Order> {
+            val entity: EntitySpec<Order> = entity(Order::class)
+            select(entity)
+            from(entity)
+            where(
+                exists(queryFactory.subquery<Long> {
+                    val orderGroupEntity = entity(OrderGroup::class)
+                    select(literal(1))
+                    from(orderGroupEntity)
+                    where(
+                        and(
+                            col(OrderGroup::orderGroupName).equal("orderGroup1"),
+                            col(OrderGroup::order).equal(entity)
+                        )
+                    )
+                })
+            )
+        }
+
+        assertThat(existFoundOrders.map { it.id }).isEqualTo(listOf(order1.id))
+    }
+
+    @Test
+    fun `notExists - subquery`() {
+
+        val existFoundOrders = queryFactory.listQuery<Order> {
+            val entity: EntitySpec<Order> = entity(Order::class)
+            select(entity)
+            from(entity)
+            where(
+                notExists(queryFactory.subquery<Long> {
+                    val orderGroupEntity = entity(OrderGroup::class)
+                    select(literal(1))
+                    from(orderGroupEntity)
+                    where(
+                        and(
+                            col(OrderGroup::orderGroupName).equal("orderGroup1"),
+                            col(OrderGroup::order).equal(entity)
+                        )
+                    )
+                })
+            )
+        }
+
+        assertThat(existFoundOrders.map { it.id }).isEqualTo(listOf(order2.id, order3.id))
     }
 }
