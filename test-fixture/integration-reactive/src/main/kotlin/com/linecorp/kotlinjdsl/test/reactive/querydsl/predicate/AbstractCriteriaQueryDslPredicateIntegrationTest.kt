@@ -44,7 +44,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun not() = runBlocking {
         // when
         val orderIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(Order::id))
                 from(entity(Order::class))
                 where(not(col(Order::purchaserId).equal(1000)))
@@ -60,7 +60,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun and() = runBlocking {
         // when
         val orderItemId = withFactory { queryFactory ->
-            queryFactory.singleQuery<Long> {
+            queryFactory.singleQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(
@@ -80,7 +80,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun or() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(
@@ -100,7 +100,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun equal() = runBlocking {
         // when
         val orderItemId = withFactory { queryFactory ->
-            queryFactory.singleQuery<Long> {
+            queryFactory.singleQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::id).equal(orderItem1.id))
@@ -115,7 +115,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun notEqual() = runBlocking {
         // when
         val orderItemId = withFactory { queryFactory ->
-            queryFactory.singleQuery<Long> {
+            queryFactory.singleQuery {
                 select(col(Order::id))
                 from(entity(Order::class))
                 where(col(Order::purchaserId).notEqual(1000))
@@ -130,7 +130,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun `in`() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::id).`in`(orderItem1.id, orderItem2.id))
@@ -145,7 +145,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun lessThanOrEqualTo() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).lessThanOrEqualTo(20.toBigDecimal()))
@@ -160,7 +160,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun lessThan() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).lessThan(20.toBigDecimal()))
@@ -175,7 +175,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun greaterThanOrEqualTo() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).greaterThanOrEqualTo(20.toBigDecimal()))
@@ -190,7 +190,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun greaterThan() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).greaterThan(20.toBigDecimal()))
@@ -205,7 +205,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun between() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::price).between(20.toBigDecimal(), 40.toBigDecimal()))
@@ -220,7 +220,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun isTrue() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::claimed).isTrue())
@@ -235,7 +235,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun isFalse() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::claimed).isFalse())
@@ -250,7 +250,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun isNull() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::productImage).isNull())
@@ -265,7 +265,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun isNotNull() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::productImage).isNotNull())
@@ -280,7 +280,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun like() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::productName).like("test%"))
@@ -295,7 +295,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     fun notLike() = runBlocking {
         // when
         val orderItemIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(OrderItem::id))
                 from(entity(OrderItem::class))
                 where(col(OrderItem::productName).notLike("test%"))
@@ -307,9 +307,10 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     }
 
     @Test
-    fun `exists - subquery`() = runBlocking {
+    fun exists() = runBlocking {
+        // when
         val existFoundOrders = withFactory { queryFactory ->
-            queryFactory.listQuery<Order> {
+            queryFactory.listQuery {
                 val entity: EntitySpec<Order> = entity(Order::class)
                 select(entity)
                 from(entity)
@@ -329,14 +330,15 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
             }
         }
 
+        // then
         assertThat(existFoundOrders.map { it.id }).isEqualTo(listOf(order1.id))
     }
 
     @Test
-    fun `notExists - subquery`() = runBlocking {
-
+    fun notExists() = runBlocking {
+        // when
         val existFoundOrders = withFactory { queryFactory ->
-            queryFactory.listQuery<Order> {
+            queryFactory.listQuery {
                 val entity: EntitySpec<Order> = entity(Order::class)
                 select(entity)
                 from(entity)
@@ -356,6 +358,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
             }
         }
 
+        // then
         assertThat(existFoundOrders.map { it.id }).isEqualTo(listOf(order2.id, order3.id))
     }
 }
