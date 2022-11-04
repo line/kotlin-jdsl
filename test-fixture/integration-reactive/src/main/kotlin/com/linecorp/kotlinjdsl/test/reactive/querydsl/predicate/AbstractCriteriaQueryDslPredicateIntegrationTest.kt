@@ -25,7 +25,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest<S> : CriteriaQue
     }
     private val order2 = order {
         purchaserId = 1000
-        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem3);orderGroupName = "orderGroup2" })
+        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem3); orderGroupName = "orderGroup2" })
     }
     private val order3 = order {
         purchaserId = 2000

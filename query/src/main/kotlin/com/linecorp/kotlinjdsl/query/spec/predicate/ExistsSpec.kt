@@ -12,9 +12,8 @@ data class ExistsSpec<T>(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        val subQueryExpression = subqueryExpressionSpec.toCriteriaExpression(froms, query, criteriaBuilder)
-        subQueryExpression as Subquery<T>
-        return criteriaBuilder.exists(subQueryExpression)
+        val subqueryExpression = subqueryExpressionSpec.toCriteriaExpression(froms, query, criteriaBuilder)
+        return criteriaBuilder.exists(subqueryExpression as Subquery<T>)
     }
 
     override fun toCriteriaPredicate(
@@ -22,9 +21,8 @@ data class ExistsSpec<T>(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        val subQueryExpression = subqueryExpressionSpec.toCriteriaExpression(froms, query, criteriaBuilder)
-        subQueryExpression as Subquery<T>
-        return criteriaBuilder.exists(subQueryExpression)
+        val subqueryExpression = subqueryExpressionSpec.toCriteriaExpression(froms, query, criteriaBuilder)
+        return criteriaBuilder.exists(subqueryExpression as Subquery<T>)
     }
 
     override fun toCriteriaPredicate(
@@ -32,8 +30,7 @@ data class ExistsSpec<T>(
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        val subQueryExpression = subqueryExpressionSpec.toCriteriaExpression(froms, query, criteriaBuilder)
-        subQueryExpression as Subquery<T>
-        return criteriaBuilder.exists(subQueryExpression)
+        val subqueryExpression = subqueryExpressionSpec.toCriteriaExpression(froms, query, criteriaBuilder)
+        return criteriaBuilder.exists(subqueryExpression as Subquery<T>)
     }
 }
