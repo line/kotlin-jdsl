@@ -27,7 +27,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest : AbstractCriteri
     @Test
     fun update() {
         // when
-        val purchaserIds = queryFactory.listQuery<Long> {
+        val purchaserIds = queryFactory.listQuery {
             select(col(Order::purchaserId))
             from(entity(Order::class))
             groupBy(col(Order::purchaserId))
@@ -103,14 +103,14 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest : AbstractCriteri
         }.executeUpdate()
 
         // then
-        assertThat(queryFactory.listQuery<String> {
+        assertThat(queryFactory.listQuery {
             select(col(OrderGroup::orderGroupName))
             from(entity(OrderGroup::class))
             join(OrderGroup::order)
             where(col(Order::id).equal(order1.id))
         }).containsOnly("newGroupName")
 
-        assertThat(queryFactory.listQuery<String> {
+        assertThat(queryFactory.listQuery {
             select(col(OrderGroup::orderGroupName))
             from(entity(OrderGroup::class))
             join(OrderGroup::order)

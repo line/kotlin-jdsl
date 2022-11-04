@@ -21,7 +21,7 @@ abstract class AbstractCriteriaQueryDslGroupByIntegrationTest : AbstractCriteria
     @Test
     fun groupBy() {
         // when
-        val purchaserIds = queryFactory.listQuery<Long> {
+        val purchaserIds = queryFactory.listQuery {
             select(col(Order::purchaserId))
             from(entity(Order::class))
             groupBy(col(Order::purchaserId))

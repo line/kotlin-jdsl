@@ -22,7 +22,7 @@ abstract class AbstractCriteriaQueryDslHavingIntegrationTest : AbstractCriteriaQ
     @Test
     fun having() {
         // when
-        val purchaserIds = queryFactory.listQuery<Long> {
+        val purchaserIds = queryFactory.listQuery {
             select(col(Order::purchaserId))
             from(entity(Order::class))
             groupBy(col(Order::purchaserId))

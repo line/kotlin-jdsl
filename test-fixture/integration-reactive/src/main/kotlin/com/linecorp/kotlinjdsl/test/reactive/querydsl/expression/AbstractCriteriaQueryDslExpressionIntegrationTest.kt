@@ -10,7 +10,6 @@ import com.linecorp.kotlinjdsl.test.reactive.CriteriaQueryDslIntegrationTest
 import com.linecorp.kotlinjdsl.test.reactive.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQueryDslIntegrationTest<S> {
     private val orderItem1 = orderItem { productName = "test1"; productImage = null; price = 10; claimed = true }
@@ -56,7 +55,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
     fun entityAlias() = runBlocking {
         // when
         val orders = withFactory { queryFactory ->
-            queryFactory.listQuery<Order> {
+            queryFactory.listQuery {
                 val entity = entity(Order::class, "orderAlias")
                 select(entity)
                 from(entity)
@@ -71,7 +70,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
     fun literal() = runBlocking {
         // when
         val literals = withFactory { queryFactory ->
-            queryFactory.listQuery<Int> {
+            queryFactory.listQuery {
                 select(literal(10))
                 from(entity(Order::class))
             }
@@ -85,7 +84,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
     fun nullLiteral() = runBlocking {
         // when
         val literals = withFactory { queryFactory ->
-            queryFactory.listQuery<Int?> {
+            queryFactory.listQuery {
                 select(nullLiteral(Int::class.java))
                 from(entity(Order::class))
             }
@@ -99,7 +98,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
     fun column() = runBlocking {
         // when
         val literals = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(column(Order::id))
                 from(entity(Order::class))
             }
@@ -113,7 +112,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
     fun max() = runBlocking {
         // when
         val max = withFactory { queryFactory ->
-            queryFactory.singleQuery<BigDecimal> {
+            queryFactory.singleQuery {
                 select(max(OrderItem::price))
                 from(entity(OrderItem::class))
             }
@@ -127,7 +126,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
     fun min() = runBlocking {
         // when
         val min = withFactory { queryFactory ->
-            queryFactory.singleQuery<BigDecimal> {
+            queryFactory.singleQuery {
                 select(min(OrderItem::price))
                 from(entity(OrderItem::class))
             }
@@ -141,7 +140,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
     fun avg() = runBlocking {
         // when
         val avg = withFactory { queryFactory ->
-            queryFactory.singleQuery<Double> {
+            queryFactory.singleQuery {
                 select(avg(OrderItem::price))
                 from(entity(OrderItem::class))
             }
@@ -155,7 +154,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest<S> : CriteriaQu
     fun sum() = runBlocking {
         // when
         val sum = withFactory { queryFactory ->
-            queryFactory.singleQuery<BigDecimal> {
+            queryFactory.singleQuery {
                 select(sum(OrderItem::price))
                 from(entity(OrderItem::class))
             }

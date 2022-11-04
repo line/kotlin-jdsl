@@ -22,7 +22,7 @@ abstract class AbstractCriteriaQueryDslOrderByIntegrationTest<S> : CriteriaQuery
     fun asc() = runBlocking {
         // when
         val orderIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(Order::id))
                 from(entity(Order::class))
                 orderBy(col(Order::id).asc())
@@ -37,7 +37,7 @@ abstract class AbstractCriteriaQueryDslOrderByIntegrationTest<S> : CriteriaQuery
     fun desc() = runBlocking {
         // when
         val orderIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(Order::id))
                 from(entity(Order::class))
                 orderBy(col(Order::id).desc())

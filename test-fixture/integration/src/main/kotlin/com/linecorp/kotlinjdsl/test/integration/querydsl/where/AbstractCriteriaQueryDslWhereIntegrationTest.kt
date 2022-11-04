@@ -55,7 +55,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQu
     @Test
     fun `where using subquery`() {
         // when
-        val subquery = queryFactory.subquery<Long> {
+        val subquery = queryFactory.subquery {
             val order = entity(Order::class, "o")
 
             select(col(order, Order::id))
@@ -63,7 +63,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQu
             where(col(order, Order::purchaserId).lessThan(2000))
         }
 
-        val orderIds = queryFactory.listQuery<Long> {
+        val orderIds = queryFactory.listQuery {
             select(col(Order::id))
             from(entity(Order::class))
             where(col(Order::id).`in`(subquery))
@@ -76,7 +76,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQu
     @Test
     fun `where using subquery with ref key`() {
         // when
-        val subQuery = queryFactory.subquery<Long> {
+        val subQuery = queryFactory.subquery {
             select(nestedCol(col(OrderGroup::order), Order::id))
             from(entity(OrderGroup::class))
             join(OrderGroup::address)
@@ -84,7 +84,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQu
             where(col(Address::zipCode).equal("zipCode1"))
         }
 
-        val orderIds = queryFactory.listQuery<Long> {
+        val orderIds = queryFactory.listQuery {
             select(col(Order::id))
             from(entity(Order::class))
             where(col(Order::id).`in`(subQuery))

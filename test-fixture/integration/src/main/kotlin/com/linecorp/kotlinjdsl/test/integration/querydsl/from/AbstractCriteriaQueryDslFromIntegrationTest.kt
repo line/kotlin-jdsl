@@ -38,7 +38,7 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest : AbstractCriteriaQue
     @Test
     fun join() {
         // when
-        val purchaserIds = queryFactory.listQuery<Long> {
+        val purchaserIds = queryFactory.listQuery {
             selectDistinct(col(Order::id))
             from(entity(Order::class))
             join(Order::groups)
@@ -83,7 +83,7 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest : AbstractCriteriaQue
         entityManager.flushAndClear()
 
         // when
-        val zipCodes = queryFactory.listQuery<String> {
+        val zipCodes = queryFactory.listQuery {
             selectDistinct(col(Address::zipCode))
             from(entity(Delivery::class))
             join(Order::class, on { col(Delivery::orderId).equal(col(Order::id)) })

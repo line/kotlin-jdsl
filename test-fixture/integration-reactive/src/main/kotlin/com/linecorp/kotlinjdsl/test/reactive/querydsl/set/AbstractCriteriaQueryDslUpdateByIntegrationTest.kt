@@ -27,7 +27,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
     fun update() = runBlocking {
         // when
         val purchaserIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(Order::purchaserId))
                 from(entity(Order::class))
                 groupBy(col(Order::purchaserId))
@@ -45,7 +45,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
 
         // then
         assertThat(withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(Order::purchaserId))
                 from(entity(Order::class))
                 groupBy(col(Order::purchaserId))
@@ -109,7 +109,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
 
         // then
         assertThat(withFactory { queryFactory ->
-            queryFactory.listQuery<String> {
+            queryFactory.listQuery {
                 select(col(OrderGroup::orderGroupName))
                 from(entity(OrderGroup::class))
                 join(OrderGroup::order)
@@ -118,7 +118,7 @@ abstract class AbstractCriteriaQueryDslUpdateByIntegrationTest<S> : CriteriaQuer
         }).containsOnly("newGroupName")
 
         assertThat(withFactory { queryFactory ->
-            queryFactory.listQuery<String> {
+            queryFactory.listQuery {
                 select(col(OrderGroup::orderGroupName))
                 from(entity(OrderGroup::class))
                 join(OrderGroup::order)

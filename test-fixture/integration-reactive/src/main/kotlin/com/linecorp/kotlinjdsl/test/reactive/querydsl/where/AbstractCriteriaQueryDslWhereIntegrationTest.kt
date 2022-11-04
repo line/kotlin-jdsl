@@ -62,7 +62,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest<S> : CriteriaQueryDs
     fun `where using subquery`() = runBlocking {
         // when
         val orderIds = withFactory { queryFactory ->
-            val subquery = queryFactory.subquery<Long> {
+            val subquery = queryFactory.subquery {
                 val order = entity(Order::class, "o")
 
                 select(col(order, Order::id))
@@ -84,7 +84,7 @@ abstract class AbstractCriteriaQueryDslWhereIntegrationTest<S> : CriteriaQueryDs
     fun `where using subquery with ref key`() = runBlocking {
         // when
         val orderIds = withFactory { queryFactory ->
-            val subQuery = queryFactory.subquery<Long> {
+            val subQuery = queryFactory.subquery {
                 select(nestedCol(col(OrderGroup::order), Order::id))
                 from(entity(OrderGroup::class))
                 join(OrderGroup::address)

@@ -23,7 +23,7 @@ abstract class AbstractCriteriaQueryDslLimitIntegrationTest<S> : CriteriaQueryDs
     fun offset() = runBlocking {
         // when
         val orderIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(Order::id))
                 from(entity(Order::class))
                 orderBy(col(Order::id).asc())
@@ -39,7 +39,7 @@ abstract class AbstractCriteriaQueryDslLimitIntegrationTest<S> : CriteriaQueryDs
     fun maxResults() = runBlocking {
         // when
         val orderIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(Order::id))
                 from(entity(Order::class))
                 orderBy(col(Order::id).asc())
@@ -55,7 +55,7 @@ abstract class AbstractCriteriaQueryDslLimitIntegrationTest<S> : CriteriaQueryDs
     fun limit() = runBlocking {
         // when
         val orderIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(Order::id))
                 from(entity(Order::class))
                 orderBy(col(Order::id).asc())

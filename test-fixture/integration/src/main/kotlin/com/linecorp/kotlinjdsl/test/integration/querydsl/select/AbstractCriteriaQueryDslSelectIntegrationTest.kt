@@ -102,7 +102,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
      */
     @Test
     open fun `listQuery - subquery in select, subquery in from`() {
-        val subquery = queryFactory.subquery<Long> {
+        val subquery = queryFactory.subquery {
             val order = entity(Order::class, "o")
 
             select(count(col(order, Order::id)))
@@ -172,7 +172,7 @@ abstract class AbstractCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQ
     @Test
     fun `nestedCol - implicit join and fetch column value`() {
         // when
-        val result = queryFactory.listQuery<Long> {
+        val result = queryFactory.listQuery {
             select(nestedCol(col(OrderGroup::order), Order::purchaserId))
             from(entity(OrderGroup::class))
             join(OrderGroup::address)
