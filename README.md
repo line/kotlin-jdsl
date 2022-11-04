@@ -295,6 +295,54 @@ val books = queryFactory.listQuery<Book> {
 }
 ```
 
+#### Exists
+
+Subquery exists expression
+
+```kotlin
+val orders = queryFactory.listQuery {
+    val entity: EntitySpec<Order> = entity(Order::class)
+    select(entity)
+    from(entity)
+    where(
+        exists(queryFactory.subquery<Long> {
+            val orderGroupEntity = entity(OrderGroup::class)
+            select(literal(1))
+            from(orderGroupEntity)
+            where(
+                and(
+                    col(OrderGroup::orderGroupName).equal("orderGroup1"),
+                    col(OrderGroup::order).equal(entity)
+                )
+            )
+        })
+    )
+}
+```
+
+Subquery not exists expression
+
+```kotlin
+val orders = queryFactory.listQuery {
+    val entity: EntitySpec<Order> = entity(Order::class)
+    select(entity)
+    from(entity)
+    where(
+        notExists(queryFactory.subquery<Long> {
+            val orderGroupEntity = entity(OrderGroup::class)
+            select(literal(1))
+            from(orderGroupEntity)
+            where(
+                and(
+                    col(OrderGroup::orderGroupName).equal("orderGroup1"),
+                    col(OrderGroup::order).equal(entity)
+                )
+            )
+        })
+    )
+}
+```
+
 #### Alias
 
 There may be models with the two associations of same type. In this case, separate the Entity using alias.
@@ -312,6 +360,7 @@ val orders = queryFactory.listQuery<Order> {
 #### associate
 
 associate behaves similarly to join, and operates exactly the same as join in select, and since Join cannot be used in update/delete, use associate to associate the relationship with other internally mapped objects (ex: @Embedded) You can build it and run the query.
+
 ```kotlin
 val query = queryFactory.selectQuery<String> {
     select(col(Address::zipCode))
