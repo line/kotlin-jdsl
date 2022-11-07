@@ -9,7 +9,6 @@ import com.linecorp.kotlinjdsl.test.entity.test.TestTable
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCriteriaQueryDslIntegrationTest() {
     private val orderItem1 = orderItem { productName = "test1"; productImage = null; price = 10; claimed = true }
@@ -53,7 +52,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun entityAlias() {
         // when
-        val orders = queryFactory.listQuery<Order> {
+        val orders = queryFactory.listQuery {
             val entity = entity(Order::class, "orderAlias")
             select(entity)
             from(entity)
@@ -66,7 +65,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun literal() {
         // when
-        val literals = queryFactory.listQuery<Int> {
+        val literals = queryFactory.listQuery {
             select(literal(10))
             from(entity(Order::class))
         }
@@ -78,7 +77,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun nullLiteral() {
         // when
-        val literals = queryFactory.listQuery<Int?> {
+        val literals = queryFactory.listQuery {
             select(nullLiteral(Int::class.java))
             from(entity(Order::class))
         }
@@ -90,7 +89,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun column() {
         // when
-        val literals = queryFactory.listQuery<Long> {
+        val literals = queryFactory.listQuery {
             select(column(Order::id))
             from(entity(Order::class))
         }
@@ -102,7 +101,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun max() {
         // when
-        val max = queryFactory.singleQuery<BigDecimal> {
+        val max = queryFactory.singleQuery {
             select(max(OrderItem::price))
             from(entity(OrderItem::class))
         }
@@ -114,7 +113,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun min() {
         // when
-        val min = queryFactory.singleQuery<BigDecimal> {
+        val min = queryFactory.singleQuery {
             select(min(OrderItem::price))
             from(entity(OrderItem::class))
         }
@@ -126,7 +125,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun avg() {
         // when
-        val avg = queryFactory.singleQuery<Double> {
+        val avg = queryFactory.singleQuery {
             select(avg(OrderItem::price))
             from(entity(OrderItem::class))
         }
@@ -138,7 +137,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun sum() {
         // when
-        val sum = queryFactory.singleQuery<BigDecimal> {
+        val sum = queryFactory.singleQuery {
             select(sum(OrderItem::price))
             from(entity(OrderItem::class))
         }
@@ -187,7 +186,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun count() {
         // when
-        val count = queryFactory.singleQuery<Long> {
+        val count = queryFactory.singleQuery {
             select(count(OrderItem::id))
             from(entity(OrderItem::class))
         }
@@ -199,7 +198,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun countExpression() {
         // when
-        val count = queryFactory.singleQuery<Long> {
+        val count = queryFactory.singleQuery {
             select(
                 count(literal(1))
             )
@@ -213,7 +212,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun countDistinct() {
         // when
-        val count = queryFactory.singleQuery<Long> {
+        val count = queryFactory.singleQuery {
             select(countDistinct(OrderItem::productName))
             from(entity(OrderItem::class))
         }
@@ -225,7 +224,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun greatest() {
         // when
-        val greatest = queryFactory.singleQuery<String> {
+        val greatest = queryFactory.singleQuery {
             select(greatest(OrderItem::productName))
             from(entity(OrderItem::class))
         }
@@ -237,7 +236,7 @@ abstract class AbstractCriteriaQueryDslExpressionIntegrationTest : AbstractCrite
     @Test
     fun least() {
         // when
-        val least = queryFactory.singleQuery<String> {
+        val least = queryFactory.singleQuery {
             select(least(OrderItem::productName))
             from(entity(OrderItem::class))
         }

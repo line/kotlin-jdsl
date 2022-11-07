@@ -24,7 +24,7 @@ abstract class AbstractCriteriaQueryDslHavingIntegrationTest<S> : CriteriaQueryD
     fun having() = runBlocking {
         // when
         val purchaserIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 select(col(Order::purchaserId))
                 from(entity(Order::class))
                 groupBy(col(Order::purchaserId))

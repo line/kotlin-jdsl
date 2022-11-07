@@ -80,7 +80,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
     @Test
     open fun getProjectByFullTimeEmployeesSalarySelectFullTimeEmployee() {
         // when
-        val employees = queryFactory.listQuery<FullTimeEmployee> {
+        val employees = queryFactory.listQuery {
             val project: EntitySpec<Project> = Project::class.alias("project")
             val fullTimeEmployee = FullTimeEmployee::class.alias("fe")
             val employee = Employee::class.alias("e")
@@ -162,7 +162,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
 
     private fun getProjectsWithSupervisorSalaryEqualBySubqueryFullTimeEmployeesSalaryAndPartTimeEmployeeWeeklySalary(fetch: Boolean) {
         // when
-        val sub = queryFactory.subquery<Long> {
+        val sub = queryFactory.subquery {
             select(col(Project::id))
             from(entity(Project::class))
 
@@ -175,7 +175,7 @@ abstract class AbstractCriteriaQueryDslFromTreatIntegrationTest : AbstractCriter
                 )
             )
         }
-        val projects = queryFactory.listQuery<Project> {
+        val projects = queryFactory.listQuery {
             val project = Project::class.alias("dedupeProject")
             selectDistinct(project)
             from(project)

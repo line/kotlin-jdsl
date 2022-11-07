@@ -1,9 +1,12 @@
 package com.linecorp.kotlinjdsl.test.integration.querydsl.predicate
 
 import com.linecorp.kotlinjdsl.listQuery
+import com.linecorp.kotlinjdsl.query.spec.expression.EntitySpec
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.singleQuery
+import com.linecorp.kotlinjdsl.subquery
 import com.linecorp.kotlinjdsl.test.entity.order.Order
+import com.linecorp.kotlinjdsl.test.entity.order.OrderGroup
 import com.linecorp.kotlinjdsl.test.entity.order.OrderItem
 import com.linecorp.kotlinjdsl.test.integration.AbstractCriteriaQueryDslIntegrationTest
 import org.junit.jupiter.api.BeforeEach
@@ -17,15 +20,15 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
 
     private val order1 = order {
         purchaserId = 1000
-        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1, orderItem2) })
+        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem1, orderItem2); orderGroupName = "orderGroup1" })
     }
     private val order2 = order {
         purchaserId = 1000
-        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem3) })
+        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem3); orderGroupName = "orderGroup2" })
     }
     private val order3 = order {
         purchaserId = 2000
-        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem4) })
+        groups = hashSetOf(orderGroup { items = hashSetOf(orderItem4); orderGroupName = "orderGroup3" })
     }
 
     private val orders = listOf(order1, order2, order3)
@@ -39,7 +42,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun not() {
         // when
-        val orderIds = queryFactory.listQuery<Long> {
+        val orderIds = queryFactory.listQuery {
             select(col(Order::id))
             from(entity(Order::class))
             where(not(col(Order::purchaserId).equal(1000)))
@@ -53,7 +56,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun and() {
         // when
-        val orderItemId = queryFactory.singleQuery<Long> {
+        val orderItemId = queryFactory.singleQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(
@@ -71,7 +74,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun or() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(
@@ -89,7 +92,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun equal() {
         // when
-        val orderItemId = queryFactory.singleQuery<Long> {
+        val orderItemId = queryFactory.singleQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::id).equal(orderItem1.id))
@@ -102,7 +105,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun notEqual() {
         // when
-        val orderItemId = queryFactory.singleQuery<Long> {
+        val orderItemId = queryFactory.singleQuery {
             select(col(Order::id))
             from(entity(Order::class))
             where(col(Order::purchaserId).notEqual(1000))
@@ -115,7 +118,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun `in`() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::id).`in`(orderItem1.id, orderItem2.id))
@@ -128,7 +131,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun lessThanOrEqualTo() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::price).lessThanOrEqualTo(20.toBigDecimal()))
@@ -141,7 +144,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun lessThan() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::price).lessThan(20.toBigDecimal()))
@@ -154,7 +157,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun greaterThanOrEqualTo() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::price).greaterThanOrEqualTo(20.toBigDecimal()))
@@ -167,7 +170,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun greaterThan() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::price).greaterThan(20.toBigDecimal()))
@@ -180,7 +183,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun between() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::price).between(20.toBigDecimal(), 40.toBigDecimal()))
@@ -193,7 +196,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun isTrue() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::claimed).isTrue())
@@ -206,7 +209,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun isFalse() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::claimed).isFalse())
@@ -219,7 +222,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun isNull() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::productImage).isNull())
@@ -232,7 +235,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun isNotNull() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::productImage).isNotNull())
@@ -245,7 +248,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun like() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::productName).like("test%"))
@@ -258,7 +261,7 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
     @Test
     fun notLike() {
         // when
-        val orderItemIds = queryFactory.listQuery<Long> {
+        val orderItemIds = queryFactory.listQuery {
             select(col(OrderItem::id))
             from(entity(OrderItem::class))
             where(col(OrderItem::productName).notLike("test%"))
@@ -266,5 +269,57 @@ abstract class AbstractCriteriaQueryDslPredicateIntegrationTest : AbstractCriter
 
         // then
         assertThat(orderItemIds).isEmpty()
+    }
+
+    @Test
+    fun exists() {
+        // when
+        val existFoundOrders = queryFactory.listQuery {
+            val entity: EntitySpec<Order> = entity(Order::class)
+            select(entity)
+            from(entity)
+            where(
+                exists(queryFactory.subquery<Long> {
+                    val orderGroupEntity = entity(OrderGroup::class)
+                    select(literal(1))
+                    from(orderGroupEntity)
+                    where(
+                        and(
+                            col(OrderGroup::orderGroupName).equal("orderGroup1"),
+                            col(OrderGroup::order).equal(entity)
+                        )
+                    )
+                })
+            )
+        }
+
+        // then
+        assertThat(existFoundOrders.map { it.id }).isEqualTo(listOf(order1.id))
+    }
+
+    @Test
+    fun notExists() {
+        // when
+        val existFoundOrders = queryFactory.listQuery {
+            val entity: EntitySpec<Order> = entity(Order::class)
+            select(entity)
+            from(entity)
+            where(
+                notExists(queryFactory.subquery<Long> {
+                    val orderGroupEntity = entity(OrderGroup::class)
+                    select(literal(1))
+                    from(orderGroupEntity)
+                    where(
+                        and(
+                            col(OrderGroup::orderGroupName).equal("orderGroup1"),
+                            col(OrderGroup::order).equal(entity)
+                        )
+                    )
+                })
+            )
+        }
+
+        // then
+        assertThat(existFoundOrders.map { it.id }).isEqualTo(listOf(order2.id, order3.id))
     }
 }

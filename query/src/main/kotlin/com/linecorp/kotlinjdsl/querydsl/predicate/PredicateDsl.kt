@@ -1,6 +1,7 @@
 package com.linecorp.kotlinjdsl.querydsl.predicate
 
 import com.linecorp.kotlinjdsl.query.spec.expression.ExpressionSpec
+import com.linecorp.kotlinjdsl.query.spec.expression.SubqueryExpressionSpec
 import com.linecorp.kotlinjdsl.query.spec.predicate.*
 
 @Suppress("RemoveExplicitTypeArguments")
@@ -12,6 +13,9 @@ interface PredicateDsl {
 
     fun or(vararg others: PredicateSpec?): PredicateSpec = or(others.toList())
     fun or(others: List<PredicateSpec?>): PredicateSpec = OrSpec(others)
+
+    fun <T> exists(subqueryExpression: SubqueryExpressionSpec<T>) = ExistsSpec(subqueryExpression)
+    fun <T> notExists(subqueryExpression: SubqueryExpressionSpec<T>) = not(ExistsSpec(subqueryExpression))
 
     fun <R> ExpressionSpec<R>.equal(value: R) = EqualValueSpec(this, value)
     fun <R> ExpressionSpec<R>.equal(expression: ExpressionSpec<R>) = EqualExpressionSpec(this, expression)

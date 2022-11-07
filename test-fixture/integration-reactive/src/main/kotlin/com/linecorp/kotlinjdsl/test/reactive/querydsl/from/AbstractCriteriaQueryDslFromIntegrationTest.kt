@@ -39,7 +39,7 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest<S> : CriteriaQueryDsl
     fun join() = runBlocking {
         // when
         val purchaserIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 selectDistinct(col(Order::id))
                 from(entity(Order::class))
                 join(Order::groups)
@@ -64,7 +64,7 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest<S> : CriteriaQueryDsl
 
         // when
         val purchaserIds = withFactory { queryFactory ->
-            queryFactory.listQuery<Long> {
+            queryFactory.listQuery {
                 selectDistinct(col(Delivery::id))
                 from(entity(Delivery::class))
                 join(Order::class, on { col(Delivery::orderId).equal(col(Order::id)) })
@@ -88,7 +88,7 @@ abstract class AbstractCriteriaQueryDslFromIntegrationTest<S> : CriteriaQueryDsl
 
         // when
         val zipCodes = withFactory { queryFactory ->
-            queryFactory.listQuery<String> {
+            queryFactory.listQuery {
                 selectDistinct(col(Address::zipCode))
                 from(entity(Delivery::class))
                 join(Order::class, on { col(Delivery::orderId).equal(col(Order::id)) })
