@@ -4,7 +4,7 @@ spring-core = "5.3.24"
 spring-boot = "2.7.6"
 spring-data-jpa = "2.7.6"
 coroutine = "1.6.4"
-mutiny = "1.8.0"
+mutiny = "2.0.0"
 
 [libraries]
 # kotlin
