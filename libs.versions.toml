@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.8.0"
-spring-core = "5.3.24"
+spring-core = "6.0.3"
 spring-boot = "2.7.7"
 spring-data-jpa = "2.7.6"
 coroutine = "1.6.4"
