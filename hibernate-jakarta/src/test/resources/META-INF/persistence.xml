@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.2"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_3_1.xsd">
+
+    <persistence-unit name="order">
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.ContractEmployee</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.Employee</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.FullTimeEmployee</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.PartTimeEmployee</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.employee.Project</class>
+
+        <class>com.linecorp.kotlinjdsl.test.entity.Address</class>
+
+        <class>com.linecorp.kotlinjdsl.test.entity.order.Order</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.order.OrderGroup</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.order.OrderItem</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.order.OrderAddress</class>
+
+        <class>com.linecorp.kotlinjdsl.test.entity.delivery.Delivery</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.delivery.DeliveryItem</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.delivery.DeliveryAddress</class>
+        <class>com.linecorp.kotlinjdsl.test.entity.test.TestTable</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:test;MODE=MYSQL;DATABASE_TO_LOWER=TRUE"/>
+            <property name="jakarta.persistence.jdbc.user" value="sa"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>

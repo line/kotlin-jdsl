@@ -1,23 +1,29 @@
 [versions]
 kotlin = "1.8.0"
 spring-core = "5.3.24"
+spring-core6 = "6.0.3"
 spring-boot = "2.7.7"
+spring-boot3 = "3.0.1"
 spring-data-jpa = "2.7.6"
+spring-data-jpa3 = "3.0.0"
 coroutine = "1.6.4"
 mutiny = "2.0.0"
 
 [libraries]
 # kotlin
-koltin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }
+kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 
 # Common
 java-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
+jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.1.0"}
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.6" }
 logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
+hibernate6 = { module = "org.hibernate:hibernate-core", version = "6.1.6.Final" }
 hibernate = { module = "org.hibernate:hibernate-core", version = "5.6.14.Final" }
 hibernate-reactive = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
 eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.11" }
+eclipselink-v4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.0" }
 jackson-kotlin-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 agroal-pool = { module = "io.agroal:agroal-pool", version = "2.0" }
 vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.3.7" }
@@ -34,11 +40,26 @@ spring-boot-webflux = { module = "org.springframework.boot:spring-boot-starter-w
 spring-boot-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }
 spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
 
+spring-boot3-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot3" }
+spring-boot3-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot3" }
+spring-boot3-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot3" }
+spring-boot3-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot3" }
+spring-boot3-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot3" }
+spring-boot3-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "spring-boot3" }
+spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot3" }
+spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot3" }
+
+
 # Spring
 spring-core = { module = "org.springframework:spring-core", version.ref = "spring-core" }
 spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-core" }
 spring-jpa = { module = "org.springframework.data:spring-data-jpa", version.ref = "spring-data-jpa" }
 spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.3.7" }
+
+spring6-core = { module = "org.springframework:spring-core", version.ref = "spring-core6" }
+spring6-beans = { module = "org.springframework:spring-beans", version.ref = "spring-core6" }
+spring-jpa3 = { module = "org.springframework.data:spring-data-jpa", version.ref = "spring-data-jpa3" }
+spring-batch5-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "5.0.0" }
 
 # Test
 junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.9.1" }
@@ -55,6 +76,7 @@ mutiny = ["mutiny-core", "mutiny-kotlin"]
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-boot3 = { id = "org.springframework.boot", version.ref = "spring-boot3" }
 
 kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }

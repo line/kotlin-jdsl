@@ -32,32 +32,24 @@ subprojects {
 
     apply<LocalPropertiesPlugin>()
 
-    val jdk11Required = name.contains("hibernate-reactive")
-    val javaVersion = if (jdk11Required) JavaVersion.VERSION_11 else JavaVersion.VERSION_1_8
-    java.sourceCompatibility = javaVersion
-    java.targetCompatibility = javaVersion
-
     dependencies {
-        implementation(rootProject.libs.koltin)
+        implementation(rootProject.libs.kotlin)
     }
 
     allOpen {
         annotation("org.springframework.context.annotation.Configuration")
         annotation("javax.persistence.Entity")
         annotation("javax.persistence.Embeddable")
+        annotation("jakarta.persistence.Entity")
+        annotation("jakarta.persistence.Embeddable")
     }
 
     noArg {
         annotation("org.springframework.context.annotation.Configuration")
         annotation("javax.persistence.Entity")
         annotation("javax.persistence.Embeddable")
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all")
-            jvmTarget = if (jdk11Required) "11" else "1.8"
-        }
+        annotation("jakarta.persistence.Entity")
+        annotation("jakarta.persistence.Embeddable")
     }
 
     tasks.withType<Test> {
@@ -69,5 +61,9 @@ subprojects {
             showStackTraces = true
             events = setOf(FAILED)
         }
+    }
+
+    kotlin {
+        jvmToolchain(17)
     }
 }

@@ -1,0 +1,5 @@
+package com.linecorp.kotlinjdsl.hibernate.integration.querydsl.having
+
+import com.linecorp.kotlinjdsl.test.integration.querydsl.having.AbstractCriteriaQueryDslHavingIntegrationTest
+
+internal class HibernateCriteriaQueryDslHavingIntegrationTest : AbstractCriteriaQueryDslHavingIntegrationTest()
