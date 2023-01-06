@@ -1,0 +1,5 @@
+package com.linecorp.kotlinjdsl.eclipselink.integration.querydsl.limit
+
+import com.linecorp.kotlinjdsl.test.integration.querydsl.limit.AbstractCriteriaQueryDslLimitIntegrationTest
+
+internal class EclipselinkCriteriaQueryDslLimitIntegrationTest : AbstractCriteriaQueryDslLimitIntegrationTest()

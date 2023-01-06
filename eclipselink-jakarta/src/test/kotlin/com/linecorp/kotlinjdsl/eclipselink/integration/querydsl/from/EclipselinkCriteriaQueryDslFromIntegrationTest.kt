@@ -1,0 +1,5 @@
+package com.linecorp.kotlinjdsl.eclipselink.integration.querydsl.from
+
+import com.linecorp.kotlinjdsl.test.integration.querydsl.from.AbstractCriteriaQueryDslFromIntegrationTest
+
+internal class EclipselinkCriteriaQueryDslFromIntegrationTest : AbstractCriteriaQueryDslFromIntegrationTest()

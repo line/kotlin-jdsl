@@ -1,0 +1,5 @@
+package com.linecorp.kotlinjdsl.hibernate.integration.querydsl.orderby
+
+import com.linecorp.kotlinjdsl.test.integration.querydsl.orderby.AbstractCriteriaQueryDslOrderByIntegrationTest
+
+internal class HibernateCriteriaQueryDslOrderByIntegrationTest : AbstractCriteriaQueryDslOrderByIntegrationTest()

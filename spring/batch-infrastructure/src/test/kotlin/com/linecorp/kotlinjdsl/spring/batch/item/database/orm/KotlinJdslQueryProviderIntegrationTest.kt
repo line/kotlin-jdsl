@@ -59,8 +59,8 @@ internal open class KotlinJdslQueryProviderIntegrationTest : EntityDsl, WithKotl
         reader.open(ExecutionContext())
 
         // then
-        assertThat(reader.read()).isEqualTo(order1.id)
-        assertThat(reader.read()).isEqualTo(order3.id)
-        assertThat(reader.read()).isEqualTo(order4.id)
+        assertThat(reader.read()!!).isEqualTo(order1.id)
+        assertThat(reader.read()!!).isEqualTo(order3.id)
+        assertThat(reader.read()!!).isEqualTo(order4.id)
     }
 }

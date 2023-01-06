@@ -1,0 +1,5 @@
+package com.linecorp.kotlinjdsl.hibernate.integration.querydsl.from
+
+import com.linecorp.kotlinjdsl.test.integration.querydsl.from.AbstractCriteriaQueryDslFromIntegrationTest
+
+internal class HibernateCriteriaQueryDslFromIntegrationTest : AbstractCriteriaQueryDslFromIntegrationTest()

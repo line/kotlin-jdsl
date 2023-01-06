@@ -40,11 +40,27 @@ module(name = ":hibernate-example", path = "examples/hibernate")
 module(name = ":eclipselink-example", path = "examples/eclipselink")
 module(name = ":spring-data-boot-2.6-example", path = "examples/spring-boot-2.6")
 module(name = ":spring-data-boot-2.7-example", path = "examples/spring-boot-2.7")
+module(name = ":spring-data-boot-3-example", path = "examples/spring-boot-3")
 module(name = ":spring-data-boot-hibernate-reactive-2.6-example", path = "examples/spring-boot-hibernate-reactive-2.6")
 module(name = ":spring-data-boot-hibernate-reactive-2.7-example", path = "examples/spring-boot-hibernate-reactive-2.7")
 module(name = ":spring-data-boot-2.5-example", path = "examples/spring-boot-2.5")
 module(name = ":spring-data-boot-2.4-example", path = "examples/spring-boot-2.4")
-module(name = ":spring-data-boot-2.3-example", path = "examples/spring-boot-2.3")
+
+// Jakarta
+module(name = ":kotlin-jdsl-core-jakarta", path = "core-jakarta")
+module(name = ":kotlin-jdsl-query-jakarta", path = "query-jakarta")
+module(name = ":hibernate-kotlin-jdsl-jakarta", path = "hibernate-jakarta")
+module(name = ":eclipselink-kotlin-jdsl-jakarta", path = "eclipselink-jakarta")
+
+// Jakarta - Spring
+module(name = ":spring-data-kotlin-jdsl-core-jakarta", path = "spring/data-core-jakarta")
+module(name = ":spring-batch-kotlin-jdsl-infrastructure-jakarta", path = "spring/batch-infrastructure-jakarta")
+module(name = ":spring-data-kotlin-jdsl-autoconfigure-jakarta", path = "spring/data-autoconfigure-jakarta")
+module(name = ":spring-data-kotlin-jdsl-starter-jakarta", path = "spring/data-starter-jakarta")
+
+
+module(name = ":test-fixture-integration-jakarta", path = "test-fixture/integration-jakarta")
+module(name = ":test-fixture-entity-jakarta", path = "test-fixture/entity-jakarta")
 
 modules.forEach {
     include(it.name)

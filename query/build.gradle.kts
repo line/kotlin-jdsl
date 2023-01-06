@@ -11,3 +11,4 @@ dependencies {
     testImplementation(libs.hibernate)
     testImplementation(libs.h2)
 }
+

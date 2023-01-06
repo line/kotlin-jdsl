@@ -16,7 +16,7 @@ There are several libraries in the easy way to use JPA. However, those libraries
 If you want to know more about the background of Kotlin JDSL, I recommend reading
 the [blog](https://engineering.linecorp.com/en/blog/kotlinjdsl-jpa-criteria-api-with-kotlin/)
 
-## Quick start
+## Quick start - JPA 2.2
 
 ### Reactive
 If you are interested in JPA Reactive See [more](./reactive-core/README.md)
@@ -39,6 +39,31 @@ Add Eclipselink Kotlin JDSL and Eclipselink to dependencies
 dependencies {
     implementation("com.linecorp.kotlin-jdsl:eclipselink-kotlin-jdsl:x.y.z")
     implementation("org.eclipse.persistence:org.eclipse.persistence.jpa:x.y.z")
+}
+```
+
+### Quick Start - JPA 3.0
+
+* Currently, Hibernate Reactive Does not support JPA 3.0
+
+### Hibernate
+
+Add Hibernate Kotlin JDSL and Hibernate to dependencies
+
+```kotlin
+dependencies {
+    implementation("com.linecorp.kotlin-jdsl:hibernate-kotlin-jdsl-jakarta:x.y.z")
+    implementation("org.hibernate:hibernate-core:6.y.z") // up to 6 version
+}
+```
+
+### Eclipselink
+Add Eclipselink Kotlin JDSL and Eclipselink to dependencies
+
+```kotlin
+dependencies {
+    implementation("com.linecorp.kotlin-jdsl:eclipselink-kotlin-jdsl-jakarta:x.y.z")
+    implementation("org.eclipse.persistence:org.eclipse.persistence.jpa:4.y.z") // up to 4 version
 }
 ```
 
@@ -414,6 +439,8 @@ val projects = queryFactory.listQuery<Project> {
 For Hibernate, the issue at [issue](https://discourse.hibernate.org/t/jpa-downcast-criteria-treat-vs-jpql-treat/2231) is currently unresolved and an additional inner(left) join is added to make the result It may come out as a duplicate. 
 So you should always apply distinct to select above like examples
 
+--> It works normally after hibernate 6(jakarta) version. If you are using kotlin-jdsl JPA 3.0 or later, no problem.
+
 If you are using Hibernate and want to fetch downcasting entities, the query cannot be executed normally. That is, the example below will result in a runtime error because of this [issue](https://discourse.hibernate.org/t/can-fetch-be-used-as-parameter-of-treat-for-downcasting/3301).
 
 ```kotlin
@@ -449,6 +476,8 @@ val projects = queryFactory.listQuery<Project> {
 ```
 
 If you want to use downcasting entity in select clause, Eclipselink does not support that function. An example is as follows.
+
+--> Since hibernate 6 (jakarta) version, it does not work normally like eclipselink. This feature is not available if you are using kotlin-jdsl JPA 3.0 or higher.
 
 ```kotlin
 val employees = queryFactory.listQuery<FullTimeEmployee> {
