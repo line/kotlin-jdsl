@@ -62,7 +62,7 @@ spring-jpa3 = { module = "org.springframework.data:spring-data-jpa", version.ref
 spring-batch5-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "5.0.0" }
 
 # Test
-junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.9.1" }
+junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.9.2" }
 assertJ = { module = "org.assertj:assertj-core", version = "3.24.1" }
 mockk = { module = "io.mockk:mockk", version = "1.13.3" }
 
