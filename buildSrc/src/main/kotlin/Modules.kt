@@ -31,17 +31,23 @@ object Modules {
 
     // jakarta
     val coreJakarta = module(":kotlin-jdsl-core-jakarta")
+    val reactiveCoreJakarta = module(":kotlin-jdsl-reactive-core-jakarta")
     val queryJakarta = module(":kotlin-jdsl-query-jakarta")
     val hibernateJakarta = module(":hibernate-kotlin-jdsl-jakarta")
+    val hibernateReactiveJakarta = module(":hibernate-reactive-kotlin-jdsl-jakarta")
 
     // jakarta spring
     val springDataCoreJakarta = module(":spring-data-kotlin-jdsl-core-jakarta")
     val springBatchInfrastructureJakarta = module(":spring-batch-kotlin-jdsl-infrastructure-jakarta")
     val springDataAutoconfigureJakarta = module(":spring-data-kotlin-jdsl-autoconfigure-jakarta")
     val springDataStarterJakarta = module(":spring-data-kotlin-jdsl-starter-jakarta")
+    val springDataReactiveCoreJakarta = module(":spring-data-kotlin-jdsl-reactive-core-jakarta")
+    val springDataHibernateReactiveJakarta = module(":spring-data-kotlin-jdsl-hibernate-reactive-jakarta")
 
+    val testFixtureHibernateReactiveJakarta = module(":test-fixture-hibernate-reactive-jakarta")
     val testFixtureIntegrationJakarta = module(":test-fixture-integration-jakarta")
     val testFixtureEntityJakarta = module(":test-fixture-entity-jakarta")
+    val testFixtureIntegrationReactiveJakarta = module(":test-fixture-integration-reactive-jakarta")
 
     private fun module(name: String): Module = Module(name)
 }

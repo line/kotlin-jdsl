@@ -6,10 +6,7 @@ Kotlin JDSL Reactive is a module in Kotlin JDSL that generates Reactive based JP
 
 Currently, there is no JPA standard for Reactive.  
 However, the only Reactive implementation of JPA, [hibernate-reactive](https://hibernate.org/reactive) exists.  
-so, our implementation of Kotlin JDSL Reactive is heavily inspired by hibernate-reactive.  
-For reactive-core module, there is no dependency on hibernate reactive, so the minimum JDK version is 8 same as the existing core module.  
-However, the minimum specification for hibernate reactive is [hibernate-reactive#compatibility](https://github.com/hibernate/hibernate-reactive#compatibility) JDK 11.  
-As a result, all modules related to hibernate-reactive of jdsl must be JDK 11 or higher to use normally.
+so, our implementation of Kotlin JDSL Reactive is heavily inspired by hibernate-reactive. 
 
 The current Reactive module has the following structure.
 
@@ -47,7 +44,7 @@ interface ReactiveQuery<R> {
 }
 ```
 
-As written above, ReactiveQuery is similar to JPA 2.2's [TypedQuery](https://docs.oracle.com/javaee/6/api/javax/persistence/TypedQuery.html), but with many missing parts.  
+As written above, ReactiveQuery is similar to JPA's [TypedQuery](https://docs.oracle.com/javaee/6/api/javax/persistence/TypedQuery.html), but with many missing parts.  
 It is also similar to Hibernate's [ReactiveQuery](https://hibernate.org/reactive/documentation/1.1/javadocs/org/hibernate/reactive/session/ReactiveQuery.html), but similarly, many parts are omitted.  
 If so, what if you need to directly use the query object (e.g: Mutiny.Query), which is the actual implementation of Reactive Query?   
 The answer is right there in the unwrap method.  
@@ -106,7 +103,7 @@ There is currently only one type implementation of ReactiveCriteriaQueryCreator,
 Therefore, we will develop the story based on MutinyReactiveCriteriaQueryCreator.
 Please refer to the [Quick Start](#Quick-Start) below
 
-## Quick Start
+## Quick Start - JPA 2.2
 
 Add Kotlin JDSL Hibernate Reactive related library & Mutiny kotlin
 
@@ -114,6 +111,18 @@ Add Kotlin JDSL Hibernate Reactive related library & Mutiny kotlin
 dependencies {
     implementation("com.linecorp.kotlin-jdsl:hibernate-reactive-kotlin-jdsl:x.y.z")
     implementation("org.hibernate.reactive:hibernate-reactive-core:x.y.z")
+    implementation("io.smallrye.reactive:mutiny-kotlin:x.y.z")
+}
+```
+
+## Quick Start - JPA 3.0
+
+Add Kotlin JDSL Hibernate Reactive related library & Mutiny kotlin
+
+```kotlin
+dependencies {
+    implementation("com.linecorp.kotlin-jdsl:hibernate-reactive-kotlin-jdsl-jakarta:x.y.z")
+    implementation("org.hibernate.reactive:hibernate-reactive-core-jakarta:x.y.z")
     implementation("io.smallrye.reactive:mutiny-kotlin:x.y.z")
 }
 ```

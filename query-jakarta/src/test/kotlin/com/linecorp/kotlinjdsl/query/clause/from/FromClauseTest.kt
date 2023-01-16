@@ -382,7 +382,7 @@ internal class FromClauseTest : WithKotlinJdslAssertions {
                 root = root,
                 map = mapOf(
                     fromEntitySpec to root,
-                    entitySpec1 to join0,
+                    entitySpec1 to join0 as Root<ExplicitErasedChild>,
                     entitySpec2 to join1,
                 )
             )

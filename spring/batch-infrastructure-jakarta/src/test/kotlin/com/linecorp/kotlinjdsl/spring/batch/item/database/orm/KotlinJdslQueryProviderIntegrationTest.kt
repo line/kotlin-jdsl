@@ -56,6 +56,7 @@ internal open class KotlinJdslQueryProviderIntegrationTest : EntityDsl, WithKotl
             .queryProvider(queryProvider)
             .build()
 
+        @Suppress("DEPRECATION")
         reader.open(ExecutionContext())
 
         // then
