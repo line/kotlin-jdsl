@@ -43,13 +43,16 @@ module(name = ":spring-data-boot-2.7-example", path = "examples/spring-boot-2.7"
 module(name = ":spring-data-boot-3-example", path = "examples/spring-boot-3")
 module(name = ":spring-data-boot-hibernate-reactive-2.6-example", path = "examples/spring-boot-hibernate-reactive-2.6")
 module(name = ":spring-data-boot-hibernate-reactive-2.7-example", path = "examples/spring-boot-hibernate-reactive-2.7")
+module(name = ":spring-data-boot-hibernate-reactive-3-example", path = "examples/spring-boot-hibernate-reactive-3")
 module(name = ":spring-data-boot-2.5-example", path = "examples/spring-boot-2.5")
 module(name = ":spring-data-boot-2.4-example", path = "examples/spring-boot-2.4")
 
 // Jakarta
 module(name = ":kotlin-jdsl-core-jakarta", path = "core-jakarta")
+module(name = ":kotlin-jdsl-reactive-core-jakarta", path = "reactive-core-jakarta")
 module(name = ":kotlin-jdsl-query-jakarta", path = "query-jakarta")
 module(name = ":hibernate-kotlin-jdsl-jakarta", path = "hibernate-jakarta")
+module(name = ":hibernate-reactive-kotlin-jdsl-jakarta", path = "hibernate-reactive-jakarta")
 module(name = ":eclipselink-kotlin-jdsl-jakarta", path = "eclipselink-jakarta")
 
 // Jakarta - Spring
@@ -57,10 +60,13 @@ module(name = ":spring-data-kotlin-jdsl-core-jakarta", path = "spring/data-core-
 module(name = ":spring-batch-kotlin-jdsl-infrastructure-jakarta", path = "spring/batch-infrastructure-jakarta")
 module(name = ":spring-data-kotlin-jdsl-autoconfigure-jakarta", path = "spring/data-autoconfigure-jakarta")
 module(name = ":spring-data-kotlin-jdsl-starter-jakarta", path = "spring/data-starter-jakarta")
-
+module(name = ":spring-data-kotlin-jdsl-reactive-core-jakarta", path = "spring/data-reactive-core-jakarta")
+module(name = ":spring-data-kotlin-jdsl-hibernate-reactive-jakarta", path = "spring/data-hibernate-reactive-jakarta")
 
 module(name = ":test-fixture-integration-jakarta", path = "test-fixture/integration-jakarta")
 module(name = ":test-fixture-entity-jakarta", path = "test-fixture/entity-jakarta")
+module(name = ":test-fixture-integration-reactive-jakarta", path = "test-fixture/integration-reactive-jakarta")
+module(name = ":test-fixture-hibernate-reactive-jakarta", path = "test-fixture/hibernate-reactive-jakarta")
 
 modules.forEach {
     include(it.name)

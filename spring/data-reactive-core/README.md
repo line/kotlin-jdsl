@@ -2,7 +2,7 @@
 
 Integrates Kotlin JDSL Reactive with Spring Data.
 
-## Quick start
+## Quick start - JPA 2.2
 
 Add Spring Data Kotlin JDSL hibernate-reactive and Spring Data Commons
 
@@ -14,7 +14,20 @@ dependencies {
     implementation("io.smallrye.reactive:mutiny-kotlin:x.y.z")
 }
 ```
-Unfortunately, kotlin-jdsl's data-reactive-core does not support Spring's declarative Transaction and Autoconfigure, unlike data-core.  
+
+## Quick start - JPA 3.0
+
+Add Spring Data Kotlin JDSL hibernate-reactive and Spring Data Commons
+
+```kotlin
+dependencies {
+    implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-hibernate-reactive-jakarta:x.y.z")
+    implementation("org.springframework.data:spring-data-commons:x.y.z")
+    implementation("org.hibernate.reactive:hibernate-reactive-core-jakarta:x.y.z")
+    implementation("io.smallrye.reactive:mutiny-kotlin:x.y.z")
+}
+```
+Unfortunately, kotlin-jdsl's data-reactive-core(-jakarta) does not support Spring's declarative Transaction and Autoconfigure, unlike data-core.  
 The reason is that EntityManagerFactory must be created through ReactivePersistenceProvider, but Spring does not support this part.  
 Also, since there is also no ReactiveTransactionManager, it is difficult to support declarative transactions.  
 Therefore, we currently **only support integration with Spring Data Commons** (integrate with Page, Pageable, Range.Bound).

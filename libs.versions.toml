@@ -8,10 +8,11 @@ spring-data-jpa = "2.7.7"
 spring-data-jpa3 = "3.0.1"
 coroutine = "1.6.4"
 mutiny = "2.0.0"
+hibernate-reactive = "1.1.9.Final"
 
 [libraries]
 # kotlin
-kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }
+kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 
 # Common
@@ -21,7 +22,8 @@ slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.6" }
 logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 hibernate6 = { module = "org.hibernate:hibernate-core", version = "6.1.6.Final" }
 hibernate = { module = "org.hibernate:hibernate-core", version = "5.6.14.Final" }
-hibernate-reactive = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
+hibernate-reactive = { module = "org.hibernate.reactive:hibernate-reactive-core", version.ref = "hibernate-reactive" }
+hibernate-reactive-jakarta = { module = "org.hibernate.reactive:hibernate-reactive-core-jakarta", version.ref = "hibernate-reactive" }
 eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.11" }
 eclipselink-v4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.0" }
 jackson-kotlin-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
@@ -48,7 +50,6 @@ spring-boot3-web = { module = "org.springframework.boot:spring-boot-starter-web"
 spring-boot3-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "spring-boot3" }
 spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot3" }
 spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot3" }
-
 
 # Spring
 spring-core = { module = "org.springframework:spring-core", version.ref = "spring-core" }
