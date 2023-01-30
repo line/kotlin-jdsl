@@ -7,7 +7,7 @@ spring-boot3 = "3.0.2"
 spring-data-jpa = "2.7.7"
 spring-data-jpa3 = "3.0.1"
 coroutine = "1.6.4"
-mutiny = "2.0.0"
+mutiny = "2.1.0"
 hibernate-reactive = "1.1.9.Final"
 
 [libraries]
