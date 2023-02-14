@@ -69,19 +69,19 @@ internal class InValueSpecTest : WithKotlinJdslAssertions {
         // given
         val leftExpressionSpec: ExpressionSpec<Int> = mockk()
 
-        val emptyPredicate: Predicate = mockk()
+        val falsePredicate: Predicate = mockk()
 
-        every { criteriaBuilder.conjunction() } returns emptyPredicate
+        every { criteriaBuilder.disjunction() } returns falsePredicate
 
         // when
         val actual = InValueSpec(leftExpressionSpec, emptyList())
             .toCriteriaPredicate(froms, query, criteriaBuilder)
 
         // then
-        assertThat(actual).isEqualTo(emptyPredicate)
+        assertThat(actual).isEqualTo(falsePredicate)
 
         verify(exactly = 1) {
-            criteriaBuilder.conjunction()
+            criteriaBuilder.disjunction()
         }
 
         confirmVerified(froms, query, criteriaBuilder)
@@ -126,19 +126,19 @@ internal class InValueSpecTest : WithKotlinJdslAssertions {
         // given
         val leftExpressionSpec: ExpressionSpec<Int> = mockk()
 
-        val emptyPredicate: Predicate = mockk()
+        val falsePredicate: Predicate = mockk()
 
-        every { criteriaBuilder.conjunction() } returns emptyPredicate
+        every { criteriaBuilder.disjunction() } returns falsePredicate
 
         // when
         val actual = InValueSpec(leftExpressionSpec, emptyList())
             .toCriteriaPredicate(froms, updateQuery, criteriaBuilder)
 
         // then
-        assertThat(actual).isEqualTo(emptyPredicate)
+        assertThat(actual).isEqualTo(falsePredicate)
 
         verify(exactly = 1) {
-            criteriaBuilder.conjunction()
+            criteriaBuilder.disjunction()
         }
 
         confirmVerified(froms, updateQuery, criteriaBuilder)
@@ -183,19 +183,19 @@ internal class InValueSpecTest : WithKotlinJdslAssertions {
         // given
         val leftExpressionSpec: ExpressionSpec<Int> = mockk()
 
-        val emptyPredicate: Predicate = mockk()
+        val falsePredicate: Predicate = mockk()
 
-        every { criteriaBuilder.conjunction() } returns emptyPredicate
+        every { criteriaBuilder.disjunction() } returns falsePredicate
 
         // when
         val actual = InValueSpec(leftExpressionSpec, emptyList())
             .toCriteriaPredicate(froms, deleteQuery, criteriaBuilder)
 
         // then
-        assertThat(actual).isEqualTo(emptyPredicate)
+        assertThat(actual).isEqualTo(falsePredicate)
 
         verify(exactly = 1) {
-            criteriaBuilder.conjunction()
+            criteriaBuilder.disjunction()
         }
 
         confirmVerified(froms, deleteQuery, criteriaBuilder)

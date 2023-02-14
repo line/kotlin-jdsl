@@ -13,7 +13,7 @@ data class InValueSpec<T>(
         query: AbstractQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        if (rights.isEmpty()) return criteriaBuilder.conjunction()
+        if (rights.isEmpty()) return criteriaBuilder.disjunction()
 
         return criteriaBuilder.`in`(left.toCriteriaExpression(froms, query, criteriaBuilder)).apply {
             rights.forEach { value(it) }
@@ -25,7 +25,7 @@ data class InValueSpec<T>(
         query: CriteriaUpdate<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        if (rights.isEmpty()) return criteriaBuilder.conjunction()
+        if (rights.isEmpty()) return criteriaBuilder.disjunction()
 
         return criteriaBuilder.`in`(left.toCriteriaExpression(froms, query, criteriaBuilder)).apply {
             rights.forEach { value(it) }
@@ -37,7 +37,7 @@ data class InValueSpec<T>(
         query: CriteriaDelete<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        if (rights.isEmpty()) return criteriaBuilder.conjunction()
+        if (rights.isEmpty()) return criteriaBuilder.disjunction()
 
         return criteriaBuilder.`in`(left.toCriteriaExpression(froms, query, criteriaBuilder)).apply {
             rights.forEach { value(it) }
