@@ -40,6 +40,32 @@ abstract class AbstractCriteriaDeleteIntegrationTest : AbstractCriteriaQueryDslI
     }
 
     @Test
+    fun deleteEmptyList() {
+        // when
+        val address1 = orderAddress { }
+
+        entityManager.run {
+            persistAll(address1)
+            flushAndClear()
+        }
+
+        queryFactory.deleteQuery<OrderAddress> {
+            where(col(OrderAddress::id).`in`(emptyList<Long>()))
+        }.executeUpdate()
+
+        // when
+        val query = queryFactory.selectQuery<OrderAddress> {
+            select(entity(OrderAddress::class))
+            from(entity(OrderAddress::class))
+            where(col(OrderAddress::id).equal(address1.id))
+            associate(OrderAddress::class, Address::class, on(OrderAddress::address))
+        }
+
+        // then
+        assertThat(query.resultList).singleElement()
+    }
+
+    @Test
     fun deleteEmbedded() {
         // given
         val address1 = orderAddress { }
