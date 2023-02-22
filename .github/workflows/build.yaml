@@ -24,7 +24,7 @@ jobs:
           distribution: 'adopt'
           cache: gradle
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@9c75b4d3d1e1ab9cf779938de55702cde22cd29f
+        uses: gradle/wrapper-validation-action@v1
       - name: CodeCoverage(with test) with Gradle
         run: ./gradlew codeCoverageReport --info
       - name: Upload coverage to Codecov
