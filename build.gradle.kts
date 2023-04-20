@@ -1,7 +1,6 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     jacoco
 
