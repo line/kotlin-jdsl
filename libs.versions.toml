@@ -60,7 +60,7 @@ spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch
 spring6-core = { module = "org.springframework:spring-core", version.ref = "spring-core6" }
 spring6-beans = { module = "org.springframework:spring-beans", version.ref = "spring-core6" }
 spring-jpa3 = { module = "org.springframework.data:spring-data-jpa", version.ref = "spring-data-jpa3" }
-spring-batch5-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "5.0.1" }
+spring-batch5-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "5.0.2" }
 
 # Test
 junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.9.3" }
