@@ -7,7 +7,7 @@ import java.util.stream.Stream
 
 inline fun <reified T> SpringDataQueryFactory.singleQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
-): T = selectQuery(T::class.java, dsl).singleResult
+): T? = selectQuery(T::class.java, dsl).resultList.firstOrNull()
 
 inline fun <reified T> SpringDataQueryFactory.listQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
