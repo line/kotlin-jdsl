@@ -19,7 +19,6 @@ import org.springframework.data.domain.PageRequest
 import java.util.stream.Stream
 import javax.persistence.Query
 import javax.persistence.TypedQuery
-import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
 internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
@@ -48,6 +47,31 @@ internal class SpringDataQueryFactoryExtensionsTest : WithKotlinJdslAssertions {
 
         // when
         val actual: Data1 = queryFactory.singleQuery(dsl)
+
+        // then
+        assertThat(actual).isEqualTo(Data1())
+
+        verify(exactly = 1) {
+            queryFactory.selectQuery(Data1::class.java, dsl)
+            typedQuery.singleResult
+        }
+
+        confirmVerified(queryFactory, typedQuery)
+    }
+
+    @Test
+    fun singleOrNullQuery() {
+        // given
+        every { queryFactory.selectQuery<Data1>(any(), any()) } returns typedQuery
+        every { typedQuery.singleResult } returns Data1()
+
+        val dsl: SpringDataCriteriaQueryDsl<Data1>.() -> Unit = {
+            select(entity(Data1::class))
+            from(entity(Data1::class))
+        }
+
+        // when
+        val actual: Data1? = queryFactory.singleOrNullQuery(dsl)
 
         // then
         assertThat(actual).isEqualTo(Data1())

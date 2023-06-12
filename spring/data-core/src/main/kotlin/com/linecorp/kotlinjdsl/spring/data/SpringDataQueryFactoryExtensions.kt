@@ -4,10 +4,20 @@ import com.linecorp.kotlinjdsl.query.clause.select.SingleSelectClause
 import com.linecorp.kotlinjdsl.spring.data.querydsl.*
 import org.springframework.data.domain.Pageable
 import java.util.stream.Stream
+import javax.persistence.NoResultException
 
 inline fun <reified T> SpringDataQueryFactory.singleQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
 ): T = selectQuery(T::class.java, dsl).singleResult
+
+inline fun <reified T> SpringDataQueryFactory.singleOrNullQuery(
+    noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
+): T? =
+    try {
+        selectQuery(T::class.java, dsl).singleResult
+    } catch (e: NoResultException) {
+        null
+    }
 
 inline fun <reified T> SpringDataQueryFactory.listQuery(
     noinline dsl: SpringDataCriteriaQueryDsl<T>.() -> Unit
