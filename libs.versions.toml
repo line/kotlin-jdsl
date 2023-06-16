@@ -25,7 +25,7 @@ hibernate = { module = "org.hibernate:hibernate-core", version = "5.6.15.Final" 
 hibernate-reactive = { module = "org.hibernate.reactive:hibernate-reactive-core", version.ref = "hibernate-reactive" }
 hibernate-reactive-jakarta = { module = "org.hibernate.reactive:hibernate-reactive-core-jakarta", version.ref = "hibernate-reactive" }
 eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.12" }
-eclipselink-v4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.1" }
+eclipselink-v4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.2" }
 jackson-kotlin-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 agroal-pool = { module = "io.agroal:agroal-pool", version = "2.2" }
 vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.4.3.1" }
