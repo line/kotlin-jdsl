@@ -1,5 +1,0 @@
-package com.linecorp.kotlinjdsl.eclipselink.integration.querydsl.where
-
-import com.linecorp.kotlinjdsl.test.integration.querydsl.where.AbstractCriteriaQueryDslWhereIntegrationTest
-
-internal class EclipselinkCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQueryDslWhereIntegrationTest()

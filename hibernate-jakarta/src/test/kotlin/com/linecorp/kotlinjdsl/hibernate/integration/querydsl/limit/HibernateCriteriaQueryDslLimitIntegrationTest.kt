@@ -1,5 +1,0 @@
-package com.linecorp.kotlinjdsl.hibernate.integration.querydsl.limit
-
-import com.linecorp.kotlinjdsl.test.integration.querydsl.limit.AbstractCriteriaQueryDslLimitIntegrationTest
-
-internal class HibernateCriteriaQueryDslLimitIntegrationTest : AbstractCriteriaQueryDslLimitIntegrationTest()

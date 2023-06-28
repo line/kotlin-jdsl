@@ -1,58 +1,38 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    jacoco
+    `java-test-fixtures`
 
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.noarg)
-    alias(libs.plugins.kotlin.allopen)
+    alias(libs.plugins.kover)
 }
 
 allprojects {
     group = "com.linecorp.kotlin-jdsl"
-    version = "2.2.1.RELEASE"
+    version = "3.0.0-SNAPSHOT"
 
     repositories {
         mavenCentral()
     }
 }
 
-rootProject {
-    apply<JacocoExtensionPlugin>()
-}
-
 subprojects {
-    apply(plugin = "jacoco")
     apply(plugin = "kotlin")
-    apply(plugin = "kotlin-noarg")
-    apply(plugin = "kotlin-allopen")
+    apply(plugin = "org.jetbrains.kotlinx.kover")
 
-    apply<LocalPropertiesPlugin>()
+    rootProject.dependencies {
+        kover(this@subprojects)
+    }
 
     dependencies {
+        implementation(rootProject)
         implementation(rootProject.libs.kotlin)
-    }
-
-    allOpen {
-        annotation("org.springframework.context.annotation.Configuration")
-        annotation("javax.persistence.Entity")
-        annotation("javax.persistence.Embeddable")
-        annotation("jakarta.persistence.Entity")
-        annotation("jakarta.persistence.Embeddable")
-    }
-
-    noArg {
-        annotation("org.springframework.context.annotation.Configuration")
-        annotation("javax.persistence.Entity")
-        annotation("javax.persistence.Embeddable")
-        annotation("jakarta.persistence.Entity")
-        annotation("jakarta.persistence.Embeddable")
     }
 
     tasks.withType<Test> {
         useJUnitPlatform()
+
         testLogging {
             showExceptions = true
             exceptionFormat = FULL
@@ -61,8 +41,12 @@ subprojects {
             events = setOf(FAILED)
         }
     }
+}
 
-    kotlin {
-        jvmToolchain(17)
+koverReport {
+    filters {
+        excludes {
+            packages("com.linecorp.kotlinjdsl.query")
+        }
     }
 }
