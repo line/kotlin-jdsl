@@ -6,11 +6,11 @@ import com.linecorp.kotlinjdsl.query.sql.Sort
 import com.linecorp.kotlinjdsl.query.sql.Table
 import com.linecorp.kotlinjdsl.query.sql.impl.NormalSelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.generator.SqlWriter
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderClause
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderStatement
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlSerializer
+import com.linecorp.kotlinjdsl.render.sql.writer.SqlWriter
 import kotlin.reflect.KClass
 
 class NormalSelectQuerySerializer : SqlSerializer<NormalSelectQuery> {
@@ -90,62 +90,62 @@ class NormalSelectQuerySerializer : SqlSerializer<NormalSelectQuery> {
     private fun select(
         select: Collection<Expression<*>>,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        generator.writeEach(select, separator = ", ") {
-            serializer.serialize(it, generator, context)
+        writer.writeEach(select, separator = ", ") {
+            serializer.serialize(it, writer, context)
         }
     }
 
     private fun from(
         from: Collection<Table<*>>,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        generator.writeEach(from, separator = ", ") {
-            serializer.serialize(it, generator, context)
+        writer.writeEach(from, separator = ", ") {
+            serializer.serialize(it, writer, context)
         }
     }
 
     private fun where(
         where: Predicate,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        serializer.serialize(where, generator, context)
+        serializer.serialize(where, writer, context)
     }
 
     private fun groupBy(
         groupBy: Collection<Expression<*>>,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        generator.writeEach(groupBy, separator = ", ") {
-            serializer.serialize(it, generator, context)
+        writer.writeEach(groupBy, separator = ", ") {
+            serializer.serialize(it, writer, context)
         }
     }
 
     private fun having(
         having: Predicate,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        serializer.serialize(having, generator, context)
+        serializer.serialize(having, writer, context)
     }
 
     private fun orderBy(
         orderBy: Collection<Sort>,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        generator.writeEach(orderBy, separator = ", ") {
-            serializer.serialize(it, generator, context)
+        writer.writeEach(orderBy, separator = ", ") {
+            serializer.serialize(it, writer, context)
         }
     }
 }

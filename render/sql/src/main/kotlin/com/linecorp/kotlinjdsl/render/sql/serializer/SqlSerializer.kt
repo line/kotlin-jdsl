@@ -2,7 +2,7 @@ package com.linecorp.kotlinjdsl.render.sql.serializer
 
 import com.linecorp.kotlinjdsl.query.QueryPart
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.generator.SqlWriter
+import com.linecorp.kotlinjdsl.render.sql.writer.SqlWriter
 import kotlin.reflect.KClass
 
 interface SqlSerializer<T : QueryPart> {

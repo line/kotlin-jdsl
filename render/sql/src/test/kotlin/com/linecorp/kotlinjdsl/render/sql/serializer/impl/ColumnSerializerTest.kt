@@ -3,12 +3,12 @@ package com.linecorp.kotlinjdsl.render.sql.serializer.impl
 import com.linecorp.kotlinjdsl.query.sql.Column
 import com.linecorp.kotlinjdsl.query.sql.Table
 import com.linecorp.kotlinjdsl.render.TestRenderContext
-import com.linecorp.kotlinjdsl.render.sql.generator.SqlWriter
 import com.linecorp.kotlinjdsl.render.sql.introspector.SqlColumnDescription
 import com.linecorp.kotlinjdsl.render.sql.introspector.SqlRenderIntrospector
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderClause
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderStatement
+import com.linecorp.kotlinjdsl.render.sql.writer.SqlWriter
 import io.mockk.*
 import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.WithAssertions

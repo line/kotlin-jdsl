@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.SuperClassDepthComparator
 import com.linecorp.kotlinjdsl.query.QueryPart
 import com.linecorp.kotlinjdsl.render.AbstractRenderContextElement
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.generator.SqlWriter
+import com.linecorp.kotlinjdsl.render.sql.writer.SqlWriter
 import java.util.concurrent.ConcurrentHashMap
 
 class SqlRenderSerializer private constructor(
@@ -23,11 +23,11 @@ class SqlRenderSerializer private constructor(
         return SqlRenderSerializer(combinedMappedSerializers)
     }
 
-    fun serialize(part: QueryPart, generator: SqlWriter, context: RenderContext) {
+    fun serialize(part: QueryPart, writer: SqlWriter, context: RenderContext) {
         @Suppress("UNCHECKED_CAST")
         val serializer = getCachedSerializer(part::class.java) as SqlSerializer<QueryPart>
 
-        serializer.serialize(part, generator, context)
+        serializer.serialize(part, writer, context)
     }
 
     private fun getCachedSerializer(clazz: Class<*>): SqlSerializer<*> {

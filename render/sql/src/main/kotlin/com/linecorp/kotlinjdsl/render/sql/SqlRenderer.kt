@@ -2,9 +2,9 @@ package com.linecorp.kotlinjdsl.render.sql
 
 import com.linecorp.kotlinjdsl.query.sql.SqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.generator.impl.DefaultSqlWriter
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.sql.setting.SqlRenderSetting
+import com.linecorp.kotlinjdsl.render.sql.writer.impl.DefaultSqlWriter
 
 class SqlRenderer(
     private val setting: SqlRenderSetting,

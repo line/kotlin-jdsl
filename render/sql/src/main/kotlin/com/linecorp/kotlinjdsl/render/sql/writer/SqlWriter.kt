@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.render.sql.generator
+package com.linecorp.kotlinjdsl.render.sql.writer
 
 interface SqlWriter {
     fun write(short: Short)

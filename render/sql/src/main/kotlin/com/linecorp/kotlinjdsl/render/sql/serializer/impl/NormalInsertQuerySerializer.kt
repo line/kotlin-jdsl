@@ -4,11 +4,11 @@ import com.linecorp.kotlinjdsl.query.sql.Expression
 import com.linecorp.kotlinjdsl.query.sql.Table
 import com.linecorp.kotlinjdsl.query.sql.impl.NormalInsertQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.generator.SqlWriter
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderClause
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderStatement
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlSerializer
+import com.linecorp.kotlinjdsl.render.sql.writer.SqlWriter
 import kotlin.reflect.KClass
 
 class NormalInsertQuerySerializer : SqlSerializer<NormalInsertQuery<*>> {
@@ -52,50 +52,50 @@ class NormalInsertQuerySerializer : SqlSerializer<NormalInsertQuery<*>> {
     private fun into(
         table: Table<*>,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        serializer.serialize(table, generator, context)
+        serializer.serialize(table, writer, context)
     }
 
     private fun columns(
         columns: Collection<Expression<*>>,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        generator.write("(")
+        writer.write("(")
 
-        generator.writeEach(columns, separator = ", ") { column ->
-            serializer.serialize(column, generator, context)
+        writer.writeEach(columns, separator = ", ") { column ->
+            serializer.serialize(column, writer, context)
         }
 
-        generator.write(")")
+        writer.write(")")
     }
 
     private fun values(
         values: Collection<Collection<Expression<*>>>,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        generator.writeEach(values, separator = ", ") { elements ->
-            generator.write("(")
+        writer.writeEach(values, separator = ", ") { elements ->
+            writer.write("(")
 
-            generator.writeEach(elements, separator = ", ") { element ->
-                serializer.serialize(element, generator, context)
+            writer.writeEach(elements, separator = ", ") { element ->
+                serializer.serialize(element, writer, context)
             }
 
-            generator.write(")")
+            writer.write(")")
         }
     }
 
     private fun select(
         table: Table<*>,
         serializer: SqlRenderSerializer,
-        generator: SqlWriter,
+        writer: SqlWriter,
         context: RenderContext,
     ) {
-        serializer.serialize(table, generator, context)
+        serializer.serialize(table, writer, context)
     }
 }

@@ -1,17 +1,17 @@
-package com.linecorp.kotlinjdsl.render.sql.generator.impl
+package com.linecorp.kotlinjdsl.render.sql.writer.impl
 
 import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParams
-import com.linecorp.kotlinjdsl.render.sql.generator.SqlWriter
 import com.linecorp.kotlinjdsl.render.sql.setting.ParamType
+import com.linecorp.kotlinjdsl.render.sql.writer.SqlWriter
 
 class DefaultSqlWriter(
     paramType: ParamType,
 ) : SqlWriter {
     private val stringBuilder: StringBuilder = StringBuilder()
 
-    private val valueGenerator: ValueGenerator = when (paramType) {
-        ParamType.INDEXED -> IndexedValueGenerator()
-        ParamType.NAMED -> NamedValueGenerator()
+    private val valueWriter: ValueWriter = when (paramType) {
+        ParamType.INDEXED -> IndexedValueWriter()
+        ParamType.NAMED -> NamedValueWriter()
     }
 
     override fun write(string: CharSequence) {
@@ -91,11 +91,11 @@ class DefaultSqlWriter(
     }
 
     override fun writeValue(value: Any?) {
-        valueGenerator.writeValue(value)
+        valueWriter.writeValue(value)
     }
 
     override fun writeValue(name: String, value: Any?) {
-        valueGenerator.writeValue(name, value)
+        valueWriter.writeValue(name, value)
     }
 
     fun getQuery(): String {
@@ -103,7 +103,7 @@ class DefaultSqlWriter(
     }
 
     fun getParams(): SqlRenderedParams {
-        return valueGenerator.getParams()
+        return valueWriter.getParams()
     }
 
     private inner class Incrementer {
@@ -114,14 +114,14 @@ class DefaultSqlWriter(
         }
     }
 
-    private interface ValueGenerator {
+    private interface ValueWriter {
         fun writeValue(value: Any?)
         fun writeValue(name: String, value: Any?)
 
         fun getParams(): SqlRenderedParams
     }
 
-    private inner class IndexedValueGenerator : ValueGenerator {
+    private inner class IndexedValueWriter : ValueWriter {
         private val params = mutableListOf<Any?>()
 
         override fun writeValue(value: Any?) {
@@ -139,7 +139,7 @@ class DefaultSqlWriter(
         }
     }
 
-    private inner class NamedValueGenerator : ValueGenerator {
+    private inner class NamedValueWriter : ValueWriter {
         private val incrementer: Incrementer = Incrementer()
 
         private val params = mutableMapOf<String, Any?>()

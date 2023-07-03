@@ -2,11 +2,11 @@ package com.linecorp.kotlinjdsl.render.sql.serializer.impl
 
 import com.linecorp.kotlinjdsl.query.sql.impl.AliasedTable
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.generator.SqlWriter
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderClause
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderStatement
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlSerializer
+import com.linecorp.kotlinjdsl.render.sql.writer.SqlWriter
 import kotlin.reflect.KClass
 
 class AliasedTableSerializer : SqlSerializer<AliasedTable<*>> {
