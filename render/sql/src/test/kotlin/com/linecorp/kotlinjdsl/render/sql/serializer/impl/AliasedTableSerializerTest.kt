@@ -1,7 +1,6 @@
 package com.linecorp.kotlinjdsl.render.sql.serializer.impl
 
 import com.linecorp.kotlinjdsl.query.sql.Table
-import com.linecorp.kotlinjdsl.query.sql.TableReference
 import com.linecorp.kotlinjdsl.query.sql.impl.AliasedTable
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.sql.generator.SqlWriter
@@ -18,7 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 class AliasedTableSerializerTest : WithAssertions {
     private val sut = AliasedTableSerializer()
 
-    private val table1: Table<SomeTable> = TableReference(SomeTable::class)
+    private val table1: Table<Any> = mockk()
     private val alias1 = "alias"
 
     @Test
@@ -179,6 +178,4 @@ class AliasedTableSerializerTest : WithAssertions {
             clause,
         )
     }
-
-    private class SomeTable
 }
