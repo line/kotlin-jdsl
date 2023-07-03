@@ -10,6 +10,7 @@ module(name = ":query", path = "query")
 module(name = ":sql-query", path = "query/sql")
 
 module(name = ":render", path = "render")
+module(name = ":sql-render", path = "render/sql")
 
 module(name = ":executor", path = "executor")
 
