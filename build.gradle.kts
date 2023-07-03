@@ -15,20 +15,6 @@ allprojects {
     repositories {
         mavenCentral()
     }
-}
-
-subprojects {
-    apply(plugin = "kotlin")
-    apply(plugin = "org.jetbrains.kotlinx.kover")
-
-    rootProject.dependencies {
-        kover(this@subprojects)
-    }
-
-    dependencies {
-        implementation(rootProject)
-        implementation(rootProject.libs.kotlin)
-    }
 
     tasks.withType<Test> {
         useJUnitPlatform()
@@ -43,10 +29,31 @@ subprojects {
     }
 }
 
+subprojects {
+    apply(plugin = "kotlin")
+    apply(plugin = "org.jetbrains.kotlinx.kover")
+
+    rootProject.dependencies {
+        kover(this@subprojects)
+    }
+
+    dependencies {
+        implementation(rootProject)
+        implementation(rootProject.libs.kotlin)
+    }
+}
+
 koverReport {
     filters {
         excludes {
             packages("com.linecorp.kotlinjdsl.query")
         }
     }
+}
+
+// root project
+dependencies {
+    testImplementation(libs.junit)
+
+    testFixturesApi(libs.assertJ)
 }
