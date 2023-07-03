@@ -38,17 +38,17 @@ class AliasedTableSerializerTest : WithAssertions {
         }
 
         val serializer = mockkClass(SqlRenderSerializer::class) {
-            every { key } returns SqlRenderSerializer.Key
+            every { key } returns SqlRenderSerializer
             every { serialize(any(), any(), any()) } just runs
         }
 
         val statement = mockkClass(SqlRenderStatement::class) {
-            every { key } returns SqlRenderStatement.Key
+            every { key } returns SqlRenderStatement
             every { isSelect() } returns false
         }
 
         val clause = mockkClass(SqlRenderClause::class) {
-            every { key } returns SqlRenderClause.Key
+            every { key } returns SqlRenderClause
         }
 
         val part = AliasedTable(table1, alias1)
@@ -86,17 +86,17 @@ class AliasedTableSerializerTest : WithAssertions {
         }
 
         val serializer = mockkClass(SqlRenderSerializer::class) {
-            every { key } returns SqlRenderSerializer.Key
+            every { key } returns SqlRenderSerializer
             every { serialize(any(), any(), any()) } just runs
         }
 
         val statement = mockkClass(SqlRenderStatement::class) {
-            every { key } returns SqlRenderStatement.Key
+            every { key } returns SqlRenderStatement
             every { isSelect() } returns true
         }
 
         val clause = mockkClass(SqlRenderClause::class) {
-            every { key } returns SqlRenderClause.Key
+            every { key } returns SqlRenderClause
             every { isFrom() } returns false
         }
 
@@ -136,17 +136,17 @@ class AliasedTableSerializerTest : WithAssertions {
         }
 
         val serializer = mockkClass(SqlRenderSerializer::class) {
-            every { key } returns SqlRenderSerializer.Key
+            every { key } returns SqlRenderSerializer
             every { serialize(any(), any(), any()) } just runs
         }
 
         val statement = mockkClass(SqlRenderStatement::class) {
-            every { key } returns SqlRenderStatement.Key
+            every { key } returns SqlRenderStatement
             every { isSelect() } returns true
         }
 
         val clause = mockkClass(SqlRenderClause::class) {
-            every { key } returns SqlRenderClause.Key
+            every { key } returns SqlRenderClause
             every { isFrom() } returns true
         }
 
