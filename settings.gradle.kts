@@ -6,6 +6,7 @@ module(name = ":module", path = "module")
 module(name = ":dsl", path = "dsl")
 
 module(name = ":query", path = "query")
+module(name = ":sql-query", path = "query/sql")
 
 module(name = ":render", path = "render")
 
