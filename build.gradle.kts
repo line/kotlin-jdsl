@@ -32,6 +32,7 @@ allprojects {
 subprojects {
     apply(plugin = "kotlin")
     apply(plugin = "org.jetbrains.kotlinx.kover")
+    apply(plugin = "java-test-fixtures")
 
     rootProject.dependencies {
         kover(this@subprojects)
@@ -40,6 +41,11 @@ subprojects {
     dependencies {
         implementation(rootProject)
         implementation(rootProject.libs.kotlin)
+
+        testImplementation(rootProject.libs.junit)
+        testImplementation(rootProject.libs.mockk)
+
+        testFixturesApi(testFixtures(rootProject))
     }
 }
 
