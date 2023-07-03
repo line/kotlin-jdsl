@@ -2,6 +2,7 @@ rootProject.name = "kotlin-jdsl"
 
 // Module
 module(name = ":module", path = "module")
+module(name = ":sql-module", path = "module/sql")
 
 module(name = ":dsl", path = "dsl")
 module(name = ":sql-dsl", path = "dsl/sql")
