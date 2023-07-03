@@ -4,6 +4,7 @@ rootProject.name = "kotlin-jdsl"
 module(name = ":module", path = "module")
 
 module(name = ":dsl", path = "dsl")
+module(name = ":sql-dsl", path = "dsl/sql")
 
 module(name = ":query", path = "query")
 module(name = ":sql-query", path = "query/sql")
