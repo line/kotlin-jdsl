@@ -13,6 +13,9 @@ module(name = ":render", path = "render")
 module(name = ":sql-render", path = "render/sql")
 
 module(name = ":executor", path = "executor")
+module(name = ":jdbc-executor", path = "executor/jdbc")
+module(name = ":spring-jdbc-executor", path = "executor/spring-jdbc")
+module(name = ":spring-jpa-executor", path = "executor/spring-jpa")
 
 // Version Catalog
 dependencyResolutionManagement {
