@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.query
+package com.linecorp.kotlinjdsl.querymodel
 
 import com.linecorp.kotlinjdsl.SinceJdsl
 
