@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.dsl.sql
 
 import com.linecorp.kotlinjdsl.SinceJdsl
-import com.linecorp.kotlinjdsl.query.sql.SqlQuery
-import com.linecorp.kotlinjdsl.query.sql.SqlQueryable
+import com.linecorp.kotlinjdsl.querymodel.sql.SqlQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.SqlQueryable
 
 @SinceJdsl("3.0.0")
 inline fun <Q : SqlQuery<Q>> sql(init: Normal.() -> SqlQueryable<Q>): Q {

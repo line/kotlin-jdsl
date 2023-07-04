@@ -1,10 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.sql.delete.impl
 
-import com.linecorp.kotlinjdsl.query.sql.DeleteQuery
-import com.linecorp.kotlinjdsl.query.sql.Expression
-import com.linecorp.kotlinjdsl.query.sql.Predicate
-import com.linecorp.kotlinjdsl.query.sql.TableReference
-import com.linecorp.kotlinjdsl.query.sql.impl.NormalDeleteQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.Expression
+import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
+import com.linecorp.kotlinjdsl.querymodel.sql.TableReference
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.NormalDeleteQuery
 
 class DeleteQueryBuilder<T : Any>(
     private val table: TableReference<T>,
@@ -18,7 +17,7 @@ class DeleteQueryBuilder<T : Any>(
         return this
     }
 
-    fun build(): DeleteQuery<T> {
+    fun build(): com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T> {
         return NormalDeleteQuery(
             table = table,
             where = where,

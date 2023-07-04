@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.dsl.sql.select
 
-import com.linecorp.kotlinjdsl.query.sql.SelectQuery
-import com.linecorp.kotlinjdsl.query.sql.SqlQueryable
+import com.linecorp.kotlinjdsl.querymodel.sql.SelectQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.SqlQueryable
 
 interface SelectQueryLimitStep : SqlQueryable<SelectQuery> {
     fun offset(offset: Int): SqlQueryable<SelectQuery>

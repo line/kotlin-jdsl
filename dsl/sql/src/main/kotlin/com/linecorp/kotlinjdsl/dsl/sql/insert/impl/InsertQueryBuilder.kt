@@ -1,16 +1,19 @@
 package com.linecorp.kotlinjdsl.dsl.sql.insert.impl
 
-import com.linecorp.kotlinjdsl.query.sql.*
-import com.linecorp.kotlinjdsl.query.sql.impl.NormalInsertQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.Expression
+import com.linecorp.kotlinjdsl.querymodel.sql.InsertQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.Table
+import com.linecorp.kotlinjdsl.querymodel.sql.TableReference
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.NormalInsertQuery
 
 class InsertQueryBuilder<T : Any>(
     private val table: TableReference<T>,
 ) {
-    private var columns: Collection<Column<T, *>>? = null
+    private var columns: Collection<com.linecorp.kotlinjdsl.querymodel.sql.Column<T, *>>? = null
     private var values: MutableList<Collection<Expression<*>>>? = null
     private var select: Table<*>? = null
 
-    fun columns(columns: Collection<Column<T, *>>): InsertQueryBuilder<T> {
+    fun columns(columns: Collection<com.linecorp.kotlinjdsl.querymodel.sql.Column<T, *>>): InsertQueryBuilder<T> {
         this.columns = columns
 
         return this

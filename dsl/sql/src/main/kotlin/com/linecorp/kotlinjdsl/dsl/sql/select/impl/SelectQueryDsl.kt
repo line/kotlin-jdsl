@@ -3,9 +3,9 @@ package com.linecorp.kotlinjdsl.dsl.sql.select.impl
 import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.dsl.owner
 import com.linecorp.kotlinjdsl.dsl.sql.select.*
-import com.linecorp.kotlinjdsl.query.sql.*
-import com.linecorp.kotlinjdsl.query.sql.impl.And
-import com.linecorp.kotlinjdsl.query.sql.impl.Or
+import com.linecorp.kotlinjdsl.querymodel.sql.*
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.And
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.Or
 import kotlin.reflect.KProperty1
 
 @Internal
@@ -72,7 +72,7 @@ class SelectQueryDsl private constructor(
             @Suppress("UNCHECKED_CAST")
             val casted = it as KProperty1<Any, *>
 
-            Column(TableReference(casted.owner()), casted)
+            com.linecorp.kotlinjdsl.querymodel.sql.Column(TableReference(casted.owner()), casted)
         }
 
         builder.groupBy(columns)

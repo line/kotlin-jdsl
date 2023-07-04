@@ -1,16 +1,22 @@
 package com.linecorp.kotlinjdsl.dsl.sql.update.impl
 
-import com.linecorp.kotlinjdsl.query.sql.*
-import com.linecorp.kotlinjdsl.query.sql.impl.NormalUpdateQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.Expression
+import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
+import com.linecorp.kotlinjdsl.querymodel.sql.TableReference
+import com.linecorp.kotlinjdsl.querymodel.sql.UpdateQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.NormalUpdateQuery
 
 class UpdateQueryBuilder<T : Any>(
     private val table: TableReference<T>,
 ) {
-    private var set: MutableMap<Column<T, *>, Expression<*>>? = null
+    private var set: MutableMap<com.linecorp.kotlinjdsl.querymodel.sql.Column<T, *>, Expression<*>>? = null
     private var where: Predicate? = null
     private var orderBy: Collection<Expression<*>>? = null
 
-    fun set(column: Column<T, *>, expression: Expression<*>): UpdateQueryBuilder<T> {
+    fun set(
+        column: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, *>,
+        expression: Expression<*>
+    ): UpdateQueryBuilder<T> {
         this.set = (this.set ?: mutableMapOf()).also { it[column] = expression }
 
         return this

@@ -3,9 +3,9 @@ package com.linecorp.kotlinjdsl.dsl.sql.update.impl
 import com.linecorp.kotlinjdsl.dsl.sql.update.UpdateQuerySetFirstStep
 import com.linecorp.kotlinjdsl.dsl.sql.update.UpdateQuerySetMoreStep
 import com.linecorp.kotlinjdsl.dsl.sql.update.UpdateQueryWhereStep
-import com.linecorp.kotlinjdsl.query.sql.*
-import com.linecorp.kotlinjdsl.query.sql.impl.And
-import com.linecorp.kotlinjdsl.query.sql.impl.Or
+import com.linecorp.kotlinjdsl.querymodel.sql.*
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.And
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.Or
 
 class UpdateQueryDsl<T : Any> private constructor(
     private val builder: UpdateQueryBuilder<T>,
@@ -15,7 +15,10 @@ class UpdateQueryDsl<T : Any> private constructor(
 
     constructor(table: TableReference<T>) : this(UpdateQueryBuilder(table))
 
-    override fun <V> set(column: Column<T, V>, expression: Expression<V>): UpdateQuerySetMoreStep<T> {
+    override fun <V> set(
+        column: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V>,
+        expression: Expression<V>
+    ): UpdateQuerySetMoreStep<T> {
         builder.set(column, expression)
 
         return this

@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.dsl.sql.expression.impl
 
-import com.linecorp.kotlinjdsl.query.sql.Expression
-import com.linecorp.kotlinjdsl.query.sql.Predicate
-import com.linecorp.kotlinjdsl.query.sql.impl.Case
+import com.linecorp.kotlinjdsl.querymodel.sql.Expression
+import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.Case
 
 class CaseBuilder<T> {
     private var whens: MutableList<Case.When<T>>? = null

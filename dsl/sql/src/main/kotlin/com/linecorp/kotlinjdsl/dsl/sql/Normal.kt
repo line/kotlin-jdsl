@@ -13,8 +13,8 @@ import com.linecorp.kotlinjdsl.dsl.sql.select.SelectQueryFromStep
 import com.linecorp.kotlinjdsl.dsl.sql.select.impl.SelectQueryDsl
 import com.linecorp.kotlinjdsl.dsl.sql.update.UpdateQuerySetFirstStep
 import com.linecorp.kotlinjdsl.dsl.sql.update.impl.UpdateQueryDsl
-import com.linecorp.kotlinjdsl.query.sql.*
-import com.linecorp.kotlinjdsl.query.sql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.sql.*
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
@@ -281,38 +281,44 @@ open class Normal : SqlDsl {
 
     @JvmName("col1")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> Table<T>.col(property: KProperty1<T, V>): Column<T, V> {
-        return Column(this, property)
+    fun <T : Any, V> Table<T>.col(property: KProperty1<T, V>): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
+        return com.linecorp.kotlinjdsl.querymodel.sql.Column(this, property)
     }
 
     @JvmName("col2")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> col(table: Table<T>, property: KProperty1<T, V>): Column<T, V> {
-        return Column(table, property)
+    fun <T : Any, V> col(
+        table: Table<T>,
+        property: KProperty1<T, V>
+    ): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
+        return com.linecorp.kotlinjdsl.querymodel.sql.Column(table, property)
     }
 
     @JvmName("col3")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> col(property: KProperty1<T, V>): Column<T, V> {
-        return Column(table(property.owner()), property)
+    fun <T : Any, V> col(property: KProperty1<T, V>): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
+        return com.linecorp.kotlinjdsl.querymodel.sql.Column(table(property.owner()), property)
     }
 
     @JvmName("column1")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> Table<T>.column(property: KProperty1<T, V>): Column<T, V> {
-        return Column(this, property)
+    fun <T : Any, V> Table<T>.column(property: KProperty1<T, V>): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
+        return com.linecorp.kotlinjdsl.querymodel.sql.Column(this, property)
     }
 
     @JvmName("column2")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> column(table: Table<T>, property: KProperty1<T, V>): Column<T, V> {
-        return Column(table, property)
+    fun <T : Any, V> column(
+        table: Table<T>,
+        property: KProperty1<T, V>
+    ): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
+        return com.linecorp.kotlinjdsl.querymodel.sql.Column(table, property)
     }
 
     @JvmName("column3")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> column(property: KProperty1<T, V>): Column<T, V> {
-        return Column(table(property.owner()), property)
+    fun <T : Any, V> column(property: KProperty1<T, V>): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
+        return com.linecorp.kotlinjdsl.querymodel.sql.Column(table(property.owner()), property)
     }
 
     @JvmName("exits1")

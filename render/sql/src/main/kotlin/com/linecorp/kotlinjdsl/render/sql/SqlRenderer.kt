@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.render.sql
 
-import com.linecorp.kotlinjdsl.query.sql.SqlQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.SqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.sql.setting.SqlRenderSetting

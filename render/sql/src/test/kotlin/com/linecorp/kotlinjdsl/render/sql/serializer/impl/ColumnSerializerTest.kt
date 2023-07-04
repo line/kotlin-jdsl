@@ -1,7 +1,6 @@
 package com.linecorp.kotlinjdsl.render.sql.serializer.impl
 
-import com.linecorp.kotlinjdsl.query.sql.Column
-import com.linecorp.kotlinjdsl.query.sql.Table
+import com.linecorp.kotlinjdsl.querymodel.sql.Table
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.sql.introspector.SqlColumnDescription
 import com.linecorp.kotlinjdsl.render.sql.introspector.SqlRenderIntrospector
@@ -32,7 +31,7 @@ class ColumnSerializerTest : WithAssertions {
         val actual = sut.handledType()
 
         // then
-        assertThat(actual).isEqualTo(Column::class)
+        assertThat(actual).isEqualTo(com.linecorp.kotlinjdsl.querymodel.sql.Column::class)
     }
 
     @Test
@@ -63,7 +62,7 @@ class ColumnSerializerTest : WithAssertions {
             every { key } returns SqlRenderClause
         }
 
-        val part = Column(table1, property1)
+        val part = com.linecorp.kotlinjdsl.querymodel.sql.Column(table1, property1)
         val context = TestRenderContext(serializer, introspector, statement, clause)
 
         // when
@@ -123,7 +122,7 @@ class ColumnSerializerTest : WithAssertions {
             every { isValues() } returns false
         }
 
-        val part = Column(table1, property1)
+        val part = com.linecorp.kotlinjdsl.querymodel.sql.Column(table1, property1)
         val context = TestRenderContext(serializer, introspector, statement, clause)
 
         // when
@@ -184,7 +183,7 @@ class ColumnSerializerTest : WithAssertions {
             every { isInto() } returns true
         }
 
-        val part = Column(table1, property1)
+        val part = com.linecorp.kotlinjdsl.querymodel.sql.Column(table1, property1)
         val context = TestRenderContext(serializer, introspector, statement, clause)
 
         // when
@@ -243,7 +242,7 @@ class ColumnSerializerTest : WithAssertions {
             every { isValues() } returns true
         }
 
-        val part = Column(table1, property1)
+        val part = com.linecorp.kotlinjdsl.querymodel.sql.Column(table1, property1)
         val context = TestRenderContext(serializer, introspector, statement, clause)
 
         // when

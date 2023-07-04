@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.render.sql.serializer.impl
 
-import com.linecorp.kotlinjdsl.query.sql.TableReference
+import com.linecorp.kotlinjdsl.querymodel.sql.TableReference
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.sql.introspector.SqlRenderIntrospector
 import com.linecorp.kotlinjdsl.render.sql.serializer.SqlSerializer

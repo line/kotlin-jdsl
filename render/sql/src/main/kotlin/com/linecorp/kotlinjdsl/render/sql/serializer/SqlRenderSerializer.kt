@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.render.sql.serializer
 
 import com.linecorp.kotlinjdsl.SuperClassDepthComparator
-import com.linecorp.kotlinjdsl.query.QueryPart
+import com.linecorp.kotlinjdsl.querymodel.QueryPart
 import com.linecorp.kotlinjdsl.render.AbstractRenderContextElement
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.sql.writer.SqlWriter

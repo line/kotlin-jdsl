@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.dsl.sql.select
 
-import com.linecorp.kotlinjdsl.query.sql.Expression
-import com.linecorp.kotlinjdsl.query.sql.SelectQuery
-import com.linecorp.kotlinjdsl.query.sql.SqlQueryable
+import com.linecorp.kotlinjdsl.querymodel.sql.Expression
+import com.linecorp.kotlinjdsl.querymodel.sql.SelectQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.SqlQueryable
 import kotlin.reflect.KProperty1
 
 interface SelectQueryGroupByStep : SelectQueryHavingStep, SqlQueryable<SelectQuery> {

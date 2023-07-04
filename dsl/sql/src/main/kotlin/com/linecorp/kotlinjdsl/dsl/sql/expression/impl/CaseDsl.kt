@@ -3,10 +3,10 @@ package com.linecorp.kotlinjdsl.dsl.sql.expression.impl
 import com.linecorp.kotlinjdsl.dsl.sql.expression.CaseElseStep
 import com.linecorp.kotlinjdsl.dsl.sql.expression.CaseWhenFirstStep
 import com.linecorp.kotlinjdsl.dsl.sql.expression.CaseWhenMoreStep
-import com.linecorp.kotlinjdsl.query.sql.Expression
-import com.linecorp.kotlinjdsl.query.sql.Expressionable
-import com.linecorp.kotlinjdsl.query.sql.Predicate
-import com.linecorp.kotlinjdsl.query.sql.impl.Literal
+import com.linecorp.kotlinjdsl.querymodel.sql.Expression
+import com.linecorp.kotlinjdsl.querymodel.sql.Expressionable
+import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.Literal
 
 class CaseDsl<T> private constructor(
     private val builder: CaseBuilder<T>,

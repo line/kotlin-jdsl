@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.executor.spring.jdbc.sql
 
-import com.linecorp.kotlinjdsl.query.sql.SqlQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.SqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParams
 import com.linecorp.kotlinjdsl.render.sql.SqlRenderer

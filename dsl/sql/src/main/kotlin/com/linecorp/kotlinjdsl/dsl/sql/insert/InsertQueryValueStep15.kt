@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.dsl.sql.insert
 
-import com.linecorp.kotlinjdsl.query.sql.Expression
-import com.linecorp.kotlinjdsl.query.sql.InsertQuery
-import com.linecorp.kotlinjdsl.query.sql.SqlQueryable
+import com.linecorp.kotlinjdsl.querymodel.sql.Expression
+import com.linecorp.kotlinjdsl.querymodel.sql.InsertQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.SqlQueryable
 
 interface InsertQueryValueStep15<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15> :
     InsertQuerySelectStep<T>,

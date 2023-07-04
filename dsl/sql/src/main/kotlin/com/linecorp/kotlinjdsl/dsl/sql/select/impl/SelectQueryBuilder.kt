@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.dsl.sql.select.impl
 
-import com.linecorp.kotlinjdsl.query.sql.*
-import com.linecorp.kotlinjdsl.query.sql.impl.NormalSelectQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.*
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.NormalSelectQuery
 
 class SelectQueryBuilder(
     private val select: Collection<Expression<*>>,

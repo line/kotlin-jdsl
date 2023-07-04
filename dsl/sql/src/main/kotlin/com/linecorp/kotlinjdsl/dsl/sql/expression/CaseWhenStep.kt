@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.dsl.sql.expression
 
-import com.linecorp.kotlinjdsl.query.sql.Expression
-import com.linecorp.kotlinjdsl.query.sql.Predicate
+import com.linecorp.kotlinjdsl.querymodel.sql.Expression
+import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
 
 interface CaseWhenStep<T> {
     fun `when`(predicate: Predicate, then: T): CaseWhenMoreStep<T?>
