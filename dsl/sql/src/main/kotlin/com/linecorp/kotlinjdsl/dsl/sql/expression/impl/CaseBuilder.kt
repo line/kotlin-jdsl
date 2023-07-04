@@ -3,13 +3,14 @@ package com.linecorp.kotlinjdsl.dsl.sql.expression.impl
 import com.linecorp.kotlinjdsl.querymodel.sql.Expression
 import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
 import com.linecorp.kotlinjdsl.querymodel.sql.impl.Case
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.CaseWhen
 
 class CaseBuilder<T> {
-    private var whens: MutableList<Case.When<T>>? = null
+    private var whens: MutableList<CaseWhen<T>>? = null
     private var `else`: Expression<out T>? = null
 
     fun `when`(predicate: Predicate, then: Expression<T>): CaseBuilder<T> {
-        this.whens = (this.whens ?: mutableListOf()).also { it.add(Case.When(predicate, then)) }
+        this.whens = (this.whens ?: mutableListOf()).also { it.add(CaseWhen(predicate, then)) }
 
         return this
     }
