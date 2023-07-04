@@ -8,5 +8,4 @@ import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
 data class IsNull(
     val expression: Expression<*>,
     val not: Boolean,
-) : Predicate {
-}
+) : Predicate

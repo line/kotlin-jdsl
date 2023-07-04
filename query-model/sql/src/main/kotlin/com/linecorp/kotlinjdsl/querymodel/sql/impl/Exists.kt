@@ -8,5 +8,4 @@ import com.linecorp.kotlinjdsl.querymodel.sql.Table
 data class Exists(
     val table: Table<*>,
     val not: Boolean,
-) : Predicate {
-}
+) : Predicate
