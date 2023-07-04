@@ -1,5 +1,5 @@
 dependencies {
     api(projects.sqlDsl)
-    api(projects.sqlQuery)
+    api(projects.sqlQueryModel)
     api(projects.sqlRender)
 }

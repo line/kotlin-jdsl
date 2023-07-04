@@ -1,4 +1,4 @@
 dependencies {
     api(projects.dsl)
-    api(projects.sqlQuery)
+    api(projects.sqlQueryModel)
 }

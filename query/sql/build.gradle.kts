@@ -1,3 +1,0 @@
-dependencies {
-    api(projects.query)
-}

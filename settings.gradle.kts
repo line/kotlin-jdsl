@@ -2,15 +2,19 @@ rootProject.name = "kotlin-jdsl"
 
 // Module
 module(name = ":module", path = "module")
+module(name = ":jpql-module", path = "module/jpql")
 module(name = ":sql-module", path = "module/sql")
 
 module(name = ":dsl", path = "dsl")
+module(name = ":jpql-dsl", path = "dsl/jpql")
 module(name = ":sql-dsl", path = "dsl/sql")
 
-module(name = ":query", path = "query")
-module(name = ":sql-query", path = "query/sql")
+module(name = ":query-model", path = "query-model")
+module(name = ":jpql-query-model", path = "query-model/jpql")
+module(name = ":sql-query-model", path = "query-model/sql")
 
 module(name = ":render", path = "render")
+module(name = ":jpql-render", path = "render/jpql")
 module(name = ":sql-render", path = "render/sql")
 
 module(name = ":executor", path = "executor")

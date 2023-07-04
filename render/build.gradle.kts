@@ -1,3 +1,3 @@
 dependencies {
-    api(projects.query)
+    api(projects.queryModel)
 }

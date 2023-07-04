@@ -1,5 +1,5 @@
 dependencies {
     compileOnly(libs.spring.jdbc)
-    compileOnly(projects.sqlQuery)
+    compileOnly(projects.sqlQueryModel)
     compileOnly(projects.sqlRender)
 }

@@ -1,6 +1,6 @@
 dependencies {
     api(projects.render)
-    api(projects.sqlQuery)
+    api(projects.sqlQueryModel)
 
     testImplementation(testFixtures(projects.render))
 }
