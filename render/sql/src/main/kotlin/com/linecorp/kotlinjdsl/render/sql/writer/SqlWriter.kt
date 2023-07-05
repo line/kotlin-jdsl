@@ -33,7 +33,7 @@ interface SqlWriter {
 
     fun writeKeyword(clause: CharSequence)
 
-    fun writeValue(value: Any?)
+    fun writeParameter(value: Any?)
 
-    fun writeValue(name: String, value: Any?)
+    fun writeParameter(name: String, value: Any?)
 }

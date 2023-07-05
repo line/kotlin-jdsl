@@ -3,7 +3,7 @@ package com.linecorp.kotlinjdsl.dsl.sql.insert.impl
 import com.linecorp.kotlinjdsl.dsl.sql.insert.*
 import com.linecorp.kotlinjdsl.querymodel.sql.*
 import com.linecorp.kotlinjdsl.querymodel.sql.impl.DerivedTable
-import com.linecorp.kotlinjdsl.querymodel.sql.impl.Literal
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.Parameter
 
 class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22> private constructor(
     private val builder: InsertQueryBuilder<T>,
@@ -36,7 +36,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     constructor(table: TableReference<T>) : this(InsertQueryBuilder(table))
 
     override fun <V1> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
+        column1: Column<T, V1>,
     ): InsertQueryValueStep1<T, V1> {
         val columns = listOf(
             column1,
@@ -49,8 +49,8 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
     ): InsertQueryValueStep2<T, V1, V2> {
         val columns = listOf(
             column1,
@@ -64,9 +64,9 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
     ): InsertQueryValueStep3<T, V1, V2, V3> {
         val columns = listOf(
             column1,
@@ -81,10 +81,10 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
     ): InsertQueryValueStep4<T, V1, V2, V3, V4> {
         val columns = listOf(
             column1,
@@ -100,11 +100,11 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
     ): InsertQueryValueStep5<T, V1, V2, V3, V4, V5> {
         val columns = listOf(
             column1,
@@ -121,12 +121,12 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
     ): InsertQueryValueStep6<T, V1, V2, V3, V4, V5, V6> {
         val columns = listOf(
             column1,
@@ -144,13 +144,13 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
     ): InsertQueryValueStep7<T, V1, V2, V3, V4, V5, V6, V7> {
         val columns = listOf(
             column1,
@@ -169,14 +169,14 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
     ): InsertQueryValueStep8<T, V1, V2, V3, V4, V5, V6, V7, V8> {
         val columns = listOf(
             column1,
@@ -196,15 +196,15 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
     ): InsertQueryValueStep9<T, V1, V2, V3, V4, V5, V6, V7, V8, V9> {
         val columns = listOf(
             column1,
@@ -225,16 +225,16 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
     ): InsertQueryValueStep10<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10> {
         val columns = listOf(
             column1,
@@ -256,17 +256,17 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
     ): InsertQueryValueStep11<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11> {
         val columns = listOf(
             column1,
@@ -289,18 +289,18 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
     ): InsertQueryValueStep12<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12> {
         val columns = listOf(
             column1,
@@ -324,19 +324,19 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
     ): InsertQueryValueStep13<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13> {
         val columns = listOf(
             column1,
@@ -361,20 +361,20 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
-        column14: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V14>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
+        column14: Column<T, V14>,
     ): InsertQueryValueStep14<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14> {
         val columns = listOf(
             column1,
@@ -400,21 +400,21 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
-        column14: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V14>,
-        column15: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V15>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
+        column14: Column<T, V14>,
+        column15: Column<T, V15>,
     ): InsertQueryValueStep15<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15> {
         val columns = listOf(
             column1,
@@ -441,22 +441,22 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
-        column14: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V14>,
-        column15: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V15>,
-        column16: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V16>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
+        column14: Column<T, V14>,
+        column15: Column<T, V15>,
+        column16: Column<T, V16>,
     ): InsertQueryValueStep16<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16> {
         val columns = listOf(
             column1,
@@ -484,23 +484,23 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
-        column14: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V14>,
-        column15: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V15>,
-        column16: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V16>,
-        column17: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V17>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
+        column14: Column<T, V14>,
+        column15: Column<T, V15>,
+        column16: Column<T, V16>,
+        column17: Column<T, V17>,
     ): InsertQueryValueStep17<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17> {
         val columns = listOf(
             column1,
@@ -529,24 +529,24 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
-        column14: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V14>,
-        column15: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V15>,
-        column16: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V16>,
-        column17: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V17>,
-        column18: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V18>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
+        column14: Column<T, V14>,
+        column15: Column<T, V15>,
+        column16: Column<T, V16>,
+        column17: Column<T, V17>,
+        column18: Column<T, V18>,
     ): InsertQueryValueStep18<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18> {
         val columns = listOf(
             column1,
@@ -576,25 +576,25 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
-        column14: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V14>,
-        column15: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V15>,
-        column16: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V16>,
-        column17: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V17>,
-        column18: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V18>,
-        column19: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V19>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
+        column14: Column<T, V14>,
+        column15: Column<T, V15>,
+        column16: Column<T, V16>,
+        column17: Column<T, V17>,
+        column18: Column<T, V18>,
+        column19: Column<T, V19>,
     ): InsertQueryValueStep19<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19> {
         val columns = listOf(
             column1,
@@ -625,26 +625,26 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
-        column14: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V14>,
-        column15: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V15>,
-        column16: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V16>,
-        column17: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V17>,
-        column18: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V18>,
-        column19: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V19>,
-        column20: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V20>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
+        column14: Column<T, V14>,
+        column15: Column<T, V15>,
+        column16: Column<T, V16>,
+        column17: Column<T, V17>,
+        column18: Column<T, V18>,
+        column19: Column<T, V19>,
+        column20: Column<T, V20>,
     ): InsertQueryValueStep20<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20> {
         val columns = listOf(
             column1,
@@ -676,27 +676,27 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
-        column14: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V14>,
-        column15: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V15>,
-        column16: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V16>,
-        column17: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V17>,
-        column18: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V18>,
-        column19: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V19>,
-        column20: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V20>,
-        column21: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V21>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
+        column14: Column<T, V14>,
+        column15: Column<T, V15>,
+        column16: Column<T, V16>,
+        column17: Column<T, V17>,
+        column18: Column<T, V18>,
+        column19: Column<T, V19>,
+        column20: Column<T, V20>,
+        column21: Column<T, V21>,
     ): InsertQueryValueStep21<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21> {
         val columns = listOf(
             column1,
@@ -729,28 +729,28 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     }
 
     override fun <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22> columns(
-        column1: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V1>,
-        column2: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V2>,
-        column3: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V3>,
-        column4: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V4>,
-        column5: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V5>,
-        column6: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V6>,
-        column7: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V7>,
-        column8: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V8>,
-        column9: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V9>,
-        column10: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V10>,
-        column11: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V11>,
-        column12: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V12>,
-        column13: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V13>,
-        column14: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V14>,
-        column15: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V15>,
-        column16: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V16>,
-        column17: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V17>,
-        column18: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V18>,
-        column19: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V19>,
-        column20: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V20>,
-        column21: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V21>,
-        column22: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V22>,
+        column1: Column<T, V1>,
+        column2: Column<T, V2>,
+        column3: Column<T, V3>,
+        column4: Column<T, V4>,
+        column5: Column<T, V5>,
+        column6: Column<T, V6>,
+        column7: Column<T, V7>,
+        column8: Column<T, V8>,
+        column9: Column<T, V9>,
+        column10: Column<T, V10>,
+        column11: Column<T, V11>,
+        column12: Column<T, V12>,
+        column13: Column<T, V13>,
+        column14: Column<T, V14>,
+        column15: Column<T, V15>,
+        column16: Column<T, V16>,
+        column17: Column<T, V17>,
+        column18: Column<T, V18>,
+        column19: Column<T, V19>,
+        column20: Column<T, V20>,
+        column21: Column<T, V21>,
+        column22: Column<T, V22>,
     ): InsertQueryValueStep22<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22> {
         val columns = listOf(
             column1,
@@ -789,7 +789,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
         val values = listOf(
             value1,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -805,7 +805,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value1,
             value2,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -823,7 +823,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value2,
             value3,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -843,7 +843,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value3,
             value4,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -865,7 +865,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value4,
             value5,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -889,7 +889,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value5,
             value6,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -915,7 +915,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value6,
             value7,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -943,7 +943,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value7,
             value8,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -973,7 +973,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value8,
             value9,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1005,7 +1005,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value9,
             value10,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1039,7 +1039,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value10,
             value11,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1075,7 +1075,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value11,
             value12,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1113,7 +1113,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value12,
             value13,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1153,7 +1153,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value13,
             value14,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1195,7 +1195,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value14,
             value15,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1239,7 +1239,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value15,
             value16,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1285,7 +1285,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value16,
             value17,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1333,7 +1333,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value17,
             value18,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1383,7 +1383,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value18,
             value19,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1435,7 +1435,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value19,
             value20,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1489,7 +1489,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value20,
             value21,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1545,7 +1545,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value21,
             value22,
         ).map {
-            Literal(it)
+            Parameter(it)
         }
 
         builder.values(values)
@@ -1556,7 +1556,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     override fun values(
         vararg values: Any?,
     ): InsertQueryValueStepN<T> {
-        builder.values(values.map { Literal(it) })
+        builder.values(values.map { Parameter(it) })
 
         return this
     }

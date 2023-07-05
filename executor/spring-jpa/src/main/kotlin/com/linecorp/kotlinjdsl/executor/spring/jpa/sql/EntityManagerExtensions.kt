@@ -2,7 +2,7 @@ package com.linecorp.kotlinjdsl.executor.spring.jpa.sql
 
 import com.linecorp.kotlinjdsl.querymodel.sql.SqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParams
+import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParameters
 import com.linecorp.kotlinjdsl.render.sql.SqlRenderer
 import com.linecorp.kotlinjdsl.render.sql.setting.ParamType
 import com.linecorp.kotlinjdsl.render.sql.setting.SqlRenderSetting
@@ -23,13 +23,13 @@ fun EntityManager.createNativeQuery(
     val rendered = sqlRenderer.render(query, context)
 
     val renderedQuery = rendered.query
-    val renderedParams = rendered.params
+    val renderedParams = rendered.parameters
 
     val jpaQuery = createNativeQuery(renderedQuery)
 
     when (renderedParams) {
-        is SqlRenderedParams.Indexed -> jpaQuery.setParameters(renderedParams)
-        is SqlRenderedParams.Named -> jpaQuery.setParameters(renderedParams)
+        is SqlRenderedParameters.Indexed -> jpaQuery.setParameters(renderedParams)
+        is SqlRenderedParameters.Named -> jpaQuery.setParameters(renderedParams)
     }
 
     return jpaQuery
@@ -43,13 +43,13 @@ fun <T : Any> EntityManager.createNativeQuery(
     val rendered = sqlRenderer.render(query, context)
 
     val renderedQuery = rendered.query
-    val renderedParams = rendered.params
+    val renderedParams = rendered.parameters
 
     val jpaQuery = createNativeQuery(renderedQuery, resultClass.java)
 
     when (renderedParams) {
-        is SqlRenderedParams.Indexed -> jpaQuery.setParameters(renderedParams)
-        is SqlRenderedParams.Named -> jpaQuery.setParameters(renderedParams)
+        is SqlRenderedParameters.Indexed -> jpaQuery.setParameters(renderedParams)
+        is SqlRenderedParameters.Named -> jpaQuery.setParameters(renderedParams)
     }
 
     return jpaQuery

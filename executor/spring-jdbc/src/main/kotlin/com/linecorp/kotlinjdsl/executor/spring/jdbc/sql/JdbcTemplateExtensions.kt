@@ -2,7 +2,7 @@ package com.linecorp.kotlinjdsl.executor.spring.jdbc.sql
 
 import com.linecorp.kotlinjdsl.querymodel.sql.SqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParams
+import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParameters
 import com.linecorp.kotlinjdsl.render.sql.SqlRenderer
 import com.linecorp.kotlinjdsl.render.sql.setting.ParamType
 import com.linecorp.kotlinjdsl.render.sql.setting.SqlRenderSetting
@@ -37,9 +37,9 @@ fun <T : Any> JdbcTemplate.queryForObject(
     val rendered = sqlRendererForJdbcTemplate.render(query, context)
 
     val renderedQuery = rendered.query
-    val renderedParams = rendered.params as SqlRenderedParams.Indexed
+    val renderedParameters = rendered.parameters as SqlRenderedParameters.Indexed
 
-    return queryForObject(renderedQuery, requiredType.java, *renderedParams.toTypedArray())
+    return queryForObject(renderedQuery, requiredType.java, *renderedParameters.toTypedArray())
 }
 
 inline fun <reified T : Any> NamedParameterJdbcTemplate.queryForObject(
@@ -57,7 +57,7 @@ fun <T : Any> NamedParameterJdbcTemplate.queryForObject(
     val rendered = sqlRendererForNamedParameterJdbcTemplate.render(query, context)
 
     val renderedQuery = rendered.query
-    val renderedParams = rendered.params as SqlRenderedParams.Named
+    val renderedParameters = rendered.parameters as SqlRenderedParameters.Named
 
-    return queryForObject(renderedQuery, renderedParams, requiredType.java)
+    return queryForObject(renderedQuery, renderedParameters, requiredType.java)
 }

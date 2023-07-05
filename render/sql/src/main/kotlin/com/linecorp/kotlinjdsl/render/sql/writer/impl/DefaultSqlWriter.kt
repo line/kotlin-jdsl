@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.render.sql.writer.impl
 
-import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParams
+import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParameters
 import com.linecorp.kotlinjdsl.render.sql.setting.ParamType
 import com.linecorp.kotlinjdsl.render.sql.writer.SqlWriter
 
@@ -9,9 +9,9 @@ class DefaultSqlWriter(
 ) : SqlWriter {
     private val stringBuilder: StringBuilder = StringBuilder()
 
-    private val valueWriter: ValueWriter = when (paramType) {
-        ParamType.INDEXED -> IndexedValueWriter()
-        ParamType.NAMED -> NamedValueWriter()
+    private val parameterWriter: ParameterWriter = when (paramType) {
+        ParamType.INDEXED -> IndexedParameterWriter()
+        ParamType.NAMED -> NamedParameterWriter()
     }
 
     override fun write(string: CharSequence) {
@@ -90,20 +90,20 @@ class DefaultSqlWriter(
         }
     }
 
-    override fun writeValue(value: Any?) {
-        valueWriter.writeValue(value)
+    override fun writeParameter(value: Any?) {
+        parameterWriter.writeValue(value)
     }
 
-    override fun writeValue(name: String, value: Any?) {
-        valueWriter.writeValue(name, value)
+    override fun writeParameter(name: String, value: Any?) {
+        parameterWriter.writeValue(name, value)
     }
 
     fun getQuery(): String {
         return stringBuilder.toString()
     }
 
-    fun getParams(): SqlRenderedParams {
-        return valueWriter.getParams()
+    fun getParameters(): SqlRenderedParameters {
+        return parameterWriter.getParameters()
     }
 
     private inner class Incrementer {
@@ -114,14 +114,14 @@ class DefaultSqlWriter(
         }
     }
 
-    private interface ValueWriter {
+    private interface ParameterWriter {
         fun writeValue(value: Any?)
         fun writeValue(name: String, value: Any?)
 
-        fun getParams(): SqlRenderedParams
+        fun getParameters(): SqlRenderedParameters
     }
 
-    private inner class IndexedValueWriter : ValueWriter {
+    private inner class IndexedParameterWriter : ParameterWriter {
         private val params = mutableListOf<Any?>()
 
         override fun writeValue(value: Any?) {
@@ -134,12 +134,12 @@ class DefaultSqlWriter(
             params.add(value)
         }
 
-        override fun getParams(): SqlRenderedParams {
-            return SqlRenderedParams.Indexed(params)
+        override fun getParameters(): SqlRenderedParameters {
+            return SqlRenderedParameters.Indexed(params)
         }
     }
 
-    private inner class NamedValueWriter : ValueWriter {
+    private inner class NamedParameterWriter : ParameterWriter {
         private val incrementer: Incrementer = Incrementer()
 
         private val params = mutableMapOf<String, Any?>()
@@ -156,8 +156,8 @@ class DefaultSqlWriter(
             params[name] = value
         }
 
-        override fun getParams(): SqlRenderedParams {
-            return SqlRenderedParams.Named(params)
+        override fun getParameters(): SqlRenderedParameters {
+            return SqlRenderedParameters.Named(params)
         }
     }
 }

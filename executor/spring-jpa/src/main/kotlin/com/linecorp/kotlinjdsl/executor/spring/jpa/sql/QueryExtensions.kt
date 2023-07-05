@@ -1,16 +1,16 @@
 package com.linecorp.kotlinjdsl.executor.spring.jpa.sql
 
-import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParams
+import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParameters
 import jakarta.persistence.Query
 
-internal fun Query.setParameters(params: SqlRenderedParams.Indexed) {
-    params.forEachIndexed { index, value ->
+internal fun Query.setParameters(parameters: SqlRenderedParameters.Indexed) {
+    parameters.forEachIndexed { index, value ->
         setParameter(index, value)
     }
 }
 
-internal fun Query.setParameters(params: SqlRenderedParams.Named) {
-    params.forEach { (name, value) ->
+internal fun Query.setParameters(parameters: SqlRenderedParameters.Named) {
+    parameters.forEach { (name, value) ->
         setParameter(name, value)
     }
 }

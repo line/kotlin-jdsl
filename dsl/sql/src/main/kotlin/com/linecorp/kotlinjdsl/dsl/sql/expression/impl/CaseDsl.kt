@@ -6,7 +6,7 @@ import com.linecorp.kotlinjdsl.dsl.sql.expression.CaseWhenMoreStep
 import com.linecorp.kotlinjdsl.querymodel.sql.Expression
 import com.linecorp.kotlinjdsl.querymodel.sql.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
-import com.linecorp.kotlinjdsl.querymodel.sql.impl.Literal
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.Parameter
 
 class CaseDsl<T> private constructor(
     private val builder: CaseBuilder<T>,
@@ -17,7 +17,7 @@ class CaseDsl<T> private constructor(
     constructor() : this(CaseBuilder())
 
     override fun `when`(predicate: Predicate, then: T): CaseWhenMoreStep<T?> {
-        builder.`when`(predicate, Literal(then))
+        builder.`when`(predicate, Parameter(then))
 
         @Suppress("UNCHECKED_CAST")
         return this as CaseWhenMoreStep<T?>
@@ -31,7 +31,7 @@ class CaseDsl<T> private constructor(
     }
 
     override fun <R : T> `else`(value: R): Expressionable<R> {
-        builder.`else`(Literal(value))
+        builder.`else`(Parameter(value))
 
         @Suppress("UNCHECKED_CAST")
         return this as Expressionable<R>
