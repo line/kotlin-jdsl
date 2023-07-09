@@ -3,7 +3,7 @@ package com.linecorp.kotlinjdsl.dsl.sql.insert.impl
 import com.linecorp.kotlinjdsl.dsl.sql.insert.*
 import com.linecorp.kotlinjdsl.querymodel.sql.*
 import com.linecorp.kotlinjdsl.querymodel.sql.impl.DerivedTable
-import com.linecorp.kotlinjdsl.querymodel.sql.impl.Parameter
+import com.linecorp.kotlinjdsl.querymodel.sql.impl.Param
 
 class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22> private constructor(
     private val builder: InsertQueryBuilder<T>,
@@ -789,7 +789,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
         val values = listOf(
             value1,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -805,7 +805,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value1,
             value2,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -823,7 +823,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value2,
             value3,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -843,7 +843,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value3,
             value4,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -865,7 +865,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value4,
             value5,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -889,7 +889,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value5,
             value6,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -915,7 +915,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value6,
             value7,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -943,7 +943,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value7,
             value8,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -973,7 +973,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value8,
             value9,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1005,7 +1005,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value9,
             value10,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1039,7 +1039,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value10,
             value11,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1075,7 +1075,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value11,
             value12,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1113,7 +1113,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value12,
             value13,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1153,7 +1153,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value13,
             value14,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1195,7 +1195,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value14,
             value15,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1239,7 +1239,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value15,
             value16,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1285,7 +1285,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value16,
             value17,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1333,7 +1333,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value17,
             value18,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1383,7 +1383,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value18,
             value19,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1435,7 +1435,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value19,
             value20,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1489,7 +1489,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value20,
             value21,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1545,7 +1545,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
             value21,
             value22,
         ).map {
-            Parameter(it)
+            Param(it)
         }
 
         builder.values(values)
@@ -1556,7 +1556,7 @@ class InsertQueryDsl<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12,
     override fun values(
         vararg values: Any?,
     ): InsertQueryValueStepN<T> {
-        builder.values(values.map { Parameter(it) })
+        builder.values(values.map { Param(it) })
 
         return this
     }

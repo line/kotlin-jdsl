@@ -17,7 +17,7 @@ class SqlRenderer(
 
         return SqlRendered(
             query = writer.getQuery(),
-            parameters = writer.getParameters(),
+            params = writer.getParams(),
         )
     }
 

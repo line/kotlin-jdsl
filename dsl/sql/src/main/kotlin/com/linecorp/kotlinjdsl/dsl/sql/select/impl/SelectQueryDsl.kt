@@ -72,7 +72,7 @@ class SelectQueryDsl private constructor(
             @Suppress("UNCHECKED_CAST")
             val casted = it as KProperty1<Any, *>
 
-            com.linecorp.kotlinjdsl.querymodel.sql.Column(TableReference(casted.owner()), casted)
+            Column(TableReference(casted.owner()), casted)
         }
 
         builder.groupBy(columns)

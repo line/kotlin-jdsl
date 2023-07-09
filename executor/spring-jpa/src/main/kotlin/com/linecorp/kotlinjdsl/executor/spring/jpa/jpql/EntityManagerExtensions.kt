@@ -22,10 +22,10 @@ fun EntityManager.createQuery(
     val rendered = jpqlRenderer.render(query, context)
 
     val renderedQuery = rendered.query
-    val renderedParams = rendered.parameters
+    val renderedParams = rendered.params
 
     return createQuery(renderedQuery).apply {
-        setParameters(renderedParams)
+        setParams(renderedParams)
     }
 }
 
@@ -44,10 +44,10 @@ fun <T : Any> EntityManager.createQuery(
     val rendered = jpqlRenderer.render(query, context)
 
     val renderedQuery = rendered.query
-    val renderedParams = rendered.parameters
+    val renderedParams = rendered.params
 
     return createQuery(renderedQuery, resultClass.java).apply {
-        setParameters(renderedParams)
+        setParams(renderedParams)
     }
 }
 
@@ -68,17 +68,17 @@ fun <T : Any> EntityManager.queryForPage(
     val rendered = jpqlRenderer.render(query, context)
 
     val renderedQuery = rendered.query
-    val renderedParams = rendered.parameters
+    val renderedParams = rendered.params
 
     val sortedQuery = QueryUtilsAdaptor.applySorting(renderedQuery, pageable.sort)
     val countQuery = QueryUtilsAdaptor.createCountQueryFor(renderedQuery, null, false)
 
     val sortedJpaQuery = createQuery(sortedQuery, resultClass.java).apply {
-        setParameters(renderedParams)
+        setParams(renderedParams)
     }
 
     val countJpaQuery = createQuery(countQuery, Long::class.java).apply {
-        setParameters(renderedParams)
+        setParams(renderedParams)
     }
 
     return PageableExecutionUtils.getPage(sortedJpaQuery.resultList, pageable) {

@@ -1,8 +1,10 @@
 package com.linecorp.kotlinjdsl.executor.spring.jdbc.sql
 
+import com.linecorp.kotlinjdsl.querymodel.sql.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.sql.SqlQuery
+import com.linecorp.kotlinjdsl.querymodel.sql.SqlQueryable
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParameters
+import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParams
 import com.linecorp.kotlinjdsl.render.sql.SqlRenderer
 import com.linecorp.kotlinjdsl.render.sql.setting.ParamType
 import com.linecorp.kotlinjdsl.render.sql.setting.SqlRenderSetting
@@ -23,23 +25,23 @@ private val sqlRendererForNamedParameterJdbcTemplate = SqlRenderer(
 )
 
 inline fun <reified T : Any> JdbcTemplate.queryForObject(
-    query: SqlQuery<*>,
+    query: SqlQueryable<SelectQuery>,
     context: RenderContext,
 ): T? {
     return queryForObject(query, context, T::class)
 }
 
 fun <T : Any> JdbcTemplate.queryForObject(
-    query: SqlQuery<*>,
+    query: SqlQueryable<SelectQuery>,
     context: RenderContext,
     requiredType: KClass<T>,
 ): T? {
-    val rendered = sqlRendererForJdbcTemplate.render(query, context)
+    val rendered = sqlRendererForJdbcTemplate.render(query.toQuery(), context)
 
     val renderedQuery = rendered.query
-    val renderedParameters = rendered.parameters as SqlRenderedParameters.Indexed
+    val renderedParams = rendered.params as SqlRenderedParams.Indexed
 
-    return queryForObject(renderedQuery, requiredType.java, *renderedParameters.toTypedArray())
+    return queryForObject(renderedQuery, requiredType.java, *renderedParams.toTypedArray())
 }
 
 inline fun <reified T : Any> NamedParameterJdbcTemplate.queryForObject(
@@ -57,7 +59,7 @@ fun <T : Any> NamedParameterJdbcTemplate.queryForObject(
     val rendered = sqlRendererForNamedParameterJdbcTemplate.render(query, context)
 
     val renderedQuery = rendered.query
-    val renderedParameters = rendered.parameters as SqlRenderedParameters.Named
+    val renderedParams = rendered.params as SqlRenderedParams.Named
 
-    return queryForObject(renderedQuery, renderedParameters, requiredType.java)
+    return queryForObject(renderedQuery, renderedParams, requiredType.java)
 }

@@ -3,7 +3,7 @@ package com.linecorp.kotlinjdsl.executor.jdbc
 import com.linecorp.kotlinjdsl.querymodel.sql.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.sql.SqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParameters
+import com.linecorp.kotlinjdsl.render.sql.SqlRenderedParams
 import com.linecorp.kotlinjdsl.render.sql.SqlRenderer
 import com.linecorp.kotlinjdsl.render.sql.setting.ParamType
 import com.linecorp.kotlinjdsl.render.sql.setting.SqlRenderSetting
@@ -23,13 +23,13 @@ fun Connection.prepareStatement(
     val rendered = sqlRenderer.render(query, context)
 
     val renderedQuery = rendered.query
-    val renderedParameters = rendered.parameters as SqlRenderedParameters.Indexed
+    val renderedParams = rendered.params as SqlRenderedParams.Indexed
 
     val preparedStatement = prepareStatement(renderedQuery)
 
     var paramIndex = 1
 
-    renderedParameters.forEach { param ->
+    renderedParams.forEach { param ->
         if (param == null) {
             preparedStatement.setNull(paramIndex++)
         } else {

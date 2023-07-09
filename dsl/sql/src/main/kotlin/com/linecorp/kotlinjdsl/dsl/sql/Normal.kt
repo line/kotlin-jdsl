@@ -42,10 +42,10 @@ open class Normal : SqlDsl {
         return TableAsterisk(table)
     }
 
-    @JvmName("parameter1")
+    @JvmName("param1")
     @SinceJdsl("3.0.0")
-    fun <T> parameter(value: T): Expression<T> {
-        return Parameter(value)
+    fun <T> param(value: T): Expression<T> {
+        return Param(value)
     }
 
     @JvmName("max1")
@@ -348,7 +348,7 @@ open class Normal : SqlDsl {
     @JvmName("equal1")
     @SinceJdsl("3.0.0")
     fun <T> Expressionable<T>.equal(value: T): Predicate {
-        return Equal(this.toExpression(), Parameter(value), not = false)
+        return Equal(this.toExpression(), Param(value), not = false)
     }
 
     @JvmName("equal2")
@@ -360,7 +360,7 @@ open class Normal : SqlDsl {
     @JvmName("equal3")
     @SinceJdsl("3.0.0")
     fun <T> equal(left: Expressionable<T>, right: T): Predicate {
-        return Equal(left.toExpression(), Parameter(right), not = false)
+        return Equal(left.toExpression(), Param(right), not = false)
     }
 
     @JvmName("equal4")
@@ -372,7 +372,7 @@ open class Normal : SqlDsl {
     @JvmName("notEqual1")
     @SinceJdsl("3.0.0")
     fun <T> Expressionable<T>.notEqual(value: T): Predicate {
-        return Equal(this.toExpression(), Parameter(value), not = true)
+        return Equal(this.toExpression(), Param(value), not = true)
     }
 
     @JvmName("notEqual2")
@@ -384,7 +384,7 @@ open class Normal : SqlDsl {
     @JvmName("notEqual3")
     @SinceJdsl("3.0.0")
     fun <T> notEqual(left: Expressionable<T>, right: T): Predicate {
-        return Equal(left.toExpression(), Parameter(right), not = true)
+        return Equal(left.toExpression(), Param(right), not = true)
     }
 
     @JvmName("notEqual4")
@@ -396,7 +396,7 @@ open class Normal : SqlDsl {
     @JvmName("between1")
     @SinceJdsl("3.0.0")
     fun <T> Expressionable<T>.between(value1: T, value2: T): Predicate {
-        return Between(this.toExpression(), parameter(value1), parameter(value2), not = false)
+        return Between(this.toExpression(), param(value1), param(value2), not = false)
     }
 
     @JvmName("between2")
@@ -408,7 +408,7 @@ open class Normal : SqlDsl {
     @JvmName("between3")
     @SinceJdsl("3.0.0")
     fun <T> between(left: Expressionable<T>, right1: T, right2: T): Predicate {
-        return Between(left.toExpression(), parameter(right1), parameter(right2), not = false)
+        return Between(left.toExpression(), param(right1), param(right2), not = false)
     }
 
     @JvmName("between4")
@@ -420,7 +420,7 @@ open class Normal : SqlDsl {
     @JvmName("notBetween1")
     @SinceJdsl("3.0.0")
     fun <T> Expressionable<T>.notBetween(value1: T, value2: T): Predicate {
-        return Between(this.toExpression(), parameter(value1), parameter(value2), not = true)
+        return Between(this.toExpression(), param(value1), param(value2), not = true)
     }
 
     @JvmName("notBetween2")
@@ -432,7 +432,7 @@ open class Normal : SqlDsl {
     @JvmName("notBetween3")
     @SinceJdsl("3.0.0")
     fun <T> notBetween(left: Expressionable<T>, right1: T, right2: T): Predicate {
-        return Between(left.toExpression(), parameter(right1), parameter(right2), not = true)
+        return Between(left.toExpression(), param(right1), param(right2), not = true)
     }
 
     @JvmName("notBetween4")
@@ -444,7 +444,7 @@ open class Normal : SqlDsl {
     @JvmName("like1")
     @SinceJdsl("3.0.0")
     fun Expressionable<*>.like(value: String): Predicate {
-        return Like(this.toExpression(), Parameter(value), not = false)
+        return Like(this.toExpression(), Param(value), not = false)
     }
 
     @JvmName("like2")
@@ -456,7 +456,7 @@ open class Normal : SqlDsl {
     @JvmName("like3")
     @SinceJdsl("3.0.0")
     fun like(left: Expressionable<*>, right: String): Predicate {
-        return Like(left.toExpression(), Parameter(right), not = false)
+        return Like(left.toExpression(), Param(right), not = false)
     }
 
     @JvmName("like4")
@@ -468,7 +468,7 @@ open class Normal : SqlDsl {
     @JvmName("notLike1")
     @SinceJdsl("3.0.0")
     fun Expressionable<*>.notLike(value: String): Predicate {
-        return Like(this.toExpression(), Parameter(value), not = true)
+        return Like(this.toExpression(), Param(value), not = true)
     }
 
     @JvmName("notLike2")
@@ -480,7 +480,7 @@ open class Normal : SqlDsl {
     @JvmName("notLike3")
     @SinceJdsl("3.0.0")
     fun notLike(left: Expressionable<*>, right: String): Predicate {
-        return Like(left.toExpression(), Parameter(right), not = true)
+        return Like(left.toExpression(), Param(right), not = true)
     }
 
     @JvmName("notLike4")
@@ -492,7 +492,7 @@ open class Normal : SqlDsl {
     @JvmName("greaterThan1")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> Expressionable<T>.greaterThan(value: T, inclusive: Boolean = false): Predicate {
-        return GreaterThan(this.toExpression(), Parameter(value), inclusive, not = false)
+        return GreaterThan(this.toExpression(), Param(value), inclusive, not = false)
     }
 
     @JvmName("greaterThan2")
@@ -507,7 +507,7 @@ open class Normal : SqlDsl {
     @JvmName("greaterThan3")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> greaterThan(left: Expressionable<T>, right: T, inclusive: Boolean = false): Predicate {
-        return GreaterThan(left.toExpression(), Parameter(right), inclusive, not = false)
+        return GreaterThan(left.toExpression(), Param(right), inclusive, not = false)
     }
 
     @JvmName("greaterThan4")
@@ -523,7 +523,7 @@ open class Normal : SqlDsl {
     @JvmName("greaterThanEqualTo1")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> Expressionable<T>.greaterThanEqualTo(value: T): Predicate {
-        return GreaterThan(this.toExpression(), Parameter(value), inclusive = true, not = false)
+        return GreaterThan(this.toExpression(), Param(value), inclusive = true, not = false)
     }
 
     @JvmName("greaterThanEqualTo2")
@@ -535,7 +535,7 @@ open class Normal : SqlDsl {
     @JvmName("greaterThanEqualTo3")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> greaterThanEqualTo(left: Expressionable<T>, right: T): Predicate {
-        return GreaterThan(left.toExpression(), Parameter(right), inclusive = true, not = false)
+        return GreaterThan(left.toExpression(), Param(right), inclusive = true, not = false)
     }
 
     @JvmName("greaterThanEqualTo4")
@@ -547,7 +547,7 @@ open class Normal : SqlDsl {
     @JvmName("notGreaterThan1")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> Expressionable<T>.notGreaterThan(value: T, inclusive: Boolean = false): Predicate {
-        return GreaterThan(this.toExpression(), Parameter(value), inclusive, not = true)
+        return GreaterThan(this.toExpression(), Param(value), inclusive, not = true)
     }
 
     @JvmName("notGreaterThan2")
@@ -562,7 +562,7 @@ open class Normal : SqlDsl {
     @JvmName("notGreaterThan3")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> notGreaterThan(left: Expressionable<T>, right: T, inclusive: Boolean = false): Predicate {
-        return GreaterThan(left.toExpression(), Parameter(right), inclusive, not = true)
+        return GreaterThan(left.toExpression(), Param(right), inclusive, not = true)
     }
 
     @JvmName("notGreaterThan4")
@@ -578,7 +578,7 @@ open class Normal : SqlDsl {
     @JvmName("notGreaterThanEqualTo1")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> Expressionable<T>.notGreaterThanEqualTo(value: T): Predicate {
-        return GreaterThan(this.toExpression(), Parameter(value), inclusive = true, not = true)
+        return GreaterThan(this.toExpression(), Param(value), inclusive = true, not = true)
     }
 
     @JvmName("notGreaterThanEqualTo2")
@@ -590,7 +590,7 @@ open class Normal : SqlDsl {
     @JvmName("notGreaterThanEqualTo3")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> notGreaterThanEqualTo(left: Expressionable<T>, right: T): Predicate {
-        return GreaterThan(left.toExpression(), Parameter(right), inclusive = true, not = true)
+        return GreaterThan(left.toExpression(), Param(right), inclusive = true, not = true)
     }
 
     @JvmName("notGreaterThanEqualTo4")
@@ -602,7 +602,7 @@ open class Normal : SqlDsl {
     @JvmName("lessThan1")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> Expressionable<T>.lessThan(value: T, inclusive: Boolean = false): Predicate {
-        return LessThan(this.toExpression(), Parameter(value), inclusive, not = false)
+        return LessThan(this.toExpression(), Param(value), inclusive, not = false)
     }
 
     @JvmName("lessThan2")
@@ -617,7 +617,7 @@ open class Normal : SqlDsl {
     @JvmName("lessThan3")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> lessThan(left: Expressionable<T>, right: T, inclusive: Boolean = false): Predicate {
-        return LessThan(left.toExpression(), Parameter(right), inclusive, not = false)
+        return LessThan(left.toExpression(), Param(right), inclusive, not = false)
     }
 
     @JvmName("lessThan4")
@@ -633,7 +633,7 @@ open class Normal : SqlDsl {
     @JvmName("lessThanEqualTo1")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> Expressionable<T>.lessThanEqualTo(value: T): Predicate {
-        return LessThan(this.toExpression(), Parameter(value), inclusive = true, not = false)
+        return LessThan(this.toExpression(), Param(value), inclusive = true, not = false)
     }
 
     @JvmName("lessThanEqualTo2")
@@ -645,7 +645,7 @@ open class Normal : SqlDsl {
     @JvmName("lessThanEqualTo3")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> lessThanEqualTo(left: Expressionable<T>, right: T): Predicate {
-        return LessThan(left.toExpression(), Parameter(right), inclusive = true, not = false)
+        return LessThan(left.toExpression(), Param(right), inclusive = true, not = false)
     }
 
     @JvmName("lessThanEqualTo4")
@@ -657,7 +657,7 @@ open class Normal : SqlDsl {
     @JvmName("notLessThan1")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> Expressionable<T>.notLessThan(value: T, inclusive: Boolean = false): Predicate {
-        return LessThan(this.toExpression(), Parameter(value), inclusive, not = true)
+        return LessThan(this.toExpression(), Param(value), inclusive, not = true)
     }
 
     @JvmName("notLessThan2")
@@ -672,7 +672,7 @@ open class Normal : SqlDsl {
     @JvmName("notLessThan3")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> notLessThan(left: Expressionable<T>, right: T, inclusive: Boolean = false): Predicate {
-        return LessThan(left.toExpression(), Parameter(right), inclusive, not = true)
+        return LessThan(left.toExpression(), Param(right), inclusive, not = true)
     }
 
     @JvmName("notLessThan4")
@@ -688,7 +688,7 @@ open class Normal : SqlDsl {
     @JvmName("notLessThanEqualTo1")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> Expressionable<T>.notLessThanEqualTo(value: T): Predicate {
-        return LessThan(this.toExpression(), Parameter(value), inclusive = true, not = true)
+        return LessThan(this.toExpression(), Param(value), inclusive = true, not = true)
     }
 
     @JvmName("notLessThanEqualTo2")
@@ -700,7 +700,7 @@ open class Normal : SqlDsl {
     @JvmName("notLessThanEqualTo3")
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>?> notLessThanEqualTo(left: Expressionable<T>, right: T): Predicate {
-        return LessThan(left.toExpression(), Parameter(right), inclusive = true, not = true)
+        return LessThan(left.toExpression(), Param(right), inclusive = true, not = true)
     }
 
     @JvmName("notLessThanEqualTo4")
@@ -832,13 +832,13 @@ open class Normal : SqlDsl {
     @JvmName("in1")
     @SinceJdsl("3.0.0")
     fun <T> Expressionable<T>.`in`(vararg expressions: T): Predicate {
-        return In(this.toExpression(), expressions.map { Parameter(it) }, not = false)
+        return In(this.toExpression(), expressions.map { Param(it) }, not = false)
     }
 
     @JvmName("in2")
     @SinceJdsl("3.0.0")
     fun <T> Expressionable<T>.`in`(expressions: Collection<T>): Predicate {
-        return In(this.toExpression(), expressions.map { Parameter(it) }, not = false)
+        return In(this.toExpression(), expressions.map { Param(it) }, not = false)
     }
 
     @JvmName("in3")
@@ -856,13 +856,13 @@ open class Normal : SqlDsl {
     @JvmName("notIn1")
     @SinceJdsl("3.0.0")
     fun <T> Expressionable<T>.notIn(vararg expressions: T): Predicate {
-        return In(this.toExpression(), expressions.map { Parameter(it) }, not = true)
+        return In(this.toExpression(), expressions.map { Param(it) }, not = true)
     }
 
     @JvmName("notIn2")
     @SinceJdsl("3.0.0")
     fun <T> Expressionable<T>.notIn(expressions: Collection<T>): Predicate {
-        return In(this.toExpression(), expressions.map { Parameter(it) }, not = true)
+        return In(this.toExpression(), expressions.map { Param(it) }, not = true)
     }
 
     @JvmName("notIn3")
@@ -912,7 +912,7 @@ open class Normal : SqlDsl {
     @JvmName("select1")
     @SinceJdsl("3.0.0")
     fun select(vararg values: Any?): SelectQueryFromStep {
-        return SelectQueryDsl(values.map { Parameter(it) }, distinct = false)
+        return SelectQueryDsl(values.map { Param(it) }, distinct = false)
     }
 
     @JvmName("select2")
@@ -924,7 +924,7 @@ open class Normal : SqlDsl {
     @JvmName("select3")
     @SinceJdsl("3.0.0")
     fun select(values: Collection<Any?>): SelectQueryFromStep {
-        return SelectQueryDsl(values.map { Parameter(it) }, distinct = false)
+        return SelectQueryDsl(values.map { Param(it) }, distinct = false)
     }
 
     @JvmName("select4")
@@ -936,7 +936,7 @@ open class Normal : SqlDsl {
     @JvmName("selectDistinct1")
     @SinceJdsl("3.0.0")
     fun selectDistinct(vararg values: Any?): SelectQueryFromStep {
-        return SelectQueryDsl(values.map { Parameter(it) }, distinct = true)
+        return SelectQueryDsl(values.map { Param(it) }, distinct = true)
     }
 
     @JvmName("selectDistinct2")
@@ -954,6 +954,6 @@ open class Normal : SqlDsl {
     @JvmName("selectDistinct4")
     @SinceJdsl("3.0.0")
     fun selectDistinct(values: Collection<Any?>): SelectQueryFromStep {
-        return SelectQueryDsl(values.map { Parameter(it) }, distinct = true)
+        return SelectQueryDsl(values.map { Param(it) }, distinct = true)
     }
 }
