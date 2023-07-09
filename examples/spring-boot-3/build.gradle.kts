@@ -13,7 +13,7 @@ coverage {
 }
 
 dependencies {
-    // implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:x.y.z")
+    // implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter-jakarta:x.y.z")
     implementation(Modules.springDataStarterJakarta)
 
     implementation(libs.spring.boot3.web)
