@@ -25,7 +25,7 @@ class NullIfDslTest : AbstractJpqlDslTest() {
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
-            right = Param(null, int1),
+            right = Value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -46,7 +46,7 @@ class NullIfDslTest : AbstractJpqlDslTest() {
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
-            right = Param(null, nullableInt1),
+            right = Value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -67,7 +67,7 @@ class NullIfDslTest : AbstractJpqlDslTest() {
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),
-            right = Param(null, int1),
+            right = Value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -88,7 +88,7 @@ class NullIfDslTest : AbstractJpqlDslTest() {
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),
-            right = Param(null, nullableInt1),
+            right = Value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)

@@ -30,10 +30,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Param(null, int1),
+                    result = Value(int1),
                 ),
             ),
             `else` = null,
@@ -60,10 +60,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Param(null, nullableInt1),
+                    result = Value(nullableInt1),
                 ),
             ),
             `else` = null,
@@ -90,10 +90,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Field(
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -123,10 +123,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Field(
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -162,10 +162,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Param(null, int1),
+                    result = Value(int1),
                 ),
                 // more
                 CaseWhen(
@@ -174,10 +174,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Param(null, int1),
+                    result = Value(int1),
                 ),
                 CaseWhen(
                     predicate = Equal(
@@ -185,10 +185,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Param(null, nullableInt1),
+                    result = Value(nullableInt1),
                 ),
                 CaseWhen(
                     predicate = Equal(
@@ -196,10 +196,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Field(
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -210,10 +210,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Field(
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -243,13 +243,13 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Param(null, int1),
+                    result = Value(int1),
                 ),
             ),
-            `else` = Param(null, int1),
+            `else` = Value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -273,13 +273,13 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Param(null, int1),
+                    result = Value(int1),
                 ),
             ),
-            `else` = Param(null, nullableInt1),
+            `else` = Value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -303,10 +303,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Param(null, int1),
+                    result = Value(int1),
                 ),
             ),
             `else` = Field(
@@ -336,10 +336,10 @@ class CaseDslTest : AbstractJpqlDslTest() {
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
-                        right = Param(null, string1),
+                        right = Value(string1),
                         not = false,
                     ),
-                    then = Param(null, int1),
+                    result = Value(int1),
                 ),
             ),
             `else` = Field(
@@ -368,8 +368,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             ),
             whens = listOf(
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, int1),
+                    compareValue = Value(string1),
+                    result = Value(int1),
                 ),
             ),
             `else` = null,
@@ -395,8 +395,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             ),
             whens = listOf(
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, int1),
+                    compareValue = Value(string1),
+                    result = Value(int1),
                 ),
             ),
             `else` = null,
@@ -422,8 +422,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             ),
             whens = listOf(
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, nullableInt1),
+                    compareValue = Value(string1),
+                    result = Value(nullableInt1),
                 ),
             ),
             `else` = null,
@@ -449,8 +449,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             ),
             whens = listOf(
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Field(
+                    compareValue = Value(string1),
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -479,8 +479,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             ),
             whens = listOf(
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Field(
+                    compareValue = Value(string1),
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -513,7 +513,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
-                    then = Param(null, int1),
+                    result = Value(int1),
                 ),
             ),
             `else` = null,
@@ -543,7 +543,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
-                    then = Param(null, nullableInt1),
+                    result = Value(nullableInt1),
                 ),
             ),
             `else` = null,
@@ -573,7 +573,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
-                    then = Field(
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -606,7 +606,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
-                    then = Field(
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -649,28 +649,28 @@ class CaseDslTest : AbstractJpqlDslTest() {
             whens = listOf(
                 // first
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, int1),
+                    compareValue = Value(string1),
+                    result = Value(int1),
                 ),
                 // more
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, int1),
+                    compareValue = Value(string1),
+                    result = Value(int1),
                 ),
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, nullableInt1),
+                    compareValue = Value(string1),
+                    result = Value(nullableInt1),
                 ),
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Field(
+                    compareValue = Value(string1),
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
                 ),
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Field(
+                    compareValue = Value(string1),
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -680,21 +680,21 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
-                    then = Param(null, int1),
+                    result = Value(int1),
                 ),
                 CaseValueWhen(
                     compareValue = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
-                    then = Param(null, nullableInt1),
+                    result = Value(nullableInt1),
                 ),
                 CaseValueWhen(
                     compareValue = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
-                    then = Field(
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -704,7 +704,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
-                    then = Field(
+                    result = Field(
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -735,11 +735,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
             ),
             whens = listOf(
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, int1),
+                    compareValue = Value(string1),
+                    result = Value(int1),
                 ),
             ),
-            `else` = Param(null, int1),
+            `else` = Value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -764,11 +764,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
             ),
             whens = listOf(
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, int1),
+                    compareValue = Value(string1),
+                    result = Value(int1),
                 ),
             ),
-            `else` = Param(null, nullableInt1),
+            `else` = Value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -793,8 +793,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             ),
             whens = listOf(
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, int1),
+                    compareValue = Value(string1),
+                    result = Value(int1),
                 ),
             ),
             `else` = Field(
@@ -825,8 +825,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             ),
             whens = listOf(
                 CaseValueWhen(
-                    compareValue = Param(null, string1),
-                    then = Param(null, int1),
+                    compareValue = Value(string1),
+                    result = Value(int1),
                 ),
             ),
             `else` = Field(

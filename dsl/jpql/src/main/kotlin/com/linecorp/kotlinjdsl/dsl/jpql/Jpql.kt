@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.dsl.jpql
 
+import com.linecorp.kotlinjdsl.Experimental
 import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseWhenStep
@@ -31,21 +32,16 @@ open class Jpql : JpqlDsl {
     }
 
     @JvmName("nullValue1")
-    fun <T> nullValue(): Expression<T> {
+    fun <T> nullValue(): Expression<T?> {
         return JpqlDslSupport.nullValue()
     }
 
     @JvmName("param1")
-    fun <T> param(): Expression<T> {
-        return JpqlDslSupport.param()
-    }
-
-    @JvmName("param2")
     fun <T> param(name: String): Expression<T> {
         return JpqlDslSupport.param(name)
     }
 
-    @JvmName("param3")
+    @JvmName("param2")
     fun <T> param(name: String, value: T): Expression<T> {
         return JpqlDslSupport.param(name, value)
     }
@@ -100,16 +96,88 @@ open class Jpql : JpqlDsl {
         return JpqlDslSupport.treat(this, type)
     }
 
+    /**
+     * Expression that returns a count of the number of non-null values of [expression].
+     *
+     * If there are no matching rows, it returns 0.
+     */
+    @JvmName("count1")
+    fun count(expression: Expression<*>, distinct: Boolean = false): Expression<Long> {
+        return JpqlDslSupport.count(expression, distinct)
+    }
+
+    /**
+     * Expression that returns a count of the number of non-null values of [expression].
+     *
+     * If there are no matching rows, it returns 0.
+     */
+    @JvmName("countDistinct1")
+    fun countDistinct(expression: Expression<*>): Expression<Long> {
+        return JpqlDslSupport.count(expression, distinct = true)
+    }
+
+    /**
+     * Expression that returns the maximum value of [expression].
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @JvmName("max1")
+    fun <T : Comparable<T>> max(expression: Expression<T?>, distinct: Boolean = false): Expression<T?> {
+        return JpqlDslSupport.max(expression, distinct)
+    }
+
+    /**
+     * Expression that returns the maximum value of [expression].
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @JvmName("maxDistinct1")
+    fun <T : Comparable<T>> maxDistinct(expression: Expression<T?>): Expression<T?> {
+        return JpqlDslSupport.maxDistinct(expression)
+    }
+
+    /**
+     * Expression that returns the minimum value of [expression].
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @JvmName("min1")
+    fun <T : Comparable<T>> min(expression: Expression<T?>, distinct: Boolean = false): Expression<T?> {
+        return JpqlDslSupport.min(expression, distinct)
+    }
+
+    /**
+     * Expression that returns the minimum value of [expression].
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @JvmName("minDistinct1")
+    fun <T : Comparable<T>> minDistinct(expression: Expression<T?>): Expression<T?> {
+        return JpqlDslSupport.minDistinct(expression)
+    }
+
+    /**
+     * Expression that returns the result for the first value = compareValue comparison that is true.
+     * If no comparison is true, the result after ELSE is returned, or NULL if there is no ELSE part.
+     */
     @JvmName("case1")
     fun <T> case(expression: Expressionable<T>): CaseValueWhenFirstStep<T> {
         return JpqlDslSupport.case(expression)
     }
 
+    /**
+     * Expression that returns the result for the first predicate that is true.
+     * If no predicate is true, the result after ELSE is returned, or NULL if there is no ELSE part.
+     */
     @JvmName("caseWhen1")
     fun <T> caseWhen(predicate: Predicatable, then: T): CaseWhenStep<T?> {
         return JpqlDslSupport.caseWhen(predicate, then)
     }
 
+    /**
+     * Expression that returns the result for the first predicate that is true.
+     * If no predicate is true, the result after ELSE is returned, or NULL if there is no ELSE part.
+     */
     @JvmName("caseWhen2")
     fun <T> caseWhen(predicate: Predicatable, then: Expressionable<T>): CaseWhenStep<T?> {
         return JpqlDslSupport.caseWhen(predicate, then)
@@ -124,6 +192,7 @@ open class Jpql : JpqlDsl {
      * It can be also determined as non-null expression by specifying generic as the non-null type.
      */
     @JvmName("coalesce1")
+    @Experimental
     fun <T> coalesce(expression: Expressionable<in T>, vararg expressions: Expressionable<in T>): Expression<T> {
         return JpqlDslSupport.coalesce(expression, expressions.toList())
     }
@@ -134,55 +203,108 @@ open class Jpql : JpqlDsl {
      * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END. ```
      */
     @JvmName("nullIf1")
+    @Experimental
     fun <T> nullIf(left: Expressionable<T>, right: Expressionable<T>): Expression<T?> {
         return JpqlDslSupport.nullIf(left, right)
     }
 
+    /**
+     * Expression that returns the type of the entity.
+     *
+     * This is the same as ```TYPE(entity)``` and can be used to restrict query polymorphism.
+     *
+     * Examples:
+     * ```sql
+     * TYPE(entity) IN (Exempt, Contractor)
+     * ```
+     * ```sql
+     * CASE TYPE(entity) WHEN Exempt THEN 'Exempt'
+     *                   WHEN Contractor THEN 'Contractor'
+     *                   ELSE 'NonExempt'
+     * END
+     * ```
+     */
     @JvmName("type1")
-    fun <T> type(path: Path<T>): Expression<KClass<T & Any>> {
+    fun <T : Any, PATH : Path<T>> type(path: PATH): Expression<KClass<T>> {
         return JpqlDslSupport.type(path)
     }
 
-    @JvmName("templateExpression1")
-    fun <T> templateExpression(template: String, vararg args: Expressionable<*>): Expression<T> {
-        return JpqlDslSupport.templateExpression(template, args.toList())
+    /**
+     * Expression that returns the type of the entity.
+     *
+     * This is the same as ```TYPE(entity)``` and can be used to restrict query polymorphism.
+     *
+     * Examples:
+     * ```sql
+     * TYPE(entity) IN (Exempt, Contractor)
+     * ```
+     * ```sql
+     * CASE TYPE(entity) WHEN Exempt THEN 'Exempt'
+     *                   WHEN Contractor THEN 'Contractor'
+     *                   ELSE 'NonExempt'
+     * END
+     * ```
+     */
+    @JvmName("type2")
+    fun <T, PATH : Path<T>> type(path: PATH): Expression<KClass<T & Any>?> {
+        return JpqlDslSupport.type(path)
+    }
+
+    /**
+     * Expression that renders the user-defined string to JPQL.
+     *
+     * The user-defined string can have PlaceHolders.
+     * PlaceHolders in string are replaced with Expression in args, matching with index.
+     *
+     * ```
+     * PlaceHolder: { ArgumentIndex }
+     * ```
+     *
+     * Examples:
+     * ```
+     * customExpression("CAST({0} as VARCHAR)", path(User::age))
+     * ```
+     */
+    @JvmName("customExpression1")
+    fun <T> customExpression(template: String, vararg args: Expressionable<*>): Expression<T> {
+        return JpqlDslSupport.customExpression(template, args.toList())
     }
 
     @JvmName("join1")
-    inline fun <T, reified CLASS : T & Any> Path<*>.join(
+    inline fun <reified T> Path<*>.join(
         path: Path<T>,
         on: Predicate? = null,
         joinType: JoinType = JoinType.INNER,
         fetch: Boolean = false,
     ): Path<T> {
-        return JpqlDslSupport.join(this, path, on, joinType, fetch, CLASS::class)
+        return JpqlDslSupport.join(this, path, on, joinType, fetch, T::class)
     }
 
     @JvmName("join2")
-    inline fun <T, reified CLASS : T & Any> Path<*>.join(
+    inline fun <reified T> Path<*>.join(
         path: Path<T>,
         on: Predicate? = null,
         fetch: Boolean = false,
     ): Path<T> {
-        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch, CLASS::class)
+        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch, T::class)
     }
 
     @JvmName("innerJoin1")
-    inline fun <T, reified CLASS : T & Any> Path<*>.innerJoin(
+    inline fun <reified T> Path<*>.innerJoin(
         path: Path<T>,
         on: Predicate? = null,
         fetch: Boolean = false,
     ): Path<T> {
-        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch, CLASS::class)
+        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch, T::class)
     }
 
     @JvmName("leftJoin1")
-    inline fun <T, reified CLASS : T & Any> Path<*>.leftJoin(
+    inline fun <reified T> Path<*>.leftJoin(
         path: Path<T>,
         on: Predicate? = null,
         fetch: Boolean = false,
     ): Path<T> {
-        return JpqlDslSupport.join(this, path, on, JoinType.LEFT, fetch, CLASS::class)
+        return JpqlDslSupport.join(this, path, on, JoinType.LEFT, fetch, T::class)
     }
 
     @JvmName("equal1")

@@ -7,5 +7,5 @@ import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
 @Internal
 data class CaseWhen<T>(
     val predicate: Predicate,
-    val then: Expression<T>,
+    val result: Expression<T>,
 )

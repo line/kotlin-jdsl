@@ -12,17 +12,16 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
+/**
+ * Operations for JPQL DSL.
+ */
 object JpqlDslSupport {
     fun <T> value(value: T): Expression<T> {
-        return Param(null, value)
+        return Value(value)
     }
 
-    fun <T> nullValue(): Expression<T> {
-        return Param(null, null)
-    }
-
-    fun <T> param(): Expression<T> {
-        return Param(null, null)
+    fun <T> nullValue(): Expression<T?> {
+        return Value(null)
     }
 
     fun <T> param(name: String): Expression<T> {
@@ -90,6 +89,26 @@ object JpqlDslSupport {
         return Treat(path, type)
     }
 
+    fun count(expression: Expression<*>, distinct: Boolean): Expression<Long> {
+        return Count(expression, distinct)
+    }
+
+    fun <T : Comparable<T>> max(expression: Expression<T?>, distinct: Boolean): Expression<T?> {
+        return Max(expression, distinct)
+    }
+
+    fun <T : Comparable<T>> maxDistinct(expression: Expression<T?>): Expression<T?> {
+        return Max(expression, distinct = true)
+    }
+
+    fun <T : Comparable<T>> min(expression: Expression<T?>, distinct: Boolean): Expression<T?> {
+        return Min(expression, distinct)
+    }
+
+    fun <T : Comparable<T>> minDistinct(expression: Expression<T?>): Expression<T?> {
+        return Min(expression, distinct = true)
+    }
+
     fun <T> case(expression: Expressionable<T>): CaseValueWhenFirstStep<T> {
         return CaseValueWhenFirstStepDsl(expression.toExpression())
     }
@@ -111,21 +130,28 @@ object JpqlDslSupport {
         return NullIf(left.toExpression(), right.toExpression())
     }
 
-    fun <T> type(path: Path<T>): Expression<KClass<T & Any>> {
+    @JvmName("type1")
+    fun <T : Any, PATH : Path<T>> type(path: PATH): Expression<KClass<T>> {
         return Type(path)
     }
 
-    fun <T> templateExpression(template: String, args: Collection<Expressionable<*>>): Expression<T> {
-        return TemplateExpression(template, args.map { it.toExpression() })
+    @JvmName("type2")
+    fun <T, PATH : Path<T>> type(path: PATH): Expression<KClass<T & Any>?> {
+        @Suppress("UNCHECKED_CAST")
+        return Type(path) as Expression<KClass<T & Any>?>
     }
 
-    fun <T, CLASS : T & Any> join(
+    fun <T> customExpression(template: String, args: Collection<Expressionable<*>>): Expression<T> {
+        return CustomExpression(template, args.map { it.toExpression() })
+    }
+
+    fun <T> join(
         left: Path<*>,
         right: Path<T>,
         on: Predicate?,
         joinType: JoinType,
         fetch: Boolean,
-        type: KClass<CLASS>,
+        type: KClass<*>,
     ): Path<T> {
         val aliasedRight = if (right is AliasedPath) {
             right

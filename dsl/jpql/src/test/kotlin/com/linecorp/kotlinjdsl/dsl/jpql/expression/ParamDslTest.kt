@@ -13,32 +13,6 @@ class ParamDslTest : AbstractJpqlDslTest() {
     private val nullableInt1: Int? = null
 
     @Test
-    fun param() {
-        // when
-        val expression = testJpql {
-            param<Int>()
-        }.toExpression()
-
-        val actual: Expression<Int> = expression // for type check
-
-        // then
-        assertThat(actual).isEqualTo(Param(null, null))
-    }
-
-    @Test
-    fun `nullable param`() {
-        // when
-        val expression = testJpql {
-            param<Int?>()
-        }.toExpression()
-
-        val actual: Expression<Int?> = expression // for type check
-
-        // then
-        assertThat(actual).isEqualTo(Param(null, null))
-    }
-
-    @Test
     fun `param name`() {
         // when
         val expression = testJpql {

@@ -1,7 +1,7 @@
-package com.linecorp.kotlinjdsl.dsl.jpql.expression
+package com.linecorp.kotlinjdsl.dsl.jpql.path
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
+import com.linecorp.kotlinjdsl.querymodel.jpql.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.impl.AliasedPath
 import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Entity
 import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Field
@@ -11,11 +11,11 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::table1)
-        }.toExpression()
+        }
 
-        val actual: Expression<TestTable> = expression // for type check
+        val actual: Path<TestTable> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
@@ -29,11 +29,11 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path nullable property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::nullableTable1)
-        }.toExpression()
+        }
 
-        val actual: Expression<TestTable?> = expression // for type check
+        val actual: Path<TestTable?> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
@@ -47,11 +47,11 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path property path property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::table1).path(TestTable::int1)
-        }.toExpression()
+        }
 
-        val actual: Expression<Int> = expression // for type check
+        val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
@@ -62,18 +62,17 @@ class PathDslTest : AbstractJpqlDslTest() {
                 ),
                 TestTable::int1.name,
             ),
-
-            )
+        )
     }
 
     @Test
     fun `path property path nullable property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::table1).path(TestTable::nullableInt1)
-        }.toExpression()
+        }
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Path<Int?> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
@@ -91,11 +90,11 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path nullable property path property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::nullableTable1).path(TestTable::int1)
-        }.toExpression()
+        }
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Path<Int?> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
@@ -112,11 +111,11 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path nullable property path nullable property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::nullableTable1).path(TestTable::nullableInt1)
-        }.toExpression()
+        }
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Path<Int?> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
@@ -133,11 +132,11 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path property invoke property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::table1)(TestTable::int1)
-        }.toExpression()
+        }
 
-        val actual: Expression<Int> = expression // for type check
+        val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
@@ -155,11 +154,11 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path property invoke nullable property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::table1)(TestTable::nullableInt1)
-        }.toExpression()
+        }
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Path<Int?> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
@@ -177,11 +176,11 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path nullable property invoke property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::nullableTable1)(TestTable::int1)
-        }.toExpression()
+        }
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Path<Int?> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
@@ -198,11 +197,11 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path nullable property invoke nullable property`() {
         // when
-        val expression = testJpql {
+        val path = testJpql {
             path(TestRoot::nullableTable1)(TestTable::nullableInt1)
-        }.toExpression()
+        }
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Path<Int?> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(

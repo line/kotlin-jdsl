@@ -6,5 +6,5 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
 @Internal
 data class CaseValueWhen<T, V>(
     val compareValue: Expression<T>,
-    val then: Expression<V>,
+    val result: Expression<V>,
 )

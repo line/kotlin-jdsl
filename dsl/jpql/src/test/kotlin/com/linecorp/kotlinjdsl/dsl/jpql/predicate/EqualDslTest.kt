@@ -23,7 +23,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int1.name,
                 ),
-                right = Param(null, int1),
+                right = Value(int1),
                 not = false,
             ),
         )
@@ -66,7 +66,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
-                right = Param(null, int1),
+                right = Value(int1),
                 not = false,
             ),
         )
@@ -86,7 +86,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
-                right = Param(null, nullableInt1),
+                right = Value(nullableInt1),
                 not = false,
             ),
         )
@@ -152,7 +152,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int1.name,
                 ),
-                right = Param(null, int1),
+                right = Value(int1),
                 not = true,
             ),
         )
@@ -195,7 +195,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
-                right = Param(null, int1),
+                right = Value(int1),
                 not = true,
             ),
         )
@@ -215,7 +215,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
-                right = Param(null, nullableInt1),
+                right = Value(nullableInt1),
                 not = true,
             ),
         )
