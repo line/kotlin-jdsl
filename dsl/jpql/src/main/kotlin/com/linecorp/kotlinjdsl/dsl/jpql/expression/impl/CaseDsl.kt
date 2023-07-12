@@ -5,6 +5,7 @@ import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseElseStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseWhenStep
 import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.Expressionable
+import com.linecorp.kotlinjdsl.querymodel.jpql.Predicatable
 import com.linecorp.kotlinjdsl.querymodel.jpql.Predicate
 
 internal class CaseDsl<T> private constructor(
@@ -14,15 +15,15 @@ internal class CaseDsl<T> private constructor(
 
     constructor(predicate: Predicate, then: Expression<T>) : this(CaseBuilder<T>(predicate, then))
 
-    override fun `when`(predicate: Predicate, then: T): CaseWhenStep<T?> {
-        builder.`when`(predicate, JpqlDslSupport.value(then))
+    override fun `when`(predicate: Predicatable, then: T): CaseWhenStep<T?> {
+        builder.`when`(predicate.toPredicate(), JpqlDslSupport.value(then))
 
         @Suppress("UNCHECKED_CAST")
         return this as CaseWhenStep<T?>
     }
 
-    override fun `when`(predicate: Predicate, then: Expressionable<T>): CaseWhenStep<T?> {
-        builder.`when`(predicate, then.toExpression())
+    override fun `when`(predicate: Predicatable, then: Expressionable<T>): CaseWhenStep<T?> {
+        builder.`when`(predicate.toPredicate(), then.toExpression())
 
         @Suppress("UNCHECKED_CAST")
         return this as CaseWhenStep<T?>

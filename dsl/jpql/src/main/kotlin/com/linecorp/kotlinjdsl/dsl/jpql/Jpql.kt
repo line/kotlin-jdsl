@@ -91,13 +91,25 @@ open class Jpql : JpqlDsl {
     @JvmName("as1")
     @SinceJdsl("3.0.0")
     fun <T> Path<T>.`as`(alias: String): Path<T> {
-        return JpqlDslSupport.`as`(this, alias)
+        return JpqlDslSupport.alias(this, alias)
     }
 
     @JvmName("as2")
     @SinceJdsl("3.0.0")
     fun <T> Expressionable<T>.`as`(alias: String): Expression<T> {
-        return JpqlDslSupport.`as`(this, alias)
+        return JpqlDslSupport.alias(this, alias)
+    }
+
+    @JvmName("alias1")
+    @SinceJdsl("3.0.0")
+    fun <T> Path<T>.alias(alias: String): Path<T> {
+        return JpqlDslSupport.alias(this, alias)
+    }
+
+    @JvmName("alias2")
+    @SinceJdsl("3.0.0")
+    fun <T> Expressionable<T>.alias(alias: String): Expression<T> {
+        return JpqlDslSupport.alias(this, alias)
     }
 
     @JvmName("treat1")
@@ -465,40 +477,136 @@ open class Jpql : JpqlDsl {
     }
 
     @JvmName("join1")
-    inline fun <reified T> Path<*>.join(
+    fun <T> Path<*>.join(
         path: Path<T>,
         on: Predicate? = null,
         joinType: JoinType = JoinType.INNER,
         fetch: Boolean = false,
     ): Path<T> {
-        return JpqlDslSupport.join(this, path, on, joinType, fetch, T::class)
+        return JpqlDslSupport.join(this, path, on, joinType, fetch)
     }
 
     @JvmName("join2")
-    inline fun <reified T> Path<*>.join(
+    fun <T> Path<*>.join(
         path: Path<T>,
         on: Predicate? = null,
         fetch: Boolean = false,
     ): Path<T> {
-        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch, T::class)
+        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch)
     }
 
     @JvmName("innerJoin1")
-    inline fun <reified T> Path<*>.innerJoin(
+    fun <T> Path<*>.innerJoin(
         path: Path<T>,
         on: Predicate? = null,
         fetch: Boolean = false,
     ): Path<T> {
-        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch, T::class)
+        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch)
     }
 
     @JvmName("leftJoin1")
-    inline fun <reified T> Path<*>.leftJoin(
+    fun <T> Path<*>.leftJoin(
         path: Path<T>,
         on: Predicate? = null,
         fetch: Boolean = false,
     ): Path<T> {
-        return JpqlDslSupport.join(this, path, on, JoinType.LEFT, fetch, T::class)
+        return JpqlDslSupport.join(this, path, on, JoinType.LEFT, fetch)
+    }
+
+    @JvmName("joinFetch1")
+    fun <T> Path<*>.joinFetch(
+        path: Path<T>,
+        on: Predicate? = null,
+        joinType: JoinType = JoinType.INNER,
+    ): Path<T> {
+        return JpqlDslSupport.join(this, path, on, joinType, fetch = true)
+    }
+
+    @JvmName("joinFetch2")
+    fun <T> Path<*>.joinFetch(
+        path: Path<T>,
+        on: Predicate? = null,
+    ): Path<T> {
+        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch = true)
+    }
+
+    @JvmName("innerJoinFetch1")
+    fun <T> Path<*>.innerJoinFetch(
+        path: Path<T>,
+        on: Predicate? = null,
+    ): Path<T> {
+        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch = true)
+    }
+
+    @JvmName("leftJoinFetch1")
+    fun <T> Path<*>.leftJoinFetch(
+        path: Path<T>,
+        on: Predicate? = null,
+    ): Path<T> {
+        return JpqlDslSupport.join(this, path, on, JoinType.LEFT, fetch = true)
+    }
+
+    @JvmName("fetch1")
+    fun <T> Path<*>.fetch(
+        path: Path<T>,
+        on: Predicate? = null,
+        joinType: JoinType = JoinType.INNER,
+    ): Path<T> {
+        return JpqlDslSupport.join(this, path, on, joinType, fetch = true)
+    }
+
+    @JvmName("fetch2")
+    fun <T> Path<*>.fetch(
+        path: Path<T>,
+        on: Predicate? = null,
+    ): Path<T> {
+        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch = true)
+    }
+
+    @JvmName("innerFetch1")
+    fun <T> Path<*>.innerFetch(
+        path: Path<T>,
+        on: Predicate? = null,
+    ): Path<T> {
+        return JpqlDslSupport.join(this, path, on, JoinType.INNER, fetch = true)
+    }
+
+    @JvmName("leftFetch1")
+    fun <T> Path<*>.leftFetch(
+        path: Path<T>,
+        on: Predicate? = null,
+    ): Path<T> {
+        return JpqlDslSupport.join(this, path, on, JoinType.LEFT, fetch = true)
+    }
+
+    @JvmName("and1")
+    fun and(vararg predicates: Predicatable): Predicate {
+        return JpqlDslSupport.and(predicates.toList())
+    }
+
+    @JvmName("and2")
+    fun and(predicates: Collection<Predicatable>): Predicate {
+        return JpqlDslSupport.and(predicates)
+    }
+
+    @JvmName("and3")
+    fun Predicatable.and(predicate: Predicatable): Predicate {
+        return JpqlDslSupport.and(listOf(this, predicate))
+    }
+
+    @JvmName("or1")
+    fun or(vararg predicates: Predicatable): Predicate {
+        return JpqlDslSupport.or(predicates.toList())
+    }
+
+    @JvmName("or2")
+    fun or(predicates: Collection<Predicatable>): Predicate {
+        return JpqlDslSupport.or(predicates)
+    }
+
+    @JvmName("or3")
+    fun Predicatable.or(predicate: Predicatable): Predicate {
+        return JpqlDslSupport.or(listOf(this, predicate))
     }
 
     @JvmName("equal1")

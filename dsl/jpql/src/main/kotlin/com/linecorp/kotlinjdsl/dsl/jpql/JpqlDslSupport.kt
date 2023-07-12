@@ -78,20 +78,37 @@ object JpqlDslSupport {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T> `as`(path: Path<T>, alias: String): Path<T> {
-        return if (path is AliasedPath) {
-            AliasedPath(path.path, alias)
-        } else {
-            AliasedPath(path, alias)
+    fun <T> alias(path: Path<T>): Path<T> {
+        return when (path) {
+            is AliasedPath, is Join -> path
+
+            else -> AliasedPath(path, path.type.simpleName!!)
         }
     }
 
     @SinceJdsl("3.0.0")
-    fun <T> `as`(expression: Expressionable<T>, alias: String): Expression<T> {
-        return if (expression is AliasedExpression) {
-            AliasedExpression(expression.expression, alias)
-        } else {
-            AliasedExpression(expression.toExpression(), alias)
+    fun <T> alias(path: Path<T>, alias: String): Path<T> {
+        return when (path) {
+            is AliasedPath -> AliasedPath(path.path, alias)
+
+            is Join -> Join(
+                left = path.left,
+                right = alias(path.right, alias),
+                on = path.on,
+                joinType = path.joinType,
+                fetch = path.fetch,
+            )
+
+            else -> AliasedPath(path, alias)
+        }
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T> alias(expression: Expressionable<T>, alias: String): Expression<T> {
+        return when (val resolvedExpression = expression.toExpression()) {
+            is AliasedExpression -> AliasedExpression(resolvedExpression.expression, alias)
+
+            else -> AliasedExpression(resolvedExpression, alias)
         }
     }
 
@@ -270,16 +287,12 @@ object JpqlDslSupport {
         on: Predicate?,
         joinType: JoinType,
         fetch: Boolean,
-        type: KClass<*>,
     ): Path<T> {
-        val aliasedRight = if (right is AliasedPath) {
-            right
-        } else {
-            AliasedPath(right, type.simpleName!!)
-        }
+        val aliasedLeft = alias(left)
+        val aliasedRight = alias(right)
 
         return Join(
-            left = left,
+            left = aliasedLeft,
             right = aliasedRight,
             on = on,
             joinType = joinType,
@@ -288,23 +301,33 @@ object JpqlDslSupport {
     }
 
     @SinceJdsl("3.0.0")
+    fun and(predicates: Collection<Predicatable>): Predicate {
+        return And(predicates.map { it.toPredicate() })
+    }
+
+    @SinceJdsl("3.0.0")
+    fun or(predicates: Collection<Predicatable>): Predicate {
+        return Or(predicates.map { it.toPredicate() })
+    }
+
+    @SinceJdsl("3.0.0")
     fun <T> equal(left: Expressionable<T>, right: T): Predicate {
-        return Equal(left.toExpression(), value(right), not = false)
+        return Equal(left.toExpression(), value(right))
     }
 
     @SinceJdsl("3.0.0")
     fun <T> equal(left: Expressionable<T>, right: Expressionable<T>): Predicate {
-        return Equal(left.toExpression(), right.toExpression(), not = false)
+        return Equal(left.toExpression(), right.toExpression())
     }
 
     @SinceJdsl("3.0.0")
     fun <T> notEqual(left: Expressionable<T>, right: T): Predicate {
-        return Equal(left.toExpression(), value(right), not = true)
+        return NotEqual(left.toExpression(), value(right))
     }
 
     @SinceJdsl("3.0.0")
     fun <T> notEqual(left: Expressionable<T>, right: Expressionable<T>): Predicate {
-        return Equal(left.toExpression(), right.toExpression(), not = true)
+        return NotEqual(left.toExpression(), right.toExpression())
     }
 
     @SinceJdsl("3.0.0")

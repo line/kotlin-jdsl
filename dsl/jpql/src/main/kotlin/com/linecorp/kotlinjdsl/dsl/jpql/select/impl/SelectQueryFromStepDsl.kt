@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select.impl
 
+import com.linecorp.kotlinjdsl.dsl.jpql.JpqlDslSupport
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryFromStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryWhereStep
 import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
@@ -12,11 +13,11 @@ internal class SelectQueryFromStepDsl<T>(
     private val distinct: Boolean,
 ) : SelectQueryFromStep<T> {
     override fun from(vararg paths: Path<*>): SelectQueryWhereStep<T> {
-        return SelectQueryDsl(returnType, select, distinct, paths.toList())
+        return SelectQueryDsl(returnType, select, distinct, paths.map { JpqlDslSupport.alias(it) })
     }
 
     override fun from(paths: Collection<Path<*>>): SelectQueryWhereStep<T> {
-        return SelectQueryDsl(returnType, select, distinct, paths)
+        return SelectQueryDsl(returnType, select, distinct, paths.map { JpqlDslSupport.alias(it) })
     }
 
     override fun equals(other: Any?): Boolean {

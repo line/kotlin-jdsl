@@ -1,12 +1,11 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select.impl
 
+import com.linecorp.kotlinjdsl.dsl.jpql.JpqlDslSupport
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryGroupByStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryHavingStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryOrderByStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryWhereStep
 import com.linecorp.kotlinjdsl.querymodel.jpql.*
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.And
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Or
 import kotlin.reflect.KClass
 
 class SelectQueryDsl<T> private constructor(
@@ -25,32 +24,32 @@ class SelectQueryDsl<T> private constructor(
         SelectQueryBuilder<T>(returnType, select, distinct, from),
     )
 
-    override fun where(predicate: Predicate): SelectQueryGroupByStep<T> {
-        builder.where(predicate)
+    override fun where(predicate: Predicatable): SelectQueryGroupByStep<T> {
+        builder.where(predicate.toPredicate())
 
         return this
     }
 
-    override fun whereAnd(vararg predicates: Predicate): SelectQueryGroupByStep<T> {
-        builder.where(And(predicates.toList()))
+    override fun whereAnd(vararg predicates: Predicatable): SelectQueryGroupByStep<T> {
+        builder.where(JpqlDslSupport.and(predicates.toList()))
 
         return this
     }
 
-    override fun whereAnd(predicates: Collection<Predicate>): SelectQueryGroupByStep<T> {
-        builder.where(And(predicates))
+    override fun whereAnd(predicates: Collection<Predicatable>): SelectQueryGroupByStep<T> {
+        builder.where(JpqlDslSupport.and(predicates))
 
         return this
     }
 
-    override fun whereOr(vararg predicates: Predicate): SelectQueryGroupByStep<T> {
-        builder.where(Or(predicates.toList()))
+    override fun whereOr(vararg predicates: Predicatable): SelectQueryGroupByStep<T> {
+        builder.where(JpqlDslSupport.or(predicates.toList()))
 
         return this
     }
 
-    override fun whereOr(predicates: Collection<Predicate>): SelectQueryGroupByStep<T> {
-        builder.where(Or(predicates))
+    override fun whereOr(predicates: Collection<Predicatable>): SelectQueryGroupByStep<T> {
+        builder.where(JpqlDslSupport.or(predicates))
 
         return this
     }
@@ -67,32 +66,32 @@ class SelectQueryDsl<T> private constructor(
         return this
     }
 
-    override fun having(predicate: Predicate): SelectQueryOrderByStep<T> {
-        builder.having(predicate)
+    override fun having(predicate: Predicatable): SelectQueryOrderByStep<T> {
+        builder.having(predicate.toPredicate())
 
         return this
     }
 
-    override fun havingAnd(vararg predicates: Predicate): SelectQueryOrderByStep<T> {
-        builder.having(And(predicates.toList()))
+    override fun havingAnd(vararg predicates: Predicatable): SelectQueryOrderByStep<T> {
+        builder.having(JpqlDslSupport.and(predicates.toList()))
 
         return this
     }
 
-    override fun havingAnd(predicates: Collection<Predicate>): SelectQueryOrderByStep<T> {
-        builder.having(And(predicates))
+    override fun havingAnd(predicates: Collection<Predicatable>): SelectQueryOrderByStep<T> {
+        builder.having(JpqlDslSupport.and(predicates))
 
         return this
     }
 
-    override fun havingOr(vararg predicates: Predicate): SelectQueryOrderByStep<T> {
-        builder.having(Or(predicates.toList()))
+    override fun havingOr(vararg predicates: Predicatable): SelectQueryOrderByStep<T> {
+        builder.having(JpqlDslSupport.or(predicates.toList()))
 
         return this
     }
 
-    override fun havingOr(predicates: Collection<Predicate>): SelectQueryOrderByStep<T> {
-        builder.having(Or(predicates))
+    override fun havingOr(predicates: Collection<Predicatable>): SelectQueryOrderByStep<T> {
+        builder.having(JpqlDslSupport.or(predicates))
 
         return this
     }
