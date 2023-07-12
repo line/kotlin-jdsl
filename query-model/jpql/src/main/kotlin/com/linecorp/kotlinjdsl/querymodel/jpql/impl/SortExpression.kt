@@ -5,5 +5,5 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.Sort
 
 data class SortExpression(
     val expression: Expression<*>,
-    val order: Sort.Order,
+    override val order: Sort.Order,
 ) : Sort
