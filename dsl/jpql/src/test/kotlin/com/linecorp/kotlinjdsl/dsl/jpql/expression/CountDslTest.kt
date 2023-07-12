@@ -21,6 +21,7 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Count(
             Field<Int?>(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
@@ -42,6 +43,7 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Count(
             Field<Int?>(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
@@ -63,6 +65,7 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Count(
             Field<Int?>(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
@@ -84,6 +87,7 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Count(
             Field<Int?>(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),
@@ -105,6 +109,7 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Count(
             Field<Int?>(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),
@@ -126,6 +131,7 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Count(
             Field<Int?>(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),
@@ -147,6 +153,7 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Count(
             Field<Int?>(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
@@ -168,6 +175,7 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Count(
             Field<Int?>(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),

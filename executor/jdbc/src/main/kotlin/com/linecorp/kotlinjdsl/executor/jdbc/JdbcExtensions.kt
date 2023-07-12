@@ -33,7 +33,7 @@ fun Connection.prepareStatement(
         if (param == null) {
             preparedStatement.setNull(paramIndex++)
         } else {
-            preparedStatement.setObject(paramIndex, param)
+            preparedStatement.setObject(paramIndex++, param)
         }
     }
 

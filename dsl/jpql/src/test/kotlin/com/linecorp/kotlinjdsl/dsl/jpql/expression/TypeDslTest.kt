@@ -22,6 +22,7 @@ class TypeDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Type(
             Field<SuperTable>(
+                SuperTable::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::table1.name,
             ),
@@ -42,6 +43,7 @@ class TypeDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Type(
             Field<SuperTable>(
+                SuperTable::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableTable1.name,
             ),

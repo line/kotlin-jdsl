@@ -4,8 +4,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
 import com.linecorp.kotlinjdsl.querymodel.jpql.SelectQuery
 
-interface SelectQueryGroupByStep : SelectQueryHavingStep, JpqlQueryable<SelectQuery> {
-    fun groupBy(vararg expressions: Expressionable<*>): SelectQueryHavingStep
+interface SelectQueryGroupByStep<T> : SelectQueryHavingStep<T>, JpqlQueryable<SelectQuery<T>> {
+    fun groupBy(vararg expressions: Expressionable<*>): SelectQueryHavingStep<T>
 
-    fun groupBy(expressions: Collection<Expressionable<*>>): SelectQueryHavingStep
+    fun groupBy(expressions: Collection<Expressionable<*>>): SelectQueryHavingStep<T>
 }

@@ -22,6 +22,7 @@ class TreatDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Treat<SuperTable, SubTable>(
                 Field(
+                    SuperTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::table1.name,
                 ),
@@ -43,6 +44,7 @@ class TreatDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Treat<SuperTable, SubTable>(
                 Field(
+                    SuperTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableTable1.name,
                 ),

@@ -5,5 +5,5 @@ import kotlin.reflect.KClass
 
 data class Treat<PARENT, CHILD>(
     val path: Path<PARENT>,
-    val type: KClass<CHILD & Any>,
+    override val type: KClass<CHILD & Any>,
 ) : Path<CHILD>

@@ -83,7 +83,9 @@ class DefaultSqlWriter(
     }
 
     override fun writeKeyword(clause: CharSequence) {
-        if (stringBuilder.isNotEmpty()) {
+        val lastChar = stringBuilder.lastOrNull()
+
+        if (lastChar != null && lastChar != ' ') {
             stringBuilder.append(" ").append(clause).append(" ")
         } else {
             stringBuilder.append(clause).append(" ")

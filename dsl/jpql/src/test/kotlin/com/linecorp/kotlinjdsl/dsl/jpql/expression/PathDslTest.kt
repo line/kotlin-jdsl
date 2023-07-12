@@ -20,6 +20,7 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<TestTable>(
+                TestTable::class,
                 AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                 TestRoot::table1.name,
             ),
@@ -38,6 +39,7 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<TestTable>(
+                TestTable::class,
                 AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                 TestRoot::nullableTable1.name,
             ),
@@ -56,7 +58,9 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<Int>(
+                Int::class,
                 Field<TestTable>(
+                    TestTable::class,
                     AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                     TestRoot::table1.name,
                 ),
@@ -77,7 +81,9 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<Int>(
+                Int::class,
                 Field<TestTable>(
+                    TestTable::class,
                     AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                     TestRoot::table1.name,
                 ),
@@ -99,7 +105,9 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<Int>(
+                Int::class,
                 Field<TestTable>(
+                    TestTable::class,
                     AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                     TestRoot::nullableTable1.name,
                 ),
@@ -120,7 +128,9 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<Int>(
+                Int::class,
                 Field<TestTable>(
+                    TestTable::class,
                     AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                     TestRoot::nullableTable1.name,
                 ),
@@ -141,7 +151,9 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<Int>(
+                Int::class,
                 Field<TestTable>(
+                    TestTable::class,
                     AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                     TestRoot::table1.name,
                 ),
@@ -163,7 +175,9 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<Int>(
+                Int::class,
                 Field<TestTable>(
+                    TestTable::class,
                     AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                     TestRoot::table1.name,
                 ),
@@ -185,7 +199,9 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<Int>(
+                Int::class,
                 Field<TestTable>(
+                    TestTable::class,
                     AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                     TestRoot::nullableTable1.name,
                 ),
@@ -206,7 +222,9 @@ class PathDslTest : AbstractJpqlDslTest() {
         // then
         assertThat(actual).isEqualTo(
             Field<Int>(
+                Int::class,
                 Field<TestTable>(
+                    TestTable::class,
                     AliasedPath(Entity(TestRoot::class), TestRoot::class.simpleName!!),
                     TestRoot::nullableTable1.name,
                 ),

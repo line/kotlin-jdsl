@@ -20,6 +20,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int1.name,
                 ),
@@ -40,10 +41,12 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal<Int>(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int1.name,
                 ),
                 right = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int2.name,
                 ),
@@ -63,6 +66,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
@@ -83,6 +87,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
@@ -103,10 +108,12 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal<Int?>(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
                 right = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int1.name,
                 ),
@@ -126,10 +133,12 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal<Int>(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
                 right = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt2.name,
                 ),
@@ -149,6 +158,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int1.name,
                 ),
@@ -169,10 +179,12 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal<Int>(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int1.name,
                 ),
                 right = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int2.name,
                 ),
@@ -192,6 +204,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
@@ -212,6 +225,7 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
@@ -232,10 +246,12 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal<Int?>(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
                 right = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int1.name,
                 ),
@@ -255,10 +271,12 @@ class EqualDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Equal<Int>(
                 left = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt1.name,
                 ),
                 right = Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableInt2.name,
                 ),

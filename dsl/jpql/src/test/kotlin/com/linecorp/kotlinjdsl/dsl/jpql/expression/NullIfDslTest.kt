@@ -22,6 +22,7 @@ class NullIfDslTest : AbstractJpqlDslTest() {
         // then
         val expected = NullIf(
             left = Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
@@ -43,6 +44,7 @@ class NullIfDslTest : AbstractJpqlDslTest() {
         // then
         val expected = NullIf(
             left = Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
@@ -64,6 +66,7 @@ class NullIfDslTest : AbstractJpqlDslTest() {
         // then
         val expected = NullIf(
             left = Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),
@@ -85,6 +88,7 @@ class NullIfDslTest : AbstractJpqlDslTest() {
         // then
         val expected = NullIf(
             left = Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),

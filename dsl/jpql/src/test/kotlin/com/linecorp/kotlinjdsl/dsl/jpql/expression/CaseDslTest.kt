@@ -27,6 +27,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -57,6 +58,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -87,6 +89,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -94,6 +97,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         not = false,
                     ),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -120,6 +124,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -127,6 +132,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         not = false,
                     ),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -159,6 +165,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -171,6 +178,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -182,6 +190,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -193,6 +202,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -200,6 +210,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         not = false,
                     ),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -207,6 +218,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -214,6 +226,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                         not = false,
                     ),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -240,6 +253,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -270,6 +284,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -300,6 +315,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -310,6 +326,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 ),
             ),
             `else` = Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
@@ -333,6 +350,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseWhen(
                     predicate = Equal(
                         left = Field(
+                            String::class,
                             AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                             TestTable::string1.name,
                         ),
@@ -343,6 +361,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 ),
             ),
             `else` = Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),
@@ -363,6 +382,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -390,6 +410,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -417,6 +438,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -444,6 +466,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue<String, Int>(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -451,6 +474,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseValueWhen(
                     compareValue = Value(string1),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -474,6 +498,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue<String, Int?>(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -481,6 +506,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseValueWhen(
                     compareValue = Value(string1),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -504,12 +530,14 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue<String, Int>(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
             whens = listOf(
                 CaseValueWhen(
                     compareValue = Field(
+                        String::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
@@ -534,12 +562,14 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue<String, Int?>(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
             whens = listOf(
                 CaseValueWhen(
                     compareValue = Field(
+                        String::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
@@ -564,16 +594,19 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue<String, Int>(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
             whens = listOf(
                 CaseValueWhen(
                     compareValue = Field(
+                        String::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -597,16 +630,19 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue<String, Int?>(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
             whens = listOf(
                 CaseValueWhen(
                     compareValue = Field(
+                        String::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -643,6 +679,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -664,6 +701,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseValueWhen(
                     compareValue = Value(string1),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
@@ -671,12 +709,14 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 CaseValueWhen(
                     compareValue = Value(string1),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
                 ),
                 CaseValueWhen(
                     compareValue = Field(
+                        String::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
@@ -684,6 +724,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 ),
                 CaseValueWhen(
                     compareValue = Field(
+                        String::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
@@ -691,20 +732,24 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 ),
                 CaseValueWhen(
                     compareValue = Field(
+                        String::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::int1.name,
                     ),
                 ),
                 CaseValueWhen(
                     compareValue = Field(
+                        String::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::string1.name,
                     ),
                     result = Field(
+                        Int::class,
                         AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                         TestTable::nullableInt1.name,
                     ),
@@ -730,6 +775,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -759,6 +805,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -788,6 +835,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -798,6 +846,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 ),
             ),
             `else` = Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
@@ -820,6 +869,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
         // then
         val expected = CaseValue(
             value = Field(
+                String::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::string1.name,
             ),
@@ -830,6 +880,7 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 ),
             ),
             `else` = Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::nullableInt1.name,
             ),

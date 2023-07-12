@@ -43,9 +43,7 @@ class NormalInsertQuerySerializer : SqlSerializer<NormalInsertQuery<*>> {
         }
 
         if (select != null) {
-            val insertSelectContext = insertContext + SqlRenderClause.Select
-
-            select(select, delegate, writer, insertSelectContext)
+            select(select, delegate, writer, insertContext)
         }
     }
 

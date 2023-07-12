@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.dsl.jpql
 
+import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseWhenStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseDsl
@@ -9,60 +10,74 @@ import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SelectQueryFromStepDsl
 import com.linecorp.kotlinjdsl.dsl.owner
 import com.linecorp.kotlinjdsl.querymodel.jpql.*
 import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import java.math.BigDecimal
+import java.math.BigInteger
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
 /**
  * Operations for JPQL DSL.
  */
+@SinceJdsl("3.0.0")
 object JpqlDslSupport {
+    @SinceJdsl("3.0.0")
     fun <T> value(value: T): Expression<T> {
         return Value(value)
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> nullValue(): Expression<T?> {
         return Value(null)
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> param(name: String): Expression<T> {
         return Param(name, null)
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> param(name: String, value: T): Expression<T> {
         return Param(name, value)
     }
 
+    @SinceJdsl("3.0.0")
     fun <T : Any> entity(type: KClass<T>, alias: String = type.simpleName!!): Path<T> {
         return AliasedPath(Entity(type), alias)
     }
 
     @JvmName("path1")
-    fun <V> path(property: KProperty1<*, V>): Path<V> {
+    @SinceJdsl("3.0.0")
+    inline fun <reified V> path(property: KProperty1<*, V>): Path<V> {
         val owner = property.owner()
 
-        return Field(entity(owner), property.name)
+        return Field(V::class, entity(owner), property.name)
     }
 
     @JvmName("path2")
-    fun <T : Any, V> path(path: Path<T>, property: KProperty1<T, V>): Path<V> {
-        return Field(path, property.name)
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V> path(path: Path<T>, property: KProperty1<T, V>): Path<V> {
+        return Field(V::class, path, property.name)
     }
 
     @JvmName("path3")
-    fun <T : Any, V> path(path: Path<T?>, property: KProperty1<T, V>): Path<V?> {
-        return Field(path, property.name)
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V> path(path: Path<T?>, property: KProperty1<T, V>): Path<V?> {
+        return Field(V::class, path, property.name)
     }
 
     @JvmName("path4")
-    fun <T : Any, V> path(left: KProperty1<*, T>, right: KProperty1<T, V>): Path<V> {
-        return Field(path(left), right.name)
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any, reified V> path(left: KProperty1<*, T>, right: KProperty1<T, V>): Path<V> {
+        return Field(V::class, path(left), right.name)
     }
 
     @JvmName("path5")
-    fun <T : Any, V> path(left: KProperty1<*, T?>, right: KProperty1<T, V>): Path<V?> {
-        return Field(path(left), right.name)
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any, reified V> path(left: KProperty1<*, T?>, right: KProperty1<T, V>): Path<V?> {
+        return Field(V::class, path(left), right.name)
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> `as`(path: Path<T>, alias: String): Path<T> {
         return if (path is AliasedPath) {
             AliasedPath(path.path, alias)
@@ -71,6 +86,7 @@ object JpqlDslSupport {
         }
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> `as`(expression: Expressionable<T>, alias: String): Expression<T> {
         return if (expression is AliasedExpression) {
             AliasedExpression(expression.expression, alias)
@@ -80,71 +96,174 @@ object JpqlDslSupport {
     }
 
     @JvmName("treat1")
+    @SinceJdsl("3.0.0")
     fun <PARENT : Any, CHILD : PARENT> treat(path: Path<PARENT>, type: KClass<CHILD>): Path<CHILD> {
         return Treat(path, type)
     }
 
     @JvmName("treat2")
+    @SinceJdsl("3.0.0")
     fun <PARENT : Any, CHILD : PARENT> treat(path: Path<PARENT?>, type: KClass<CHILD>): Path<CHILD?> {
         return Treat(path, type)
     }
 
-    fun count(expression: Expression<*>, distinct: Boolean): Expression<Long> {
-        return Count(expression, distinct)
+    @SinceJdsl("3.0.0")
+    fun count(expression: Expressionable<*>, distinct: Boolean): Expression<Long> {
+        return Count(expression.toExpression(), distinct)
     }
 
-    fun <T : Comparable<T>> max(expression: Expression<T?>, distinct: Boolean): Expression<T?> {
-        return Max(expression, distinct)
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>> max(expression: Expressionable<T?>, distinct: Boolean): Expression<T?> {
+        return Max(expression.toExpression(), distinct)
     }
 
-    fun <T : Comparable<T>> maxDistinct(expression: Expression<T?>): Expression<T?> {
-        return Max(expression, distinct = true)
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>> maxDistinct(expression: Expressionable<T?>): Expression<T?> {
+        return Max(expression.toExpression(), distinct = true)
     }
 
-    fun <T : Comparable<T>> min(expression: Expression<T?>, distinct: Boolean): Expression<T?> {
-        return Min(expression, distinct)
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>> min(expression: Expressionable<T?>, distinct: Boolean): Expression<T?> {
+        return Min(expression.toExpression(), distinct)
     }
 
-    fun <T : Comparable<T>> minDistinct(expression: Expression<T?>): Expression<T?> {
-        return Min(expression, distinct = true)
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>> minDistinct(expression: Expressionable<T?>): Expression<T?> {
+        return Min(expression.toExpression(), distinct = true)
     }
 
+    @SinceJdsl("3.0.0")
+    fun avg(expression: Expressionable<out Number?>, distinct: Boolean): Expression<Double?> {
+        return Avg(expression.toExpression(), distinct)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun avgDistinct(expression: Expressionable<out Number?>): Expression<Double?> {
+        return Avg(expression.toExpression(), distinct = true)
+    }
+
+    @JvmName("sum1")
+    @SinceJdsl("3.0.0")
+    fun sum(expression: Expressionable<Int?>, distinct: Boolean): Expression<Long?> {
+        return Sum.IntSum(expression.toExpression(), distinct)
+    }
+
+    @JvmName("sum2")
+    @SinceJdsl("3.0.0")
+    fun sum(expression: Expressionable<Long?>, distinct: Boolean): Expression<Long?> {
+        return Sum.LongSum(expression.toExpression(), distinct)
+    }
+
+    @JvmName("sum3")
+    @SinceJdsl("3.0.0")
+    fun sum(expression: Expressionable<Float?>, distinct: Boolean): Expression<Double?> {
+        return Sum.FloatSum(expression.toExpression(), distinct)
+    }
+
+    @JvmName("sum4")
+    @SinceJdsl("3.0.0")
+    fun sum(expression: Expressionable<Double?>, distinct: Boolean): Expression<Double?> {
+        return Sum.DoubleSum(expression.toExpression(), distinct)
+    }
+
+    @JvmName("sum5")
+    @SinceJdsl("3.0.0")
+    fun sum(expression: Expressionable<BigInteger?>, distinct: Boolean): Expression<BigInteger?> {
+        return Sum.BigIntegerSum(expression.toExpression(), distinct)
+    }
+
+    @JvmName("sum6")
+    @SinceJdsl("3.0.0")
+    fun sum(expression: Expressionable<BigDecimal?>, distinct: Boolean): Expression<BigDecimal?> {
+        return Sum.BigDecimalSum(expression.toExpression(), distinct)
+    }
+
+    @JvmName("sumDistinct1")
+    @SinceJdsl("3.0.0")
+    fun sumDistinct(expression: Expressionable<Int?>): Expression<Long?> {
+        return Sum.IntSum(expression.toExpression(), distinct = true)
+    }
+
+    @JvmName("sumDistinct2")
+    @SinceJdsl("3.0.0")
+    fun sumDistinct(expression: Expressionable<Long?>): Expression<Long?> {
+        return Sum.LongSum(expression.toExpression(), distinct = true)
+    }
+
+    @JvmName("sumDistinct3")
+    @SinceJdsl("3.0.0")
+    fun sumDistinct(expression: Expressionable<Float?>): Expression<Double?> {
+        return Sum.FloatSum(expression.toExpression(), distinct = true)
+    }
+
+    @JvmName("sumDistinct4")
+    @SinceJdsl("3.0.0")
+    fun sumDistinct(expression: Expressionable<Double?>): Expression<Double?> {
+        return Sum.DoubleSum(expression.toExpression(), distinct = true)
+    }
+
+    @JvmName("sumDistinct5")
+    @SinceJdsl("3.0.0")
+    fun sumDistinct(expression: Expressionable<BigInteger?>): Expression<BigInteger?> {
+        return Sum.BigIntegerSum(expression.toExpression(), distinct = true)
+    }
+
+    @JvmName("sumDistinct6")
+    @SinceJdsl("3.0.0")
+    fun sumDistinct(expression: Expressionable<BigDecimal?>): Expression<BigDecimal?> {
+        return Sum.BigDecimalSum(expression.toExpression(), distinct = true)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> new(type: KClass<T>, args: Collection<Expressionable<*>>): Expression<T> {
+        return New(type, args.map { it.toExpression() })
+    }
+
+    @SinceJdsl("3.0.0")
     fun <T> case(expression: Expressionable<T>): CaseValueWhenFirstStep<T> {
         return CaseValueWhenFirstStepDsl(expression.toExpression())
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> caseWhen(predicate: Predicatable, then: T): CaseWhenStep<T?> {
         return CaseDsl(predicate.toPredicate(), value(then))
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> caseWhen(predicate: Predicatable, then: Expressionable<T>): CaseWhenStep<T?> {
         @Suppress("UNCHECKED_CAST")
         return CaseDsl(predicate.toPredicate(), then.toExpression() as Expression<T?>)
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> coalesce(expression: Expressionable<in T>, expressions: Collection<Expressionable<in T>>): Expression<T> {
         return Coalesce(listOf(expression.toExpression()) + expressions.map { it.toExpression() })
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> nullIf(left: Expressionable<T>, right: Expressionable<T>): Expression<T?> {
         return NullIf(left.toExpression(), right.toExpression())
     }
 
     @JvmName("type1")
+    @SinceJdsl("3.0.0")
     fun <T : Any, PATH : Path<T>> type(path: PATH): Expression<KClass<T>> {
         return Type(path)
     }
 
     @JvmName("type2")
+    @SinceJdsl("3.0.0")
     fun <T, PATH : Path<T>> type(path: PATH): Expression<KClass<T & Any>?> {
         @Suppress("UNCHECKED_CAST")
         return Type(path) as Expression<KClass<T & Any>?>
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> customExpression(template: String, args: Collection<Expressionable<*>>): Expression<T> {
         return CustomExpression(template, args.map { it.toExpression() })
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> join(
         left: Path<*>,
         right: Path<T>,
@@ -168,39 +287,51 @@ object JpqlDslSupport {
         )
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> equal(left: Expressionable<T>, right: T): Predicate {
         return Equal(left.toExpression(), value(right), not = false)
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> equal(left: Expressionable<T>, right: Expressionable<T>): Predicate {
         return Equal(left.toExpression(), right.toExpression(), not = false)
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> notEqual(left: Expressionable<T>, right: T): Predicate {
         return Equal(left.toExpression(), value(right), not = true)
     }
 
+    @SinceJdsl("3.0.0")
     fun <T> notEqual(left: Expressionable<T>, right: Expressionable<T>): Predicate {
         return Equal(left.toExpression(), right.toExpression(), not = true)
     }
 
+    @SinceJdsl("3.0.0")
     fun asc(expression: Expressionable<*>): Sort {
         return SortExpression(expression.toExpression(), Sort.Order.ASC)
     }
 
+    @SinceJdsl("3.0.0")
     fun desc(expression: Expressionable<*>): Sort {
         return SortExpression(expression.toExpression(), Sort.Order.DESC)
     }
 
-    fun select(values: Collection<Any?>, distinct: Boolean = false): SelectQueryFromStep {
-        val expressions = values.map {
-            when (it) {
-                is KProperty1<*, *> -> path(it)
-                is Expressionable<*> -> it.toExpression()
-                else -> value(it)
-            }
-        }
+    @SinceJdsl("3.0.0")
+    fun <T> select(
+        returnType: KClass<*>,
+        expression: Expressionable<T>,
+        distinct: Boolean,
+    ): SelectQueryFromStep<T> {
+        return SelectQueryFromStepDsl(returnType, listOf(expression.toExpression()), distinct)
+    }
 
-        return SelectQueryFromStepDsl(expressions, distinct)
+    @SinceJdsl("3.0.0")
+    fun <T> select(
+        returnType: KClass<*>,
+        expressions: Collection<Expressionable<*>>,
+        distinct: Boolean,
+    ): SelectQueryFromStep<T> {
+        return SelectQueryFromStepDsl(returnType, expressions.map { it.toExpression() }, distinct)
     }
 }

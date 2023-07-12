@@ -21,6 +21,7 @@ class AsDslTest : AbstractJpqlDslTest() {
         // then
         val expected = AliasedPath<Int>(
             Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                 TestTable::int1.name,
             ),
@@ -34,7 +35,7 @@ class AsDslTest : AbstractJpqlDslTest() {
     fun `nullable path as alias`() {
         // when
         val path = testJpql {
-            path(TestTable::nullableInt).`as`(alias1)
+            path(TestTable::nullableInt1).`as`(alias1)
         }
 
         val actual: Path<Int?> = path // for type check
@@ -42,8 +43,9 @@ class AsDslTest : AbstractJpqlDslTest() {
         // then
         val expected = AliasedPath<Int?>(
             Field(
+                Int::class,
                 AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::nullableInt.name,
+                TestTable::nullableInt1.name,
             ),
             alias1,
         )
@@ -65,6 +67,7 @@ class AsDslTest : AbstractJpqlDslTest() {
         val expected = AliasedExpression(
             Count(
                 Field<Int>(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::int1.name,
                 ),
@@ -80,7 +83,7 @@ class AsDslTest : AbstractJpqlDslTest() {
     fun `nullable expression as alias`() {
         // when
         val expression = testJpql {
-            max(path(TestTable::nullableInt)).`as`(alias1)
+            max(path(TestTable::nullableInt1)).`as`(alias1)
         }
 
         val actual: Expression<Int?> = expression // for type check
@@ -89,8 +92,9 @@ class AsDslTest : AbstractJpqlDslTest() {
         val expected = AliasedExpression<Int?>(
             Max(
                 Field(
+                    Int::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt.name,
+                    TestTable::nullableInt1.name,
                 ),
                 distinct = false,
             ),
@@ -103,6 +107,6 @@ class AsDslTest : AbstractJpqlDslTest() {
     private class TestTable {
         val int1: Int = 1
 
-        val nullableInt: Int? = null
+        val nullableInt1: Int? = null
     }
 }
