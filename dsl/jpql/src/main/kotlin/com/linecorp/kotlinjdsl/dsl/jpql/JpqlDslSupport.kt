@@ -91,13 +91,16 @@ object JpqlDslSupport {
         return when (path) {
             is AliasedPath -> AliasedPath(path.path, alias)
 
-            is Join -> Join(
-                left = path.left,
-                right = alias(path.right, alias),
-                on = path.on,
-                joinType = path.joinType,
-                fetch = path.fetch,
-            )
+            is Join -> {
+                @Suppress("UNCHECKED_CAST")
+                Join(
+                    left = path.left,
+                    right = alias(path.right, alias),
+                    on = path.on,
+                    joinType = path.joinType,
+                    fetch = path.fetch,
+                ) as Path<T>
+            }
 
             else -> AliasedPath(path, alias)
         }
@@ -281,13 +284,13 @@ object JpqlDslSupport {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T> join(
+    fun join(
         left: Path<*>,
-        right: Path<T>,
+        right: Path<*>,
         on: Predicate?,
         joinType: JoinType,
         fetch: Boolean,
-    ): Path<T> {
+    ): Path<Any> {
         val aliasedLeft = alias(left)
         val aliasedRight = alias(right)
 

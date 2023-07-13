@@ -193,19 +193,19 @@ class AliasDslTest : AbstractJpqlDslTest() {
             entity(TestTable::class).join(path(TestTable::table1)).`as`(alias1)
         }
 
-        val actual1: Path<OtherTable> = path1 // for type check
+        val actual1: Path<Any> = path1 // for type check
 
         val path2 = testJpql {
             entity(TestTable::class).join(path(TestTable::table1).`as`(alias1))
         }
 
-        val actual2: Path<OtherTable> = path2 // for type check
+        val actual2: Path<Any> = path2 // for type check
 
         // then
-        val expected = Join<OtherTable>(
+        val expected = Join(
             left = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
             right = AliasedPath(
-                Field(
+                Field<OtherTable>(
                     OtherTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::table1.name,
@@ -228,19 +228,19 @@ class AliasDslTest : AbstractJpqlDslTest() {
             entity(TestTable::class).join(path(TestTable::nullableTable1)).`as`(alias1)
         }
 
-        val actual1: Path<OtherTable?> = path1 // for type check
+        val actual1: Path<Any> = path1 // for type check
 
         val path2 = testJpql {
             entity(TestTable::class).join(path(TestTable::nullableTable1).`as`(alias1))
         }
 
-        val actual2: Path<OtherTable?> = path2 // for type check
+        val actual2: Path<Any> = path2 // for type check
 
         // then
-        val expected = Join<OtherTable>(
+        val expected = Join(
             left = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
             right = AliasedPath(
-                Field(
+                Field<OtherTable?>(
                     OtherTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableTable1.name,
@@ -263,19 +263,19 @@ class AliasDslTest : AbstractJpqlDslTest() {
             entity(TestTable::class).join(path(TestTable::table1)).alias(alias1)
         }
 
-        val actual1: Path<OtherTable> = path1 // for type check
+        val actual1: Path<Any> = path1 // for type check
 
         val path2 = testJpql {
             entity(TestTable::class).join(path(TestTable::table1).alias(alias1))
         }
 
-        val actual2: Path<OtherTable> = path2 // for type check
+        val actual2: Path<Any> = path2 // for type check
 
         // then
-        val expected = Join<OtherTable>(
+        val expected = Join(
             left = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
             right = AliasedPath(
-                Field(
+                Field<OtherTable>(
                     OtherTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::table1.name,
@@ -298,19 +298,19 @@ class AliasDslTest : AbstractJpqlDslTest() {
             entity(TestTable::class).join(path(TestTable::nullableTable1)).alias(alias1)
         }
 
-        val actual1: Path<OtherTable?> = path1 // for type check
+        val actual1: Path<Any> = path1 // for type check
 
         val path2 = testJpql {
             entity(TestTable::class).join(path(TestTable::nullableTable1).alias(alias1))
         }
 
-        val actual2: Path<OtherTable?> = path2 // for type check
+        val actual2: Path<Any> = path2 // for type check
 
         // then
-        val expected = Join<OtherTable>(
+        val expected = Join(
             left = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
             right = AliasedPath(
-                Field(
+                Field<OtherTable>(
                     OtherTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableTable1.name,
@@ -333,19 +333,19 @@ class AliasDslTest : AbstractJpqlDslTest() {
             entity(TestTable::class).join(path(TestTable::table1)).`as`(alias1).`as`(alias2)
         }
 
-        val actual1: Path<OtherTable> = path1 // for type check
+        val actual1: Path<Any> = path1 // for type check
 
         val path2 = testJpql {
             entity(TestTable::class).join(path(TestTable::table1).`as`(alias1)).`as`(alias2)
         }
 
-        val actual2: Path<OtherTable> = path2 // for type check
+        val actual2: Path<Any> = path2 // for type check
 
         // then
-        val expected = Join<OtherTable>(
+        val expected = Join(
             left = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
             right = AliasedPath(
-                Field(
+                Field<OtherTable>(
                     OtherTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::table1.name,
@@ -368,19 +368,19 @@ class AliasDslTest : AbstractJpqlDslTest() {
             entity(TestTable::class).join(path(TestTable::nullableTable1)).`as`(alias1).`as`(alias2)
         }
 
-        val actual1: Path<OtherTable?> = path1 // for type check
+        val actual1: Path<Any> = path1 // for type check
 
         val path2 = testJpql {
             entity(TestTable::class).join(path(TestTable::nullableTable1).`as`(alias1)).`as`(alias2)
         }
 
-        val actual2: Path<OtherTable?> = path2 // for type check
+        val actual2: Path<Any> = path2 // for type check
 
         // then
-        val expected = Join<OtherTable>(
+        val expected = Join(
             left = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
             right = AliasedPath(
-                Field(
+                Field<OtherTable>(
                     OtherTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableTable1.name,
@@ -403,19 +403,19 @@ class AliasDslTest : AbstractJpqlDslTest() {
             entity(TestTable::class).join(path(TestTable::table1)).alias(alias1).alias(alias2)
         }
 
-        val actual1: Path<OtherTable> = path1 // for type check
+        val actual1: Path<Any> = path1 // for type check
 
         val path2 = testJpql {
             entity(TestTable::class).join(path(TestTable::table1).alias(alias1)).alias(alias2)
         }
 
-        val actual2: Path<OtherTable> = path2 // for type check
+        val actual2: Path<Any> = path2 // for type check
 
         // then
-        val expected = Join<OtherTable>(
+        val expected = Join(
             left = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
             right = AliasedPath(
-                Field(
+                Field<OtherTable>(
                     OtherTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::table1.name,
@@ -438,19 +438,19 @@ class AliasDslTest : AbstractJpqlDslTest() {
             entity(TestTable::class).join(path(TestTable::nullableTable1)).alias(alias1).alias(alias2)
         }
 
-        val actual1: Path<OtherTable?> = path1 // for type check
+        val actual1: Path<Any> = path1 // for type check
 
         val path2 = testJpql {
             entity(TestTable::class).join(path(TestTable::nullableTable1).alias(alias1)).alias(alias2)
         }
 
-        val actual2: Path<OtherTable?> = path2 // for type check
+        val actual2: Path<Any> = path2 // for type check
 
         // then
-        val expected = Join<OtherTable>(
+        val expected = Join(
             left = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
             right = AliasedPath(
-                Field(
+                Field<OtherTable>(
                     OtherTable::class,
                     AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
                     TestTable::nullableTable1.name,
