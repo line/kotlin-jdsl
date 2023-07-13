@@ -3,10 +3,16 @@ package com.linecorp.kotlinjdsl.dsl.jpql
 import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseWhenStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.ExpressionAndExpression
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.PathAndExpression
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseValueWhenFirstStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.ExpressionAndExpressionImpl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.PathAndExpressionImpl
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryFromStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SelectQueryFromStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.update.UpdateQuerySetStep
+import com.linecorp.kotlinjdsl.dsl.jpql.update.impl.UpdateQuerySetStepDsl
 import com.linecorp.kotlinjdsl.dsl.owner
 import com.linecorp.kotlinjdsl.querymodel.jpql.*
 import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
@@ -38,6 +44,26 @@ object JpqlDslSupport {
     @SinceJdsl("3.0.0")
     fun <T> param(name: String, value: T): Expression<T> {
         return Param(name, value)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T> to(first: Path<T>, second: T): PathAndExpression<T> {
+        return PathAndExpressionImpl(first, value(second))
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T> to(first: Path<T>, second: Expressionable<T>): PathAndExpression<T> {
+        return PathAndExpressionImpl(first, second.toExpression())
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T> to(first: Expressionable<T>, second: T): ExpressionAndExpression<T> {
+        return ExpressionAndExpressionImpl(first.toExpression(), value(second))
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T> to(first: Expressionable<T>, second: Expressionable<T>): ExpressionAndExpression<T> {
+        return ExpressionAndExpressionImpl(first.toExpression(), second.toExpression())
     }
 
     @SinceJdsl("3.0.0")
@@ -359,5 +385,10 @@ object JpqlDslSupport {
         distinct: Boolean,
     ): SelectQueryFromStep<T> {
         return SelectQueryFromStepDsl(returnType, expressions.map { it.toExpression() }, distinct)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> update(entity: Path<T>): UpdateQuerySetStep<T> {
+        return UpdateQuerySetStepDsl(entity)
     }
 }

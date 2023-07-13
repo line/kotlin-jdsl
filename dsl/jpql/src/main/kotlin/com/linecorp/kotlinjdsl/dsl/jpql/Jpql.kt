@@ -4,7 +4,10 @@ import com.linecorp.kotlinjdsl.Experimental
 import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseWhenStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.ExpressionAndExpression
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.PathAndExpression
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryFromStep
+import com.linecorp.kotlinjdsl.dsl.jpql.update.UpdateQuerySetStep
 import com.linecorp.kotlinjdsl.querymodel.jpql.*
 import com.linecorp.kotlinjdsl.querymodel.jpql.impl.JoinType
 import java.math.BigDecimal
@@ -50,6 +53,30 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T> param(name: String, value: T): Expression<T> {
         return JpqlDslSupport.param(name, value)
+    }
+
+    @JvmName("to1")
+    @SinceJdsl("3.0.0")
+    infix fun <T> Path<T>.to(value: T): PathAndExpression<T> {
+        return JpqlDslSupport.to(this, value)
+    }
+
+    @JvmName("to2")
+    @SinceJdsl("3.0.0")
+    infix fun <T> Path<T>.to(expression: Expressionable<T>): PathAndExpression<T> {
+        return JpqlDslSupport.to(this, expression)
+    }
+
+    @JvmName("to3")
+    @SinceJdsl("3.0.0")
+    infix fun <T> Expressionable<T>.to(value: T): ExpressionAndExpression<T> {
+        return JpqlDslSupport.to(this, value)
+    }
+
+    @JvmName("to4")
+    @SinceJdsl("3.0.0")
+    infix fun <T> Expressionable<T>.to(expression: Expressionable<T>): ExpressionAndExpression<T> {
+        return JpqlDslSupport.to(this, expression)
     }
 
     @JvmName("entity1")
@@ -728,5 +755,11 @@ open class Jpql : JpqlDsl {
         expressions: Collection<Expressionable<*>>,
     ): SelectQueryFromStep<Any> {
         return JpqlDslSupport.select(Any::class, expressions.toList(), distinct = true)
+    }
+
+    @JvmName("update1")
+    @SinceJdsl("3.0.0")
+    fun <T : Any> update(entity: Path<T>): UpdateQuerySetStep<T> {
+        return JpqlDslSupport.update(entity)
     }
 }

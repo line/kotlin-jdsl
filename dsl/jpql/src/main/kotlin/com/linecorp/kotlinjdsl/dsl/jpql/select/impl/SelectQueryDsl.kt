@@ -8,7 +8,7 @@ import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryWhereStep
 import com.linecorp.kotlinjdsl.querymodel.jpql.*
 import kotlin.reflect.KClass
 
-class SelectQueryDsl<T> private constructor(
+internal class SelectQueryDsl<T> private constructor(
     private val builder: SelectQueryBuilder<T>,
 ) : SelectQueryWhereStep<T>,
     SelectQueryGroupByStep<T>,

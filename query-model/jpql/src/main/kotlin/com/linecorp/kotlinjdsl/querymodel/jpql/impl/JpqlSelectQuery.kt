@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.*
 import kotlin.reflect.KClass
 
 data class JpqlSelectQuery<T>(
-    val returnType: KClass<*>,
+    override val returnType: KClass<*>,
     val select: Collection<Expression<*>>,
     val distinct: Boolean,
     val from: Collection<Path<*>>,
