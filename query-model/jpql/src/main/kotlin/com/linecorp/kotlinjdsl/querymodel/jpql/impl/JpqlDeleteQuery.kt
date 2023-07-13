@@ -6,5 +6,5 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.Predicate
 
 data class JpqlDeleteQuery<T>(
     val from: Path<T>,
-    val where: Predicate,
+    val where: Predicate?,
 ) : DeleteQuery<T>

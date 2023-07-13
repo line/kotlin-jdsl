@@ -2,6 +2,7 @@ package com.linecorp.kotlinjdsl.dsl.jpql
 
 import com.linecorp.kotlinjdsl.Experimental
 import com.linecorp.kotlinjdsl.SinceJdsl
+import com.linecorp.kotlinjdsl.dsl.jpql.delete.DeleteQueryWhereStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseWhenStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.ExpressionAndExpression
@@ -761,5 +762,11 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> update(entity: Path<T>): UpdateQuerySetStep<T> {
         return JpqlDslSupport.update(entity)
+    }
+
+    @JvmName("deleteFrom1")
+    @SinceJdsl("3.0.0")
+    fun <T : Any> deleteFrom(entity: Path<T>): DeleteQueryWhereStep<T> {
+        return JpqlDslSupport.deleteFrom(entity)
     }
 }
