@@ -1,7 +1,11 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.*
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.JpqlSelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import kotlin.reflect.KClass
 
 internal class SelectQueryBuilder<T>(
@@ -40,7 +44,7 @@ internal class SelectQueryBuilder<T>(
     }
 
     fun build(): SelectQuery<T> {
-        return JpqlSelectQuery(
+        return Queries.select(
             returnType = returnType,
             select = select,
             distinct = distinct,

@@ -1,12 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.Path
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.AliasedPath
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Entity
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Field
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.New
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import org.junit.jupiter.api.Test
 
 class NewDslTest : AbstractJpqlDslTest() {
@@ -20,14 +17,10 @@ class NewDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Row> = expression // for type check
 
         // then
-        val expected = New(
+        val expected = Expressions.new(
             Row::class,
-            listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
+            listOf(
+                Paths.path(TestTable::int1),
             ),
         )
 
@@ -44,14 +37,10 @@ class NewDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Row> = expression // for type check
 
         // then
-        val expected = New(
+        val expected = Expressions.new(
             Row::class,
-            listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
+            listOf(
+                Paths.path(TestTable::nullableInt1),
             ),
         )
 
@@ -68,19 +57,11 @@ class NewDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Row> = expression // for type check
 
         // then
-        val expected = New(
+        val expected = Expressions.new(
             Row::class,
-            listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ),
+            listOf(
+                Paths.path(TestTable::int1),
+                Paths.path(TestTable::int2),
             ),
         )
 
@@ -97,19 +78,11 @@ class NewDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Row> = expression // for type check
 
         // then
-        val expected = New(
+        val expected = Expressions.new(
             Row::class,
-            listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
+            listOf(
+                Paths.path(TestTable::int1),
+                Paths.path(TestTable::nullableInt1),
             ),
         )
 
@@ -126,19 +99,11 @@ class NewDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Row> = expression // for type check
 
         // then
-        val expected = New(
+        val expected = Expressions.new(
             Row::class,
-            listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt2.name,
-                ),
+            listOf(
+                Paths.path(TestTable::nullableInt1),
+                Paths.path(TestTable::nullableInt2),
             ),
         )
 
@@ -155,19 +120,11 @@ class NewDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Row> = expression // for type check
 
         // then
-        val expected = New(
+        val expected = Expressions.new(
             Row::class,
-            listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ),
+            listOf(
+                Paths.path(TestTable::int1),
+                Paths.path(TestTable::int2),
             ),
         )
 
@@ -184,19 +141,11 @@ class NewDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Row> = expression // for type check
 
         // then
-        val expected = New(
+        val expected = Expressions.new(
             Row::class,
-            listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
+            listOf(
+                Paths.path(TestTable::int1),
+                Paths.path(TestTable::nullableInt1),
             ),
         )
 
@@ -213,19 +162,11 @@ class NewDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Row> = expression // for type check
 
         // then
-        val expected = New(
+        val expected = Expressions.new(
             Row::class,
-            listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt2.name,
-                ),
+            listOf(
+                Paths.path(TestTable::nullableInt1),
+                Paths.path(TestTable::nullableInt2),
             ),
         )
 

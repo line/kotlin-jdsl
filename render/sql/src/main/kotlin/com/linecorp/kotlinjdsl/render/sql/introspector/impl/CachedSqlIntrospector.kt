@@ -10,6 +10,7 @@ import kotlin.reflect.KProperty1
 class CachedSqlIntrospector(private val delegate: SqlIntrospector) : SqlIntrospector {
     private val tableClasses: MutableMap<KClass<*>, SqlTableDescription> = ConcurrentHashMap()
     private val columnProperties: MutableMap<KProperty1<*, *>, SqlColumnDescription> = ConcurrentHashMap()
+
     override fun introspect(clazz: KClass<*>): SqlTableDescription? {
         if (clazz !in tableClasses) {
             delegate.introspect(clazz)?.run { tableClasses[clazz] = this }

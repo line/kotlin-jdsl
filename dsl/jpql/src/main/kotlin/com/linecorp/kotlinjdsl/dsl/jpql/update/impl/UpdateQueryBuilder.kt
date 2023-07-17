@@ -1,14 +1,14 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.update.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.Path
-import com.linecorp.kotlinjdsl.querymodel.jpql.Predicate
-import com.linecorp.kotlinjdsl.querymodel.jpql.UpdateQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.JpqlUpdateQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.PathAndExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 
-internal class UpdateQueryBuilder<T>(
+internal class UpdateQueryBuilder<T : Any>(
     private val entity: Path<T>,
-    private val set: Map<Path<*>, Expression<*>>
+    private val set: Collection<PathAndExpression<*>>
 ) {
     private var where: Predicate? = null
 
@@ -19,7 +19,7 @@ internal class UpdateQueryBuilder<T>(
     }
 
     fun build(): UpdateQuery<T> {
-        return JpqlUpdateQuery(
+        return Queries.update(
             entity = entity,
             set = set,
             where = where,

@@ -1,8 +1,11 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.delete
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import org.junit.jupiter.api.Test
 
 class WhereDslTest : AbstractJpqlDslTest() {
@@ -12,7 +15,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
     @Test
     fun `where predicate`() {
         // when
-        val update = testJpql {
+        val delete = testJpql {
             deleteFrom(
                 entity(TestTable::class),
             ).where(
@@ -20,18 +23,14 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual: DeleteQuery<TestTable> = update // for type check
+        val actual: DeleteQuery<TestTable> = delete // for type check
 
         // then
-        val expected = JpqlDeleteQuery(
-            from = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            where = Equal(
-                left = Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                right = Value(int1),
+        val expected = Queries.delete(
+            from = Paths.entity(TestTable::class),
+            where = Predicates.equal(
+                left = Paths.path(TestTable::int1),
+                right = Expressions.value(int1),
             ),
         )
 
@@ -41,7 +40,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
     @Test
     fun `where and predicate`() {
         // when
-        val update1 = testJpql {
+        val delete1 = testJpql {
             deleteFrom(
                 entity(TestTable::class),
             ).whereAnd(
@@ -50,9 +49,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual1: DeleteQuery<TestTable> = update1 // for type check
-
-        val update2 = testJpql {
+        val delete2 = testJpql {
             deleteFrom(
                 entity(TestTable::class),
             ).whereAnd(
@@ -63,9 +60,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual2: DeleteQuery<TestTable> = update2 // for type check
-
-        val update3 = testJpql {
+        val delete3 = testJpql {
             deleteFrom(
                 entity(TestTable::class),
             ).where(
@@ -76,28 +71,22 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual3: DeleteQuery<TestTable> = update3 // for type check
+        val actual1: DeleteQuery<TestTable> = delete1 // for type check
+        val actual2: DeleteQuery<TestTable> = delete2 // for type check
+        val actual3: DeleteQuery<TestTable> = delete3 // for type check
 
         // then
-        val expected = JpqlDeleteQuery(
-            from = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            where = And(
+        val expected = Queries.delete(
+            from = Paths.entity(TestTable::class),
+            where = Predicates.and(
                 listOf(
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int1),
+                    Predicates.equal(
+                        Paths.path(TestTable::int1),
+                        Expressions.value(int1),
                     ),
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int2),
+                    Predicates.equal(
+                        Paths.path(TestTable::int1),
+                        Expressions.value(int2),
                     ),
                 ),
             ),
@@ -111,7 +100,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
     @Test
     fun `where or predicate`() {
         // when
-        val update1 = testJpql {
+        val delete1 = testJpql {
             deleteFrom(
                 entity(TestTable::class),
             ).whereOr(
@@ -120,9 +109,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual1: DeleteQuery<TestTable> = update1 // for type check
-
-        val update2 = testJpql {
+        val delete2 = testJpql {
             deleteFrom(
                 entity(TestTable::class),
             ).whereOr(
@@ -133,9 +120,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual2: DeleteQuery<TestTable> = update2 // for type check
-
-        val update3 = testJpql {
+        val delete3 = testJpql {
             deleteFrom(
                 entity(TestTable::class),
             ).where(
@@ -146,28 +131,22 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual3: DeleteQuery<TestTable> = update3 // for type check
+        val actual1: DeleteQuery<TestTable> = delete1 // for type check
+        val actual2: DeleteQuery<TestTable> = delete2 // for type check
+        val actual3: DeleteQuery<TestTable> = delete3 // for type check
 
         // then
-        val expected = JpqlDeleteQuery(
-            from = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            where = Or(
+        val expected = Queries.delete(
+            from = Paths.entity(TestTable::class),
+            where = Predicates.or(
                 listOf(
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int1),
+                    Predicates.equal(
+                        Paths.path(TestTable::int1),
+                        Expressions.value(int1),
                     ),
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int2),
+                    Predicates.equal(
+                        Paths.path(TestTable::int1),
+                        Expressions.value(int2),
                     ),
                 ),
             ),

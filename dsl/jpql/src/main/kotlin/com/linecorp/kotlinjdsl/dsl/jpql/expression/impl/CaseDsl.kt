@@ -1,12 +1,12 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression.impl
 
-import com.linecorp.kotlinjdsl.dsl.jpql.JpqlDslSupport
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseElseStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseWhenStep
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expressionable
-import com.linecorp.kotlinjdsl.querymodel.jpql.Predicatable
-import com.linecorp.kotlinjdsl.querymodel.jpql.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 internal class CaseDsl<T> private constructor(
     private val builder: CaseBuilder<T>,
@@ -16,7 +16,7 @@ internal class CaseDsl<T> private constructor(
     constructor(predicate: Predicate, then: Expression<T>) : this(CaseBuilder<T>(predicate, then))
 
     override fun `when`(predicate: Predicatable, then: T): CaseWhenStep<T?> {
-        builder.`when`(predicate.toPredicate(), JpqlDslSupport.value(then))
+        builder.`when`(predicate.toPredicate(), Expressions.value(then))
 
         @Suppress("UNCHECKED_CAST")
         return this as CaseWhenStep<T?>
@@ -30,7 +30,7 @@ internal class CaseDsl<T> private constructor(
     }
 
     override fun <R : T> `else`(value: R): Expressionable<R> {
-        builder.`else`(JpqlDslSupport.value(value))
+        builder.`else`(Expressions.value(value))
 
         @Suppress("UNCHECKED_CAST")
         return this as Expressionable<R>

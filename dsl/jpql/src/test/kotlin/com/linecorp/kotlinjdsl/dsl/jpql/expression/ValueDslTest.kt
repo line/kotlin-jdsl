@@ -1,13 +1,12 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Value
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import org.junit.jupiter.api.Test
 
 class ValueDslTest : AbstractJpqlDslTest() {
     private val int1: Int = 1
-
     private val nullableInt1: Int? = null
 
     @Test
@@ -20,7 +19,9 @@ class ValueDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(Value(int1))
+        assertThat(actual).isEqualTo(
+            Expressions.value(int1),
+        )
     }
 
     @Test
@@ -33,7 +34,9 @@ class ValueDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(Value(nullableInt1))
+        assertThat(actual).isEqualTo(
+            Expressions.value(nullableInt1),
+        )
     }
 
     @Test
@@ -46,6 +49,8 @@ class ValueDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(Value(null))
+        assertThat(actual).isEqualTo(
+            Expressions.value(null),
+        )
     }
 }

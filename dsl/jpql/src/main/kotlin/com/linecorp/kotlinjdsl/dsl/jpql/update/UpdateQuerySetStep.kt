@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.update
 
-import com.linecorp.kotlinjdsl.dsl.jpql.expression.PathAndExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.PathAndExpression
 
 interface UpdateQuerySetStep<T : Any> {
     fun set(vararg assignments: PathAndExpression<*>): UpdateQueryWhereStep<T>

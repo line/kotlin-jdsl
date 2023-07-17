@@ -3,8 +3,7 @@ package com.linecorp.kotlinjdsl.dsl.jpql.update
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
 import com.linecorp.kotlinjdsl.dsl.jpql.update.impl.UpdateQuerySetStepDsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.AliasedPath
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
 import org.junit.jupiter.api.Test
 
 class UpdateDslTest : AbstractJpqlDslTest() {
@@ -21,7 +20,7 @@ class UpdateDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = UpdateQuerySetStepDsl(
-            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
+            Paths.entity(TestTable::class),
         )
 
         assertThat(actual)
@@ -40,7 +39,7 @@ class UpdateDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = UpdateQuerySetStepDsl(
-            AliasedPath(Entity(TestTable::class), alias1),
+            Paths.alias(Paths.entity(TestTable::class), alias1),
         )
 
         assertThat(actual)

@@ -1,8 +1,11 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.update
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.UpdateQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import org.junit.jupiter.api.Test
 
 class WhereDslTest : AbstractJpqlDslTest() {
@@ -25,22 +28,17 @@ class WhereDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ) to Value(int1),
-            ),
-            where = Equal(
-                left = Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::int1),
+                    Expressions.value(int1),
                 ),
-                right = Value(int1),
+            ),
+            where = Predicates.equal(
+                Paths.path(TestTable::int1),
+                Expressions.value(int1),
             ),
         )
 
@@ -61,8 +59,6 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual1: UpdateQuery<TestTable> = update1 // for type check
-
         val update2 = testJpql {
             update(
                 entity(TestTable::class),
@@ -75,8 +71,6 @@ class WhereDslTest : AbstractJpqlDslTest() {
                 ),
             )
         }.toQuery()
-
-        val actual2: UpdateQuery<TestTable> = update2 // for type check
 
         val update3 = testJpql {
             update(
@@ -91,35 +85,28 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
+        val actual1: UpdateQuery<TestTable> = update1 // for type check
+        val actual2: UpdateQuery<TestTable> = update2 // for type check
         val actual3: UpdateQuery<TestTable> = update3 // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ) to Value(int1),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::int1),
+                    Expressions.value(int1),
+                ),
             ),
-            where = And(
+            where = Predicates.and(
                 listOf(
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int1),
+                    Predicates.equal(
+                        Paths.path(TestTable::int1),
+                        Expressions.value(int1),
                     ),
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int2),
+                    Predicates.equal(
+                        Paths.path(TestTable::int1),
+                        Expressions.value(int2),
                     ),
                 ),
             ),
@@ -177,32 +164,23 @@ class WhereDslTest : AbstractJpqlDslTest() {
         val actual3: UpdateQuery<TestTable> = update3 // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ) to Value(int1),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::int1),
+                    Expressions.value(int1),
+                ),
             ),
-            where = Or(
+            where = Predicates.or(
                 listOf(
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int1),
+                    Predicates.equal(
+                        Paths.path(TestTable::int1),
+                        Expressions.value(int1),
                     ),
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int2),
+                    Predicates.equal(
+                        Paths.path(TestTable::int1),
+                        Expressions.value(int2),
                     ),
                 ),
             ),

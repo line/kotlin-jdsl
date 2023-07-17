@@ -1,8 +1,10 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.JoinType
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import org.junit.jupiter.api.Test
 
 class FromDslTest : AbstractJpqlDslTest() {
@@ -20,12 +22,12 @@ class FromDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable1> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable1>(
+        val expected = Queries.select<TestTable1>(
             returnType = TestTable1::class,
-            select = listOf(AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable1::class)),
             distinct = false,
             from = listOf(
-                AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!),
+                Paths.entity(TestTable1::class),
             ),
             where = null,
             groupBy = null,
@@ -51,13 +53,13 @@ class FromDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable1> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable1>(
+        val expected = Queries.select<TestTable1>(
             returnType = TestTable1::class,
-            select = listOf(AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable1::class)),
             distinct = false,
             from = listOf(
-                AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!),
-                AliasedPath(Entity(TestTable2::class), TestTable2::class.simpleName!!),
+                Paths.entity(TestTable1::class),
+                Paths.entity(TestTable2::class),
             ),
             where = null,
             groupBy = null,
@@ -85,13 +87,13 @@ class FromDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable1> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable1>(
+        val expected = Queries.select<TestTable1>(
             returnType = TestTable1::class,
-            select = listOf(AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable1::class)),
             distinct = false,
             from = listOf(
-                AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!),
-                AliasedPath(Entity(TestTable2::class), TestTable2::class.simpleName!!),
+                Paths.entity(TestTable1::class),
+                Paths.entity(TestTable2::class),
             ),
             where = null,
             groupBy = null,
@@ -116,21 +118,14 @@ class FromDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable1> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable1>(
+        val expected = Queries.select<TestTable1>(
             returnType = TestTable1::class,
-            select = listOf(AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable1::class)),
             distinct = false,
             from = listOf(
-                Join(
-                    left = AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!),
-                    right = AliasedPath(
-                        Field<OtherTable>(
-                            OtherTable::class,
-                            AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!),
-                            TestTable1::table1.name,
-                        ),
-                        OtherTable::class.simpleName!!,
-                    ),
+                Paths.join(
+                    left = Paths.entity(TestTable1::class),
+                    right = Paths.path(TestTable1::table1),
                     on = null,
                     joinType = JoinType.INNER,
                     fetch = false,
@@ -159,21 +154,14 @@ class FromDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable1> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable1>(
+        val expected = Queries.select<TestTable1>(
             returnType = TestTable1::class,
-            select = listOf(AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable1::class)),
             distinct = false,
             from = listOf(
-                Join(
-                    left = AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!),
-                    right = AliasedPath(
-                        Field<OtherTable>(
-                            OtherTable::class,
-                            AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!),
-                            TestTable1::nullableTable1.name,
-                        ),
-                        OtherTable::class.simpleName!!,
-                    ),
+                Paths.join(
+                    left = Paths.entity(TestTable1::class),
+                    right = Paths.path(TestTable1::nullableTable1),
                     on = null,
                     joinType = JoinType.INNER,
                     fetch = false,
@@ -203,22 +191,15 @@ class FromDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable1> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable1>(
+        val expected = Queries.select<TestTable1>(
             returnType = TestTable1::class,
-            select = listOf(AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable1::class)),
             distinct = false,
             from = listOf(
-                AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!),
-                Join(
-                    left = AliasedPath(Entity(TestTable2::class), TestTable2::class.simpleName!!),
-                    right = AliasedPath(
-                        Field<OtherTable>(
-                            OtherTable::class,
-                            AliasedPath(Entity(TestTable2::class), TestTable2::class.simpleName!!),
-                            TestTable2::table1.name,
-                        ),
-                        OtherTable::class.simpleName!!,
-                    ),
+                Paths.entity(TestTable1::class),
+                Paths.join(
+                    left = Paths.entity(TestTable2::class),
+                    right = Paths.path(TestTable2::table1),
                     on = null,
                     joinType = JoinType.INNER,
                     fetch = false,
@@ -248,22 +229,15 @@ class FromDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable1> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable1>(
+        val expected = Queries.select<TestTable1>(
             returnType = TestTable1::class,
-            select = listOf(AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable1::class)),
             distinct = false,
             from = listOf(
-                AliasedPath(Entity(TestTable1::class), TestTable1::class.simpleName!!),
-                Join(
-                    left = AliasedPath(Entity(TestTable2::class), TestTable2::class.simpleName!!),
-                    right = AliasedPath(
-                        Field<OtherTable>(
-                            OtherTable::class,
-                            AliasedPath(Entity(TestTable2::class), TestTable2::class.simpleName!!),
-                            TestTable2::nullableTable1.name,
-                        ),
-                        OtherTable::class.simpleName!!,
-                    ),
+                Paths.entity(TestTable1::class),
+                Paths.join(
+                    left = Paths.entity(TestTable2::class),
+                    right = Paths.path(TestTable2::nullableTable1),
                     on = null,
                     joinType = JoinType.INNER,
                     fetch = false,

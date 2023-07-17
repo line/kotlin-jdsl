@@ -1,9 +1,10 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.Sort
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.Sorts
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import org.junit.jupiter.api.Test
 
 class OrderByDslTest : AbstractJpqlDslTest() {
@@ -20,26 +21,19 @@ class OrderByDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual: SelectQuery<TestTable> = select
+        val actual: SelectQuery<TestTable> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = null,
             having = null,
             orderBy = listOf(
-                SortExpression(
-                    Field<Int>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
+                Sorts.asc(Paths.path(TestTable::int1)),
             ),
         )
 
@@ -59,26 +53,19 @@ class OrderByDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual: SelectQuery<TestTable> = select
+        val actual: SelectQuery<TestTable> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = null,
             having = null,
             orderBy = listOf(
-                SortExpression(
-                    Field<Int?>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
+                Sorts.asc(Paths.path(TestTable::nullableInt1)),
             ),
         )
 
@@ -99,34 +86,20 @@ class OrderByDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual: SelectQuery<TestTable> = select
+        val actual: SelectQuery<TestTable> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = null,
             having = null,
             orderBy = listOf(
-                SortExpression(
-                    Field<Int>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
-                SortExpression(
-                    Field<Int>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int2.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
+                Sorts.asc(Paths.path(TestTable::int1)),
+                Sorts.asc(Paths.path(TestTable::int2)),
             ),
         )
 
@@ -147,34 +120,20 @@ class OrderByDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual: SelectQuery<TestTable> = select
+        val actual: SelectQuery<TestTable> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = null,
             having = null,
             orderBy = listOf(
-                SortExpression(
-                    Field<Int>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
-                SortExpression(
-                    Field<Int?>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
+                Sorts.asc(Paths.path(TestTable::int1)),
+                Sorts.asc(Paths.path(TestTable::nullableInt1)),
             ),
         )
 
@@ -195,34 +154,20 @@ class OrderByDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual: SelectQuery<TestTable> = select
+        val actual: SelectQuery<TestTable> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = null,
             having = null,
             orderBy = listOf(
-                SortExpression(
-                    Field<Int?>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
-                SortExpression(
-                    Field<Int?>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt2.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
+                Sorts.asc(Paths.path(TestTable::nullableInt1)),
+                Sorts.asc(Paths.path(TestTable::nullableInt2)),
             ),
         )
 
@@ -245,34 +190,20 @@ class OrderByDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual: SelectQuery<TestTable> = select
+        val actual: SelectQuery<TestTable> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = null,
             having = null,
             orderBy = listOf(
-                SortExpression(
-                    Field<Int>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
-                SortExpression(
-                    Field<Int>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int2.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
+                Sorts.asc(Paths.path(TestTable::int1)),
+                Sorts.asc(Paths.path(TestTable::int2)),
             ),
         )
 
@@ -295,34 +226,20 @@ class OrderByDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual: SelectQuery<TestTable> = select
+        val actual: SelectQuery<TestTable> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = null,
             having = null,
             orderBy = listOf(
-                SortExpression(
-                    Field<Int>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
-                SortExpression(
-                    Field<Int?>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
+                Sorts.asc(Paths.path(TestTable::int1)),
+                Sorts.asc(Paths.path(TestTable::nullableInt1)),
             ),
         )
 
@@ -345,34 +262,20 @@ class OrderByDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual: SelectQuery<TestTable> = select
+        val actual: SelectQuery<TestTable> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = null,
             having = null,
             orderBy = listOf(
-                SortExpression(
-                    Field<Int?>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
-                SortExpression(
-                    Field<Int?>(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt2.name,
-                    ),
-                    Sort.Order.ASC,
-                ),
+                Sorts.asc(Paths.path(TestTable::nullableInt1)),
+                Sorts.asc(Paths.path(TestTable::nullableInt2)),
             ),
         )
 

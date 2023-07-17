@@ -1,8 +1,11 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import org.junit.jupiter.api.Test
 
 class WhereDslTest : AbstractJpqlDslTest() {
@@ -25,20 +28,16 @@ class WhereDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable> = select // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
             from = listOf(
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
+                Paths.entity(TestTable::class),
             ),
-            where = Equal(
-                left = Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                right = Value(int1),
+            where = Predicates.equal(
+                left = Paths.path(TestTable::int1),
+                right = Expressions.value(int1),
             ),
             groupBy = null,
             having = null,
@@ -62,8 +61,6 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual1: SelectQuery<TestTable> = select1 // for type check
-
         val select2 = testJpql {
             select(
                 entity(TestTable::class),
@@ -76,8 +73,6 @@ class WhereDslTest : AbstractJpqlDslTest() {
                 ),
             )
         }.toQuery()
-
-        val actual2: SelectQuery<TestTable> = select2 // for type check
 
         val select3 = testJpql {
             select(
@@ -92,33 +87,27 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
+        val actual1: SelectQuery<TestTable> = select1 // for type check
+        val actual2: SelectQuery<TestTable> = select2 // for type check
         val actual3: SelectQuery<TestTable> = select3 // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
             from = listOf(
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
+                Paths.entity(TestTable::class),
             ),
-            where = And(
+            where = Predicates.and(
                 listOf(
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int1),
+                    Predicates.equal(
+                        left = Paths.path(TestTable::int1),
+                        right = Expressions.value(int1),
                     ),
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int2),
+                    Predicates.equal(
+                        left = Paths.path(TestTable::int1),
+                        right = Expressions.value(int2),
                     ),
                 ),
             ),
@@ -146,8 +135,6 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
-        val actual1: SelectQuery<TestTable> = select1 // for type check
-
         val select2 = testJpql {
             select(
                 entity(TestTable::class),
@@ -160,8 +147,6 @@ class WhereDslTest : AbstractJpqlDslTest() {
                 ),
             )
         }.toQuery()
-
-        val actual2: SelectQuery<TestTable> = select2 // for type check
 
         val select3 = testJpql {
             select(
@@ -176,33 +161,27 @@ class WhereDslTest : AbstractJpqlDslTest() {
             )
         }.toQuery()
 
+        val actual1: SelectQuery<TestTable> = select1 // for type check
+        val actual2: SelectQuery<TestTable> = select2 // for type check
         val actual3: SelectQuery<TestTable> = select3 // for type check
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
             from = listOf(
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
+                Paths.entity(TestTable::class),
             ),
-            where = Or(
+            where = Predicates.or(
                 listOf(
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int1),
+                    Predicates.equal(
+                        left = Paths.path(TestTable::int1),
+                        right = Expressions.value(int1),
                     ),
-                    Equal(
-                        left = Field(
-                            Int::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::int1.name,
-                        ),
-                        right = Value(int2),
+                    Predicates.equal(
+                        left = Paths.path(TestTable::int1),
+                        right = Expressions.value(int2),
                     ),
                 ),
             ),

@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 
 interface SelectQueryFromStep<T> {
     fun from(vararg paths: Path<*>): SelectQueryWhereStep<T>

@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.executor.spring.jpa.jpql
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.SelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderer
 import jakarta.persistence.EntityManager

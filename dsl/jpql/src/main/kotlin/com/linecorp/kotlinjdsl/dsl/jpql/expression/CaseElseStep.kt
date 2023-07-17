@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expressionable
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 
 interface CaseElseStep<T> : Expressionable<T> {
     fun <R : T> `else`(value: R): Expressionable<R>

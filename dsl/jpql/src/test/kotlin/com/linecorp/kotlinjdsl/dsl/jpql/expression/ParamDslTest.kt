@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Param
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import org.junit.jupiter.api.Test
 
 class ParamDslTest : AbstractJpqlDslTest() {
@@ -22,7 +22,7 @@ class ParamDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(Param(paramName1, null))
+        assertThat(actual).isEqualTo(Expressions.param(paramName1, null))
     }
 
     @Test
@@ -35,7 +35,7 @@ class ParamDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(Param(paramName1, null))
+        assertThat(actual).isEqualTo(Expressions.param(paramName1, null))
     }
 
     @Test
@@ -48,7 +48,7 @@ class ParamDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(Param(paramName1, int1))
+        assertThat(actual).isEqualTo(Expressions.param(paramName1, int1))
     }
 
     @Test
@@ -61,7 +61,7 @@ class ParamDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(Param(paramName1, nullableInt1))
+        assertThat(actual).isEqualTo(Expressions.param(paramName1, nullableInt1))
     }
 
     @Test
@@ -74,7 +74,7 @@ class ParamDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(Param(paramName1, int1))
+        assertThat(actual).isEqualTo(Expressions.param(paramName1, int1))
     }
 
     @Test
@@ -88,6 +88,6 @@ class ParamDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(Param(paramName1, nullableInt1))
+        assertThat(actual).isEqualTo(Expressions.param(paramName1, nullableInt1))
     }
 }

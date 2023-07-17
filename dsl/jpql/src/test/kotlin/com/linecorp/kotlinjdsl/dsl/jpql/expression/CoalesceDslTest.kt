@@ -2,8 +2,9 @@ package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.Experimental
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import org.junit.jupiter.api.Test
 
 @Experimental
@@ -24,14 +25,10 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::int1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Value(int1),
+                Expressions.value(int1),
             ),
         )
 
@@ -48,14 +45,10 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::int1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Value(nullableInt1),
+                Expressions.value(nullableInt1),
             ),
         )
 
@@ -72,14 +65,10 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::nullableInt1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Value(nullableInt1),
+                Expressions.value(nullableInt1),
             ),
         )
 
@@ -96,14 +85,10 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::nullableInt1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Value(nullableInt1),
+                Expressions.value(nullableInt1),
             ),
         )
 
@@ -120,15 +105,11 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::int1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Value(int1),
-                Value(int2),
+                Expressions.value(int1),
+                Expressions.value(int2),
             ),
         )
 
@@ -145,15 +126,11 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::int1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Value(int1),
-                Value(nullableInt1),
+                Expressions.value(int1),
+                Expressions.value(nullableInt1),
             ),
         )
 
@@ -170,15 +147,11 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::int1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Value(nullableInt1),
-                Value(nullableInt2),
+                Expressions.value(nullableInt1),
+                Expressions.value(nullableInt2),
             ),
         )
 
@@ -195,15 +168,11 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::nullableInt1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Value(int1),
-                Value(int2),
+                Expressions.value(int1),
+                Expressions.value(int2),
             ),
         )
 
@@ -220,15 +189,11 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::nullableInt1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Value(int1),
-                Value(nullableInt1),
+                Expressions.value(int1),
+                Expressions.value(nullableInt1),
             ),
         )
 
@@ -245,15 +210,11 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::nullableInt1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Value(nullableInt1),
-                Value(nullableInt2),
+                Expressions.value(nullableInt1),
+                Expressions.value(nullableInt2),
             ),
         )
 
@@ -270,15 +231,11 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Coalesce(
+        val expected = Expressions.coalesce(
+            Paths.path(TestTable::nullableInt1),
             listOf(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Value(nullableInt1),
-                Value(nullableInt2),
+                Expressions.value(nullableInt1),
+                Expressions.value(nullableInt2),
             ),
         )
 

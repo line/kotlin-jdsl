@@ -1,11 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.AliasedPath
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.CustomExpression
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Entity
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Field
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import org.junit.jupiter.api.Test
 
 class CustomExpressionDslTest : AbstractJpqlDslTest() {
@@ -21,7 +19,7 @@ class CustomExpressionDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = CustomExpression<Int>(
+        val expected = Expressions.customExpression<Int>(
             template1,
             emptyList(),
         )
@@ -33,20 +31,16 @@ class CustomExpressionDslTest : AbstractJpqlDslTest() {
     fun `customExpression type template expression`() {
         // when
         val expression = testJpql {
-            customExpression<String>(template1, path(TestTable::int1))
+            customExpression<Int>(template1, path(TestTable::int1))
         }.toExpression()
 
-        val actual: Expression<String> = expression // for type check
+        val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = CustomExpression<Int>(
+        val expected = Expressions.customExpression<Int>(
             template1,
             listOf(
-                Field<Int?>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
+                Paths.path(TestTable::int1),
             ),
         )
 
@@ -57,20 +51,16 @@ class CustomExpressionDslTest : AbstractJpqlDslTest() {
     fun `customExpression type template nullable expression`() {
         // when
         val expression = testJpql {
-            customExpression<String>(template1, path(TestTable::nullableInt1))
+            customExpression<Int>(template1, path(TestTable::nullableInt1))
         }.toExpression()
 
-        val actual: Expression<String> = expression // for type check
+        val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = CustomExpression<Int>(
+        val expected = Expressions.customExpression<Int>(
             template1,
             listOf(
-                Field<Int?>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
+                Paths.path(TestTable::nullableInt1),
             ),
         )
 
@@ -87,7 +77,7 @@ class CustomExpressionDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CustomExpression<Int>(
+        val expected = Expressions.customExpression<Int?>(
             template1,
             emptyList(),
         )
@@ -99,20 +89,16 @@ class CustomExpressionDslTest : AbstractJpqlDslTest() {
     fun `customExpression nullable type template expression`() {
         // when
         val expression = testJpql {
-            customExpression<String?>(template1, path(TestTable::int1))
+            customExpression<Int?>(template1, path(TestTable::int1))
         }.toExpression()
 
-        val actual: Expression<String?> = expression // for type check
+        val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CustomExpression<Int>(
+        val expected = Expressions.customExpression<Int?>(
             template1,
             listOf(
-                Field<Int?>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
+                Paths.path(TestTable::int1),
             ),
         )
 
@@ -123,20 +109,16 @@ class CustomExpressionDslTest : AbstractJpqlDslTest() {
     fun `customExpression nullable type template nullable expression`() {
         // when
         val expression = testJpql {
-            customExpression<String?>(template1, path(TestTable::nullableInt1))
+            customExpression<Int?>(template1, path(TestTable::nullableInt1))
         }.toExpression()
 
-        val actual: Expression<String?> = expression // for type check
+        val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CustomExpression<Int>(
+        val expected = Expressions.customExpression<Int?>(
             template1,
             listOf(
-                Field<Int?>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
+                Paths.path(TestTable::nullableInt1),
             ),
         )
 

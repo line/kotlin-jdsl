@@ -1,11 +1,11 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.delete.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.Path
-import com.linecorp.kotlinjdsl.querymodel.jpql.Predicate
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.JpqlDeleteQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
-internal class DeleteQueryBuilder<T>(
+internal class DeleteQueryBuilder<T : Any>(
     private val from: Path<T>,
 ) {
     private var where: Predicate? = null
@@ -17,7 +17,7 @@ internal class DeleteQueryBuilder<T>(
     }
 
     fun build(): DeleteQuery<T> {
-        return JpqlDeleteQuery(
+        return Queries.delete(
             from = from,
             where = where,
         )

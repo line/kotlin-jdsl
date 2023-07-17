@@ -1,8 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import org.junit.jupiter.api.Test
 
 class NullIfDslTest : AbstractJpqlDslTest() {
@@ -20,13 +21,9 @@ class NullIfDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = NullIf(
-            left = Field(
-                Int::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::int1.name,
-            ),
-            right = Value(int1),
+        val expected = Expressions.nullIf(
+            left = Paths.path(TestTable::int1),
+            right = Expressions.value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -42,13 +39,9 @@ class NullIfDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = NullIf(
-            left = Field(
-                Int::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::int1.name,
-            ),
-            right = Value(nullableInt1),
+        val expected = Expressions.nullIf(
+            left = Paths.path(TestTable::int1),
+            right = Expressions.value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -64,13 +57,9 @@ class NullIfDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = NullIf(
-            left = Field(
-                Int::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::nullableInt1.name,
-            ),
-            right = Value(int1),
+        val expected = Expressions.nullIf(
+            left = Paths.path(TestTable::nullableInt1),
+            right = Expressions.value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -86,13 +75,9 @@ class NullIfDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = NullIf(
-            left = Field(
-                Int::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::nullableInt1.name,
-            ),
-            right = Value(nullableInt1),
+        val expected = Expressions.nullIf(
+            left = Paths.path(TestTable::nullableInt1),
+            right = Expressions.value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)

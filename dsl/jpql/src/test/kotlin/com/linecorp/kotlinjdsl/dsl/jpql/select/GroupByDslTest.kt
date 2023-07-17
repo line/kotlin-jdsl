@@ -1,12 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Path
-import com.linecorp.kotlinjdsl.querymodel.jpql.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.AliasedPath
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Entity
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Field
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.JpqlSelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import org.junit.jupiter.api.Test
 
 class GroupByDslTest : AbstractJpqlDslTest() {
@@ -26,18 +23,14 @@ class GroupByDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable> = select
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = listOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
+                Paths.path(TestTable::int1),
             ),
             having = null,
             orderBy = null,
@@ -62,18 +55,14 @@ class GroupByDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable> = select
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
             groupBy = listOf(
-                Field<Int?>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
+                Paths.path(TestTable::nullableInt1),
             ),
             having = null,
             orderBy = null,
@@ -99,23 +88,15 @@ class GroupByDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable> = select
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
-            groupBy = listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ),
+            groupBy = listOf(
+                Paths.path(TestTable::int1),
+                Paths.path(TestTable::int2),
             ),
             having = null,
             orderBy = null,
@@ -141,23 +122,15 @@ class GroupByDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable> = select
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
-            groupBy = listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
+            groupBy = listOf(
+                Paths.path(TestTable::int1),
+                Paths.path(TestTable::nullableInt1),
             ),
             having = null,
             orderBy = null,
@@ -183,23 +156,15 @@ class GroupByDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable> = select
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
-            groupBy = listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt2.name,
-                ),
+            groupBy = listOf(
+                Paths.path(TestTable::nullableInt1),
+                Paths.path(TestTable::nullableInt2),
             ),
             having = null,
             orderBy = null,
@@ -227,23 +192,15 @@ class GroupByDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable> = select
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
-            groupBy = listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ),
+            groupBy = listOf(
+                Paths.path(TestTable::int1),
+                Paths.path(TestTable::int2),
             ),
             having = null,
             orderBy = null,
@@ -271,23 +228,15 @@ class GroupByDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable> = select
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
-            groupBy = listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
+            groupBy = listOf(
+                Paths.path(TestTable::int1),
+                Paths.path(TestTable::nullableInt1),
             ),
             having = null,
             orderBy = null,
@@ -315,23 +264,15 @@ class GroupByDslTest : AbstractJpqlDslTest() {
         val actual: SelectQuery<TestTable> = select
 
         // then
-        val expected = JpqlSelectQuery<TestTable>(
+        val expected = Queries.select<TestTable>(
             returnType = TestTable::class,
-            select = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            select = listOf(Paths.entity(TestTable::class)),
             distinct = false,
-            from = listOf(AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!)),
+            from = listOf(Paths.entity(TestTable::class)),
             where = null,
-            groupBy = listOf<Path<Any?>>(
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ),
-                Field(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt2.name,
-                ),
+            groupBy = listOf(
+                Paths.path(TestTable::nullableInt1),
+                Paths.path(TestTable::nullableInt2),
             ),
             having = null,
             orderBy = null,

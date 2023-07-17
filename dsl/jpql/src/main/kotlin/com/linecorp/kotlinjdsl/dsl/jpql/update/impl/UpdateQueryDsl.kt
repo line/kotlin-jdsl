@@ -1,13 +1,17 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.update.impl
 
-import com.linecorp.kotlinjdsl.dsl.jpql.JpqlDslSupport
 import com.linecorp.kotlinjdsl.dsl.jpql.update.UpdateQueryWhereStep
-import com.linecorp.kotlinjdsl.querymodel.jpql.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
+import com.linecorp.kotlinjdsl.querymodel.jpql.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.PathAndExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 
 internal class UpdateQueryDsl<T : Any> private constructor(
     private val builder: UpdateQueryBuilder<T>
 ) : UpdateQueryWhereStep<T> {
-    constructor(entity: Path<T>, set: Map<Path<*>, Expression<*>>) : this(UpdateQueryBuilder(entity, set))
+    constructor(entity: Path<T>, set: Collection<PathAndExpression<*>>) : this(UpdateQueryBuilder(entity, set))
 
     override fun where(predicate: Predicate): JpqlQueryable<UpdateQuery<T>> {
         builder.where(predicate)
@@ -15,26 +19,26 @@ internal class UpdateQueryDsl<T : Any> private constructor(
         return this
     }
 
-    override fun whereAnd(vararg predicates: Predicate): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(JpqlDslSupport.and(predicates.toList()))
+    override fun whereAnd(vararg predicates: Predicate?): JpqlQueryable<UpdateQuery<T>> {
+        builder.where(Predicates.and(predicates.toList()))
 
         return this
     }
 
-    override fun whereAnd(predicates: Collection<Predicate>): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(JpqlDslSupport.and(predicates.toList()))
+    override fun whereAnd(predicates: Collection<Predicate?>): JpqlQueryable<UpdateQuery<T>> {
+        builder.where(Predicates.and(predicates.toList()))
 
         return this
     }
 
-    override fun whereOr(vararg predicates: Predicate): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(JpqlDslSupport.or(predicates.toList()))
+    override fun whereOr(vararg predicates: Predicate?): JpqlQueryable<UpdateQuery<T>> {
+        builder.where(Predicates.or(predicates.toList()))
 
         return this
     }
 
-    override fun whereOr(predicates: Collection<Predicate>): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(JpqlDslSupport.or(predicates.toList()))
+    override fun whereOr(predicates: Collection<Predicate?>): JpqlQueryable<UpdateQuery<T>> {
+        builder.where(Predicates.or(predicates.toList()))
 
         return this
     }

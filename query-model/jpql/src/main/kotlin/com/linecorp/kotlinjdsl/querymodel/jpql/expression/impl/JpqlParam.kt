@@ -1,0 +1,8 @@
+package com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl
+
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
+
+data class JpqlParam<T> internal constructor(
+    val name: String,
+    val value: T?,
+) : Expression<T>

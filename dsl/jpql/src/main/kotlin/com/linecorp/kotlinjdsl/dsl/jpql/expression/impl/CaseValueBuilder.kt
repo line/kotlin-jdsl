@@ -1,12 +1,12 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.CaseValue
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.CaseValueWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 
 internal class CaseValueBuilder<T, V> private constructor(
     private val value: Expression<T>,
-    private val whens: MutableList<CaseValueWhen<T, V>>,
+    private val whens: MutableList<Pair<Expressionable<T>, Expressionable<V>>>,
 ) {
     constructor(
         value: Expression<T>,
@@ -14,13 +14,13 @@ internal class CaseValueBuilder<T, V> private constructor(
         then: Expression<V>,
     ) : this(
         value,
-        mutableListOf(CaseValueWhen(compareValue, then)),
+        mutableListOf(Pair(compareValue, then)),
     )
 
     private var `else`: Expression<out V>? = null
 
     fun `when`(value: Expression<T>, then: Expression<V>): CaseValueBuilder<T, V> {
-        whens.add(CaseValueWhen(value, then))
+        whens.add(Pair(value, then))
 
         return this
     }
@@ -31,11 +31,21 @@ internal class CaseValueBuilder<T, V> private constructor(
         return this
     }
 
-    fun build(): CaseValue<T, V> {
-        return CaseValue(
-            value = value,
-            whens = whens,
-            `else` = `else`,
-        )
+    fun build(): Expression<V> {
+        val `else` = `else`
+
+        return if (`else` != null) {
+            Expressions.caseValue(
+                value,
+                whens,
+                `else`,
+            )
+        } else {
+            @Suppress("UNCHECKED_CAST")
+            Expressions.caseValue(
+                value,
+                whens,
+            ) as Expression<V>
+        }
     }
 }

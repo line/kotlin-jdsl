@@ -1,8 +1,10 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import org.junit.jupiter.api.Test
 
 class CaseDslTest : AbstractJpqlDslTest() {
@@ -22,21 +24,16 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = Case(
+        val expected = Expressions.case(
             whens = listOf(
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Value(int1),
+                    Expressions.value(int1),
                 ),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -52,21 +49,16 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = Case(
+        val expected = Expressions.case(
             whens = listOf(
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Value(nullableInt1),
+                    Expressions.value(nullableInt1),
                 ),
             ),
-            `else` = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -82,25 +74,16 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = Case<Int>(
+        val expected = Expressions.case<Int>(
             whens = listOf(
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
+                    Paths.path(TestTable::int1),
                 ),
             ),
-            `else` = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -116,25 +99,16 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = Case<Int>(
+        val expected = Expressions.case(
             whens = listOf(
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
+                    Paths.path(TestTable::nullableInt1),
                 ),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -155,75 +129,46 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = Case(
+        val expected = Expressions.case(
             whens = listOf(
                 // first
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Value(int1),
+                    Expressions.value(int1),
                 ),
                 // more
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Value(int1),
+                    Expressions.value(int1),
                 ),
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Value(nullableInt1),
+                    Expressions.value(nullableInt1),
                 ),
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
+                    Paths.path(TestTable::int1),
                 ),
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
+                    Paths.path(TestTable::nullableInt1),
                 ),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -239,21 +184,17 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Case(
+        val expected = Expressions.case(
             whens = listOf(
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Value(int1),
+                    Expressions.value(int1),
                 ),
             ),
-            `else` = Value(int1),
+            `else` = Expressions.value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -269,21 +210,17 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = Case(
+        val expected = Expressions.case(
             whens = listOf(
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Value(int1),
+                    Expressions.value(int1),
                 ),
             ),
-            `else` = Value(nullableInt1),
+            `else` = Expressions.value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -299,25 +236,17 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Case(
+        val expected = Expressions.case(
             whens = listOf(
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Value(int1),
+                    Expressions.value(int1),
                 ),
             ),
-            `else` = Field(
-                Int::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::int1.name,
-            ),
+            `else` = Paths.path(TestTable::int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -330,28 +259,20 @@ class CaseDslTest : AbstractJpqlDslTest() {
             caseWhen(path(TestTable::string1).equal(string1), int1).`else`(path(TestTable::nullableInt1))
         }.toExpression()
 
-        val actual: Expression<Int> = expression // for type check
+        val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = Case(
+        val expected = Expressions.case(
             whens = listOf(
-                CaseWhen(
-                    predicate = Equal(
-                        left = Field(
-                            String::class,
-                            AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                            TestTable::string1.name,
-                        ),
-                        right = Value(string1),
+                Pair(
+                    Predicates.equal(
+                        left = Paths.path(TestTable::string1),
+                        right = Expressions.value(string1),
                     ),
-                    result = Value(int1),
+                    Expressions.value(int1),
                 ),
             ),
-            `else` = Field(
-                Int::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::nullableInt1.name,
-            ),
+            `else` = Paths.path(TestTable::nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -367,19 +288,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(int1),
-                ),
+                Expressions.value(string1) to Expressions.value(int1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -395,19 +308,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(int1),
-                ),
+                Expressions.value(string1) to Expressions.value(int1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -423,19 +328,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(nullableInt1),
-                ),
+                Expressions.value(string1) to Expressions.value(nullableInt1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -451,23 +348,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue<String, Int>(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
-                ),
+                Expressions.value(string1) to Paths.path(TestTable::int1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -483,23 +368,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue<String, Int?>(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
-                ),
+                Expressions.value(string1) to Paths.path(TestTable::nullableInt1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -515,23 +388,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue<String, Int>(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Field(
-                        String::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::string1.name,
-                    ),
-                    result = Value(int1),
-                ),
+                Paths.path(TestTable::string1) to Expressions.value(int1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -547,23 +408,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue<String, Int?>(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Field(
-                        String::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::string1.name,
-                    ),
-                    result = Value(nullableInt1),
-                ),
+                Paths.path(TestTable::string1) to Expressions.value(nullableInt1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -579,27 +428,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue<String, Int>(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Field(
-                        String::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::string1.name,
-                    ),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
-                ),
+                Paths.path(TestTable::string1) to Paths.path(TestTable::int1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -615,27 +448,11 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue<String, Int?>(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Field(
-                        String::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::string1.name,
-                    ),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
-                ),
+                Paths.path(TestTable::string1) to Paths.path(TestTable::nullableInt1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -664,85 +481,21 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
                 // first
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(int1),
-                ),
+                Expressions.value(string1) to Expressions.value(int1),
                 // more
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(int1),
-                ),
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(nullableInt1),
-                ),
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
-                ),
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
-                ),
-                CaseValueWhen(
-                    compareValue = Field(
-                        String::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::string1.name,
-                    ),
-                    result = Value(int1),
-                ),
-                CaseValueWhen(
-                    compareValue = Field(
-                        String::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::string1.name,
-                    ),
-                    result = Value(nullableInt1),
-                ),
-                CaseValueWhen(
-                    compareValue = Field(
-                        String::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::string1.name,
-                    ),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::int1.name,
-                    ),
-                ),
-                CaseValueWhen(
-                    compareValue = Field(
-                        String::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::string1.name,
-                    ),
-                    result = Field(
-                        Int::class,
-                        AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                        TestTable::nullableInt1.name,
-                    ),
-                ),
+                Expressions.value(string1) to Expressions.value(int1),
+                Expressions.value(string1) to Expressions.value(nullableInt1),
+                Expressions.value(string1) to Paths.path(TestTable::int1),
+                Expressions.value(string1) to Paths.path(TestTable::nullableInt1),
+                Paths.path(TestTable::string1) to Expressions.value(int1),
+                Paths.path(TestTable::string1) to Expressions.value(nullableInt1),
+                Paths.path(TestTable::string1) to Paths.path(TestTable::int1),
+                Paths.path(TestTable::string1) to Paths.path(TestTable::nullableInt1),
             ),
-            `else` = null,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -760,19 +513,12 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = CaseValue(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(int1),
-                ),
+                Expressions.value(string1) to Expressions.value(int1),
             ),
-            `else` = Value(int1),
+            `else` = Expressions.value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -790,19 +536,12 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(int1),
-                ),
+                Expressions.value(string1) to Expressions.value(int1),
             ),
-            `else` = Value(nullableInt1),
+            `else` = Expressions.value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -820,23 +559,12 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = CaseValue(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(int1),
-                ),
+                Expressions.value(string1) to Expressions.value(int1),
             ),
-            `else` = Field(
-                Int::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::int1.name,
-            ),
+            `else` = Paths.path(TestTable::int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -851,26 +579,15 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 .`else`(path(TestTable::nullableInt1))
         }.toExpression()
 
-        val actual: Expression<Int> = expression // for type check
+        val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = CaseValue(
-            value = Field(
-                String::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::string1.name,
-            ),
+        val expected = Expressions.caseValue(
+            value = Paths.path(TestTable::string1),
             whens = listOf(
-                CaseValueWhen(
-                    compareValue = Value(string1),
-                    result = Value(int1),
-                ),
+                Expressions.value(string1) to Expressions.value(int1),
             ),
-            `else` = Field(
-                Int::class,
-                AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                TestTable::nullableInt1.name,
-            ),
+            `else` = Paths.path(TestTable::nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -880,7 +597,6 @@ class CaseDslTest : AbstractJpqlDslTest() {
         val string1: String = ""
 
         val int1: Int = 0
-
-        val nullableInt1: Int = 0
+        val nullableInt1: Int? = null
     }
 }

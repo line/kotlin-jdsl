@@ -1,9 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.update.impl
 
-import com.linecorp.kotlinjdsl.dsl.jpql.expression.PathAndExpression
 import com.linecorp.kotlinjdsl.dsl.jpql.update.UpdateQuerySetStep
 import com.linecorp.kotlinjdsl.dsl.jpql.update.UpdateQueryWhereStep
-import com.linecorp.kotlinjdsl.querymodel.jpql.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.PathAndExpression
 
 internal class UpdateQuerySetStepDsl<T : Any>(
     private val entity: Path<T>,
@@ -11,14 +11,14 @@ internal class UpdateQuerySetStepDsl<T : Any>(
     override fun set(vararg assignments: PathAndExpression<*>): UpdateQueryWhereStep<T> {
         return UpdateQueryDsl(
             entity = entity,
-            set = assignments.associate { it.first to it.second },
+            set = assignments.toList(),
         )
     }
 
     override fun set(assignments: Collection<PathAndExpression<*>>): UpdateQueryWhereStep<T> {
         return UpdateQueryDsl(
             entity = entity,
-            set = assignments.associate { it.first to it.second },
+            set = assignments,
         )
     }
 

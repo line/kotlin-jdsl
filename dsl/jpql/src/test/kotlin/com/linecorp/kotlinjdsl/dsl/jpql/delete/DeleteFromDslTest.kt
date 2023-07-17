@@ -1,10 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.delete
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.AliasedPath
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.Entity
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.JpqlDeleteQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import org.junit.jupiter.api.Test
 
 class DeleteFromDslTest : AbstractJpqlDslTest() {
@@ -20,8 +19,8 @@ class DeleteFromDslTest : AbstractJpqlDslTest() {
         val actual: DeleteQuery<TestTable> = delete // for type check
 
         // then
-        val expected = JpqlDeleteQuery(
-            from = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
+        val expected = Queries.delete(
+            from = Paths.entity(TestTable::class),
             where = null,
         )
 
@@ -38,8 +37,8 @@ class DeleteFromDslTest : AbstractJpqlDslTest() {
         val actual: DeleteQuery<TestTable> = delete // for type check
 
         // then
-        val expected = JpqlDeleteQuery(
-            from = AliasedPath(Entity(TestTable::class), alias1),
+        val expected = Queries.delete(
+            from = Paths.alias(Paths.entity(TestTable::class), alias1),
             where = null,
         )
 

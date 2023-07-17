@@ -1,8 +1,10 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.update
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.UpdateQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import org.junit.jupiter.api.Test
 
 class SetDslTest : AbstractJpqlDslTest() {
@@ -26,14 +28,13 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ) to Value(int1),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::int1),
+                    Expressions.value(int1),
+                ),
             ),
             where = null,
         )
@@ -55,14 +56,13 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(int1),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(int1),
+                ),
             ),
             where = null,
         )
@@ -84,14 +84,13 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(nullableInt1),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(nullableInt1),
+                ),
             ),
             where = null,
         )
@@ -114,19 +113,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ) to Value(int1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ) to Value(int2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::int1),
+                    Expressions.value(int1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::int2),
+                    Expressions.value(int2),
+                ),
             ),
             where = null,
         )
@@ -149,19 +146,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(int1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ) to Value(int2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(int1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::int2),
+                    Expressions.value(int2),
+                ),
             ),
             where = null,
         )
@@ -184,19 +179,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(nullableInt1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ) to Value(int2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(nullableInt1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::int2),
+                    Expressions.value(int2),
+                ),
             ),
             where = null,
         )
@@ -219,19 +212,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(nullableInt1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt2.name,
-                ) to Value(int2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(nullableInt1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt2),
+                    Expressions.value(int2),
+                ),
             ),
             where = null,
         )
@@ -254,19 +245,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(nullableInt1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt2.name,
-                ) to Value(nullableInt2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(nullableInt1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt2),
+                    Expressions.value(nullableInt2),
+                ),
             ),
             where = null,
         )
@@ -291,19 +280,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int1.name,
-                ) to Value(int1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ) to Value(int2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::int1),
+                    Expressions.value(int1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::int2),
+                    Expressions.value(int2),
+                ),
             ),
             where = null,
         )
@@ -328,19 +315,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(int1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ) to Value(int2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(int1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::int2),
+                    Expressions.value(int2),
+                ),
             ),
             where = null,
         )
@@ -365,19 +350,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(nullableInt1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::int2.name,
-                ) to Value(int2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(nullableInt1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::int2),
+                    Expressions.value(int2),
+                ),
             ),
             where = null,
         )
@@ -402,19 +385,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(nullableInt1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt2.name,
-                ) to Value(int2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(nullableInt1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt2),
+                    Expressions.value(int2),
+                ),
             ),
             where = null,
         )
@@ -439,19 +420,17 @@ class SetDslTest : AbstractJpqlDslTest() {
         val actual: UpdateQuery<TestTable> = update // for type check
 
         // then
-        val expected = JpqlUpdateQuery(
-            entity = AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-            set = mapOf(
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt1.name,
-                ) to Value(nullableInt1),
-                Field<Int>(
-                    Int::class,
-                    AliasedPath(Entity(TestTable::class), TestTable::class.simpleName!!),
-                    TestTable::nullableInt2.name,
-                ) to Value(nullableInt2),
+        val expected = Queries.update(
+            entity = Paths.entity(TestTable::class),
+            set = listOf(
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt1),
+                    Expressions.value(nullableInt1),
+                ),
+                Paths.pair(
+                    Paths.path(TestTable::nullableInt2),
+                    Expressions.value(nullableInt2),
+                ),
             ),
             where = null,
         )
@@ -462,7 +441,6 @@ class SetDslTest : AbstractJpqlDslTest() {
     private class TestTable {
         val int1: Int = 1
         val int2: Int = 1
-
         val nullableInt1: Int? = null
         val nullableInt2: Int? = null
     }
