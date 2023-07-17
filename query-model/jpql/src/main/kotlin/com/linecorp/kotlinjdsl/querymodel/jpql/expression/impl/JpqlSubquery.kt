@@ -1,7 +1,7 @@
-package com.linecorp.kotlinjdsl.querymodel.jpql.select.impl
+package com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl
 
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Subquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Subquery
 
 data class JpqlSubquery<T> internal constructor(
     val selectQuery: SelectQuery<T>,

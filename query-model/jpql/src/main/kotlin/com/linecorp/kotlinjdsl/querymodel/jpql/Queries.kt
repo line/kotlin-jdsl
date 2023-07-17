@@ -7,9 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.PathAndExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Subquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.impl.JpqlUpdateQuery
@@ -35,14 +33,6 @@ object Queries {
             groupBy = groupBy,
             having = having,
             orderBy = orderBy,
-        )
-    }
-
-    fun <T> subquery(
-        selectQuery: SelectQuery<T>
-    ): Subquery<T> {
-        return JpqlSubquery(
-            selectQuery = selectQuery,
         )
     }
 

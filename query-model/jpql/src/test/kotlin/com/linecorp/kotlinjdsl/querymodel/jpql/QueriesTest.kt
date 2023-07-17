@@ -3,16 +3,16 @@ package com.linecorp.kotlinjdsl.querymodel.jpql
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.impl.JpqlDeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Subquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlField
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.impl.JpqlAliasedPath
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.impl.JpqlEntity
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlAnd
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqual
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Subquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.impl.JpqlSort
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
@@ -44,7 +44,7 @@ class QueriesTest : WithAssertions {
             orderBy = null,
         ).toQuery()
 
-        val subquery = Queries.subquery(select)
+        val subquery = Expressions.subquery(select)
 
         val actual1: SelectQuery<TestTable1> = select // for type check
         val actual2: Subquery<TestTable1> = subquery // for type check
@@ -103,7 +103,7 @@ class QueriesTest : WithAssertions {
             orderBy = null,
         ).toQuery()
 
-        val subquery = Queries.subquery(select)
+        val subquery = Expressions.subquery(select)
 
         val actual1: SelectQuery<TestTable1> = select // for type check
         val actual2: Subquery<TestTable1> = subquery // for type check
@@ -167,7 +167,7 @@ class QueriesTest : WithAssertions {
             orderBy = null,
         ).toQuery()
 
-        val subquery = Queries.subquery(select)
+        val subquery = Expressions.subquery(select)
 
         val actual1: SelectQuery<TestTable1> = select // for type check
         val actual2: Subquery<TestTable1> = subquery // for type check
@@ -253,7 +253,7 @@ class QueriesTest : WithAssertions {
             orderBy = null,
         ).toQuery()
 
-        val subquery = Queries.subquery(select)
+        val subquery = Expressions.subquery(select)
 
         val actual1: SelectQuery<TestTable1> = select // for type check
         val actual2: Subquery<TestTable1> = subquery // for type check
@@ -355,7 +355,7 @@ class QueriesTest : WithAssertions {
             orderBy = null,
         ).toQuery()
 
-        val subquery = Queries.subquery(select)
+        val subquery = Expressions.subquery(select)
 
         val actual1: SelectQuery<TestTable1> = select // for type check
         val actual2: Subquery<TestTable1> = subquery // for type check
@@ -479,7 +479,7 @@ class QueriesTest : WithAssertions {
             ),
         ).toQuery()
 
-        val subquery = Queries.subquery(select)
+        val subquery = Expressions.subquery(select)
 
         val actual1: SelectQuery<TestTable1> = select // for type check
         val actual2: Subquery<TestTable1> = subquery // for type check

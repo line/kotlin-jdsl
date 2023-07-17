@@ -4,9 +4,11 @@ import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.ExpressionAndExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Subquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.*
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.reflect.KClass
@@ -176,6 +178,14 @@ object Expressions {
 
             else -> JpqlAliasedExpression(resolvedExpression, alias)
         }
+    }
+
+    fun <T> subquery(
+        selectQuery: SelectQuery<T>
+    ): Subquery<T> {
+        return JpqlSubquery(
+            selectQuery = selectQuery,
+        )
     }
 
     @SinceJdsl("3.0.0")

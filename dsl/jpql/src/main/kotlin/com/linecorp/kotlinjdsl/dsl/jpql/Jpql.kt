@@ -16,11 +16,13 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.*
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.ExpressionAndExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Subquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.JoinType
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.PathAndExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -753,6 +755,11 @@ open class Jpql : JpqlDsl {
         expressions: Collection<Expressionable<*>>,
     ): SelectQueryFromStep<T> {
         return selectDistinct(T::class, expressions.toList())
+    }
+
+    @JvmName("asSubquery")
+    fun <T> JpqlQueryable<SelectQuery<T>>.asSubquery(): Subquery<T> {
+        return Expressions.subquery(this.toQuery())
     }
 
     @JvmName("update1")
