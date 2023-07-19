@@ -25,8 +25,8 @@ internal class SelectQueryBuilder<T>(
         return this
     }
 
-    fun groupBy(expressions: Iterable<Expression<*>>): SelectQueryBuilder<T> {
-        this.groupBy = (this.groupBy ?: mutableListOf()).also { it.addAll(expressions) }
+    fun groupBy(expr: Iterable<Expression<*>>): SelectQueryBuilder<T> {
+        this.groupBy = (this.groupBy ?: mutableListOf()).also { it.addAll(expr) }
 
         return this
     }

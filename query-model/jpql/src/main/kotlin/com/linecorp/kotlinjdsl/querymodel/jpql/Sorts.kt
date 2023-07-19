@@ -7,12 +7,12 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.sort.impl.JpqlSort
 
 object Sorts {
     @SinceJdsl("3.0.0")
-    fun asc(expression: Expressionable<*>): Sort {
-        return JpqlSort(expression.toExpression(), Sort.Order.ASC)
+    fun asc(expr: Expressionable<*>): Sort {
+        return JpqlSort(expr.toExpression(), Sort.Order.ASC)
     }
 
     @SinceJdsl("3.0.0")
-    fun desc(expression: Expressionable<*>): Sort {
-        return JpqlSort(expression.toExpression(), Sort.Order.DESC)
+    fun desc(expr: Expressionable<*>): Sort {
+        return JpqlSort(expr.toExpression(), Sort.Order.DESC)
     }
 }

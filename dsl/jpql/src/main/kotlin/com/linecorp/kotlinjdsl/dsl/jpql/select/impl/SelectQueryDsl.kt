@@ -60,14 +60,14 @@ internal class SelectQueryDsl<T> private constructor(
         return this
     }
 
-    override fun groupBy(vararg expressions: Expressionable<*>): SelectQueryHavingStep<T> {
-        builder.groupBy(expressions.map { it.toExpression() })
+    override fun groupBy(vararg expr: Expressionable<*>): SelectQueryHavingStep<T> {
+        builder.groupBy(expr.map { it.toExpression() })
 
         return this
     }
 
-    override fun groupBy(expressions: Iterable<Expressionable<*>>): SelectQueryHavingStep<T> {
-        builder.groupBy(expressions.map { it.toExpression() })
+    override fun groupBy(expr: Iterable<Expressionable<*>>): SelectQueryHavingStep<T> {
+        builder.groupBy(expr.map { it.toExpression() })
 
         return this
     }
