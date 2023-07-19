@@ -22,8 +22,8 @@ class NullIfDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = Expressions.nullIf(
-            left = Paths.path(TestTable::int1),
-            right = Expressions.value(int1),
+            value = Paths.path(TestTable::int1),
+            compareValue = Expressions.value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -40,8 +40,8 @@ class NullIfDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = Expressions.nullIf(
-            left = Paths.path(TestTable::int1),
-            right = Expressions.value(nullableInt1),
+            value = Paths.path(TestTable::int1),
+            compareValue = Expressions.value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -58,8 +58,8 @@ class NullIfDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = Expressions.nullIf(
-            left = Paths.path(TestTable::nullableInt1),
-            right = Expressions.value(int1),
+            value = Paths.path(TestTable::nullableInt1),
+            compareValue = Expressions.value(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -76,8 +76,8 @@ class NullIfDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = Expressions.nullIf(
-            left = Paths.path(TestTable::nullableInt1),
-            right = Expressions.value(nullableInt1),
+            value = Paths.path(TestTable::nullableInt1),
+            compareValue = Expressions.value(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)

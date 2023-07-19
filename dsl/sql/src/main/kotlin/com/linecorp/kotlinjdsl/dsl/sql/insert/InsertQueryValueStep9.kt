@@ -33,6 +33,6 @@ interface InsertQueryValueStep9<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9> :
     ): InsertQueryValueStep9<T, V1, V2, V3, V4, V5, V6, V7, V8, V9>
 
     fun values(
-        values: Collection<Expression<*>>,
+        values: Iterable<Expression<*>>,
     ): InsertQueryValueStep9<T, V1, V2, V3, V4, V5, V6, V7, V8, V9>
 }

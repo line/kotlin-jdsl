@@ -195,20 +195,20 @@ class QueriesTest : WithAssertions {
             where = JpqlAnd(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                             TestTable2::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                 ),
             ),
@@ -281,20 +281,20 @@ class QueriesTest : WithAssertions {
             where = JpqlAnd(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                             TestTable2::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                 ),
             ),
@@ -383,20 +383,20 @@ class QueriesTest : WithAssertions {
             where = JpqlAnd(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                             TestTable2::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                 ),
             ),
@@ -415,20 +415,20 @@ class QueriesTest : WithAssertions {
             having = JpqlAnd(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                             TestTable2::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                 ),
             ),
@@ -507,20 +507,20 @@ class QueriesTest : WithAssertions {
             where = JpqlAnd(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                             TestTable2::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                 ),
             ),
@@ -539,20 +539,20 @@ class QueriesTest : WithAssertions {
             having = JpqlAnd(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                             TestTable2::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                 ),
             ),
@@ -577,7 +577,7 @@ class QueriesTest : WithAssertions {
         )
 
         val expected2 = JpqlSubquery(
-            selectQuery = expected1,
+            selectQuery = expected1.copy(orderBy = null),
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -668,20 +668,20 @@ class QueriesTest : WithAssertions {
             where = JpqlAnd(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                             TestTable2::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                 ),
             ),
@@ -730,20 +730,20 @@ class QueriesTest : WithAssertions {
             where = JpqlAnd(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                             TestTable2::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                 ),
             ),

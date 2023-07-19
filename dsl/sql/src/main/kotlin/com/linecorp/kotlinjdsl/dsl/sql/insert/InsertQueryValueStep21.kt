@@ -57,6 +57,6 @@ interface InsertQueryValueStep21<T : Any, V1, V2, V3, V4, V5, V6, V7, V8, V9, V1
     ): InsertQueryValueStep21<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21>
 
     fun values(
-        values: Collection<Expression<*>>,
+        values: Iterable<Expression<*>>,
     ): InsertQueryValueStep21<T, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21>
 }

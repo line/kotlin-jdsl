@@ -8,8 +8,8 @@ interface SelectQueryWhereStep : SelectQueryGroupByStep, SqlQueryable<SelectQuer
     fun where(predicate: Predicate): SelectQueryGroupByStep
 
     fun whereAnd(vararg predicates: Predicate): SelectQueryGroupByStep
-    fun whereAnd(predicates: Collection<Predicate>): SelectQueryGroupByStep
+    fun whereAnd(predicates: Iterable<Predicate>): SelectQueryGroupByStep
 
     fun whereOr(vararg predicates: Predicate): SelectQueryGroupByStep
-    fun whereOr(predicates: Collection<Predicate>): SelectQueryGroupByStep
+    fun whereOr(predicates: Iterable<Predicate>): SelectQueryGroupByStep
 }

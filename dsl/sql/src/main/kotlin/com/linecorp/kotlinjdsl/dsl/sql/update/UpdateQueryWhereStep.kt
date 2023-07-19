@@ -8,8 +8,8 @@ interface UpdateQueryWhereStep<T : Any> : SqlQueryable<UpdateQuery<T>> {
     fun where(predicate: Predicate): SqlQueryable<UpdateQuery<T>>
 
     fun whereAnd(vararg predicates: Predicate): SqlQueryable<UpdateQuery<T>>
-    fun whereAnd(predicates: Collection<Predicate>): SqlQueryable<UpdateQuery<T>>
+    fun whereAnd(predicates: Iterable<Predicate>): SqlQueryable<UpdateQuery<T>>
 
     fun whereOr(vararg predicates: Predicate): SqlQueryable<UpdateQuery<T>>
-    fun whereOr(predicates: Collection<Predicate>): SqlQueryable<UpdateQuery<T>>
+    fun whereOr(predicates: Iterable<Predicate>): SqlQueryable<UpdateQuery<T>>
 }

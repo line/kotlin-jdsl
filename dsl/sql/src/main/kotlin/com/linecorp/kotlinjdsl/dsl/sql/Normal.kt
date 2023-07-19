@@ -130,7 +130,7 @@ open class Normal : SqlDsl {
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> templateExpression(
         template: String,
-        args: Collection<Expressionable<*>>,
+        args: Iterable<Expressionable<*>>,
     ): Expression<T> {
         return TemplateExpression(T::class, template, args.map { it.toExpression() })
     }
@@ -281,8 +281,8 @@ open class Normal : SqlDsl {
 
     @JvmName("col1")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> Table<T>.col(property: KProperty1<T, V>): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
-        return com.linecorp.kotlinjdsl.querymodel.sql.Column(this, property)
+    fun <T : Any, V> Table<T>.col(property: KProperty1<T, V>): Column<T, V> {
+        return Column(this, property)
     }
 
     @JvmName("col2")
@@ -290,20 +290,20 @@ open class Normal : SqlDsl {
     fun <T : Any, V> col(
         table: Table<T>,
         property: KProperty1<T, V>
-    ): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
-        return com.linecorp.kotlinjdsl.querymodel.sql.Column(table, property)
+    ): Column<T, V> {
+        return Column(table, property)
     }
 
     @JvmName("col3")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> col(property: KProperty1<T, V>): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
-        return com.linecorp.kotlinjdsl.querymodel.sql.Column(table(property.owner()), property)
+    fun <T : Any, V> col(property: KProperty1<T, V>): Column<T, V> {
+        return Column(table(property.owner()), property)
     }
 
     @JvmName("column1")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> Table<T>.column(property: KProperty1<T, V>): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
-        return com.linecorp.kotlinjdsl.querymodel.sql.Column(this, property)
+    fun <T : Any, V> Table<T>.column(property: KProperty1<T, V>): Column<T, V> {
+        return Column(this, property)
     }
 
     @JvmName("column2")
@@ -311,14 +311,14 @@ open class Normal : SqlDsl {
     fun <T : Any, V> column(
         table: Table<T>,
         property: KProperty1<T, V>
-    ): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
-        return com.linecorp.kotlinjdsl.querymodel.sql.Column(table, property)
+    ): Column<T, V> {
+        return Column(table, property)
     }
 
     @JvmName("column3")
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> column(property: KProperty1<T, V>): com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V> {
-        return com.linecorp.kotlinjdsl.querymodel.sql.Column(table(property.owner()), property)
+    fun <T : Any, V> column(property: KProperty1<T, V>): Column<T, V> {
+        return Column(table(property.owner()), property)
     }
 
     @JvmName("exits1")
@@ -807,7 +807,7 @@ open class Normal : SqlDsl {
 
     @JvmName("and3")
     @SinceJdsl("3.0.0")
-    fun and(predicates: Collection<Predicatable>): Predicate {
+    fun and(predicates: Iterable<Predicatable>): Predicate {
         return And(predicates.map { it.toPredicate() })
     }
 
@@ -825,7 +825,7 @@ open class Normal : SqlDsl {
 
     @JvmName("or3")
     @SinceJdsl("3.0.0")
-    fun or(predicates: Collection<Predicatable>): Predicate {
+    fun or(predicates: Iterable<Predicatable>): Predicate {
         return Or(predicates.map { it.toPredicate() })
     }
 
@@ -837,7 +837,7 @@ open class Normal : SqlDsl {
 
     @JvmName("in2")
     @SinceJdsl("3.0.0")
-    fun <T> Expressionable<T>.`in`(expressions: Collection<T>): Predicate {
+    fun <T> Expressionable<T>.`in`(expressions: Iterable<T>): Predicate {
         return In(this.toExpression(), expressions.map { Param(it) }, not = false)
     }
 
@@ -849,7 +849,7 @@ open class Normal : SqlDsl {
 
     @JvmName("in4")
     @SinceJdsl("3.0.0")
-    fun <T> Expressionable<T>.`in`(expressions: Collection<Expressionable<T>>): Predicate {
+    fun <T> Expressionable<T>.`in`(expressions: Iterable<Expressionable<T>>): Predicate {
         return In(this.toExpression(), expressions.map { it.toExpression() }, not = false)
     }
 
@@ -861,7 +861,7 @@ open class Normal : SqlDsl {
 
     @JvmName("notIn2")
     @SinceJdsl("3.0.0")
-    fun <T> Expressionable<T>.notIn(expressions: Collection<T>): Predicate {
+    fun <T> Expressionable<T>.notIn(expressions: Iterable<T>): Predicate {
         return In(this.toExpression(), expressions.map { Param(it) }, not = true)
     }
 
@@ -873,7 +873,7 @@ open class Normal : SqlDsl {
 
     @JvmName("notIn4")
     @SinceJdsl("3.0.0")
-    fun <T> Expressionable<T>.notIn(expressions: Collection<Expressionable<T>>): Predicate {
+    fun <T> Expressionable<T>.notIn(expressions: Iterable<Expressionable<T>>): Predicate {
         return In(this.toExpression(), expressions.map { it.toExpression() }, not = true)
     }
 
@@ -923,13 +923,13 @@ open class Normal : SqlDsl {
 
     @JvmName("select3")
     @SinceJdsl("3.0.0")
-    fun select(values: Collection<Any?>): SelectQueryFromStep {
+    fun select(values: Iterable<Any?>): SelectQueryFromStep {
         return SelectQueryDsl(values.map { Param(it) }, distinct = false)
     }
 
     @JvmName("select4")
     @SinceJdsl("3.0.0")
-    fun select(expressions: Collection<Expressionable<*>>): SelectQueryFromStep {
+    fun select(expressions: Iterable<Expressionable<*>>): SelectQueryFromStep {
         return SelectQueryDsl(expressions.map { it.toExpression() }, distinct = false)
     }
 
@@ -947,13 +947,13 @@ open class Normal : SqlDsl {
 
     @JvmName("selectDistinct3")
     @SinceJdsl("3.0.0")
-    fun selectDistinct(expressions: Collection<Expressionable<*>>): SelectQueryFromStep {
+    fun selectDistinct(expressions: Iterable<Expressionable<*>>): SelectQueryFromStep {
         return SelectQueryDsl(expressions.map { it.toExpression() }, distinct = true)
     }
 
     @JvmName("selectDistinct4")
     @SinceJdsl("3.0.0")
-    fun selectDistinct(values: Collection<Any?>): SelectQueryFromStep {
+    fun selectDistinct(values: Iterable<Any?>): SelectQueryFromStep {
         return SelectQueryDsl(values.map { Param(it) }, distinct = true)
     }
 }

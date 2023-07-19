@@ -13,8 +13,6 @@ class AndSerializer : SqlSerializer<And> {
     }
 
     override fun serialize(part: And, writer: SqlWriter, context: RenderContext) {
-        if (part.predicates.isEmpty()) return
-
         val delegate = context.getValue(SqlRenderSerializer)
 
         writer.writeEach(part.predicates, separator = { writer.writeKeyword("AND") }) { predicate ->

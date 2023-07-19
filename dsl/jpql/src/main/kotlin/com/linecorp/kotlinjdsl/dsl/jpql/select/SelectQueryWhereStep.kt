@@ -9,9 +9,9 @@ interface SelectQueryWhereStep<T> : SelectQueryGroupByStep<T>, JpqlQueryable<Sel
 
     fun whereAnd(vararg predicates: Predicatable?): SelectQueryGroupByStep<T>
 
-    fun whereAnd(predicates: Collection<Predicatable?>): SelectQueryGroupByStep<T>
+    fun whereAnd(predicates: Iterable<Predicatable?>): SelectQueryGroupByStep<T>
 
     fun whereOr(vararg predicates: Predicatable?): SelectQueryGroupByStep<T>
 
-    fun whereOr(predicates: Collection<Predicatable?>): SelectQueryGroupByStep<T>
+    fun whereOr(predicates: Iterable<Predicatable?>): SelectQueryGroupByStep<T>
 }

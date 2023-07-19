@@ -2,6 +2,7 @@ package com.linecorp.kotlinjdsl.querymodel.jpql
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.ExpressionAndExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlField
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.JoinType
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
@@ -12,22 +13,11 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 class PathsTest : WithAssertions {
-    private val string1: String = "string1"
-    private val nullableString1: String? = null
-
     private val int1: Int = 1
-    private val int2: Int = 1
     private val nullableInt1: Int? = null
-    private val nullableInt2: Int? = null
-
-    private val long1: Long = 1
 
     private val alias1: String = "alias1"
     private val alias2: String = "alias2"
-
-    private val template1: String = "template1"
-
-    private val paramName1: String = "paramName1"
 
     @Test
     fun `entity class`() {
@@ -335,13 +325,13 @@ class PathsTest : WithAssertions {
         val expected = JpqlJoin(
             left = JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
             right = JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -374,13 +364,13 @@ class PathsTest : WithAssertions {
         val expected = JpqlJoin(
             left = JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
             right = JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -413,13 +403,13 @@ class PathsTest : WithAssertions {
         val expected = JpqlJoin(
             left = JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
             right = JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -452,13 +442,13 @@ class PathsTest : WithAssertions {
         val expected = JpqlJoin(
             left = JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
             right = JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -626,13 +616,13 @@ class PathsTest : WithAssertions {
                 ),
                 SuperTable1::class.simpleName!!,
             ),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -672,13 +662,13 @@ class PathsTest : WithAssertions {
                 ),
                 SuperTable1::class.simpleName!!,
             ),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -718,13 +708,13 @@ class PathsTest : WithAssertions {
                 ),
                 SuperTable1::class.simpleName!!,
             ),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -764,13 +754,13 @@ class PathsTest : WithAssertions {
                 ),
                 SuperTable1::class.simpleName!!,
             ),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -973,13 +963,13 @@ class PathsTest : WithAssertions {
                 ),
                 SuperTable2::class.simpleName!!,
             ),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -1026,13 +1016,13 @@ class PathsTest : WithAssertions {
                 ),
                 SuperTable2::class.simpleName!!,
             ),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -1079,13 +1069,13 @@ class PathsTest : WithAssertions {
                 ),
                 SuperTable2::class.simpleName!!,
             ),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -1132,13 +1122,13 @@ class PathsTest : WithAssertions {
                 ),
                 SuperTable2::class.simpleName!!,
             ),
-            on = JpqlEqual<Int>(
-                left = JpqlField(
+            on = JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable2::class), TestTable2::class.simpleName!!),
                     TestTable1::int1.name,
@@ -1521,7 +1511,7 @@ class PathsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                JpqlValue(nullableInt1),
+                JpqlNull,
             ),
         )
     }

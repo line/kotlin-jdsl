@@ -13,8 +13,6 @@ class OrSerializer : SqlSerializer<Or> {
     }
 
     override fun serialize(part: Or, writer: SqlWriter, context: RenderContext) {
-        if (part.predicates.isEmpty()) return
-
         val delegate = context.getValue(SqlRenderSerializer)
 
         writer.writeEach(part.predicates, separator = { writer.writeKeyword("OR") }) { predicate ->

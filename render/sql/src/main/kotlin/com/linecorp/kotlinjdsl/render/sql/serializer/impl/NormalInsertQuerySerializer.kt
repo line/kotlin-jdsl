@@ -57,7 +57,7 @@ class NormalInsertQuerySerializer : SqlSerializer<NormalInsertQuery<*>> {
     }
 
     private fun columns(
-        columns: Collection<Expression<*>>,
+        columns: Iterable<Expression<*>>,
         serializer: SqlRenderSerializer,
         writer: SqlWriter,
         context: RenderContext,
@@ -72,7 +72,7 @@ class NormalInsertQuerySerializer : SqlSerializer<NormalInsertQuery<*>> {
     }
 
     private fun values(
-        values: Collection<Collection<Expression<*>>>,
+        values: Iterable<Iterable<Expression<*>>>,
         serializer: SqlRenderSerializer,
         writer: SqlWriter,
         context: RenderContext,

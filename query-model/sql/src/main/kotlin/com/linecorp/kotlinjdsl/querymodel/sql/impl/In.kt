@@ -7,6 +7,6 @@ import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
 @Internal
 data class In<T>(
     val left: Expression<T>,
-    val right: Collection<Expression<T>>,
+    val right: Iterable<Expression<T>>,
     val not: Boolean,
 ) : Predicate

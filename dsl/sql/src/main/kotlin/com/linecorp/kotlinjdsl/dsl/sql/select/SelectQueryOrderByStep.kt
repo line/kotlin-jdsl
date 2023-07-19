@@ -6,5 +6,5 @@ import com.linecorp.kotlinjdsl.querymodel.sql.SqlQueryable
 
 interface SelectQueryOrderByStep : SelectQueryLimitStep, SqlQueryable<SelectQuery> {
     fun orderBy(vararg sorts: Sort): SelectQueryLimitStep
-    fun orderBy(sorts: Collection<Sort>): SelectQueryLimitStep
+    fun orderBy(sorts: Iterable<Sort>): SelectQueryLimitStep
 }

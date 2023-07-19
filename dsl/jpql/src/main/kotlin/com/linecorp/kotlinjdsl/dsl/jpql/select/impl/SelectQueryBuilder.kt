@@ -10,14 +10,14 @@ import kotlin.reflect.KClass
 
 internal class SelectQueryBuilder<T>(
     private val returnType: KClass<*>,
-    private val select: Collection<Expression<*>>,
+    private val select: Iterable<Expression<*>>,
     private val distinct: Boolean,
-    private var from: Collection<Path<*>>,
+    private var from: Iterable<Path<*>>,
 ) {
     private var where: Predicate? = null
-    private var groupBy: MutableCollection<Expression<*>>? = null
+    private var groupBy: MutableList<Expression<*>>? = null
     private var having: Predicate? = null
-    private var orderBy: MutableCollection<Sort>? = null
+    private var orderBy: MutableList<Sort>? = null
 
     fun where(predicate: Predicate): SelectQueryBuilder<T> {
         where = predicate
@@ -25,7 +25,7 @@ internal class SelectQueryBuilder<T>(
         return this
     }
 
-    fun groupBy(expressions: Collection<Expression<*>>): SelectQueryBuilder<T> {
+    fun groupBy(expressions: Iterable<Expression<*>>): SelectQueryBuilder<T> {
         this.groupBy = (this.groupBy ?: mutableListOf()).also { it.addAll(expressions) }
 
         return this
@@ -37,7 +37,7 @@ internal class SelectQueryBuilder<T>(
         return this
     }
 
-    fun orderBy(sorts: Collection<Sort>): SelectQueryBuilder<T> {
+    fun orderBy(sorts: Iterable<Sort>): SelectQueryBuilder<T> {
         this.orderBy = (this.orderBy ?: mutableListOf()).also { it.addAll(sorts) }
 
         return this

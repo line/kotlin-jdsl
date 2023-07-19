@@ -1,10 +1,12 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql.path.impl
 
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.JoinType
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import kotlin.reflect.KClass
 
+@Internal
 data class JpqlJoin internal constructor(
     val left: Path<*>,
     val right: Path<*>,

@@ -8,5 +8,5 @@ import kotlin.reflect.KProperty1
 interface SelectQueryGroupByStep : SelectQueryHavingStep, SqlQueryable<SelectQuery> {
     fun groupBy(vararg properties: KProperty1<out Any, *>): SelectQueryHavingStep
     fun groupBy(vararg expressions: Expression<*>): SelectQueryHavingStep
-    fun groupBy(expressions: Collection<Expression<*>>): SelectQueryHavingStep
+    fun groupBy(expressions: Iterable<Expression<*>>): SelectQueryHavingStep
 }

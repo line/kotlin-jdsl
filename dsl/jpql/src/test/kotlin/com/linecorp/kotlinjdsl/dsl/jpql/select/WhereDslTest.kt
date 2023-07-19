@@ -36,8 +36,8 @@ class WhereDslTest : AbstractJpqlDslTest() {
                 Paths.entity(TestTable::class),
             ),
             where = Predicates.equal(
-                left = Paths.path(TestTable::int1),
-                right = Expressions.value(int1),
+                value = Paths.path(TestTable::int1),
+                compareValue = Expressions.value(int1),
             ),
             groupBy = null,
             having = null,
@@ -102,12 +102,12 @@ class WhereDslTest : AbstractJpqlDslTest() {
             where = Predicates.and(
                 listOf(
                     Predicates.equal(
-                        left = Paths.path(TestTable::int1),
-                        right = Expressions.value(int1),
+                        value = Paths.path(TestTable::int1),
+                        compareValue = Expressions.value(int1),
                     ),
                     Predicates.equal(
-                        left = Paths.path(TestTable::int1),
-                        right = Expressions.value(int2),
+                        value = Paths.path(TestTable::int1),
+                        compareValue = Expressions.value(int2),
                     ),
                 ),
             ),
@@ -176,12 +176,12 @@ class WhereDslTest : AbstractJpqlDslTest() {
             where = Predicates.or(
                 listOf(
                     Predicates.equal(
-                        left = Paths.path(TestTable::int1),
-                        right = Expressions.value(int1),
+                        value = Paths.path(TestTable::int1),
+                        compareValue = Expressions.value(int1),
                     ),
                     Predicates.equal(
-                        left = Paths.path(TestTable::int1),
-                        right = Expressions.value(int2),
+                        value = Paths.path(TestTable::int1),
+                        compareValue = Expressions.value(int2),
                     ),
                 ),
             ),

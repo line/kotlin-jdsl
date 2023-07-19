@@ -11,7 +11,7 @@ class UpdateQueryBuilder<T : Any>(
 ) {
     private var set: MutableMap<com.linecorp.kotlinjdsl.querymodel.sql.Column<T, *>, Expression<*>>? = null
     private var where: Predicate? = null
-    private var orderBy: Collection<Expression<*>>? = null
+    private var orderBy: Iterable<Expression<*>>? = null
 
     fun set(
         column: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, *>,

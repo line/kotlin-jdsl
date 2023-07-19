@@ -8,5 +8,5 @@ import kotlin.reflect.KClass
 data class TemplateExpression<T : Any>(
     val type: KClass<T>,
     val template: String,
-    val args: Collection<Expression<*>>,
+    val args: Iterable<Expression<*>>,
 ) : Expression<T>

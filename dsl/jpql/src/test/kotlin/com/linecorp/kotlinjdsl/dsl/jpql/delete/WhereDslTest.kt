@@ -29,8 +29,8 @@ class WhereDslTest : AbstractJpqlDslTest() {
         val expected = Queries.delete(
             from = Paths.entity(TestTable::class),
             where = Predicates.equal(
-                left = Paths.path(TestTable::int1),
-                right = Expressions.value(int1),
+                value = Paths.path(TestTable::int1),
+                compareValue = Expressions.value(int1),
             ),
         )
 

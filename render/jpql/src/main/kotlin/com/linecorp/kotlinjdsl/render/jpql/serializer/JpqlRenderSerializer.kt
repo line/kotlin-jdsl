@@ -15,7 +15,7 @@ class JpqlRenderSerializer private constructor(
     private val lookupCache: MutableMap<Class<*>, JpqlSerializer<*>> = ConcurrentHashMap(mappedSerializers)
 
     constructor(vararg serializers: JpqlSerializer<*>) : this(serializers.toList())
-    constructor(serializers: Collection<JpqlSerializer<*>>) : this(serializers.associateBy { it.handledType().java })
+    constructor(serializers: Iterable<JpqlSerializer<*>>) : this(serializers.associateBy { it.handledType().java })
 
     operator fun plus(serializer: JpqlSerializer<*>): JpqlRenderSerializer {
         val combinedMappedSerializers = mappedSerializers + Pair(serializer.handledType().java, serializer)

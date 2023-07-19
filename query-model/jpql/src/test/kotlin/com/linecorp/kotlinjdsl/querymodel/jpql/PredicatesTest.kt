@@ -4,16 +4,35 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlField
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.impl.JpqlAliasedPath
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.impl.JpqlEntity
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlAnd
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqual
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotEqual
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlOr
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.*
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 class PredicatesTest : WithAssertions {
     private val int1: Int = 1
     private val int2: Int = 2
+
+    @Test
+    fun `not predicate`() {
+        // when
+        val actual = Predicates.not(
+            Predicates.equal(Paths.path(TestTable1::int1), Expressions.value(int1)),
+        ).toPredicate()
+
+        // then
+        assertThat(actual).isEqualTo(
+            JpqlNot(
+                JpqlEqual(
+                    value = JpqlField<Int>(
+                        Int::class,
+                        JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                        TestTable1::int1.name,
+                    ),
+                    compareValue = JpqlValue(int1),
+                ),
+            ),
+        )
+    }
 
     @Test
     fun `and predicate predicate`() {
@@ -30,20 +49,20 @@ class PredicatesTest : WithAssertions {
             JpqlAnd(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int2),
+                        compareValue = JpqlValue(int2),
                     ),
                 ),
             ),
@@ -65,20 +84,20 @@ class PredicatesTest : WithAssertions {
             JpqlOr(
                 listOf(
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int1),
+                        compareValue = JpqlValue(int1),
                     ),
                     JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<Int>(
                             Int::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::int1.name,
                         ),
-                        right = JpqlValue(int2),
+                        compareValue = JpqlValue(int2),
                     ),
                 ),
             ),
@@ -95,13 +114,13 @@ class PredicatesTest : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(
-            JpqlEqual<Int>(
-                left = JpqlField(
+            JpqlEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int2.name,
@@ -120,13 +139,13 @@ class PredicatesTest : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(
-            JpqlEqual<Int?>(
-                left = JpqlField(
+            JpqlEqual(
+                value = JpqlField<Int?>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
@@ -145,13 +164,13 @@ class PredicatesTest : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(
-            JpqlEqual<Int>(
-                left = JpqlField(
+            JpqlEqual(
+                value = JpqlField<Int?>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int?>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt2.name,
@@ -170,13 +189,13 @@ class PredicatesTest : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(
-            JpqlNotEqual<Int>(
-                left = JpqlField(
+            JpqlNotEqual(
+                value = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int2.name,
@@ -195,13 +214,13 @@ class PredicatesTest : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(
-            JpqlNotEqual<Int?>(
-                left = JpqlField(
+            JpqlNotEqual(
+                value = JpqlField<Int?>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
@@ -220,19 +239,219 @@ class PredicatesTest : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(
-            JpqlNotEqual<Int>(
-                left = JpqlField(
+            JpqlNotEqual(
+                value = JpqlField<Int?>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                right = JpqlField(
+                compareValue = JpqlField<Int?>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt2.name,
                 ),
             ),
         )
+    }
+
+    @Test
+    fun `greaterThan expression expression`() {
+        // when
+        val actual = Predicates.greaterThan(
+            Paths.path(TestTable1::int1),
+            Paths.path(TestTable1::int2),
+        ).toPredicate()
+
+        // then
+        val expected = JpqlGreaterThan(
+            value = JpqlField<Int>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::int1.name,
+            ),
+            compareValue = JpqlField<Int>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::int2.name,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `greaterThan expression nullable expression`() {
+        // when
+        val actual = Predicates.greaterThan(
+            Paths.path(TestTable1::int1),
+            Paths.path(TestTable1::nullableInt2),
+        ).toPredicate()
+
+        // then
+        val expected = JpqlGreaterThan(
+            value = JpqlField<Int>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::int1.name,
+            ),
+            compareValue = JpqlField<Int?>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::nullableInt2.name,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `greaterThan nullable expression expression`() {
+        // when
+        val actual = Predicates.greaterThan(
+            Paths.path(TestTable1::nullableInt1),
+            Paths.path(TestTable1::int2),
+        ).toPredicate()
+
+        // then
+        val expected = JpqlGreaterThan(
+            value = JpqlField<Int?>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::nullableInt1.name,
+            ),
+            compareValue = JpqlField<Int>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::int2.name,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `greaterThan nullable expression nullable expression`() {
+        // when
+        val actual = Predicates.greaterThan(
+            Paths.path(TestTable1::nullableInt1),
+            Paths.path(TestTable1::nullableInt2),
+        ).toPredicate()
+
+        // then
+        val expected = JpqlGreaterThan(
+            value = JpqlField<Int?>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::nullableInt1.name,
+            ),
+            compareValue = JpqlField<Int?>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::nullableInt2.name,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `greaterThanOrEqualTo expression expression`() {
+        // when
+        val actual = Predicates.greaterThanOrEqualTo(
+            Paths.path(TestTable1::int1),
+            Paths.path(TestTable1::int2),
+        ).toPredicate()
+
+        // then
+        val expected = JpqlGreaterThanOrEqualTo(
+            value = JpqlField<Int>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::int1.name,
+            ),
+            compareValue = JpqlField<Int>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::int2.name,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `greaterThanOrEqualTo expression nullable expression`() {
+        // when
+        val actual = Predicates.greaterThanOrEqualTo(
+            Paths.path(TestTable1::int1),
+            Paths.path(TestTable1::nullableInt2),
+        ).toPredicate()
+
+        // then
+        val expected = JpqlGreaterThanOrEqualTo(
+            value = JpqlField<Int>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::int1.name,
+            ),
+            compareValue = JpqlField<Int?>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::nullableInt2.name,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `greaterThanOrEqualTo nullable expression expression`() {
+        // when
+        val actual = Predicates.greaterThanOrEqualTo(
+            Paths.path(TestTable1::nullableInt1),
+            Paths.path(TestTable1::int2),
+        ).toPredicate()
+
+        // then
+        val expected = JpqlGreaterThanOrEqualTo(
+            value = JpqlField<Int?>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::nullableInt1.name,
+            ),
+            compareValue = JpqlField<Int>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::int2.name,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `greaterThanOrEqualTo nullable expression nullable expression`() {
+        // when
+        val actual = Predicates.greaterThanOrEqualTo(
+            Paths.path(TestTable1::nullableInt1),
+            Paths.path(TestTable1::nullableInt2),
+        ).toPredicate()
+
+        // then
+        val expected = JpqlGreaterThanOrEqualTo(
+            value = JpqlField<Int?>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::nullableInt1.name,
+            ),
+            compareValue = JpqlField<Int?>(
+                Int::class,
+                JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
+                TestTable1::nullableInt2.name,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     private class TestTable1 {

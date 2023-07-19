@@ -21,6 +21,6 @@ interface InsertQueryValueStep3<T : Any, V1, V2, V3> :
     ): InsertQueryValueStep3<T, V1, V2, V3>
 
     fun values(
-        values: Collection<Expression<*>>,
+        values: Iterable<Expression<*>>,
     ): InsertQueryValueStep3<T, V1, V2, V3>
 }

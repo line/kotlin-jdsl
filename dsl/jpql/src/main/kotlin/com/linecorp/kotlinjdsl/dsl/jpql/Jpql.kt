@@ -57,6 +57,90 @@ open class Jpql : JpqlDsl {
         return Expressions.nullValue()
     }
 
+    @JvmName("literal1")
+    @SinceJdsl("3.0.0")
+    fun literal(short: Short): Expression<Short> {
+        return Expressions.literal(short)
+    }
+
+    @JvmName("literal2")
+    @SinceJdsl("3.0.0")
+    fun literal(int: Int): Expression<Int> {
+        return Expressions.literal(int)
+    }
+
+    @JvmName("literal3")
+    @SinceJdsl("3.0.0")
+    fun literal(long: Long): Expression<Long> {
+        return Expressions.literal(long)
+    }
+
+    @JvmName("literal4")
+    @SinceJdsl("3.0.0")
+    fun literal(float: Float): Expression<Float> {
+        return Expressions.literal(float)
+    }
+
+    @JvmName("literal5")
+    @SinceJdsl("3.0.0")
+    fun literal(double: Double): Expression<Double> {
+        return Expressions.literal(double)
+    }
+
+    @JvmName("literal6")
+    @SinceJdsl("3.0.0")
+    fun literal(boolean: Boolean): Expression<Boolean> {
+        return Expressions.literal(boolean)
+    }
+
+    @JvmName("literal7")
+    @SinceJdsl("3.0.0")
+    fun literal(string: String): Expression<String> {
+        return Expressions.literal(string)
+    }
+
+    @JvmName("literal8")
+    @SinceJdsl("3.0.0")
+    fun literal(short: Short?): Expression<Short?> {
+        return Expressions.literal(short)
+    }
+
+    @JvmName("literal9")
+    @SinceJdsl("3.0.0")
+    fun literal(int: Int?): Expression<Int?> {
+        return Expressions.literal(int)
+    }
+
+    @JvmName("literal10")
+    @SinceJdsl("3.0.0")
+    fun literal(long: Long?): Expression<Long?> {
+        return Expressions.literal(long)
+    }
+
+    @JvmName("literal11")
+    @SinceJdsl("3.0.0")
+    fun literal(float: Float?): Expression<Float?> {
+        return Expressions.literal(float)
+    }
+
+    @JvmName("literal12")
+    @SinceJdsl("3.0.0")
+    fun literal(double: Double?): Expression<Double?> {
+        return Expressions.literal(double)
+    }
+
+    @JvmName("literal13")
+    @SinceJdsl("3.0.0")
+    fun literal(boolean: Boolean?): Expression<Boolean?> {
+        return Expressions.literal(boolean)
+    }
+
+    @JvmName("literal14")
+    @SinceJdsl("3.0.0")
+    fun literal(string: String?): Expression<String?> {
+        return Expressions.literal(string)
+    }
+
     @JvmName("param1")
     @SinceJdsl("3.0.0")
     fun <T> param(name: String): Expression<T> {
@@ -77,8 +161,8 @@ open class Jpql : JpqlDsl {
 
     @JvmName("to2")
     @SinceJdsl("3.0.0")
-    infix fun <T> Path<T>.to(expression: Expressionable<T>): PathAndExpression<T> {
-        return Paths.pair(this, expression)
+    infix fun <T> Path<T>.to(value: Expressionable<T>): PathAndExpression<T> {
+        return Paths.pair(this, value)
     }
 
     @JvmName("to3")
@@ -89,8 +173,8 @@ open class Jpql : JpqlDsl {
 
     @JvmName("to4")
     @SinceJdsl("3.0.0")
-    infix fun <T> Expressionable<T>.to(expression: Expressionable<T>): ExpressionAndExpression<T> {
-        return Expressions.pair(this, expression)
+    infix fun <T> Expressionable<T>.to(value: Expressionable<T>): ExpressionAndExpression<T> {
+        return Expressions.pair(this, value)
     }
 
     @JvmName("entity1")
@@ -165,224 +249,272 @@ open class Jpql : JpqlDsl {
         return Paths.treat(this, type)
     }
 
+    @JvmName("plus1")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> Expressionable<in S>.plus(value: T): Expression<T> {
+        return Expressions.plus(this, Expressions.value(value))
+    }
+
+    @JvmName("plus2")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> Expressionable<in S>.plus(value: Expressionable<in S>): Expression<T> {
+        return Expressions.plus(this, value)
+    }
+
+    @JvmName("minus1")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> Expressionable<in S>.minus(value: T): Expression<T> {
+        return Expressions.minus(this, Expressions.value(value))
+    }
+
+    @JvmName("minus2")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> Expressionable<in S>.minus(value: Expressionable<in S>): Expression<T> {
+        return Expressions.minus(this, value)
+    }
+
+    @JvmName("times1")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> Expressionable<in S>.times(value: T): Expression<T> {
+        return Expressions.times(this, Expressions.value(value))
+    }
+
+    @JvmName("times2")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> Expressionable<in S>.times(value: Expressionable<in S>): Expression<T> {
+        return Expressions.times(this, value)
+    }
+
+    @JvmName("div1")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> Expressionable<in S>.div(value: Expressionable<in S>): Expression<T> {
+        return Expressions.div(this, value)
+    }
+
+    @JvmName("div2")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> Expressionable<in S>.div(value: T): Expression<T> {
+        return Expressions.div(this, Expressions.value(value))
+    }
+
     /**
-     * Expression that returns a count of the number of non-null values of [expression].
+     * Expression that returns a count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
     @JvmName("count1")
     @SinceJdsl("3.0.0")
-    fun count(expression: Expressionable<*>, distinct: Boolean = false): Expression<Long> {
-        return Expressions.count(expression, distinct)
+    fun count(expr: Expressionable<*>, distinct: Boolean = false): Expression<Long> {
+        return Expressions.count(expr, distinct)
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expression].
+     * Expression that returns a count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
     @JvmName("countDistinct1")
     @SinceJdsl("3.0.0")
-    fun countDistinct(expression: Expressionable<*>): Expression<Long> {
-        return Expressions.count(expression, distinct = true)
+    fun countDistinct(expr: Expressionable<*>): Expression<Long> {
+        return Expressions.count(expr, distinct = true)
     }
 
     /**
-     * Expression that returns the maximum value of [expression].
+     * Expression that returns the maximum value of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("max1")
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> max(expression: Expressionable<T?>, distinct: Boolean = false): Expression<T?> {
-        return Expressions.max(expression, distinct)
+    fun <T : Comparable<T>, S : T?> max(expr: Expressionable<in S>, distinct: Boolean = false): Expression<T?> {
+        return Expressions.max(expr, distinct)
     }
 
     /**
-     * Expression that returns the maximum value of [expression].
+     * Expression that returns the maximum value of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("maxDistinct1")
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> maxDistinct(expression: Expressionable<T?>): Expression<T?> {
-        return Expressions.max(expression, distinct = true)
+    fun <T : Comparable<T>, S : T?> maxDistinct(expr: Expressionable<in S>): Expression<T?> {
+        return Expressions.max(expr, distinct = true)
     }
 
     /**
-     * Expression that returns the minimum value of [expression].
+     * Expression that returns the minimum value of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("min1")
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> min(expression: Expressionable<T?>, distinct: Boolean = false): Expression<T?> {
-        return Expressions.min(expression, distinct)
+    fun <T : Comparable<T>, S : T?> min(expr: Expressionable<in S>, distinct: Boolean = false): Expression<T?> {
+        return Expressions.min(expr, distinct)
     }
 
     /**
-     * Expression that returns the minimum value of [expression].
+     * Expression that returns the minimum value of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("minDistinct1")
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> minDistinct(expression: Expressionable<T?>): Expression<T?> {
-        return Expressions.min(expression, distinct = true)
+    fun <T : Comparable<T>, S : T?> minDistinct(expr: Expressionable<in S>): Expression<T?> {
+        return Expressions.min(expr, distinct = true)
     }
 
     /**
-     * Expression that returns the average value of [expression].
+     * Expression that returns the average value of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("avg1")
     @SinceJdsl("3.0.0")
-    fun avg(expression: Expressionable<out Number?>, distinct: Boolean = false): Expression<Double?> {
-        return Expressions.avg(expression, distinct)
+    fun <T : Number, S : T?> avg(expr: Expressionable<in S>, distinct: Boolean = false): Expression<Double?> {
+        return Expressions.avg(expr, distinct)
     }
 
     /**
-     * Expression that returns the average value of [expression]
+     * Expression that returns the average value of [expr]
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("avgDistinct1")
     @SinceJdsl("3.0.0")
-    fun avgDistinct(expression: Expressionable<out Number?>): Expression<Double?> {
-        return Expressions.avg(expression, distinct = true)
+    fun <T : Number, S : T?> avgDistinct(expr: Expressionable<in S>): Expression<Double?> {
+        return Expressions.avg(expr, distinct = true)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sum1")
     @SinceJdsl("3.0.0")
-    fun sum(expression: Expressionable<Int?>, distinct: Boolean = false): Expression<Long?> {
-        return Expressions.sum(expression, distinct)
+    fun sum(expr: Expressionable<Int?>, distinct: Boolean = false): Expression<Long?> {
+        return Expressions.sum(expr, distinct)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sum2")
     @SinceJdsl("3.0.0")
-    fun sum(expression: Expressionable<Long?>, distinct: Boolean = false): Expression<Long?> {
-        return Expressions.sum(expression, distinct)
+    fun sum(expr: Expressionable<Long?>, distinct: Boolean = false): Expression<Long?> {
+        return Expressions.sum(expr, distinct)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sum3")
     @SinceJdsl("3.0.0")
-    fun sum(expression: Expressionable<Float?>, distinct: Boolean = false): Expression<Double?> {
-        return Expressions.sum(expression, distinct)
+    fun sum(expr: Expressionable<Float?>, distinct: Boolean = false): Expression<Double?> {
+        return Expressions.sum(expr, distinct)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sum4")
     @SinceJdsl("3.0.0")
-    fun sum(expression: Expressionable<Double?>, distinct: Boolean = false): Expression<Double?> {
-        return Expressions.sum(expression, distinct)
+    fun sum(expr: Expressionable<Double?>, distinct: Boolean = false): Expression<Double?> {
+        return Expressions.sum(expr, distinct)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sum5")
     @SinceJdsl("3.0.0")
-    fun sum(expression: Expressionable<BigInteger?>, distinct: Boolean = false): Expression<BigInteger?> {
-        return Expressions.sum(expression, distinct)
+    fun sum(expr: Expressionable<BigInteger?>, distinct: Boolean = false): Expression<BigInteger?> {
+        return Expressions.sum(expr, distinct)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sum6")
     @SinceJdsl("3.0.0")
-    fun sum(expression: Expressionable<BigDecimal?>, distinct: Boolean = false): Expression<BigDecimal?> {
-        return Expressions.sum(expression, distinct)
+    fun sum(expr: Expressionable<BigDecimal?>, distinct: Boolean = false): Expression<BigDecimal?> {
+        return Expressions.sum(expr, distinct)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sumDistinct1")
     @SinceJdsl("3.0.0")
-    fun sumDistinct(expression: Expressionable<Int?>): Expression<Long?> {
-        return Expressions.sum(expression, distinct = true)
+    fun sumDistinct(expr: Expressionable<Int?>): Expression<Long?> {
+        return Expressions.sum(expr, distinct = true)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sumDistinct2")
     @SinceJdsl("3.0.0")
-    fun sumDistinct(expression: Expressionable<Long?>): Expression<Long?> {
-        return Expressions.sum(expression, distinct = true)
+    fun sumDistinct(expr: Expressionable<Long?>): Expression<Long?> {
+        return Expressions.sum(expr, distinct = true)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sumDistinct3")
     @SinceJdsl("3.0.0")
-    fun sumDistinct(expression: Expressionable<Float?>): Expression<Double?> {
-        return Expressions.sum(expression, distinct = true)
+    fun sumDistinct(expr: Expressionable<Float?>): Expression<Double?> {
+        return Expressions.sum(expr, distinct = true)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sumDistinct4")
     @SinceJdsl("3.0.0")
-    fun sumDistinct(expression: Expressionable<Double?>): Expression<Double?> {
-        return Expressions.sum(expression, distinct = true)
+    fun sumDistinct(expr: Expressionable<Double?>): Expression<Double?> {
+        return Expressions.sum(expr, distinct = true)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sumDistinct5")
     @SinceJdsl("3.0.0")
-    fun sumDistinct(expression: Expressionable<BigInteger?>): Expression<BigInteger?> {
-        return Expressions.sum(expression, distinct = true)
+    fun sumDistinct(expr: Expressionable<BigInteger?>): Expression<BigInteger?> {
+        return Expressions.sum(expr, distinct = true)
     }
 
     /**
-     * Expression that returns the sum of [expression].
+     * Expression that returns the sum of [expr].
      *
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @JvmName("sumDistinct6")
     @SinceJdsl("3.0.0")
-    fun sumDistinct(expression: Expressionable<BigDecimal?>): Expression<BigDecimal?> {
-        return Expressions.sum(expression, distinct = true)
+    fun sumDistinct(expr: Expressionable<BigDecimal?>): Expression<BigDecimal?> {
+        return Expressions.sum(expr, distinct = true)
     }
 
     @JvmName("new1")
@@ -393,7 +525,7 @@ open class Jpql : JpqlDsl {
 
     @JvmName("new2")
     @SinceJdsl("3.0.0")
-    fun <T : Any> new(type: KClass<T>, args: Collection<Expressionable<*>>): Expression<T> {
+    fun <T : Any> new(type: KClass<T>, args: Iterable<Expressionable<*>>): Expression<T> {
         return Expressions.new(type, args)
     }
 
@@ -403,8 +535,8 @@ open class Jpql : JpqlDsl {
      */
     @JvmName("case1")
     @SinceJdsl("3.0.0")
-    fun <T> case(expression: Expressionable<T>): CaseValueWhenFirstStep<T> {
-        return CaseValueWhenFirstStepDsl(expression.toExpression())
+    fun <T> case(value: Expressionable<T>): CaseValueWhenFirstStep<T> {
+        return CaseValueWhenFirstStepDsl(value.toExpression())
     }
 
     /**
@@ -438,8 +570,12 @@ open class Jpql : JpqlDsl {
      */
     @JvmName("coalesce1")
     @Experimental
-    fun <T> coalesce(expression: Expressionable<in T>, vararg expressions: Expressionable<in T>): Expression<T> {
-        return Expressions.coalesce(expression, expressions.toList())
+    fun <T> coalesce(
+        value: Expressionable<in T>,
+        alternate: Expressionable<in T>,
+        vararg others: Expressionable<in T>
+    ): Expression<T> {
+        return Expressions.coalesce(value, alternate, others.toList())
     }
 
     /**
@@ -449,8 +585,8 @@ open class Jpql : JpqlDsl {
      */
     @JvmName("nullIf1")
     @Experimental
-    fun <T> nullIf(left: Expressionable<T>, right: Expressionable<T>): Expression<T?> {
-        return Expressions.nullIf(left, right)
+    fun <T> nullIf(value: Expressionable<T>, compareValue: Expressionable<T>): Expression<T?> {
+        return Expressions.nullIf(value, compareValue)
     }
 
     /**
@@ -471,7 +607,7 @@ open class Jpql : JpqlDsl {
      */
     @JvmName("type1")
     @SinceJdsl("3.0.0")
-    fun <T : Any, PATH : Path<T>> type(path: PATH): Expression<KClass<T>> {
+    fun <T : Any, S : T> type(path: Path<S>): Expression<KClass<T>> {
         return Expressions.type(path)
     }
 
@@ -493,8 +629,20 @@ open class Jpql : JpqlDsl {
      */
     @JvmName("type2")
     @SinceJdsl("3.0.0")
-    fun <T, PATH : Path<T>> type(path: PATH): Expression<KClass<T & Any>?> {
+    fun <T : Any, S : T?> type(path: Path<S>): Expression<KClass<T>?> {
         return Expressions.type(path)
+    }
+
+    @JvmName("concat1")
+    @Experimental
+    fun <T : String?> concat(expr: Iterable<Expression<out T>>): Expression<T> {
+        return Expressions.concat(expr)
+    }
+
+    @JvmName("function1")
+    @SinceJdsl("3.0.0")
+    fun <T> function(name: String, args: Iterable<Expressionable<*>>): Expression<T> {
+        return Expressions.function(name, args.map { it.toExpression() })
     }
 
     /**
@@ -516,6 +664,30 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T> customExpression(template: String, vararg args: Expressionable<*>): Expression<T> {
         return Expressions.customExpression(template, args.toList())
+    }
+
+    @JvmName("asSubquery1")
+    @SinceJdsl("3.0.0")
+    fun <T> JpqlQueryable<SelectQuery<T>>.asSubquery(): Subquery<T> {
+        return Expressions.subquery(this.toQuery())
+    }
+
+    @JvmName("all1")
+    @SinceJdsl("3.0.0")
+    fun <T> all(subquery: Subquery<T>): Expression<T> {
+        return Expressions.all(subquery)
+    }
+
+    @JvmName("any1")
+    @SinceJdsl("3.0.0")
+    fun <T> any(subquery: Subquery<T>): Expression<T> {
+        return Expressions.any(subquery)
+    }
+
+    @JvmName("some1")
+    @SinceJdsl("3.0.0")
+    fun <T> some(subquery: Subquery<T>): Expression<T> {
+        return Expressions.some(subquery)
     }
 
     @JvmName("join1")
@@ -621,13 +793,19 @@ open class Jpql : JpqlDsl {
         return Paths.join(this, path, on, JoinType.LEFT, fetch = true)
     }
 
+    @JvmName("not1")
+    @SinceJdsl("3.0.0")
+    fun not(predicate: Predicatable): Predicate {
+        return Predicates.not(predicate)
+    }
+
     @JvmName("and1")
     fun and(vararg predicates: Predicatable?): Predicate {
         return Predicates.and(predicates.toList())
     }
 
     @JvmName("and2")
-    fun and(predicates: Collection<Predicatable?>): Predicate {
+    fun and(predicates: Iterable<Predicatable?>): Predicate {
         return Predicates.and(predicates)
     }
 
@@ -642,7 +820,7 @@ open class Jpql : JpqlDsl {
     }
 
     @JvmName("or2")
-    fun or(predicates: Collection<Predicatable?>): Predicate {
+    fun or(predicates: Iterable<Predicatable?>): Predicate {
         return Predicates.or(predicates)
     }
 
@@ -651,28 +829,398 @@ open class Jpql : JpqlDsl {
         return Predicates.or(listOf(this, predicate))
     }
 
+    @JvmName("isNull1")
+    fun <T> Expressionable<T>.isNull(): Predicate {
+        return Predicates.isNull(this)
+    }
+
+    @JvmName("isNotNull1")
+    fun <T> Expressionable<T>.isNotNull(): Predicate {
+        return Predicates.isNotNull(this)
+    }
+
     @JvmName("equal1")
     @SinceJdsl("3.0.0")
-    fun <T> Expressionable<T>.equal(value: T): Predicate {
+    infix fun <T> Expressionable<T>.equal(value: T): Predicate {
         return Predicates.equal(this, Expressions.value(value))
     }
 
     @JvmName("equal2")
     @SinceJdsl("3.0.0")
-    fun <T> Expressionable<T>.equal(expression: Expressionable<T>): Predicate {
-        return Predicates.equal(this, expression)
+    infix fun <T, S1 : T?, S2 : T?> Expressionable<in S1>.equal(value: Expressionable<in S2>): Predicate {
+        return Predicates.equal(this, value)
+    }
+
+    @JvmName("eq1")
+    @SinceJdsl("3.0.0")
+    infix fun <T> Expressionable<T>.eq(value: T): Predicate {
+        return Predicates.equal(this, Expressions.value(value))
+    }
+
+    @JvmName("eq2")
+    @SinceJdsl("3.0.0")
+    infix fun <T, S1 : T?, S2 : T?> Expressionable<in S1>.eq(value: Expressionable<in S2>): Predicate {
+        return Predicates.equal(this, value)
     }
 
     @JvmName("notEqual1")
     @SinceJdsl("3.0.0")
-    fun <T> Expressionable<T>.notEqual(value: T): Predicate {
+    infix fun <T> Expressionable<T>.notEqual(value: T): Predicate {
         return Predicates.notEqual(this, Expressions.value(value))
     }
 
     @JvmName("notEqual2")
     @SinceJdsl("3.0.0")
-    fun <T> Expressionable<T>.notEqual(expression: Expressionable<T>): Predicate {
-        return Predicates.notEqual(this, expression)
+    infix fun <T, S1 : T?, S2 : T?> Expressionable<in S1>.notEqual(value: Expressionable<in S2>): Predicate {
+        return Predicates.notEqual(this, value)
+    }
+
+    @JvmName("ne1")
+    @SinceJdsl("3.0.0")
+    infix fun <T> Expressionable<T>.ne(value: T): Predicate {
+        return Predicates.notEqual(this, Expressions.value(value))
+    }
+
+    @JvmName("ne2")
+    @SinceJdsl("3.0.0")
+    infix fun <T, S1 : T?, S2 : T?> Expressionable<in S1>.ne(value: Expressionable<in S2>): Predicate {
+        return Predicates.notEqual(this, value)
+    }
+
+    /**
+     * Predicate that tests if the [this] is less than the [value].
+     */
+    @JvmName("lessThan1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.lessThan(
+        value: T,
+        inclusive: Boolean = false,
+    ): Predicate {
+        return if (inclusive) {
+            Predicates.lessThanOrEqualTo(this, Expressions.value(value))
+        } else {
+            Predicates.lessThan(this, Expressions.value(value))
+        }
+    }
+
+    /**
+     * Predicate that tests if the [this] is less than the [value].
+     */
+    @JvmName("lessThan2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.lessThan(
+        value: Expressionable<in S>,
+        inclusive: Boolean = false,
+    ): Predicate {
+        return if (inclusive) {
+            Predicates.lessThanOrEqualTo(this, value)
+        } else {
+            Predicates.lessThan(this, value)
+        }
+    }
+
+    /**
+     * Predicate that tests if the [this] is less than the [value].
+     */
+    @JvmName("lt1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.lt(
+        value: T,
+        inclusive: Boolean = false,
+    ): Predicate {
+        return if (inclusive) {
+            Predicates.lessThanOrEqualTo(this, Expressions.value(value))
+        } else {
+            Predicates.lessThan(this, Expressions.value(value))
+        }
+    }
+
+    /**
+     * Predicate that tests if the [this] is less than the [value].
+     */
+    @JvmName("lt2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.lt(
+        value: Expressionable<in S>,
+        inclusive: Boolean = false,
+    ): Predicate {
+        return if (inclusive) {
+            Predicates.lessThanOrEqualTo(this, value)
+        } else {
+            Predicates.lessThan(this, value)
+        }
+    }
+
+    /**
+     * Predicate that tests if the [this] is less than or equal to the [value].
+     */
+    @JvmName("lessThanOrEqualTo1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.lessThanOrEqualTo(
+        value: T,
+    ): Predicate {
+        return Predicates.lessThanOrEqualTo(this, Expressions.value(value))
+    }
+
+    /**
+     * Predicate that tests if the [this] is less than or equal to the [value].
+     */
+    @JvmName("lessThanOrEqualTo2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.lessThanOrEqualTo(
+        value: Expressionable<in S>,
+    ): Predicate {
+        return Predicates.lessThanOrEqualTo(this, value)
+    }
+
+    /**
+     * Predicate that tests if the [this] is less than or equal to the [value].
+     */
+    @JvmName("le1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.le(
+        value: T,
+    ): Predicate {
+        return Predicates.lessThanOrEqualTo(this, Expressions.value(value))
+    }
+
+    /**
+     * Predicate that tests if the [this] is less than or equal to the [value].
+     */
+    @JvmName("le2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.le(
+        value: Expressionable<in S>,
+    ): Predicate {
+        return Predicates.lessThanOrEqualTo(this, value)
+    }
+
+    /**
+     * Predicate that tests if the [this] is greater than the [value].
+     */
+    @JvmName("greaterThan1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.greaterThan(
+        value: T,
+        inclusive: Boolean = false,
+    ): Predicate {
+        return if (inclusive) {
+            Predicates.greaterThanOrEqualTo(this, Expressions.value(value))
+        } else {
+            Predicates.greaterThan(this, Expressions.value(value))
+        }
+    }
+
+    /**
+     * Predicate that tests if the [this] is greater than the [value].
+     */
+    @JvmName("greaterThan2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.greaterThan(
+        value: Expressionable<in S>,
+        inclusive: Boolean = false,
+    ): Predicate {
+        return if (inclusive) {
+            Predicates.greaterThanOrEqualTo(this, value)
+        } else {
+            Predicates.greaterThan(this, value)
+        }
+    }
+
+    /**
+     * Predicate that tests if the [this] is greater than the [value].
+     */
+    @JvmName("gt1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.gt(
+        value: T,
+        inclusive: Boolean = false,
+    ): Predicate {
+        return if (inclusive) {
+            Predicates.greaterThanOrEqualTo(this, Expressions.value(value))
+        } else {
+            Predicates.greaterThan(this, Expressions.value(value))
+        }
+    }
+
+    /**
+     * Predicate that tests if the [this] is greater than the [value].
+     */
+    @JvmName("gt2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.gt(
+        value: Expressionable<in S>,
+        inclusive: Boolean = false,
+    ): Predicate {
+        return if (inclusive) {
+            Predicates.greaterThanOrEqualTo(this, value)
+        } else {
+            Predicates.greaterThan(this, value)
+        }
+    }
+
+    /**
+     * Predicate that tests if the [this] is greater than or equal to the [value].
+     */
+    @JvmName("greaterThanOrEqualTo1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.greaterThanOrEqualTo(
+        value: T,
+    ): Predicate {
+        return Predicates.greaterThanOrEqualTo(this, Expressions.value(value))
+    }
+
+    /**
+     * Predicate that tests if the [this] is greater than or equal to the [value].
+     */
+    @JvmName("greaterThanOrEqualTo2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.greaterThanOrEqualTo(
+        value: Expressionable<in S>,
+    ): Predicate {
+        return Predicates.greaterThanOrEqualTo(this, value)
+    }
+
+    /**
+     * Predicate that tests if the [this] is greater than or equal to the [value].
+     */
+    @JvmName("ge1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.ge(
+        value: T,
+    ): Predicate {
+        return Predicates.greaterThanOrEqualTo(this, Expressions.value(value))
+    }
+
+    /**
+     * Predicate that tests if the [this] is greater than or equal to the [value].
+     */
+    @JvmName("ge2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.ge(
+        value: Expressionable<in S>,
+    ): Predicate {
+        return Predicates.greaterThanOrEqualTo(this, value)
+    }
+
+    @JvmName("between1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.between(
+        min: T,
+        max: T,
+    ): Predicate {
+        return Predicates.between(this.toExpression(), Expressions.value(min), Expressions.value(max))
+    }
+
+    @JvmName("between2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.between(
+        min: Expressionable<in S>,
+        max: Expressionable<in S>
+    ): Predicate {
+        return Predicates.between(this.toExpression(), min.toExpression(), max.toExpression())
+    }
+
+    @JvmName("notBetween1")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.notBetween(
+        min: T,
+        max: T,
+    ): Predicate {
+        return Predicates.notBetween(this.toExpression(), Expressions.value(min), Expressions.value(max))
+    }
+
+    @JvmName("notBetween2")
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>, S : T?> Expressionable<in S>.notBetween(
+        min: Expressionable<in S>,
+        max: Expressionable<in S>,
+    ): Predicate {
+        return Predicates.notBetween(this.toExpression(), min.toExpression(), max.toExpression())
+    }
+
+    @JvmName("in1")
+    @SinceJdsl("3.0.0")
+    fun <T> Expressionable<T>.`in`(compareValues: Iterable<T>): Predicate {
+        return Predicates.`in`(this, compareValues.map { Expressions.value(it) })
+    }
+
+    @JvmName("in2")
+    @SinceJdsl("3.0.0")
+    fun <T> Expressionable<T>.`in`(compareValues: Iterable<Expressionable<T>>): Predicate {
+        return Predicates.`in`(this, compareValues)
+    }
+
+    @JvmName("in3")
+    @SinceJdsl("3.0.0")
+    fun <T> Expressionable<T>.`in`(subquery: Subquery<T>): Predicate {
+        return Predicates.`in`(this, subquery)
+    }
+
+    @JvmName("notIn1")
+    @SinceJdsl("3.0.0")
+    fun <T> Expressionable<T>.notIn(compareValues: Iterable<T>): Predicate {
+        return Predicates.notIn(this, compareValues.map { Expressions.value(it) })
+    }
+
+    @JvmName("notIn2")
+    @SinceJdsl("3.0.0")
+    fun <T> Expressionable<T>.notIn(compareValues: Iterable<Expressionable<T>>): Predicate {
+        return Predicates.notIn(this, compareValues.map { it.toExpression() })
+    }
+
+    @JvmName("notIn3")
+    @SinceJdsl("3.0.0")
+    fun <T> Expressionable<T>.notIn(subquery: Subquery<T>): Predicate {
+        return Predicates.notIn(this, subquery)
+    }
+
+    @JvmName("like1")
+    @SinceJdsl("3.0.0")
+    fun <T : String?> Expressionable<T>.like(pattern: String): Predicate {
+        return Predicates.like(this.toExpression(), Expressions.value(pattern))
+    }
+
+    @JvmName("like2")
+    @SinceJdsl("3.0.0")
+    fun <T : String?> Expressionable<T>.like(pattern: Expressionable<String>): Predicate {
+        return Predicates.like(this.toExpression(), pattern)
+    }
+
+    @JvmName("notLike1")
+    @SinceJdsl("3.0.0")
+    fun <T : String?> Expressionable<T>.notLike(pattern: String): Predicate {
+        return Predicates.notLike(this.toExpression(), Expressions.value(pattern))
+    }
+
+    @JvmName("notLike2")
+    @SinceJdsl("3.0.0")
+    fun <T : String?> Expressionable<T>.notLike(pattern: Expressionable<String>): Predicate {
+        return Predicates.notLike(this.toExpression(), pattern)
+    }
+
+    @JvmName("isEmpty1")
+    @SinceJdsl("3.0.0")
+    fun <T, S : Collection<T>> Path<S>.isEmpty(): Predicate {
+        return Predicates.isEmpty(this)
+    }
+
+    @JvmName("isNotEmpty1")
+    @SinceJdsl("3.0.0")
+    fun <T, S : Collection<T>> Path<S>.isNotEmpty(): Predicate {
+        return Predicates.isNotEmpty(this)
+    }
+
+    @JvmName("exists1")
+    @SinceJdsl("3.0.0")
+    fun <T> exists(subquery: Subquery<T>): Predicate {
+        return Predicates.exists(subquery)
+    }
+
+    @JvmName("notExists1")
+    @SinceJdsl("3.0.0")
+    fun <T> notExists(subquery: Subquery<T>): Predicate {
+        return Predicates.notExists(subquery)
     }
 
     @JvmName("asc1")
@@ -691,75 +1239,70 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T> select(
         returnType: KClass<*>,
-        expressions: Collection<Expressionable<*>>,
+        expr: Iterable<Expressionable<*>>,
         distinct: Boolean = false,
     ): SelectQueryFromStep<T> {
-        return SelectQueryFromStepDsl(returnType, expressions.map { it.toExpression() }, distinct)
+        return SelectQueryFromStepDsl(returnType, expr.map { it.toExpression() }, distinct)
     }
 
     @JvmName("select2")
     @SinceJdsl("3.0.0")
     inline fun <reified T> select(
-        expression: Expressionable<T>,
+        expr: Expressionable<T>,
         distinct: Boolean = false,
     ): SelectQueryFromStep<T> {
-        return select(T::class, listOf(expression.toExpression()), distinct)
+        return select(T::class, listOf(expr.toExpression()), distinct)
     }
 
     @JvmName("select3")
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> select(
-        vararg expressions: Expressionable<*>,
+        vararg expr: Expressionable<*>,
         distinct: Boolean = false,
     ): SelectQueryFromStep<T> {
-        return select(T::class, expressions.toList(), distinct)
+        return select(T::class, expr.toList(), distinct)
     }
 
     @JvmName("select4")
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> select(
-        expressions: Collection<Expressionable<*>>,
+        expr: Iterable<Expressionable<*>>,
         distinct: Boolean = false,
     ): SelectQueryFromStep<T> {
-        return select(T::class, expressions.toList(), distinct)
+        return select(T::class, expr.toList(), distinct)
     }
 
     @JvmName("selectDistinct1")
     @SinceJdsl("3.0.0")
     fun <T> selectDistinct(
         returnType: KClass<*>,
-        expressions: Collection<Expressionable<*>>,
+        expr: Iterable<Expressionable<*>>,
     ): SelectQueryFromStep<T> {
-        return SelectQueryFromStepDsl(returnType, expressions.map { it.toExpression() }, distinct = true)
+        return SelectQueryFromStepDsl(returnType, expr.map { it.toExpression() }, distinct = true)
     }
 
     @JvmName("selectDistinct2")
     @SinceJdsl("3.0.0")
     inline fun <reified T> selectDistinct(
-        expression: Expressionable<T>,
+        expr: Expressionable<T>,
     ): SelectQueryFromStep<T> {
-        return selectDistinct(T::class, listOf(expression.toExpression()))
+        return selectDistinct(T::class, listOf(expr.toExpression()))
     }
 
     @JvmName("selectDistinct3")
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectDistinct(
-        vararg expressions: Expressionable<*>,
+        vararg expr: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return selectDistinct(T::class, expressions.toList())
+        return selectDistinct(T::class, expr.toList())
     }
 
     @JvmName("selectDistinct4")
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectDistinct(
-        expressions: Collection<Expressionable<*>>,
+        expr: Iterable<Expressionable<*>>,
     ): SelectQueryFromStep<T> {
-        return selectDistinct(T::class, expressions.toList())
-    }
-
-    @JvmName("asSubquery")
-    fun <T> JpqlQueryable<SelectQuery<T>>.asSubquery(): Subquery<T> {
-        return Expressions.subquery(this.toQuery())
+        return selectDistinct(T::class, expr.toList())
     }
 
     @JvmName("update1")

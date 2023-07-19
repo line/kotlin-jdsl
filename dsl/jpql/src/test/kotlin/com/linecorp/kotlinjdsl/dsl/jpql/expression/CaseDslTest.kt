@@ -28,8 +28,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             whens = listOf(
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Expressions.value(int1),
                 ),
@@ -53,8 +53,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             whens = listOf(
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Expressions.value(nullableInt1),
                 ),
@@ -78,8 +78,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             whens = listOf(
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Paths.path(TestTable::int1),
                 ),
@@ -103,8 +103,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             whens = listOf(
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Paths.path(TestTable::nullableInt1),
                 ),
@@ -134,37 +134,37 @@ class CaseDslTest : AbstractJpqlDslTest() {
                 // first
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Expressions.value(int1),
                 ),
                 // more
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Expressions.value(int1),
                 ),
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Expressions.value(nullableInt1),
                 ),
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Paths.path(TestTable::int1),
                 ),
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Paths.path(TestTable::nullableInt1),
                 ),
@@ -188,8 +188,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             whens = listOf(
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Expressions.value(int1),
                 ),
@@ -214,8 +214,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             whens = listOf(
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Expressions.value(int1),
                 ),
@@ -240,8 +240,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             whens = listOf(
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Expressions.value(int1),
                 ),
@@ -266,8 +266,8 @@ class CaseDslTest : AbstractJpqlDslTest() {
             whens = listOf(
                 Pair(
                     Predicates.equal(
-                        left = Paths.path(TestTable::string1),
-                        right = Expressions.value(string1),
+                        value = Paths.path(TestTable::string1),
+                        compareValue = Expressions.value(string1),
                     ),
                     Expressions.value(int1),
                 ),

@@ -1,8 +1,10 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl
 
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 
-data class JpqlMin<T : Comparable<T>> internal constructor(
-    val expression: Expression<T?>,
+@Internal
+data class JpqlMin<T : Comparable<T>, S : T?> internal constructor(
+    val expr: Expression<in S>,
     val distinct: Boolean,
 ) : Expression<T?>

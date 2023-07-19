@@ -8,14 +8,14 @@ import kotlin.reflect.KClass
 
 internal class SelectQueryFromStepDsl<T>(
     private val returnType: KClass<*>,
-    private val select: Collection<Expression<*>>,
+    private val select: Iterable<Expression<*>>,
     private val distinct: Boolean,
 ) : SelectQueryFromStep<T> {
     override fun from(vararg paths: Path<*>): SelectQueryWhereStep<T> {
         return SelectQueryDsl(returnType, select, distinct, paths.toList())
     }
 
-    override fun from(paths: Collection<Path<*>>): SelectQueryWhereStep<T> {
+    override fun from(paths: Iterable<Path<*>>): SelectQueryWhereStep<T> {
         return SelectQueryDsl(returnType, select, distinct, paths)
     }
 

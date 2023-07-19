@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
 import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Subquery
 import org.junit.jupiter.api.Test
 
 class SubqueryDslTest : AbstractJpqlDslTest() {
@@ -17,22 +17,18 @@ class SubqueryDslTest : AbstractJpqlDslTest() {
             ).from(
                 entity(TestTable1::class),
             )
-        }.toQuery()
+        }
 
         val subquery1 = testJpql {
-            select(
-                entity(TestTable1::class),
-            ).from(
-                entity(TestTable1::class),
-            ).asSubquery()
-        }.toExpression()
+            select.toQuery().asSubquery()
+        }
 
         val subquery2 = testJpql {
             select.asSubquery()
-        }.toExpression()
+        }
 
-        val actual1: Expression<TestTable1> = subquery1 // for type check
-        val actual2: Expression<TestTable1> = subquery2 // for type check
+        val actual1: Subquery<TestTable1> = subquery1 // for type check
+        val actual2: Subquery<TestTable1> = subquery2 // for type check
 
         // then
         val expected = Expressions.subquery(

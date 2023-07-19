@@ -17,7 +17,7 @@ class ExpressionsTest : WithAssertions {
     private val string1: String = "string1"
 
     private val int1: Int = 1
-    private val int2: Int = 1
+    private val int2: Int = 2
     private val nullableInt1: Int? = null
     private val nullableInt2: Int? = null
 
@@ -49,7 +49,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(JpqlValue(nullableInt1))
+        assertThat(actual).isEqualTo(JpqlNull)
     }
 
     @Test
@@ -60,7 +60,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(JpqlValue(null))
+        assertThat(actual).isEqualTo(JpqlNull)
     }
 
     @Test
@@ -1046,38 +1046,38 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlCase(
+        val expected = JpqlCase<Int?>(
             whens = listOf(
                 JpqlCaseWhen(
                     predicate = JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<String>(
                             String::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::string1.name,
                         ),
-                        right = JpqlValue(string1),
+                        compareValue = JpqlValue(string1),
                     ),
                     result = JpqlValue(int1),
                 ),
                 JpqlCaseWhen(
                     predicate = JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<String>(
                             String::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::string1.name,
                         ),
-                        right = JpqlValue(string1),
+                        compareValue = JpqlValue(string1),
                     ),
-                    result = JpqlValue(nullableInt1),
+                    result = JpqlNull,
                 ),
                 JpqlCaseWhen(
                     predicate = JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<String>(
                             String::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::string1.name,
                         ),
-                        right = JpqlValue(string1),
+                        compareValue = JpqlValue(string1),
                     ),
                     result = JpqlField(
                         Int::class,
@@ -1087,12 +1087,12 @@ class ExpressionsTest : WithAssertions {
                 ),
                 JpqlCaseWhen(
                     predicate = JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<String>(
                             String::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::string1.name,
                         ),
-                        right = JpqlValue(string1),
+                        compareValue = JpqlValue(string1),
                     ),
                     result = JpqlField(
                         Int::class,
@@ -1123,16 +1123,16 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = JpqlCase(
+        val expected = JpqlCase<Int>(
             whens = listOf(
                 JpqlCaseWhen(
                     predicate = JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<String>(
                             String::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::string1.name,
                         ),
-                        right = JpqlValue(string1),
+                        compareValue = JpqlValue(string1),
                     ),
                     result = JpqlValue(int1),
                 ),
@@ -1159,21 +1159,21 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlCase(
+        val expected = JpqlCase<Int?>(
             whens = listOf(
                 JpqlCaseWhen(
                     predicate = JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<String>(
                             String::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::string1.name,
                         ),
-                        right = JpqlValue(string1),
+                        compareValue = JpqlValue(string1),
                     ),
                     result = JpqlValue(int1),
                 ),
             ),
-            `else` = JpqlValue(nullableInt1),
+            `else` = JpqlNull,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -1195,21 +1195,21 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = JpqlCase(
+        val expected = JpqlCase<Int>(
             whens = listOf(
                 JpqlCaseWhen(
                     predicate = JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<String>(
                             String::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::string1.name,
                         ),
-                        right = JpqlValue(string1),
+                        compareValue = JpqlValue(string1),
                     ),
                     result = JpqlValue(int1),
                 ),
             ),
-            `else` = JpqlField(
+            `else` = JpqlField<Int>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::int1.name,
@@ -1235,21 +1235,21 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlCase(
+        val expected = JpqlCase<Int?>(
             whens = listOf(
                 JpqlCaseWhen(
                     predicate = JpqlEqual(
-                        left = JpqlField(
+                        value = JpqlField<String>(
                             String::class,
                             JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                             TestTable1::string1.name,
                         ),
-                        right = JpqlValue(string1),
+                        compareValue = JpqlValue(string1),
                     ),
                     result = JpqlValue(int1),
                 ),
             ),
-            `else` = JpqlField(
+            `else` = JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableInt1.name,
@@ -1280,8 +1280,8 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlCaseValue(
-            value = JpqlField(
+        val expected = JpqlCaseValue<Int?>(
+            value = JpqlField<String>(
                 String::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::string1.name,
@@ -1293,7 +1293,7 @@ class ExpressionsTest : WithAssertions {
                 ),
                 JpqlCaseValueWhen(
                     compareValue = JpqlValue(string1),
-                    result = JpqlValue(nullableInt1),
+                    result = JpqlNull,
                 ),
                 JpqlCaseValueWhen(
                     compareValue = JpqlValue(string1),
@@ -1325,7 +1325,7 @@ class ExpressionsTest : WithAssertions {
                         JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                         TestTable1::string1.name,
                     ),
-                    result = JpqlValue(nullableInt1),
+                    result = JpqlNull,
                 ),
                 JpqlCaseValueWhen(
                     compareValue = JpqlField(
@@ -1372,8 +1372,8 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = JpqlCaseValue(
-            value = JpqlField(
+        val expected = JpqlCaseValue<Int>(
+            value = JpqlField<String>(
                 String::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::string1.name,
@@ -1404,8 +1404,8 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlCaseValue(
-            value = JpqlField(
+        val expected = JpqlCaseValue<Int?>(
+            value = JpqlField<String>(
                 String::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::string1.name,
@@ -1416,7 +1416,7 @@ class ExpressionsTest : WithAssertions {
                     result = JpqlValue(int1),
                 ),
             ),
-            `else` = JpqlValue(nullableInt1),
+            `else` = JpqlNull,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -1436,8 +1436,8 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = JpqlCaseValue(
-            value = JpqlField(
+        val expected = JpqlCaseValue<Int>(
+            value = JpqlField<String>(
                 String::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::string1.name,
@@ -1448,7 +1448,7 @@ class ExpressionsTest : WithAssertions {
                     result = JpqlValue(int1),
                 ),
             ),
-            `else` = JpqlField(
+            `else` = JpqlField<Int>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::int1.name,
@@ -1472,8 +1472,8 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlCaseValue(
-            value = JpqlField(
+        val expected = JpqlCaseValue<Int?>(
+            value = JpqlField<String>(
                 String::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::string1.name,
@@ -1484,7 +1484,7 @@ class ExpressionsTest : WithAssertions {
                     result = JpqlValue(int1),
                 ),
             ),
-            `else` = JpqlField(
+            `else` = JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableInt1.name,
@@ -1499,7 +1499,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce(
             Paths.path(TestTable1::int1),
-            listOf(Expressions.value(int1)),
+            Expressions.value(int1),
+            emptyList(),
         ).toExpression()
 
         val actual: Expression<Int> = expression // for type check
@@ -1524,7 +1525,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce(
             Paths.path(TestTable1::int1),
-            listOf(Expressions.value(nullableInt1)),
+            Expressions.value(nullableInt1),
+            emptyList(),
         ).toExpression()
 
         val actual: Expression<Int> = expression // for type check
@@ -1537,7 +1539,7 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                JpqlValue(nullableInt1),
+                JpqlNull,
             ),
         )
 
@@ -1549,7 +1551,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce(
             Paths.path(TestTable1::nullableInt1),
-            listOf(Expressions.value(nullableInt1)),
+            Expressions.value(nullableInt1),
+            emptyList(),
         ).toExpression()
 
         val actual: Expression<Int?> = expression // for type check
@@ -1562,7 +1565,7 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                JpqlValue(nullableInt1),
+                JpqlNull,
             ),
         )
 
@@ -1574,7 +1577,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce<Int>(
             Paths.path(TestTable1::nullableInt1),
-            listOf(Expressions.value(nullableInt1)),
+            Expressions.value(nullableInt1),
+            emptyList(),
         ).toExpression()
 
         val actual: Expression<Int> = expression // for type check
@@ -1587,7 +1591,7 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                JpqlValue(nullableInt1),
+                JpqlNull,
             ),
         )
 
@@ -1599,8 +1603,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce(
             Paths.path(TestTable1::int1),
+            Expressions.value(int1),
             listOf(
-                Expressions.value(int1),
                 Expressions.value(int2),
             ),
         ).toExpression()
@@ -1628,8 +1632,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce(
             Paths.path(TestTable1::int1),
+            Expressions.value(int1),
             listOf(
-                Expressions.value(int1),
                 Expressions.value(nullableInt1),
             ),
         ).toExpression()
@@ -1645,7 +1649,7 @@ class ExpressionsTest : WithAssertions {
                     TestTable1::int1.name,
                 ),
                 JpqlValue(int1),
-                JpqlValue(nullableInt1),
+                JpqlNull,
             ),
         )
 
@@ -1657,8 +1661,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce(
             Paths.path(TestTable1::int1),
+            Expressions.value(nullableInt1),
             listOf(
-                Expressions.value(nullableInt1),
                 Expressions.value(nullableInt2),
             ),
         ).toExpression()
@@ -1673,8 +1677,8 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                JpqlValue(nullableInt1),
-                JpqlValue(nullableInt2),
+                JpqlNull,
+                JpqlNull,
             ),
         )
 
@@ -1686,8 +1690,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce(
             Paths.path(TestTable1::nullableInt1),
+            Expressions.value(int1),
             listOf(
-                Expressions.value(int1),
                 Expressions.value(int2),
             ),
         ).toExpression()
@@ -1715,8 +1719,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce(
             Paths.path(TestTable1::nullableInt1),
+            Expressions.value(int1),
             listOf(
-                Expressions.value(int1),
                 Expressions.value(nullableInt1),
             ),
         ).toExpression()
@@ -1732,7 +1736,7 @@ class ExpressionsTest : WithAssertions {
                     TestTable1::nullableInt1.name,
                 ),
                 JpqlValue(int1),
-                JpqlValue(nullableInt1),
+                JpqlNull,
             ),
         )
 
@@ -1744,8 +1748,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce(
             Paths.path(TestTable1::nullableInt1),
+            Expressions.value(nullableInt1),
             listOf(
-                Expressions.value(nullableInt1),
                 Expressions.value(nullableInt2),
             ),
         ).toExpression()
@@ -1760,8 +1764,8 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                JpqlValue(nullableInt1),
-                JpqlValue(nullableInt2),
+                JpqlNull,
+                JpqlNull,
             ),
         )
 
@@ -1773,8 +1777,8 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.coalesce<Int>(
             Paths.path(TestTable1::nullableInt1),
+            Expressions.value(nullableInt1),
             listOf(
-                Expressions.value(nullableInt1),
                 Expressions.value(nullableInt2),
             ),
         ).toExpression()
@@ -1789,8 +1793,8 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                JpqlValue(nullableInt1),
-                JpqlValue(nullableInt2),
+                JpqlNull,
+                JpqlNull,
             ),
         )
 
@@ -1809,12 +1813,12 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlNullIf(
-            left = JpqlField(
+            value = JpqlField(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::int1.name,
             ),
-            right = JpqlValue(int1),
+            compareValue = JpqlValue(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -1832,12 +1836,12 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlNullIf(
-            left = JpqlField(
+            value = JpqlField(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::int1.name,
             ),
-            right = JpqlValue(nullableInt1),
+            compareValue = JpqlNull,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -1855,12 +1859,12 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlNullIf(
-            left = JpqlField(
+            value = JpqlField(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableInt1.name,
             ),
-            right = JpqlValue(int1),
+            compareValue = JpqlValue(int1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -1878,12 +1882,12 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlNullIf(
-            left = JpqlField(
+            value = JpqlField(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableInt1.name,
             ),
-            right = JpqlValue(nullableInt1),
+            compareValue = JpqlNull,
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -1897,7 +1901,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<KClass<SuperTable1>> = expression // for type check
 
         // then
-        val expected = JpqlType(
+        val expected = JpqlType<SuperTable1, KClass<SuperTable1>>(
             JpqlField<SuperTable1>(
                 SuperTable1::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -1916,7 +1920,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<KClass<SuperTable1>?> = expression // for type check
 
         // then
-        val expected = JpqlType(
+        val expected = JpqlType<SuperTable1, KClass<SuperTable1>?>(
             JpqlField<SuperTable1>(
                 SuperTable1::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -2103,7 +2107,7 @@ class ExpressionsTest : WithAssertions {
     fun `alias nullable expression string`() {
         // when
         val expression = Expressions.alias(
-            Expressions.max(Paths.path(TestTable1::nullableInt1), distinct = false),
+            Expressions.max(Paths.path<Int?>(TestTable1::nullableInt1), distinct = false),
             alias1,
         ).toExpression()
 
@@ -2159,7 +2163,7 @@ class ExpressionsTest : WithAssertions {
         // when
         val expression = Expressions.alias(
             Expressions.alias(
-                Expressions.max(Paths.path(TestTable1::nullableInt1), distinct = false),
+                Expressions.max(Paths.path<Int?>(TestTable1::nullableInt1), distinct = false),
                 alias1,
             ),
             alias2,
@@ -2246,6 +2250,7 @@ class ExpressionsTest : WithAssertions {
         val actual: ExpressionAndExpression<Int?> = expression
 
         // then
+        @Suppress("UNCHECKED_CAST")
         assertThat(actual).isEqualTo(
             JpqlExpressionAndExpression(
                 JpqlMax(
@@ -2256,7 +2261,7 @@ class ExpressionsTest : WithAssertions {
                     ),
                     false,
                 ),
-                JpqlValue(nullableInt1),
+                JpqlNull as Expression<Int?>,
             ),
         )
     }

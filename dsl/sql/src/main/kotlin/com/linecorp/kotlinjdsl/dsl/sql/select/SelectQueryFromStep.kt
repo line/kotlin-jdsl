@@ -6,5 +6,5 @@ import com.linecorp.kotlinjdsl.querymodel.sql.Table
 
 interface SelectQueryFromStep : SqlQueryable<SelectQuery> {
     fun from(vararg tables: Table<*>): SelectQueryWhereStep
-    fun from(tables: Collection<Table<*>>): SelectQueryWhereStep
+    fun from(tables: Iterable<Table<*>>): SelectQueryWhereStep
 }

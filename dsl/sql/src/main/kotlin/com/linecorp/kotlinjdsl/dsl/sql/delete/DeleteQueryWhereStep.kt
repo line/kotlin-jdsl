@@ -7,8 +7,8 @@ interface DeleteQueryWhereStep<T : Any> : SqlQueryable<com.linecorp.kotlinjdsl.q
     fun where(predicate: Predicate): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>>
 
     fun whereAnd(vararg predicates: Predicate): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>>
-    fun whereAnd(predicates: Collection<Predicate>): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>>
+    fun whereAnd(predicates: Iterable<Predicate>): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>>
 
     fun whereOr(vararg predicates: Predicate): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>>
-    fun whereOr(predicates: Collection<Predicate>): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>>
+    fun whereOr(predicates: Iterable<Predicate>): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>>
 }

@@ -1,9 +1,11 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl
 
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
-data class JpqlNotEqual<T> internal constructor(
-    val left: Expression<T>,
-    val right: Expression<T>,
+@Internal
+data class JpqlNotEqual internal constructor(
+    val value: Expression<*>,
+    val compareValue: Expression<*>,
 ) : Predicate

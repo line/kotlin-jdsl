@@ -88,7 +88,7 @@ class NormalSelectQuerySerializer : SqlSerializer<NormalSelectQuery> {
     }
 
     private fun select(
-        select: Collection<Expression<*>>,
+        select: Iterable<Expression<*>>,
         serializer: SqlRenderSerializer,
         writer: SqlWriter,
         context: RenderContext,
@@ -99,7 +99,7 @@ class NormalSelectQuerySerializer : SqlSerializer<NormalSelectQuery> {
     }
 
     private fun from(
-        from: Collection<Table<*>>,
+        from: Iterable<Table<*>>,
         serializer: SqlRenderSerializer,
         writer: SqlWriter,
         context: RenderContext,
@@ -119,7 +119,7 @@ class NormalSelectQuerySerializer : SqlSerializer<NormalSelectQuery> {
     }
 
     private fun groupBy(
-        groupBy: Collection<Expression<*>>,
+        groupBy: Iterable<Expression<*>>,
         serializer: SqlRenderSerializer,
         writer: SqlWriter,
         context: RenderContext,
@@ -139,7 +139,7 @@ class NormalSelectQuerySerializer : SqlSerializer<NormalSelectQuery> {
     }
 
     private fun orderBy(
-        orderBy: Collection<Sort>,
+        orderBy: Iterable<Sort>,
         serializer: SqlRenderSerializer,
         writer: SqlWriter,
         context: RenderContext,

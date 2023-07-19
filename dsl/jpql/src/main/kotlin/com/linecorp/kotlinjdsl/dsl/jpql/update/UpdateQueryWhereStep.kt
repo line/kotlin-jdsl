@@ -9,9 +9,9 @@ interface UpdateQueryWhereStep<T : Any> : JpqlQueryable<UpdateQuery<T>> {
 
     fun whereAnd(vararg predicates: Predicate?): JpqlQueryable<UpdateQuery<T>>
 
-    fun whereAnd(predicates: Collection<Predicate?>): JpqlQueryable<UpdateQuery<T>>
+    fun whereAnd(predicates: Iterable<Predicate?>): JpqlQueryable<UpdateQuery<T>>
 
     fun whereOr(vararg predicates: Predicate?): JpqlQueryable<UpdateQuery<T>>
 
-    fun whereOr(predicates: Collection<Predicate?>): JpqlQueryable<UpdateQuery<T>>
+    fun whereOr(predicates: Iterable<Predicate?>): JpqlQueryable<UpdateQuery<T>>
 }

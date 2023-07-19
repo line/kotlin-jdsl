@@ -24,7 +24,7 @@ internal class DeleteQueryDsl<T : Any> private constructor(
         return this
     }
 
-    override fun whereAnd(predicates: Collection<Predicate?>): JpqlQueryable<DeleteQuery<T>> {
+    override fun whereAnd(predicates: Iterable<Predicate?>): JpqlQueryable<DeleteQuery<T>> {
         builder.where(Predicates.and(predicates))
 
         return this
@@ -36,7 +36,7 @@ internal class DeleteQueryDsl<T : Any> private constructor(
         return this
     }
 
-    override fun whereOr(predicates: Collection<Predicate?>): JpqlQueryable<DeleteQuery<T>> {
+    override fun whereOr(predicates: Iterable<Predicate?>): JpqlQueryable<DeleteQuery<T>> {
         builder.where(Predicates.or(predicates))
 
         return this

@@ -8,7 +8,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 
 internal class UpdateQueryBuilder<T : Any>(
     private val entity: Path<T>,
-    private val set: Collection<PathAndExpression<*>>
+    private val set: Iterable<PathAndExpression<*>>
 ) {
     private var where: Predicate? = null
 

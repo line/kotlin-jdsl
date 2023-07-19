@@ -9,9 +9,9 @@ interface SelectQueryHavingStep<T> : SelectQueryOrderByStep<T>, JpqlQueryable<Se
 
     fun havingAnd(vararg predicates: Predicatable): SelectQueryOrderByStep<T>
 
-    fun havingAnd(predicates: Collection<Predicatable>): SelectQueryOrderByStep<T>
+    fun havingAnd(predicates: Iterable<Predicatable>): SelectQueryOrderByStep<T>
 
     fun havingOr(vararg predicates: Predicatable): SelectQueryOrderByStep<T>
 
-    fun havingOr(predicates: Collection<Predicatable>): SelectQueryOrderByStep<T>
+    fun havingOr(predicates: Iterable<Predicatable>): SelectQueryOrderByStep<T>
 }

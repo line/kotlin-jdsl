@@ -16,13 +16,13 @@ import kotlin.reflect.KClass
 object Queries {
     fun <T> select(
         returnType: KClass<*>,
-        select: Collection<Expression<*>>,
+        select: Iterable<Expression<*>>,
         distinct: Boolean,
-        from: Collection<Path<*>>,
+        from: Iterable<Path<*>>,
         where: Predicate?,
-        groupBy: Collection<Expression<*>>?,
+        groupBy: Iterable<Expression<*>>?,
         having: Predicate?,
-        orderBy: Collection<Sort>?,
+        orderBy: Iterable<Sort>?,
     ): SelectQuery<T> {
         return JpqlSelectQuery(
             returnType = returnType,
@@ -38,7 +38,7 @@ object Queries {
 
     fun <T : Any> update(
         entity: Path<T>,
-        set: Collection<PathAndExpression<*>>,
+        set: Iterable<PathAndExpression<*>>,
         where: Predicate?,
     ): UpdateQuery<T> {
         return JpqlUpdateQuery(

@@ -5,6 +5,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 
 @Internal
 data class JpqlCase<T> internal constructor(
-    val whens: Collection<JpqlCaseWhen<T>>,
-    val `else`: Expression<out T>?,
+    val whens: Iterable<JpqlCaseWhen<*>>,
+    val `else`: Expression<*>?,
 ) : Expression<T>

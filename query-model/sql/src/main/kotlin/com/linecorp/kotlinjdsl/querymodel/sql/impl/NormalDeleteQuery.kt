@@ -10,5 +10,5 @@ import com.linecorp.kotlinjdsl.querymodel.sql.TableReference
 data class NormalDeleteQuery<T : Any>(
     val table: TableReference<T>,
     val where: Predicate?,
-    val orderBy: Collection<Expression<*>>?,
+    val orderBy: Iterable<Expression<*>>?,
 ) : DeleteQuery<T>

@@ -23,9 +23,9 @@ internal class SelectQueryDsl<T> private constructor(
 
     constructor(
         returnType: KClass<*>,
-        select: Collection<Expression<*>>,
+        select: Iterable<Expression<*>>,
         distinct: Boolean,
-        from: Collection<Path<*>>,
+        from: Iterable<Path<*>>,
     ) : this(
         SelectQueryBuilder<T>(returnType, select, distinct, from),
     )
@@ -42,7 +42,7 @@ internal class SelectQueryDsl<T> private constructor(
         return this
     }
 
-    override fun whereAnd(predicates: Collection<Predicatable?>): SelectQueryGroupByStep<T> {
+    override fun whereAnd(predicates: Iterable<Predicatable?>): SelectQueryGroupByStep<T> {
         builder.where(Predicates.and(predicates))
 
         return this
@@ -54,7 +54,7 @@ internal class SelectQueryDsl<T> private constructor(
         return this
     }
 
-    override fun whereOr(predicates: Collection<Predicatable?>): SelectQueryGroupByStep<T> {
+    override fun whereOr(predicates: Iterable<Predicatable?>): SelectQueryGroupByStep<T> {
         builder.where(Predicates.or(predicates))
 
         return this
@@ -66,7 +66,7 @@ internal class SelectQueryDsl<T> private constructor(
         return this
     }
 
-    override fun groupBy(expressions: Collection<Expressionable<*>>): SelectQueryHavingStep<T> {
+    override fun groupBy(expressions: Iterable<Expressionable<*>>): SelectQueryHavingStep<T> {
         builder.groupBy(expressions.map { it.toExpression() })
 
         return this
@@ -84,7 +84,7 @@ internal class SelectQueryDsl<T> private constructor(
         return this
     }
 
-    override fun havingAnd(predicates: Collection<Predicatable>): SelectQueryOrderByStep<T> {
+    override fun havingAnd(predicates: Iterable<Predicatable>): SelectQueryOrderByStep<T> {
         builder.having(Predicates.and(predicates))
 
         return this
@@ -96,7 +96,7 @@ internal class SelectQueryDsl<T> private constructor(
         return this
     }
 
-    override fun havingOr(predicates: Collection<Predicatable>): SelectQueryOrderByStep<T> {
+    override fun havingOr(predicates: Iterable<Predicatable>): SelectQueryOrderByStep<T> {
         builder.having(Predicates.or(predicates))
 
         return this
@@ -108,7 +108,7 @@ internal class SelectQueryDsl<T> private constructor(
         return this
     }
 
-    override fun orderBy(sorts: Collection<Sort>): JpqlQueryable<SelectQuery<T>> {
+    override fun orderBy(sorts: Iterable<Sort>): JpqlQueryable<SelectQuery<T>> {
         builder.orderBy(sorts)
 
         return this

@@ -11,7 +11,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 internal class UpdateQueryDsl<T : Any> private constructor(
     private val builder: UpdateQueryBuilder<T>
 ) : UpdateQueryWhereStep<T> {
-    constructor(entity: Path<T>, set: Collection<PathAndExpression<*>>) : this(UpdateQueryBuilder(entity, set))
+    constructor(entity: Path<T>, set: Iterable<PathAndExpression<*>>) : this(UpdateQueryBuilder(entity, set))
 
     override fun where(predicate: Predicate): JpqlQueryable<UpdateQuery<T>> {
         builder.where(predicate)
@@ -25,7 +25,7 @@ internal class UpdateQueryDsl<T : Any> private constructor(
         return this
     }
 
-    override fun whereAnd(predicates: Collection<Predicate?>): JpqlQueryable<UpdateQuery<T>> {
+    override fun whereAnd(predicates: Iterable<Predicate?>): JpqlQueryable<UpdateQuery<T>> {
         builder.where(Predicates.and(predicates.toList()))
 
         return this
@@ -37,7 +37,7 @@ internal class UpdateQueryDsl<T : Any> private constructor(
         return this
     }
 
-    override fun whereOr(predicates: Collection<Predicate?>): JpqlQueryable<UpdateQuery<T>> {
+    override fun whereOr(predicates: Iterable<Predicate?>): JpqlQueryable<UpdateQuery<T>> {
         builder.where(Predicates.or(predicates.toList()))
 
         return this

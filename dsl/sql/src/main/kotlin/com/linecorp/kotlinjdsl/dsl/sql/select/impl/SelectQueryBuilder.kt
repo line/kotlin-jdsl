@@ -4,14 +4,14 @@ import com.linecorp.kotlinjdsl.querymodel.sql.*
 import com.linecorp.kotlinjdsl.querymodel.sql.impl.NormalSelectQuery
 
 class SelectQueryBuilder(
-    private val select: Collection<Expression<*>>,
+    private val select: Iterable<Expression<*>>,
 ) {
     private var distinct: Boolean = false
-    private var from: MutableCollection<Table<*>>? = null
+    private var from: MutableList<Table<*>>? = null
     private var where: Predicate? = null
-    private var groupBy: MutableCollection<Expression<*>>? = null
+    private var groupBy: MutableList<Expression<*>>? = null
     private var having: Predicate? = null
-    private var orderBy: MutableCollection<Sort>? = null
+    private var orderBy: MutableList<Sort>? = null
     private var limit: Int? = null
     private var offset: Int? = null
 
@@ -21,7 +21,7 @@ class SelectQueryBuilder(
         return this
     }
 
-    fun from(tables: Collection<Table<*>>): SelectQueryBuilder {
+    fun from(tables: Iterable<Table<*>>): SelectQueryBuilder {
         this.from = (this.from ?: mutableListOf()).also { it.addAll(tables) }
 
         return this
@@ -33,7 +33,7 @@ class SelectQueryBuilder(
         return this
     }
 
-    fun groupBy(expressions: Collection<Expression<*>>): SelectQueryBuilder {
+    fun groupBy(expressions: Iterable<Expression<*>>): SelectQueryBuilder {
         this.groupBy = (this.groupBy ?: mutableListOf()).also { it.addAll(expressions) }
 
         return this
@@ -45,7 +45,7 @@ class SelectQueryBuilder(
         return this
     }
 
-    fun orderBy(sorts: Collection<Sort>): SelectQueryBuilder {
+    fun orderBy(sorts: Iterable<Sort>): SelectQueryBuilder {
         this.orderBy = (this.orderBy ?: mutableListOf()).also { it.addAll(sorts) }
 
         return this

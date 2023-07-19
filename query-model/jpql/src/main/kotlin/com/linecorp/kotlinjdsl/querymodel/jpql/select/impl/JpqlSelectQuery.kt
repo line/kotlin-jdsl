@@ -9,11 +9,11 @@ import kotlin.reflect.KClass
 
 data class JpqlSelectQuery<T> internal constructor(
     override val returnType: KClass<*>,
-    val select: Collection<Expression<*>>,
+    val select: Iterable<Expression<*>>,
     val distinct: Boolean,
-    val from: Collection<Path<*>>,
+    val from: Iterable<Path<*>>,
     val where: Predicate?,
-    val groupBy: Collection<Expression<*>>?,
+    val groupBy: Iterable<Expression<*>>?,
     val having: Predicate?,
-    val orderBy: Collection<Sort>?,
+    val orderBy: Iterable<Sort>?,
 ) : SelectQuery<T>

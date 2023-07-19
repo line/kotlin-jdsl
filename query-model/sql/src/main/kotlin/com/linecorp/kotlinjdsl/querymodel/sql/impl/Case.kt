@@ -5,6 +5,6 @@ import com.linecorp.kotlinjdsl.querymodel.sql.Expression
 
 @Internal
 data class Case<T>(
-    val whens: Collection<CaseWhen<T>>,
+    val whens: Iterable<CaseWhen<T>>,
     val `else`: Expression<out T>?,
 ) : Expression<T>

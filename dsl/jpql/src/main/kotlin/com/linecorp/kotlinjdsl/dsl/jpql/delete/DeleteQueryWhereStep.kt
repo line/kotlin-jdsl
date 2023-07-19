@@ -9,9 +9,9 @@ interface DeleteQueryWhereStep<T : Any> : JpqlQueryable<DeleteQuery<T>> {
 
     fun whereAnd(vararg predicates: Predicate?): JpqlQueryable<DeleteQuery<T>>
 
-    fun whereAnd(predicates: Collection<Predicate?>): JpqlQueryable<DeleteQuery<T>>
+    fun whereAnd(predicates: Iterable<Predicate?>): JpqlQueryable<DeleteQuery<T>>
 
     fun whereOr(vararg predicates: Predicate?): JpqlQueryable<DeleteQuery<T>>
 
-    fun whereOr(predicates: Collection<Predicate?>): JpqlQueryable<DeleteQuery<T>>
+    fun whereOr(predicates: Iterable<Predicate?>): JpqlQueryable<DeleteQuery<T>>
 }

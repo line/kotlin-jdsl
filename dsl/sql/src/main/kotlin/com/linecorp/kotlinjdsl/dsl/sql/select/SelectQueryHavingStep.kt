@@ -8,8 +8,8 @@ interface SelectQueryHavingStep : SelectQueryOrderByStep, SqlQueryable<SelectQue
     fun having(predicate: Predicate): SelectQueryOrderByStep
 
     fun havingAnd(vararg predicates: Predicate): SelectQueryOrderByStep
-    fun havingAnd(predicates: Collection<Predicate>): SelectQueryOrderByStep
+    fun havingAnd(predicates: Iterable<Predicate>): SelectQueryOrderByStep
 
     fun havingOr(vararg predicates: Predicate): SelectQueryOrderByStep
-    fun havingOr(predicates: Collection<Predicate>): SelectQueryOrderByStep
+    fun havingOr(predicates: Iterable<Predicate>): SelectQueryOrderByStep
 }

@@ -1,6 +1,7 @@
 package com.linecorp.kotlinjdsl.dsl.sql.delete.impl
 
 import com.linecorp.kotlinjdsl.dsl.sql.delete.DeleteQueryWhereStep
+import com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
 import com.linecorp.kotlinjdsl.querymodel.sql.SqlQueryable
 import com.linecorp.kotlinjdsl.querymodel.sql.TableReference
@@ -12,37 +13,37 @@ class DeleteQueryDsl<T : Any> private constructor(
 ) : DeleteQueryWhereStep<T> {
     constructor(table: TableReference<T>) : this(DeleteQueryBuilder(table))
 
-    override fun where(predicate: Predicate): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>> {
+    override fun where(predicate: Predicate): SqlQueryable<DeleteQuery<T>> {
         builder.where(predicate)
 
         return this
     }
 
-    override fun whereAnd(vararg predicates: Predicate): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>> {
+    override fun whereAnd(vararg predicates: Predicate): SqlQueryable<DeleteQuery<T>> {
         builder.where(And(predicates.toList()))
 
         return this
     }
 
-    override fun whereAnd(predicates: Collection<Predicate>): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>> {
+    override fun whereAnd(predicates: Iterable<Predicate>): SqlQueryable<DeleteQuery<T>> {
         builder.where(And(predicates))
 
         return this
     }
 
-    override fun whereOr(vararg predicates: Predicate): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>> {
+    override fun whereOr(vararg predicates: Predicate): SqlQueryable<DeleteQuery<T>> {
         builder.where(Or(predicates.toList()))
 
         return this
     }
 
-    override fun whereOr(predicates: Collection<Predicate>): SqlQueryable<com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T>> {
+    override fun whereOr(predicates: Iterable<Predicate>): SqlQueryable<DeleteQuery<T>> {
         builder.where(Or(predicates))
 
         return this
     }
 
-    override fun toQuery(): com.linecorp.kotlinjdsl.querymodel.sql.DeleteQuery<T> {
+    override fun toQuery(): DeleteQuery<T> {
         return builder.build()
     }
 

@@ -15,7 +15,7 @@ internal class UpdateQuerySetStepDsl<T : Any>(
         )
     }
 
-    override fun set(assignments: Collection<PathAndExpression<*>>): UpdateQueryWhereStep<T> {
+    override fun set(assignments: Iterable<PathAndExpression<*>>): UpdateQueryWhereStep<T> {
         return UpdateQueryDsl(
             entity = entity,
             set = assignments,

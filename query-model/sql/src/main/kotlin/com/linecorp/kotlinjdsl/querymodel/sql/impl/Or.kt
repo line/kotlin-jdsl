@@ -5,5 +5,5 @@ import com.linecorp.kotlinjdsl.querymodel.sql.Predicate
 
 @Internal
 data class Or(
-    val predicates: Collection<Predicate>,
+    val predicates: Iterable<Predicate>,
 ) : Predicate

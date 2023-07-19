@@ -16,7 +16,7 @@ class UpdateQueryDsl<T : Any> private constructor(
     constructor(table: TableReference<T>) : this(UpdateQueryBuilder(table))
 
     override fun <V> set(
-        column: com.linecorp.kotlinjdsl.querymodel.sql.Column<T, V>,
+        column: Column<T, V>,
         expression: Expression<V>
     ): UpdateQuerySetMoreStep<T> {
         builder.set(column, expression)
@@ -36,7 +36,7 @@ class UpdateQueryDsl<T : Any> private constructor(
         return this
     }
 
-    override fun whereAnd(predicates: Collection<Predicate>): SqlQueryable<UpdateQuery<T>> {
+    override fun whereAnd(predicates: Iterable<Predicate>): SqlQueryable<UpdateQuery<T>> {
         builder.where(And(predicates))
 
         return this
@@ -48,7 +48,7 @@ class UpdateQueryDsl<T : Any> private constructor(
         return this
     }
 
-    override fun whereOr(predicates: Collection<Predicate>): SqlQueryable<UpdateQuery<T>> {
+    override fun whereOr(predicates: Iterable<Predicate>): SqlQueryable<UpdateQuery<T>> {
         builder.where(Or(predicates))
 
         return this

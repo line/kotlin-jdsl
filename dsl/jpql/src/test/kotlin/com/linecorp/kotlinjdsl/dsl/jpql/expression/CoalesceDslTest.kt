@@ -27,9 +27,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::int1),
-            listOf(
-                Expressions.value(int1),
-            ),
+            Expressions.value(int1),
+            emptyList(),
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -47,9 +46,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::int1),
-            listOf(
-                Expressions.value(nullableInt1),
-            ),
+            Expressions.value(nullableInt1),
+            emptyList(),
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -67,9 +65,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::nullableInt1),
-            listOf(
-                Expressions.value(nullableInt1),
-            ),
+            Expressions.value(nullableInt1),
+            emptyList(),
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -87,9 +84,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::nullableInt1),
-            listOf(
-                Expressions.value(nullableInt1),
-            ),
+            Expressions.value(nullableInt1),
+            emptyList(),
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -107,8 +103,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::int1),
+            Expressions.value(int1),
             listOf(
-                Expressions.value(int1),
                 Expressions.value(int2),
             ),
         )
@@ -128,8 +124,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::int1),
+            Expressions.value(int1),
             listOf(
-                Expressions.value(int1),
                 Expressions.value(nullableInt1),
             ),
         )
@@ -149,8 +145,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::int1),
+            Expressions.value(nullableInt1),
             listOf(
-                Expressions.value(nullableInt1),
                 Expressions.value(nullableInt2),
             ),
         )
@@ -170,8 +166,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::nullableInt1),
+            Expressions.value(int1),
             listOf(
-                Expressions.value(int1),
                 Expressions.value(int2),
             ),
         )
@@ -191,8 +187,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::nullableInt1),
+            Expressions.value(int1),
             listOf(
-                Expressions.value(int1),
                 Expressions.value(nullableInt1),
             ),
         )
@@ -212,8 +208,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::nullableInt1),
+            Expressions.value(nullableInt1),
             listOf(
-                Expressions.value(nullableInt1),
                 Expressions.value(nullableInt2),
             ),
         )
@@ -233,8 +229,8 @@ class CoalesceDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.coalesce(
             Paths.path(TestTable::nullableInt1),
+            Expressions.value(nullableInt1),
             listOf(
-                Expressions.value(nullableInt1),
                 Expressions.value(nullableInt2),
             ),
         )
