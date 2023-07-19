@@ -1,3 +1,5 @@
+@file:Suppress("RedundantNullableReturnType")
+
 package com.linecorp.kotlinjdsl.querymodel.jpql
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
@@ -15,13 +17,34 @@ import kotlin.reflect.KClass
 
 class ExpressionsTest : WithAssertions {
     private val string1: String = "string1"
+    private val nullableString1: String? = "nullableString1"
+    private val nullString1: String? = null
+
+    private val short1: Short = 1
+    private val nullableShort1: Short? = 10
+    private val nullShort1: Short? = null
 
     private val int1: Int = 1
     private val int2: Int = 2
-    private val nullableInt1: Int? = null
-    private val nullableInt2: Int? = null
+    private val nullableInt1: Int? = 10
+    private val nullableInt2: Int? = 20
+    private val nullInt1: Int? = null
 
     private val long1: Long = 1
+    private val nullableLong1: Long? = 10
+    private val nullLong1: Long? = null
+
+    private val float1: Float = 1.0f
+    private val nullableFloat1: Float? = 10.0f
+    private val nullFloat1: Float? = null
+
+    private val double1: Double = 1.0
+    private val nullableDouble1: Double? = 10.0
+    private val nullDouble1: Double? = null
+
+    private val boolean1: Boolean = true
+    private val nullableBoolean1: Boolean? = false
+    private val nullBoolean1: Boolean? = null
 
     private val alias1: String = "alias1"
     private val alias2: String = "alias2"
@@ -49,11 +72,22 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(JpqlNull)
+        assertThat(actual).isEqualTo(JpqlValue(nullableInt1))
     }
 
     @Test
     fun `null value`() {
+        // when
+        val expression = Expressions.value(nullInt1).toExpression()
+
+        val actual: Expression<Int?> = expression // for type check
+
+        // then
+        assertThat(actual).isEqualTo(JpqlNull)
+    }
+
+    @Test
+    fun nullValue() {
         // when
         val expression = Expressions.nullValue<Int?>().toExpression()
 
@@ -61,6 +95,321 @@ class ExpressionsTest : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(JpqlNull)
+    }
+
+    @Test
+    fun `literal short`() {
+        // when
+        val expression = Expressions.literal(
+            short1,
+        ).toExpression()
+
+        val actual: Expression<Short> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.ShortLiteral(short1)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal nullable short`() {
+        // when
+        val expression = Expressions.literal(
+            nullableShort1,
+        ).toExpression()
+
+        val actual: Expression<Short?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.ShortLiteral(nullableShort1!!)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal null short`() {
+        // when
+        val expression = Expressions.literal(
+            nullShort1,
+        ).toExpression()
+
+        val actual: Expression<Short?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.NullLiteral
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal int`() {
+        // when
+        val expression = Expressions.literal(
+            int1,
+        ).toExpression()
+
+        val actual: Expression<Int> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.IntLiteral(int1)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal nullable int`() {
+        // when
+        val expression = Expressions.literal(
+            nullableInt1,
+        ).toExpression()
+
+        val actual: Expression<Int?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.IntLiteral(nullableInt1!!)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal null int`() {
+        // when
+        val expression = Expressions.literal(
+            nullInt1,
+        ).toExpression()
+
+        val actual: Expression<Int?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.NullLiteral
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal long`() {
+        // when
+        val expression = Expressions.literal(
+            long1,
+        ).toExpression()
+
+        val actual: Expression<Long> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.LongLiteral(long1)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal nullable long`() {
+        // when
+        val expression = Expressions.literal(
+            nullableLong1,
+        ).toExpression()
+
+        val actual: Expression<Long?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.LongLiteral(nullableLong1!!)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal null long`() {
+        // when
+        val expression = Expressions.literal(
+            nullLong1,
+        ).toExpression()
+
+        val actual: Expression<Long?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.NullLiteral
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal float`() {
+        // when
+        val expression = Expressions.literal(
+            float1,
+        ).toExpression()
+
+        val actual: Expression<Float> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.FloatLiteral(float1)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal nullable float`() {
+        // when
+        val expression = Expressions.literal(
+            nullableFloat1,
+        ).toExpression()
+
+        val actual: Expression<Float?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.FloatLiteral(nullableFloat1!!)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal null float`() {
+        // when
+        val expression = Expressions.literal(
+            nullFloat1,
+        ).toExpression()
+
+        val actual: Expression<Float?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.NullLiteral
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal double`() {
+        // when
+        val expression = Expressions.literal(
+            double1,
+        ).toExpression()
+
+        val actual: Expression<Double> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.DoubleLiteral(double1)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal nullable double`() {
+        // when
+        val expression = Expressions.literal(
+            nullableDouble1,
+        ).toExpression()
+
+        val actual: Expression<Double?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.DoubleLiteral(nullableDouble1!!)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal null double`() {
+        // when
+        val expression = Expressions.literal(
+            nullDouble1,
+        ).toExpression()
+
+        val actual: Expression<Double?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.NullLiteral
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal boolean`() {
+        // when
+        val expression = Expressions.literal(
+            boolean1,
+        ).toExpression()
+
+        val actual: Expression<Boolean> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.BooleanLiteral(boolean1)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal nullable boolean`() {
+        // when
+        val expression = Expressions.literal(
+            nullableBoolean1,
+        ).toExpression()
+
+        val actual: Expression<Boolean?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.BooleanLiteral(nullableBoolean1!!)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal null boolean`() {
+        // when
+        val expression = Expressions.literal(
+            nullBoolean1,
+        ).toExpression()
+
+        val actual: Expression<Boolean?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.NullLiteral
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal string`() {
+        // when
+        val expression = Expressions.literal(
+            string1,
+        ).toExpression()
+
+        val actual: Expression<String> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.StringLiteral(string1)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal nullable string`() {
+        // when
+        val expression = Expressions.literal(
+            nullableString1,
+        ).toExpression()
+
+        val actual: Expression<String?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.StringLiteral(nullableString1!!)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `literal null string`() {
+        // when
+        val expression = Expressions.literal(
+            nullString1,
+        ).toExpression()
+
+        val actual: Expression<String?> = expression // for type check
+
+        // then
+        val expected = JpqlLiteral.NullLiteral
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -1068,7 +1417,7 @@ class ExpressionsTest : WithAssertions {
                         ),
                         compareValue = JpqlValue(string1),
                     ),
-                    result = JpqlNull,
+                    result = JpqlValue(nullableInt1),
                 ),
                 JpqlCaseWhen(
                     predicate = JpqlEqual(
@@ -1173,7 +1522,7 @@ class ExpressionsTest : WithAssertions {
                     result = JpqlValue(int1),
                 ),
             ),
-            `else` = JpqlNull,
+            `else` = JpqlValue(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -1293,7 +1642,7 @@ class ExpressionsTest : WithAssertions {
                 ),
                 JpqlCaseValueWhen(
                     compareValue = JpqlValue(string1),
-                    result = JpqlNull,
+                    result = JpqlValue(nullableInt1),
                 ),
                 JpqlCaseValueWhen(
                     compareValue = JpqlValue(string1),
@@ -1325,7 +1674,7 @@ class ExpressionsTest : WithAssertions {
                         JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                         TestTable1::string1.name,
                     ),
-                    result = JpqlNull,
+                    result = JpqlValue(nullableInt1),
                 ),
                 JpqlCaseValueWhen(
                     compareValue = JpqlField(
@@ -1416,7 +1765,7 @@ class ExpressionsTest : WithAssertions {
                     result = JpqlValue(int1),
                 ),
             ),
-            `else` = JpqlNull,
+            `else` = JpqlValue(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -1539,7 +1888,7 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                JpqlNull,
+                JpqlValue(nullableInt1),
             ),
         )
 
@@ -1565,7 +1914,7 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                JpqlNull,
+                JpqlValue(nullableInt1),
             ),
         )
 
@@ -1591,7 +1940,7 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                JpqlNull,
+                JpqlValue(nullableInt1),
             ),
         )
 
@@ -1649,7 +1998,7 @@ class ExpressionsTest : WithAssertions {
                     TestTable1::int1.name,
                 ),
                 JpqlValue(int1),
-                JpqlNull,
+                JpqlValue(nullableInt1),
             ),
         )
 
@@ -1677,8 +2026,8 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::int1.name,
                 ),
-                JpqlNull,
-                JpqlNull,
+                JpqlValue(nullableInt1),
+                JpqlValue(nullableInt2),
             ),
         )
 
@@ -1736,7 +2085,7 @@ class ExpressionsTest : WithAssertions {
                     TestTable1::nullableInt1.name,
                 ),
                 JpqlValue(int1),
-                JpqlNull,
+                JpqlValue(nullableInt1),
             ),
         )
 
@@ -1764,8 +2113,8 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                JpqlNull,
-                JpqlNull,
+                JpqlValue(nullableInt1),
+                JpqlValue(nullableInt2),
             ),
         )
 
@@ -1793,8 +2142,8 @@ class ExpressionsTest : WithAssertions {
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
                 ),
-                JpqlNull,
-                JpqlNull,
+                JpqlValue(nullableInt1),
+                JpqlValue(nullableInt2),
             ),
         )
 
@@ -1841,7 +2190,7 @@ class ExpressionsTest : WithAssertions {
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::int1.name,
             ),
-            compareValue = JpqlNull,
+            compareValue = JpqlValue(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -1887,7 +2236,7 @@ class ExpressionsTest : WithAssertions {
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableInt1.name,
             ),
-            compareValue = JpqlNull,
+            compareValue = JpqlValue(nullableInt1),
         )
 
         assertThat(actual.toExpression()).isEqualTo(expected)
@@ -2250,7 +2599,6 @@ class ExpressionsTest : WithAssertions {
         val actual: ExpressionAndExpression<Int?> = expression
 
         // then
-        @Suppress("UNCHECKED_CAST")
         assertThat(actual).isEqualTo(
             JpqlExpressionAndExpression(
                 JpqlMax(
@@ -2261,7 +2609,7 @@ class ExpressionsTest : WithAssertions {
                     ),
                     false,
                 ),
-                JpqlNull as Expression<Int?>,
+                JpqlValue(nullableInt1),
             ),
         )
     }

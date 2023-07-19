@@ -4,4 +4,4 @@ import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 
 @Internal
-object JpqlNull : Expression<Any>
+data object JpqlNull : Expression<Any?>

@@ -65,74 +65,74 @@ open class Jpql : JpqlDsl {
 
     @JvmName("literal2")
     @SinceJdsl("3.0.0")
-    fun literal(int: Int): Expression<Int> {
-        return Expressions.literal(int)
-    }
-
-    @JvmName("literal3")
-    @SinceJdsl("3.0.0")
-    fun literal(long: Long): Expression<Long> {
-        return Expressions.literal(long)
-    }
-
-    @JvmName("literal4")
-    @SinceJdsl("3.0.0")
-    fun literal(float: Float): Expression<Float> {
-        return Expressions.literal(float)
-    }
-
-    @JvmName("literal5")
-    @SinceJdsl("3.0.0")
-    fun literal(double: Double): Expression<Double> {
-        return Expressions.literal(double)
-    }
-
-    @JvmName("literal6")
-    @SinceJdsl("3.0.0")
-    fun literal(boolean: Boolean): Expression<Boolean> {
-        return Expressions.literal(boolean)
-    }
-
-    @JvmName("literal7")
-    @SinceJdsl("3.0.0")
-    fun literal(string: String): Expression<String> {
-        return Expressions.literal(string)
-    }
-
-    @JvmName("literal8")
-    @SinceJdsl("3.0.0")
     fun literal(short: Short?): Expression<Short?> {
         return Expressions.literal(short)
     }
 
-    @JvmName("literal9")
+    @JvmName("literal3")
+    @SinceJdsl("3.0.0")
+    fun literal(int: Int): Expression<Int> {
+        return Expressions.literal(int)
+    }
+
+    @JvmName("literal4")
     @SinceJdsl("3.0.0")
     fun literal(int: Int?): Expression<Int?> {
         return Expressions.literal(int)
     }
 
-    @JvmName("literal10")
+    @JvmName("literal5")
+    @SinceJdsl("3.0.0")
+    fun literal(long: Long): Expression<Long> {
+        return Expressions.literal(long)
+    }
+
+    @JvmName("literal6")
     @SinceJdsl("3.0.0")
     fun literal(long: Long?): Expression<Long?> {
         return Expressions.literal(long)
     }
 
-    @JvmName("literal11")
+    @JvmName("literal7")
+    @SinceJdsl("3.0.0")
+    fun literal(float: Float): Expression<Float> {
+        return Expressions.literal(float)
+    }
+
+    @JvmName("literal8")
     @SinceJdsl("3.0.0")
     fun literal(float: Float?): Expression<Float?> {
         return Expressions.literal(float)
     }
 
-    @JvmName("literal12")
+    @JvmName("literal9")
+    @SinceJdsl("3.0.0")
+    fun literal(double: Double): Expression<Double> {
+        return Expressions.literal(double)
+    }
+
+    @JvmName("literal10")
     @SinceJdsl("3.0.0")
     fun literal(double: Double?): Expression<Double?> {
         return Expressions.literal(double)
     }
 
-    @JvmName("literal13")
+    @JvmName("literal11")
+    @SinceJdsl("3.0.0")
+    fun literal(boolean: Boolean): Expression<Boolean> {
+        return Expressions.literal(boolean)
+    }
+
+    @JvmName("literal12")
     @SinceJdsl("3.0.0")
     fun literal(boolean: Boolean?): Expression<Boolean?> {
         return Expressions.literal(boolean)
+    }
+
+    @JvmName("literal13")
+    @SinceJdsl("3.0.0")
+    fun literal(string: String): Expression<String> {
+        return Expressions.literal(string)
     }
 
     @JvmName("literal14")
