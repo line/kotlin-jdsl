@@ -108,7 +108,7 @@ class SelectDslRenderTest : AbstractSqlRenderTest() {
 
         // then
         val expected = SqlRendered(
-            query = "SELECT table1.*, table2.*, table3.*",
+            query = "SELECT Table1.*, Table2.*, Table3.*",
             params = indexedParams { },
         )
 
@@ -132,7 +132,7 @@ class SelectDslRenderTest : AbstractSqlRenderTest() {
 
         // then
         val expected = SqlRendered(
-            query = "SELECT table1.column1, table1.column2, table1.column3",
+            query = "SELECT Table1.column1, Table1.column2, Table1.column3",
             params = indexedParams { },
         )
 
@@ -156,7 +156,7 @@ class SelectDslRenderTest : AbstractSqlRenderTest() {
 
         // then
         val expected = SqlRendered(
-            query = "SELECT table1.column1, table1.column2, table1.column3",
+            query = "SELECT Table1.column1, Table1.column2, Table1.column3",
             params = indexedParams { },
         )
 
