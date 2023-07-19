@@ -8,7 +8,7 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.impl.DefaultJpqlWriter
 class JpqlRenderer {
     fun render(query: JpqlQuery<*>, context: RenderContext): JpqlRendered {
         val serializer = context.getValue(JpqlRenderSerializer)
-        val writer = createWriter()
+        val writer = createWriter(emptyMap())
 
         serializer.serialize(query, writer, context)
 
@@ -18,7 +18,19 @@ class JpqlRenderer {
         )
     }
 
-    private fun createWriter(): DefaultJpqlWriter {
-        return DefaultJpqlWriter()
+    fun render(query: JpqlQuery<*>, params: Map<String, Any?>, context: RenderContext): JpqlRendered {
+        val serializer = context.getValue(JpqlRenderSerializer)
+        val writer = createWriter(params)
+
+        serializer.serialize(query, writer, context)
+
+        return JpqlRendered(
+            query = writer.getQuery(),
+            params = writer.getParams(),
+        )
+    }
+
+    private fun createWriter(params: Map<String, Any?>): DefaultJpqlWriter {
+        return DefaultJpqlWriter(params)
     }
 }

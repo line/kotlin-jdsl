@@ -6,25 +6,19 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 sealed class JpqlRenderStatement : AbstractRenderContextElement(Key) {
     companion object Key : RenderContext.Key<JpqlRenderStatement>
 
-    abstract fun isUpdate(): Boolean
-    abstract fun isDelete(): Boolean
-    abstract fun isSelect(): Boolean
+    open fun isSelect(): Boolean = false
+    open fun isUpdate(): Boolean = false
+    open fun isDelete(): Boolean = false
 
-    object Update : JpqlRenderStatement() {
-        override fun isUpdate(): Boolean = true
-        override fun isDelete(): Boolean = false
-        override fun isSelect(): Boolean = false
-    }
-
-    object Delete : JpqlRenderStatement() {
-        override fun isUpdate(): Boolean = false
-        override fun isDelete(): Boolean = true
-        override fun isSelect(): Boolean = false
-    }
-
-    object Select : JpqlRenderStatement() {
-        override fun isUpdate(): Boolean = false
-        override fun isDelete(): Boolean = false
+    data object Select : JpqlRenderStatement() {
         override fun isSelect(): Boolean = true
+    }
+
+    data object Update : JpqlRenderStatement() {
+        override fun isUpdate(): Boolean = true
+    }
+
+    data object Delete : JpqlRenderStatement() {
+        override fun isDelete(): Boolean = true
     }
 }

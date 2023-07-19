@@ -3,9 +3,15 @@ package com.linecorp.kotlinjdsl.render.jpql.writer.impl
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 
-class DefaultJpqlWriter : JpqlWriter {
+class DefaultJpqlWriter(
+    params: Map<String, Any?>,
+) : JpqlWriter {
     private val stringBuilder: StringBuilder = StringBuilder()
-    private val params = mutableMapOf<String, Any?>()
+    private val params: MutableMap<String, Any?> = mutableMapOf()
+
+    init {
+        params.forEach { (name, value) -> addParamValue(name, value) }
+    }
 
     private val incrementer: Incrementer = Incrementer()
 
@@ -88,22 +94,32 @@ class DefaultJpqlWriter : JpqlWriter {
     override fun writeParam(value: Any?) {
         val name = incrementer.getNext().toString()
 
-        write(":${name}")
-        params[name] = value
+        writeParam(name, value)
     }
 
     override fun writeParam(name: String, value: Any?) {
-        if (!name.startsWith(":")) {
-            val prefixedName = ":${name}"
+        writeParamName(name)
+        addParamValue(name, value)
+    }
 
-            write(prefixedName)
-            params[name] = value
+    private fun writeParamName(name: String) {
+        val prefixedName = if (name.startsWith(":")) {
+            name
         } else {
-            val nonPrefixedName = name.substring(1)
-
-            write(name)
-            params[nonPrefixedName] = value
+            ":${name}"
         }
+
+        write(prefixedName)
+    }
+
+    private fun addParamValue(name: String, value: Any?) {
+        val nonPrefixedName = if (name.startsWith(":")) {
+            name.substring(1)
+        } else {
+            name
+        }
+
+        params.putIfAbsent(nonPrefixedName, value)
     }
 
     fun getQuery(): String {

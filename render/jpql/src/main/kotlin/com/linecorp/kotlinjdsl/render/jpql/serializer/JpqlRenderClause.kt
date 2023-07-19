@@ -6,64 +6,49 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 sealed class JpqlRenderClause : AbstractRenderContextElement(Key) {
     companion object Key : RenderContext.Key<JpqlRenderClause>
 
-    abstract fun isSelect(): Boolean
-    abstract fun isFrom(): Boolean
-    abstract fun isWhere(): Boolean
-    abstract fun isHaving(): Boolean
-    abstract fun isGroupBy(): Boolean
-    abstract fun isOrderBy(): Boolean
+    open fun isSelect(): Boolean = false
+    open fun isUpdate(): Boolean = false
+    open fun isDeleteFrom(): Boolean = false
+    open fun isSet(): Boolean = false
+    open fun isFrom(): Boolean = false
+    open fun isWhere(): Boolean = false
+    open fun isHaving(): Boolean = false
+    open fun isGroupBy(): Boolean = false
+    open fun isOrderBy(): Boolean = false
 
-    object Select : JpqlRenderClause() {
+    data object Select : JpqlRenderClause() {
         override fun isSelect(): Boolean = true
-        override fun isFrom(): Boolean = false
-        override fun isWhere(): Boolean = false
-        override fun isHaving(): Boolean = false
-        override fun isGroupBy(): Boolean = false
-        override fun isOrderBy(): Boolean = false
     }
 
-    object From : JpqlRenderClause() {
-        override fun isSelect(): Boolean = false
+    data object Update : JpqlRenderClause() {
+        override fun isUpdate(): Boolean = true
+    }
+
+    data object DeleteFrom : JpqlRenderClause() {
+        override fun isDeleteFrom(): Boolean = true
+    }
+
+    data object Set : JpqlRenderClause() {
+        override fun isSet(): Boolean = true
+    }
+
+    data object From : JpqlRenderClause() {
         override fun isFrom(): Boolean = true
-        override fun isWhere(): Boolean = false
-        override fun isHaving(): Boolean = false
-        override fun isGroupBy(): Boolean = false
-        override fun isOrderBy(): Boolean = false
     }
 
-    object Where : JpqlRenderClause() {
-        override fun isSelect(): Boolean = false
-        override fun isFrom(): Boolean = false
+    data object Where : JpqlRenderClause() {
         override fun isWhere(): Boolean = true
-        override fun isHaving(): Boolean = false
-        override fun isGroupBy(): Boolean = false
-        override fun isOrderBy(): Boolean = false
     }
 
-    object Having : JpqlRenderClause() {
-        override fun isSelect(): Boolean = false
-        override fun isFrom(): Boolean = false
-        override fun isWhere(): Boolean = false
+    data object Having : JpqlRenderClause() {
         override fun isHaving(): Boolean = true
-        override fun isGroupBy(): Boolean = false
-        override fun isOrderBy(): Boolean = false
     }
 
-    object GroupBy : JpqlRenderClause() {
-        override fun isSelect(): Boolean = false
-        override fun isFrom(): Boolean = false
-        override fun isWhere(): Boolean = false
-        override fun isHaving(): Boolean = false
+    data object GroupBy : JpqlRenderClause() {
         override fun isGroupBy(): Boolean = true
-        override fun isOrderBy(): Boolean = false
     }
 
-    object OrderBy : JpqlRenderClause() {
-        override fun isSelect(): Boolean = false
-        override fun isFrom(): Boolean = false
-        override fun isWhere(): Boolean = false
-        override fun isHaving(): Boolean = false
-        override fun isGroupBy(): Boolean = false
+    data object OrderBy : JpqlRenderClause() {
         override fun isOrderBy(): Boolean = true
     }
 }
