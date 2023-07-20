@@ -5,6 +5,23 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 
 /**
  * Expression that represents the literal.
+ *
+ * **Numeric Literal**
+ * - A short literal is represented by short value.
+ * - An int literal by int value.
+ * - A long literal by long value with the L suffix.
+ * - A float literal by float value with the F suffix.
+ * - A double literal by double value.
+ *
+ * **Boolean Literal**
+ * - A boolean literal is represented by `TRUE` or `FALSE`.
+ *
+ * **String Literal**
+ * - A string literal is enclosed in single quotes—for example: ‘literal’.
+ * - A string literal that includes a single quote is represented by two single quotes—for example: `‘literal’’s’`.
+ *
+ * **Null Literal**
+ * - A null literal is represented by `NULL`.
  */
 @Internal
 sealed interface JpqlLiteral<T> : Expression<T> {
