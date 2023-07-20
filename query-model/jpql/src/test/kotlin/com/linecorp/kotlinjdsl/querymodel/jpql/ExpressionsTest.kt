@@ -312,7 +312,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlMax(
+        val expected = JpqlMax<Int>(
             JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -332,7 +332,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlMax(
+        val expected = JpqlMax<Int>(
             JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -352,7 +352,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlMax(
+        val expected = JpqlMax<Int>(
             JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -372,7 +372,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlMax(
+        val expected = JpqlMax<Int>(
             JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -392,7 +392,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlMin(
+        val expected = JpqlMin<Int>(
             JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -412,7 +412,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlMin(
+        val expected = JpqlMin<Int>(
             JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -432,7 +432,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlMin(
+        val expected = JpqlMin<Int>(
             JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -452,7 +452,7 @@ class ExpressionsTest : WithAssertions {
         val actual: Expression<Int?> = expression // for type check
 
         // then
-        val expected = JpqlMin(
+        val expected = JpqlMin<Int>(
             JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
@@ -553,7 +553,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.IntSum(
-            JpqlField(
+            JpqlField<Int>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::int1.name,
@@ -573,7 +573,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.IntSum(
-            JpqlField(
+            JpqlField<Int>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::int1.name,
@@ -593,7 +593,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.IntSum(
-            JpqlField(
+            JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableInt1.name,
@@ -613,7 +613,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.IntSum(
-            JpqlField(
+            JpqlField<Int?>(
                 Int::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableInt1.name,
@@ -633,7 +633,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.LongSum(
-            JpqlField(
+            JpqlField<Long>(
                 Long::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::long1.name,
@@ -653,7 +653,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.LongSum(
-            JpqlField(
+            JpqlField<Long>(
                 Long::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::long1.name,
@@ -673,7 +673,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.LongSum(
-            JpqlField(
+            JpqlField<Long?>(
                 Long::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableLong1.name,
@@ -693,7 +693,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.LongSum(
-            JpqlField(
+            JpqlField<Long?>(
                 Long::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableLong1.name,
@@ -713,7 +713,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.FloatSum(
-            JpqlField(
+            JpqlField<Float>(
                 Float::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::float1.name,
@@ -733,7 +733,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.FloatSum(
-            JpqlField(
+            JpqlField<Float>(
                 Float::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::float1.name,
@@ -753,7 +753,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.FloatSum(
-            JpqlField(
+            JpqlField<Float?>(
                 Float::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableFloat1.name,
@@ -773,7 +773,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.FloatSum(
-            JpqlField(
+            JpqlField<Float?>(
                 Float::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableFloat1.name,
@@ -793,7 +793,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.DoubleSum(
-            JpqlField(
+            JpqlField<Double>(
                 Double::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::double1.name,
@@ -813,7 +813,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.DoubleSum(
-            JpqlField(
+            JpqlField<Double>(
                 Double::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::double1.name,
@@ -833,7 +833,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.DoubleSum(
-            JpqlField(
+            JpqlField<Double?>(
                 Double::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableDouble1.name,
@@ -853,7 +853,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.DoubleSum(
-            JpqlField(
+            JpqlField<Double?>(
                 Double::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableDouble1.name,
@@ -873,7 +873,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.BigIntegerSum(
-            JpqlField(
+            JpqlField<BigInteger>(
                 BigInteger::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::bigInteger1.name,
@@ -893,7 +893,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.BigIntegerSum(
-            JpqlField(
+            JpqlField<BigInteger>(
                 BigInteger::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::bigInteger1.name,
@@ -913,7 +913,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.BigIntegerSum(
-            JpqlField(
+            JpqlField<BigInteger?>(
                 BigInteger::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableBigInteger1.name,
@@ -933,7 +933,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.BigIntegerSum(
-            JpqlField(
+            JpqlField<BigInteger?>(
                 BigInteger::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableBigInteger1.name,
@@ -953,7 +953,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.BigDecimalSum(
-            JpqlField(
+            JpqlField<BigDecimal>(
                 BigDecimal::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::bigDecimal1.name,
@@ -973,7 +973,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.BigDecimalSum(
-            JpqlField(
+            JpqlField<BigDecimal>(
                 BigDecimal::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::bigDecimal1.name,
@@ -993,7 +993,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.BigDecimalSum(
-            JpqlField(
+            JpqlField<BigDecimal?>(
                 BigDecimal::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableBigDecimal1.name,
@@ -1013,7 +1013,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlSum.BigDecimalSum(
-            JpqlField(
+            JpqlField<BigDecimal?>(
                 BigDecimal::class,
                 JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                 TestTable1::nullableBigDecimal1.name,
@@ -2211,7 +2211,7 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlAliasedExpression<Int?>(
             JpqlMax(
-                JpqlField(
+                JpqlField<Int?>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
@@ -2269,7 +2269,7 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlAliasedExpression<Int?>(
             JpqlMax(
-                JpqlField(
+                JpqlField<Int?>(
                     Int::class,
                     JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                     TestTable1::nullableInt1.name,
@@ -2322,7 +2322,7 @@ class ExpressionsTest : WithAssertions {
         assertThat(actual).isEqualTo(
             JpqlExpressionAndExpression(
                 JpqlMax(
-                    JpqlField(
+                    JpqlField<Int?>(
                         Int::class,
                         JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                         TestTable1::nullableInt1.name,
@@ -2348,7 +2348,7 @@ class ExpressionsTest : WithAssertions {
         assertThat(actual).isEqualTo(
             JpqlExpressionAndExpression(
                 JpqlMax(
-                    JpqlField(
+                    JpqlField<Int?>(
                         Int::class,
                         JpqlAliasedPath(JpqlEntity(TestTable1::class), TestTable1::class.simpleName!!),
                         TestTable1::nullableInt1.name,

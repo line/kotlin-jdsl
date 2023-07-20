@@ -23,15 +23,9 @@ interface JpqlWriter {
         write: (T) -> Unit,
     )
 
-    fun <T> writeEach(
-        iterable: Iterable<T>,
-        separator: () -> Unit = {},
-        prefix: () -> Unit = {},
-        postfix: () -> Unit = {},
-        write: (T) -> Unit,
-    )
+    fun writeWhitespace()
 
-    fun writeKeyword(clause: CharSequence)
+    fun writeWhitespaceIfAbsent()
 
     fun writeParam(value: Any?)
 

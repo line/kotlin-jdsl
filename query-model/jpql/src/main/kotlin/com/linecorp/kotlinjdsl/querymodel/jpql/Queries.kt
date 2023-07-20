@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql
 
+import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.impl.JpqlDeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
@@ -14,6 +15,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.impl.JpqlUpdateQuery
 import kotlin.reflect.KClass
 
 object Queries {
+    @SinceJdsl("3.0.0")
     fun <T> select(
         returnType: KClass<*>,
         select: Iterable<Expression<*>>,
@@ -36,6 +38,7 @@ object Queries {
         )
     }
 
+    @SinceJdsl("3.0.0")
     fun <T : Any> update(
         entity: Path<T>,
         set: Iterable<PathAndExpression<*>>,
@@ -48,6 +51,7 @@ object Queries {
         )
     }
 
+    @SinceJdsl("3.0.0")
     fun <T : Any> delete(
         from: Path<T>,
         where: Predicate?,

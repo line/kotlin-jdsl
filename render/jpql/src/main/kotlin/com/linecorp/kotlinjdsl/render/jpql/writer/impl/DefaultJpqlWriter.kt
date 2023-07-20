@@ -63,31 +63,13 @@ class DefaultJpqlWriter(
         write(postfix)
     }
 
-    override fun <T> writeEach(
-        iterable: Iterable<T>,
-        separator: () -> Unit,
-        prefix: () -> Unit,
-        postfix: () -> Unit,
-        write: (T) -> Unit
-    ) {
-        prefix()
-
-        for ((index, element) in iterable.withIndex()) {
-            if (index > 0) {
-                separator()
-            }
-
-            write(element)
-        }
-
-        postfix()
+    override fun writeWhitespace() {
+        stringBuilder.append(" ")
     }
 
-    override fun writeKeyword(clause: CharSequence) {
-        if (stringBuilder.isNotEmpty()) {
-            stringBuilder.append(" ").append(clause).append(" ")
-        } else {
-            stringBuilder.append(clause).append(" ")
+    override fun writeWhitespaceIfAbsent() {
+        if (!stringBuilder.endsWith(" ")) {
+            writeWhitespace()
         }
     }
 

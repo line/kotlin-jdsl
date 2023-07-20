@@ -127,7 +127,7 @@ object Expressions {
 
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T?> avg(expr: Expressionable<in S>, distinct: Boolean): Expression<Double?> {
-        return JpqlAvg<T, S>(expr.toExpression(), distinct)
+        return JpqlAvg(expr.toExpression(), distinct)
     }
 
     @JvmName("sum1")

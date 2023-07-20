@@ -1,13 +1,15 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
-import com.linecorp.kotlinjdsl.render.jpql.serializer.AbstractJpqlSerializerTest
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import io.mockk.*
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class JpqlLiteralSerializerTest : AbstractJpqlSerializerTest() {
+class JpqlLiteralSerializerTest : WithAssertions {
     private val sut = JpqlLiteralSerializer()
 
     private val int1: Int = 1
@@ -32,9 +34,10 @@ class JpqlLiteralSerializerTest : AbstractJpqlSerializerTest() {
         }
 
         val part = Expressions.intLiteral(int1)
+        val context = TestRenderContext(serializer)
 
         // when
-        serialize(part, sut, writer, serializer)
+        sut.serialize(part as JpqlLiteral.IntLiteral, writer, context)
 
         // then
         verify(exactly = 1) {
@@ -65,9 +68,10 @@ class JpqlLiteralSerializerTest : AbstractJpqlSerializerTest() {
         }
 
         val part = Expressions.longLiteral(long1)
+        val context = TestRenderContext(serializer)
 
         // when
-        serialize(part, sut, writer, serializer)
+        sut.serialize(part as JpqlLiteral.LongLiteral, writer, context)
 
         // then
         verify(exactly = 1) {
@@ -99,9 +103,10 @@ class JpqlLiteralSerializerTest : AbstractJpqlSerializerTest() {
         }
 
         val part = Expressions.floatLiteral(float1)
+        val context = TestRenderContext(serializer)
 
         // when
-        serialize(part, sut, writer, serializer)
+        sut.serialize(part as JpqlLiteral.FloatLiteral, writer, context)
 
         // then
         verify(exactly = 1) {
@@ -132,9 +137,10 @@ class JpqlLiteralSerializerTest : AbstractJpqlSerializerTest() {
         }
 
         val part = Expressions.doubleLiteral(double1)
+        val context = TestRenderContext(serializer)
 
         // when
-        serialize(part, sut, writer, serializer)
+        sut.serialize(part as JpqlLiteral.DoubleLiteral, writer, context)
 
         // then
         verify(exactly = 1) {
@@ -164,9 +170,10 @@ class JpqlLiteralSerializerTest : AbstractJpqlSerializerTest() {
         }
 
         val part = Expressions.booleanLiteral(boolean1)
+        val context = TestRenderContext(serializer)
 
         // when
-        serialize(part, sut, writer, serializer)
+        sut.serialize(part as JpqlLiteral.BooleanLiteral, writer, context)
 
         // then
         verify(exactly = 1) {
@@ -196,9 +203,10 @@ class JpqlLiteralSerializerTest : AbstractJpqlSerializerTest() {
         }
 
         val part = Expressions.stringLiteral(string1)
+        val context = TestRenderContext(serializer)
 
         // when
-        serialize(part, sut, writer, serializer)
+        sut.serialize(part as JpqlLiteral.StringLiteral, writer, context)
 
         // then
         verifySequence {
@@ -230,9 +238,10 @@ class JpqlLiteralSerializerTest : AbstractJpqlSerializerTest() {
         }
 
         val part = Expressions.stringLiteral(string1 + singleQuote + string2)
+        val context = TestRenderContext(serializer)
 
         // when
-        serialize(part, sut, writer, serializer)
+        sut.serialize(part as JpqlLiteral.StringLiteral, writer, context)
 
         // then
         verifySequence {
