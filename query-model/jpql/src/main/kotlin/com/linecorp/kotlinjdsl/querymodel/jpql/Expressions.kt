@@ -32,123 +32,40 @@ object Expressions {
         return JpqlNull as Expression<T?>
     }
 
-    @JvmName("literal1")
     @SinceJdsl("3.0.0")
-    fun literal(short: Short): Expression<Short> {
-        return JpqlLiteral.ShortLiteral(short)
-    }
-
-    @JvmName("literal2")
-    @SinceJdsl("3.0.0")
-    fun literal(short: Short?): Expression<Short?> {
-        @Suppress("UNCHECKED_CAST")
-        return if (short == null) {
-            JpqlLiteral.NullLiteral
-        } else {
-            JpqlLiteral.ShortLiteral(short)
-        } as Expression<Short?>
-    }
-
-    @JvmName("literal3")
-    @SinceJdsl("3.0.0")
-    fun literal(int: Int): Expression<Int> {
+    fun intLiteral(int: Int): Expression<Int> {
         return JpqlLiteral.IntLiteral(int)
     }
 
-    @JvmName("literal4")
     @SinceJdsl("3.0.0")
-    fun literal(int: Int?): Expression<Int?> {
-        @Suppress("UNCHECKED_CAST")
-        return if (int == null) {
-            JpqlLiteral.NullLiteral
-        } else {
-            JpqlLiteral.IntLiteral(int)
-        } as Expression<Int?>
-    }
-
-    @JvmName("literal5")
-    @SinceJdsl("3.0.0")
-    fun literal(long: Long): Expression<Long> {
+    fun longLiteral(long: Long): Expression<Long> {
         return JpqlLiteral.LongLiteral(long)
     }
 
-    @JvmName("literal6")
     @SinceJdsl("3.0.0")
-    fun literal(long: Long?): Expression<Long?> {
-        @Suppress("UNCHECKED_CAST")
-        return if (long == null) {
-            JpqlLiteral.NullLiteral
-        } else {
-            JpqlLiteral.LongLiteral(long)
-        } as Expression<Long?>
-    }
-
-    @JvmName("literal7")
-    @SinceJdsl("3.0.0")
-    fun literal(float: Float): Expression<Float> {
+    fun floatLiteral(float: Float): Expression<Float> {
         return JpqlLiteral.FloatLiteral(float)
     }
 
-    @JvmName("literal8")
     @SinceJdsl("3.0.0")
-    fun literal(float: Float?): Expression<Float?> {
-        @Suppress("UNCHECKED_CAST")
-        return if (float == null) {
-            JpqlLiteral.NullLiteral
-        } else {
-            JpqlLiteral.FloatLiteral(float)
-        } as Expression<Float?>
-    }
-
-    @JvmName("literal9")
-    @SinceJdsl("3.0.0")
-    fun literal(double: Double): Expression<Double> {
+    fun doubleLiteral(double: Double): Expression<Double> {
         return JpqlLiteral.DoubleLiteral(double)
     }
 
-    @JvmName("literal10")
     @SinceJdsl("3.0.0")
-    fun literal(double: Double?): Expression<Double?> {
-        @Suppress("UNCHECKED_CAST")
-        return if (double == null) {
-            JpqlLiteral.NullLiteral
-        } else {
-            JpqlLiteral.DoubleLiteral(double)
-        } as Expression<Double?>
-    }
-
-    @JvmName("literal11")
-    @SinceJdsl("3.0.0")
-    fun literal(boolean: Boolean): Expression<Boolean> {
+    fun booleanLiteral(boolean: Boolean): Expression<Boolean> {
         return JpqlLiteral.BooleanLiteral(boolean)
     }
 
-    @JvmName("literal12")
     @SinceJdsl("3.0.0")
-    fun literal(boolean: Boolean?): Expression<Boolean?> {
-        @Suppress("UNCHECKED_CAST")
-        return if (boolean == null) {
-            JpqlLiteral.NullLiteral
-        } else {
-            JpqlLiteral.BooleanLiteral(boolean)
-        } as Expression<Boolean?>
-    }
-
-    @JvmName("literal13")
-    @SinceJdsl("3.0.0")
-    fun literal(string: String): Expression<String> {
+    fun stringLiteral(string: String): Expression<String> {
         return JpqlLiteral.StringLiteral(string)
     }
 
-    @JvmName("literal14")
     @SinceJdsl("3.0.0")
-    fun literal(string: String?): Expression<String?> {
+    fun <T> nullLiteral(): Expression<T> {
         @Suppress("UNCHECKED_CAST")
-        return if (string == null) {
-            JpqlLiteral.NullLiteral
-        } else {
-            JpqlLiteral.StringLiteral(string)
-        } as Expression<String?>
+        return JpqlLiteral.NullLiteral as Expression<T>
     }
 
     @SinceJdsl("3.0.0")

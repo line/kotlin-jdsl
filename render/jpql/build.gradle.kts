@@ -8,4 +8,6 @@ dependencies {
     implementation(libs.kotlin.reflect)
 
     testImplementation(testFixtures(projects.render))
+
+    testFixturesImplementation(testFixtures(projects.render))
 }

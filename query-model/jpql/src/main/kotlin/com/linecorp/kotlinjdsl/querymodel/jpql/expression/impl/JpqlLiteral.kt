@@ -7,8 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
  * Expression that represents the literal.
  *
  * **Numeric Literal**
- * - A short literal is represented by short value.
- * - An int literal by int value.
+ * - An int literal is represented by int value.
  * - A long literal by long value with the L suffix.
  * - A float literal by float value with the F suffix.
  * - A double literal by double value.
@@ -25,10 +24,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
  */
 @Internal
 sealed interface JpqlLiteral<T> : Expression<T> {
-    data class ShortLiteral internal constructor(
-        val short: Short
-    ) : JpqlLiteral<Short>
-
     data class IntLiteral internal constructor(
         val int: Int
     ) : JpqlLiteral<Int>

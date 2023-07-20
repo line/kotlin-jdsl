@@ -4,6 +4,7 @@ class TestRenderContext(
     private val elements: Map<RenderContext.Key<*>, RenderContext.Element>,
 ) : RenderContext {
     constructor(vararg elements: RenderContext.Element) : this(elements.associateBy { it.key })
+    constructor(elements: Iterable<RenderContext.Element>) : this(elements.associateBy { it.key })
 
     override fun <E : RenderContext.Element> get(key: RenderContext.Key<E>): E? {
         @Suppress("UNCHECKED_CAST")
