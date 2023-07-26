@@ -1,9 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.sort
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
-import com.linecorp.kotlinjdsl.querymodel.jpql.Sorts
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
+import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sorts
 import org.junit.jupiter.api.Test
 
 class AscDslTest : AbstractJpqlDslTest() {

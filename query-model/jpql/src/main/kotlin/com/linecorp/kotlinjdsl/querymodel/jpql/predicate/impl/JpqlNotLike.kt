@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 @Internal
-data class JpqlNotLike<T : String?> internal constructor(
-    val value: Expression<T>,
+data class JpqlNotLike internal constructor(
+    val value: Expression<String>,
     val pattern: Expression<String>,
 ) : Predicate

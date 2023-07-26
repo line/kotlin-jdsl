@@ -1,9 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.predicate
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
-import com.linecorp.kotlinjdsl.querymodel.jpql.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import org.junit.jupiter.api.Test
 
 class GreaterThanDslTest : AbstractJpqlDslTest() {

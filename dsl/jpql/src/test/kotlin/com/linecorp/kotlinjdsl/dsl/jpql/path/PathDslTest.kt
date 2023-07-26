@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.path
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import org.junit.jupiter.api.Test
 
 class PathDslTest : AbstractJpqlDslTest() {
@@ -10,14 +10,14 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path property`() {
         // when
         val path = testJpql {
-            path(TestRoot::table1)
+            path(TestTable1::field1)
         }
 
-        val actual: Path<TestTable> = path // for type check
+        val actual: Path<TestField1> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(TestRoot::table1),
+            Paths.path(TestTable1::field1),
         )
     }
 
@@ -25,14 +25,14 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path nullable property`() {
         // when
         val path = testJpql {
-            path(TestRoot::nullableTable1)
+            path(TestTable1::nullableField1)
         }
 
-        val actual: Path<TestTable?> = path // for type check
+        val actual: Path<TestField1> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(TestRoot::nullableTable1),
+            Paths.path(TestTable1::nullableField1),
         )
     }
 
@@ -40,14 +40,14 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path property path property`() {
         // when
         val path = testJpql {
-            path(TestRoot::table1).path(TestTable::int1)
+            path(TestTable1::field1).path(TestField1::int1)
         }
 
         val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(Paths.path<TestTable>(TestRoot::table1), TestTable::int1),
+            Paths.path(Paths.path(TestTable1::field1), TestField1::int1),
         )
     }
 
@@ -55,14 +55,14 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path property path nullable property`() {
         // when
         val path = testJpql {
-            path(TestRoot::table1).path(TestTable::nullableInt1)
+            path(TestTable1::field1).path(TestField1::nullableInt1)
         }
 
-        val actual: Path<Int?> = path // for type check
+        val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(Paths.path<TestTable>(TestRoot::table1), TestTable::nullableInt1),
+            Paths.path(Paths.path(TestTable1::field1), TestField1::nullableInt1),
         )
     }
 
@@ -70,14 +70,14 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path nullable property path property`() {
         // when
         val path = testJpql {
-            path(TestRoot::nullableTable1).path(TestTable::int1)
+            path(TestTable1::nullableField1).path(TestField1::int1)
         }
 
-        val actual: Path<Int?> = path // for type check
+        val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(Paths.path<TestTable?>(TestRoot::nullableTable1), TestTable::int1),
+            Paths.path(Paths.path(TestTable1::nullableField1), TestField1::int1),
         )
     }
 
@@ -85,14 +85,14 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path nullable property path nullable property`() {
         // when
         val path = testJpql {
-            path(TestRoot::nullableTable1).path(TestTable::nullableInt1)
+            path(TestTable1::nullableField1).path(TestField1::nullableInt1)
         }
 
-        val actual: Path<Int?> = path // for type check
+        val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(Paths.path<TestTable?>(TestRoot::nullableTable1), TestTable::nullableInt1),
+            Paths.path(Paths.path(TestTable1::nullableField1), TestField1::nullableInt1),
         )
     }
 
@@ -100,14 +100,14 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path property invoke property`() {
         // when
         val path = testJpql {
-            path(TestRoot::table1)(TestTable::int1)
+            path(TestTable1::field1)(TestField1::int1)
         }
 
         val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(Paths.path<TestTable>(TestRoot::table1), TestTable::int1),
+            Paths.path(Paths.path(TestTable1::field1), TestField1::int1),
         )
     }
 
@@ -115,14 +115,14 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path property invoke nullable property`() {
         // when
         val path = testJpql {
-            path(TestRoot::table1)(TestTable::nullableInt1)
+            path(TestTable1::field1)(TestField1::nullableInt1)
         }
 
-        val actual: Path<Int?> = path // for type check
+        val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(Paths.path<TestTable>(TestRoot::table1), TestTable::nullableInt1),
+            Paths.path(Paths.path(TestTable1::field1), TestField1::nullableInt1),
         )
     }
 
@@ -130,14 +130,14 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path nullable property invoke property`() {
         // when
         val path = testJpql {
-            path(TestRoot::nullableTable1)(TestTable::int1)
+            path(TestTable1::nullableField1)(TestField1::int1)
         }
 
-        val actual: Path<Int?> = path // for type check
+        val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(Paths.path<TestTable?>(TestRoot::nullableTable1), TestTable::int1),
+            Paths.path(Paths.path(TestTable1::nullableField1), TestField1::int1),
         )
     }
 
@@ -145,26 +145,24 @@ class PathDslTest : AbstractJpqlDslTest() {
     fun `path nullable property invoke nullable property`() {
         // when
         val path = testJpql {
-            path(TestRoot::nullableTable1)(TestTable::nullableInt1)
+            path(TestTable1::nullableField1)(TestField1::nullableInt1)
         }
 
-        val actual: Path<Int?> = path // for type check
+        val actual: Path<Int> = path // for type check
 
         // then
         assertThat(actual).isEqualTo(
-            Paths.path(Paths.path<TestTable?>(TestRoot::nullableTable1), TestTable::nullableInt1),
+            Paths.path(Paths.path(TestTable1::nullableField1), TestField1::nullableInt1),
         )
     }
 
-    private class TestRoot {
-        val table1: TestTable = TestTable()
-
-        val nullableTable1: TestTable? = null
+    private class TestTable1 {
+        val field1: TestField1 = TestField1()
+        val nullableField1: TestField1? = null
     }
 
-    private class TestTable {
+    private class TestField1 {
         val int1: Int = 1
-
         val nullableInt1: Int? = null
     }
 }

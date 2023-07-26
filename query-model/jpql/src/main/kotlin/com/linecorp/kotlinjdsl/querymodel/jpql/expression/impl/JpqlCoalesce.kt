@@ -8,6 +8,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
  * or null if there are no non-null value in expressions.
  */
 @Internal
-data class JpqlCoalesce<T> internal constructor(
-    val expr: Iterable<Expression<in T>>,
+data class JpqlCoalesce<T : Any> internal constructor(
+    val expr: Iterable<Expression<out T>>,
 ) : Expression<T>

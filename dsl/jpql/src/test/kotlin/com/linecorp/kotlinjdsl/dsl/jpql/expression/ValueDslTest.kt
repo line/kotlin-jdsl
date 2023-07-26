@@ -1,16 +1,18 @@
+@file:Suppress("RedundantNullableReturnType")
+
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import org.junit.jupiter.api.Test
 
 class ValueDslTest : AbstractJpqlDslTest() {
     private val int1: Int = 1
-    private val nullableInt1: Int? = null
+    private val nullableInt1: Int? = 2
 
     @Test
-    fun value() {
+    fun `value int`() {
         // when
         val expression = testJpql {
             value(int1)
@@ -19,38 +21,38 @@ class ValueDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Expressions.value(int1),
-        )
+        val expected = Expressions.value(int1)
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `nullable value`() {
+    fun `value nullable int`() {
         // when
         val expression = testJpql {
             value(nullableInt1)
         }.toExpression()
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Expression<Int> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Expressions.value(nullableInt1),
-        )
+        val expected = Expressions.value(nullableInt1)
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `null value`() {
+    fun nullValue() {
         // when
         val expression = testJpql {
-            nullValue<Int?>()
+            nullValue<Int>()
         }.toExpression()
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Expression<Int> = expression // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Expressions.value(null),
-        )
+        val expected = Expressions.nullValue<Int>()
+
+        assertThat(actual).isEqualTo(expected)
     }
 }

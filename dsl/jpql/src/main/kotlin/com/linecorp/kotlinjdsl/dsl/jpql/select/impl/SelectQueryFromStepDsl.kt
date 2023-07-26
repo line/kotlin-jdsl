@@ -3,41 +3,19 @@ package com.linecorp.kotlinjdsl.dsl.jpql.select.impl
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryFromStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryWhereStep
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.from.Fromable
 import kotlin.reflect.KClass
 
-internal class SelectQueryFromStepDsl<T>(
+internal data class SelectQueryFromStepDsl<T : Any>(
     private val returnType: KClass<*>,
-    private val select: Iterable<Expression<*>>,
     private val distinct: Boolean,
+    private val select: Iterable<Expression<*>>,
 ) : SelectQueryFromStep<T> {
-    override fun from(vararg paths: Path<*>): SelectQueryWhereStep<T> {
-        return SelectQueryDsl(returnType, select, distinct, paths.toList())
+    override fun from(vararg froms: Fromable?): SelectQueryWhereStep<T> {
+        return SelectQueryDsl(returnType, distinct, select, froms.mapNotNull { it?.toFrom() })
     }
 
-    override fun from(paths: Iterable<Path<*>>): SelectQueryWhereStep<T> {
-        return SelectQueryDsl(returnType, select, distinct, paths)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as SelectQueryFromStepDsl<*>
-
-        if (select != other.select) return false
-        return distinct == other.distinct
-    }
-
-    override fun hashCode(): Int {
-        var result = select.hashCode()
-        result = 31 * result + distinct.hashCode()
-        return result
-    }
-
-    override fun toString(): String {
-        return "SelectQueryFromStepDsl(" +
-            "select=$select, " +
-            "distinct=$distinct)"
+    override fun from(froms: Iterable<Fromable?>): SelectQueryWhereStep<T> {
+        return SelectQueryDsl(returnType, distinct, select, froms.mapNotNull { it?.toFrom() })
     }
 }

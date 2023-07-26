@@ -15,6 +15,8 @@ interface JpqlWriter {
 
     fun write(string: CharSequence)
 
+    fun writeIfAbsent(string: CharSequence)
+
     fun <T> writeEach(
         iterable: Iterable<T>,
         separator: CharSequence = ", ",
@@ -22,10 +24,6 @@ interface JpqlWriter {
         postfix: CharSequence = "",
         write: (T) -> Unit,
     )
-
-    fun writeWhitespace()
-
-    fun writeWhitespaceIfAbsent()
 
     fun writeParam(value: Any?)
 

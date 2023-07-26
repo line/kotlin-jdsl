@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 
 @Internal
-data class JpqlAliasedExpression<T> internal constructor(
+data class JpqlAliasedExpression<T : Any> internal constructor(
     val expr: Expression<T>,
     val alias: String,
 ) : Expression<T>

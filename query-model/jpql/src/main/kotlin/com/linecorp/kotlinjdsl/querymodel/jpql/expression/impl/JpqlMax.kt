@@ -5,6 +5,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 
 @Internal
 data class JpqlMax<T : Comparable<T>> internal constructor(
-    val expr: Expression<*>,
     val distinct: Boolean,
-) : Expression<T?>
+    val expr: Expression<T>,
+) : Expression<T>

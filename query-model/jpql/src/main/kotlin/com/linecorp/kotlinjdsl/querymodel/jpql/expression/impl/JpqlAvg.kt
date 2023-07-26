@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 
 @Internal
-data class JpqlAvg internal constructor(
-    val expr: Expression<*>,
+data class JpqlAvg<T : Number> internal constructor(
     val distinct: Boolean,
-) : Expression<Double?>
+    val expr: Expression<T>,
+) : Expression<Double>

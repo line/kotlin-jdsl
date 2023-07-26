@@ -6,6 +6,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import kotlin.reflect.KClass
 
 @Internal
-data class JpqlType<T : Any, C : KClass<T>?> internal constructor(
-    val path: Path<*>,
-) : Expression<C>
+data class JpqlType<T : Any> internal constructor(
+    val path: Path<T>,
+) : Expression<KClass<T>>

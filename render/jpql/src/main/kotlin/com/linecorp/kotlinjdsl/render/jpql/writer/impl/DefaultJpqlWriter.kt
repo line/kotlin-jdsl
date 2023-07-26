@@ -43,6 +43,12 @@ class DefaultJpqlWriter(
         stringBuilder.append(boolean)
     }
 
+    override fun writeIfAbsent(string: CharSequence) {
+        if (!stringBuilder.endsWith(string)) {
+            stringBuilder.append(string)
+        }
+    }
+
     override fun <T> writeEach(
         iterable: Iterable<T>,
         separator: CharSequence,
@@ -61,16 +67,6 @@ class DefaultJpqlWriter(
         }
 
         write(postfix)
-    }
-
-    override fun writeWhitespace() {
-        stringBuilder.append(" ")
-    }
-
-    override fun writeWhitespaceIfAbsent() {
-        if (!stringBuilder.endsWith(" ")) {
-            writeWhitespace()
-        }
     }
 
     override fun writeParam(value: Any?) {

@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.path
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import org.junit.jupiter.api.Test
 
 class TreatDslTest : AbstractJpqlDslTest() {
@@ -10,38 +10,21 @@ class TreatDslTest : AbstractJpqlDslTest() {
     fun `path treat subclass`() {
         // when
         val path = testJpql {
-            path(TestTable::table1).treat(SubTable::class)
+            path(TestTable1::field1).treat(TestSubField1::class)
         }
 
-        val actual: Path<SubTable> = path // for type check
+        val actual: Path<TestSubField1> = path // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Paths.treat(Paths.path<SuperTable>(TestTable::table1), SubTable::class),
-        )
+        val expected = Paths.treat(Paths.path(TestTable1::field1), TestSubField1::class)
+
+        assertThat(actual).isEqualTo(expected)
     }
 
-    @Test
-    fun `nullable path treat subclass`() {
-        // when
-        val path = testJpql {
-            path(TestTable::nullableTable1).treat(SubTable::class)
-        }
-
-        val actual: Path<SubTable?> = path // for type check
-
-        // then
-        assertThat(actual).isEqualTo(
-            Paths.treat(Paths.path<SuperTable?>(TestTable::nullableTable1), SubTable::class),
-        )
+    private open class TestTable1 {
+        val field1: TestField1 = TestSubField1()
     }
 
-    private open class TestTable {
-        val table1: SuperTable = SubTable()
-
-        val nullableTable1: SuperTable? = null
-    }
-
-    private open class SuperTable {}
-    private open class SubTable : SuperTable() {}
+    private open class TestField1
+    private open class TestSubField1 : TestField1()
 }

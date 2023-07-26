@@ -2,18 +2,20 @@ package com.linecorp.kotlinjdsl.dsl.jpql.delete.impl
 
 import com.linecorp.kotlinjdsl.dsl.jpql.delete.DeleteQueryWhereStep
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
-import com.linecorp.kotlinjdsl.querymodel.jpql.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 
-internal class DeleteQueryDsl<T : Any> private constructor(
+internal data class DeleteQueryDsl<T : Any>(
     private val builder: DeleteQueryBuilder<T>,
 ) : DeleteQueryWhereStep<T> {
-    constructor(from: Path<T>) : this(DeleteQueryBuilder(from))
+    constructor(entity: Entity<T>) : this(DeleteQueryBuilder(entity))
 
-    override fun where(predicate: Predicate): JpqlQueryable<DeleteQuery<T>> {
-        builder.where(predicate)
+    override fun where(predicate: Predicate?): JpqlQueryable<DeleteQuery<T>> {
+        if (predicate != null) {
+            builder.where(predicate)
+        }
 
         return this
     }
@@ -44,23 +46,5 @@ internal class DeleteQueryDsl<T : Any> private constructor(
 
     override fun toQuery(): DeleteQuery<T> {
         return builder.build()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as DeleteQueryDsl<*>
-
-        return builder == other.builder
-    }
-
-    override fun hashCode(): Int {
-        return builder.hashCode()
-    }
-
-    override fun toString(): String {
-        return "DeleteQueryDsl(" +
-            "builder=$builder)"
     }
 }

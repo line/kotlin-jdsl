@@ -1,66 +1,61 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression.impl
 
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueElseStep
-import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenMoreStep
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueThenStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenStep
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 
-internal class CaseValueDsl<T, V> private constructor(
+internal data class CaseValueDsl<T : Any, V : Any>(
     private val builder: CaseValueBuilder<T, V>,
-) : CaseValueWhenMoreStep<T, V>,
+) : CaseValueWhenStep<T, V>,
+    CaseValueThenStep<T, V>,
     CaseValueElseStep<T, V> {
 
     internal constructor(
-        value: Expression<T>,
+        value: Path<T>,
         compareValue: Expression<T>,
         then: Expression<V>,
     ) : this(
         CaseValueBuilder<T, V>(value, compareValue, then),
     )
 
-    override fun `when`(compareValue: T, then: V): CaseValueWhenMoreStep<T, V?> {
-        builder.`when`(Expressions.value(compareValue), Expressions.value(then))
+    override fun <S : T?> `when`(compareValue: S): CaseValueThenStep<T, V> {
+        builder.`when`(Expressions.value(compareValue))
 
-        @Suppress("UNCHECKED_CAST")
-        return this as CaseValueWhenMoreStep<T, V?>
+        return this
     }
 
-    override fun `when`(compareValue: T, then: Expressionable<out V>): CaseValueWhenMoreStep<T, V?> {
-        @Suppress("UNCHECKED_CAST")
-        builder.`when`(Expressions.value(compareValue), then.toExpression() as Expression<V>)
+    override fun `when`(compareValue: Expressionable<T>): CaseValueThenStep<T, V> {
+        builder.`when`(compareValue.toExpression())
 
-        @Suppress("UNCHECKED_CAST")
-        return this as CaseValueWhenMoreStep<T, V?>
+        return this
     }
 
-    override fun `when`(compareValue: Expressionable<T>, then: V): CaseValueWhenMoreStep<T, V?> {
-        builder.`when`(compareValue.toExpression(), Expressions.value(then))
+    override fun <S : V?> then(value: S): CaseValueWhenStep<T, V> {
+        builder.then(Expressions.value(value))
 
-        @Suppress("UNCHECKED_CAST")
-        return this as CaseValueWhenMoreStep<T, V?>
+        return this
     }
 
-    override fun `when`(compareValue: Expressionable<T>, then: Expressionable<out V>): CaseValueWhenMoreStep<T, V?> {
-        @Suppress("UNCHECKED_CAST")
-        builder.`when`(compareValue.toExpression(), then.toExpression() as Expression<V>)
+    override fun then(value: Expressionable<V>): CaseValueWhenStep<T, V> {
+        builder.then(value.toExpression())
 
-        @Suppress("UNCHECKED_CAST")
-        return this as CaseValueWhenMoreStep<T, V?>
+        return this
     }
 
-    override fun <R : V> `else`(value: R): Expressionable<R> {
+    override fun <S : V?> `else`(value: S): Expressionable<V> {
         builder.`else`(Expressions.value(value))
 
-        @Suppress("UNCHECKED_CAST")
-        return this as Expressionable<R>
+        return this
     }
 
-    override fun <R : V> `else`(value: Expressionable<R>): Expressionable<R> {
+    override fun `else`(value: Expressionable<V>): Expressionable<V> {
         builder.`else`(value.toExpression())
 
-        @Suppress("UNCHECKED_CAST")
-        return this as Expressionable<R>
+        return this
     }
 
     override fun toExpression(): Expression<V> {

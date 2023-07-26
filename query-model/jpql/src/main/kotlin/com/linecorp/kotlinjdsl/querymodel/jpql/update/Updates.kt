@@ -1,0 +1,23 @@
+package com.linecorp.kotlinjdsl.querymodel.jpql.update
+
+import com.linecorp.kotlinjdsl.SinceJdsl
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.impl.JpqlUpdateQuery
+
+object Updates {
+    @SinceJdsl("3.0.0")
+    fun <T : Any> update(
+        entity: Entity<T>,
+        set: Map<Path<*>, Expression<*>>,
+        where: Predicate?,
+    ): UpdateQuery<T> {
+        return JpqlUpdateQuery(
+            entity = entity,
+            set = set,
+            where = where,
+        )
+    }
+}

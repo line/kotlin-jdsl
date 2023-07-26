@@ -11,6 +11,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
  * In JPA 2.1, It is restricted to the [JpqlSelectQuery.where] and [JpqlSelectQuery.having].
  */
 @Internal
-data class JpqlSubquery<T> internal constructor(
+data class JpqlSubquery<T : Any> internal constructor(
     val selectQuery: SelectQuery<T>,
 ) : Subquery<T>

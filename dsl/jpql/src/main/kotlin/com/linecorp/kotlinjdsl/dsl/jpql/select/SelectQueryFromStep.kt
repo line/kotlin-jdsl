@@ -1,9 +1,9 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.from.Fromable
 
-interface SelectQueryFromStep<T> {
-    fun from(vararg paths: Path<*>): SelectQueryWhereStep<T>
+interface SelectQueryFromStep<T : Any> {
+    fun from(vararg froms: Fromable?): SelectQueryWhereStep<T>
 
-    fun from(paths: Iterable<Path<*>>): SelectQueryWhereStep<T>
+    fun from(froms: Iterable<Fromable?>): SelectQueryWhereStep<T>
 }

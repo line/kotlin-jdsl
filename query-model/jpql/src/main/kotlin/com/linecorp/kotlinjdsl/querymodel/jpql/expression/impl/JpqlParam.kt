@@ -6,5 +6,5 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 @Internal
 data class JpqlParam<T> internal constructor(
     val name: String,
-    val value: T?,
-) : Expression<T>
+    val value: T,
+) : Expression<T & Any>

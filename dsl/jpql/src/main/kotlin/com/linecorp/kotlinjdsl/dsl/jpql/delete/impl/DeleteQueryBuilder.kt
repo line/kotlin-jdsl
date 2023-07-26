@@ -1,15 +1,14 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.delete.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.delete.Deletes
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
-internal class DeleteQueryBuilder<T : Any>(
-    private val from: Path<T>,
-) {
+internal data class DeleteQueryBuilder<T : Any>(
+    private val entity: Entity<T>,
     private var where: Predicate? = null
-
+) {
     fun where(predicate: Predicate): DeleteQueryBuilder<T> {
         where = predicate
 
@@ -17,31 +16,9 @@ internal class DeleteQueryBuilder<T : Any>(
     }
 
     fun build(): DeleteQuery<T> {
-        return Queries.delete(
-            from = from,
+        return Deletes.delete(
+            entity = entity,
             where = where,
         )
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as DeleteQueryBuilder<*>
-
-        if (from != other.from) return false
-        return where == other.where
-    }
-
-    override fun hashCode(): Int {
-        var result = from.hashCode()
-        result = 31 * result + (where?.hashCode() ?: 0)
-        return result
-    }
-
-    override fun toString(): String {
-        return "DeleteQueryBuilder(" +
-            "from=$from, " +
-            "where=$where)"
     }
 }

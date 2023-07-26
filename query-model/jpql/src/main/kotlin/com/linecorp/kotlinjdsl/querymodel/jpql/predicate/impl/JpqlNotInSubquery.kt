@@ -6,7 +6,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Subquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 @Internal
-data class JpqlNotInSubquery<T> internal constructor(
+data class JpqlNotInSubquery<T : Any> internal constructor(
     val value: Expression<T>,
     val subquery: Subquery<T>,
 ) : Predicate

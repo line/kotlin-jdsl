@@ -52,7 +52,7 @@ fun <T : Any> EntityManager.createQuery(
 }
 
 inline fun <reified T : Any> EntityManager.queryForPage(
-    query: JpqlQuery<SelectQuery<Any?>>,
+    query: JpqlQuery<SelectQuery<Any>>,
     context: RenderContext,
     pageable: Pageable,
 ): Page<T> {
@@ -60,7 +60,7 @@ inline fun <reified T : Any> EntityManager.queryForPage(
 }
 
 fun <T : Any> EntityManager.queryForPage(
-    query: JpqlQuery<SelectQuery<Any?>>,
+    query: JpqlQuery<SelectQuery<Any>>,
     context: RenderContext,
     pageable: Pageable,
     resultClass: KClass<T>,

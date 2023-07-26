@@ -1,5 +1,6 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `java-test-fixtures`
@@ -14,6 +15,14 @@ allprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf(
+                "-Xallow-kotlin-package",
+            )
+        }
     }
 
     tasks.withType<Test> {

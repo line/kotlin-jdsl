@@ -1,16 +1,45 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.update.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.Queries
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
-import com.linecorp.kotlinjdsl.querymodel.jpql.path.PathAndExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.Updates
 
-internal class UpdateQueryBuilder<T : Any>(
-    private val entity: Path<T>,
-    private val set: Iterable<PathAndExpression<*>>
+internal data class UpdateQueryBuilder<T : Any>(
+    private val entity: Entity<T>,
+    private val set: MutableMap<Path<*>, Expression<*>>,
+    private var where: Predicate? = null,
 ) {
-    private var where: Predicate? = null
+    constructor(
+        entity: Entity<T>,
+        path: Path<*>,
+        value: Expression<*>,
+    ) : this(
+        entity = entity,
+        set = mutableMapOf(path to value),
+    )
+
+    constructor(
+        entity: Entity<T>,
+        map: Map<Path<*>, Expression<*>>
+    ) : this(
+        entity = entity,
+        set = map.toMutableMap(),
+    )
+
+    fun <V : Any> set(path: Path<V>, value: Expression<V>): UpdateQueryBuilder<T> {
+        set[path] = value
+
+        return this
+    }
+
+    fun set(map: Map<Path<*>, Expression<*>>): UpdateQueryBuilder<T> {
+        set.putAll(map)
+
+        return this
+    }
 
     fun where(predicate: Predicate): UpdateQueryBuilder<T> {
         where = predicate
@@ -19,35 +48,10 @@ internal class UpdateQueryBuilder<T : Any>(
     }
 
     fun build(): UpdateQuery<T> {
-        return Queries.update(
+        return Updates.update(
             entity = entity,
             set = set,
             where = where,
         )
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as UpdateQueryBuilder<*>
-
-        if (entity != other.entity) return false
-        if (set != other.set) return false
-        return where == other.where
-    }
-
-    override fun hashCode(): Int {
-        var result = entity.hashCode()
-        result = 31 * result + set.hashCode()
-        result = 31 * result + (where?.hashCode() ?: 0)
-        return result
-    }
-
-    override fun toString(): String {
-        return "UpdateQueryBuilder(" +
-            "entity=$entity, " +
-            "set=$set, " +
-            "where=$where)"
     }
 }

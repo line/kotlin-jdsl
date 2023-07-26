@@ -23,7 +23,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
  * - A null literal is represented by `NULL`.
  */
 @Internal
-sealed interface JpqlLiteral<T> : Expression<T> {
+sealed interface JpqlLiteral<T : Any> : Expression<T> {
     data class IntLiteral internal constructor(
         val int: Int
     ) : JpqlLiteral<Int>
@@ -48,5 +48,5 @@ sealed interface JpqlLiteral<T> : Expression<T> {
         val string: String
     ) : JpqlLiteral<String>
 
-    data object NullLiteral : JpqlLiteral<Any?>
+    data object NullLiteral : JpqlLiteral<Any>
 }

@@ -17,6 +17,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.*
  * - [JpqlGreaterThanOrEqualTo]
  */
 @Internal
-data class JpqlAny<T> internal constructor(
+data class JpqlAny<T : Any> internal constructor(
     val subquery: Subquery<T>,
 ) : Expression<T>

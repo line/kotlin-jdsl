@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 @Internal
-data class JpqlIn<T> internal constructor(
+data class JpqlIn<T : Any> internal constructor(
     val value: Expression<T>,
-    val compareValues: Iterable<Expression<T>>,
+    val compareValues: Iterable<Expression<T>?>,
 ) : Predicate

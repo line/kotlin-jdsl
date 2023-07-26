@@ -1,67 +1,53 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression.impl
 
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseElseStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseThenStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseWhenStep
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
-internal class CaseDsl<T> private constructor(
+internal data class CaseDsl<T : Any>(
     private val builder: CaseBuilder<T>,
 ) : CaseWhenStep<T>,
+    CaseThenStep<T>,
     CaseElseStep<T> {
 
     constructor(predicate: Predicate, then: Expression<T>) : this(CaseBuilder<T>(predicate, then))
 
-    override fun `when`(predicate: Predicatable, then: T): CaseWhenStep<T?> {
-        builder.`when`(predicate.toPredicate(), Expressions.value(then))
+    override fun `when`(predicate: Predicatable): CaseThenStep<T> {
+        builder.`when`(predicate.toPredicate())
 
-        @Suppress("UNCHECKED_CAST")
-        return this as CaseWhenStep<T?>
+        return this
     }
 
-    override fun `when`(predicate: Predicatable, then: Expressionable<T>): CaseWhenStep<T?> {
-        builder.`when`(predicate.toPredicate(), then.toExpression())
+    override fun <S : T?> then(value: S): CaseWhenStep<T> {
+        builder.then(Expressions.value(value))
 
-        @Suppress("UNCHECKED_CAST")
-        return this as CaseWhenStep<T?>
+        return this
     }
 
-    override fun <R : T> `else`(value: R): Expressionable<R> {
+    override fun then(value: Expressionable<T>): CaseWhenStep<T> {
+        builder.then(value.toExpression())
+
+        return this
+    }
+
+    override fun <S : T?> `else`(value: S): Expressionable<T> {
         builder.`else`(Expressions.value(value))
 
-        @Suppress("UNCHECKED_CAST")
-        return this as Expressionable<R>
+        return this
     }
 
-    override fun <R : T> `else`(value: Expressionable<R>): Expressionable<R> {
+    override fun `else`(value: Expressionable<T>): Expressionable<T> {
         builder.`else`(value.toExpression())
 
-        @Suppress("UNCHECKED_CAST")
-        return this as Expressionable<R>
+        return this
     }
 
     override fun toExpression(): Expression<T> {
         return builder.build()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as CaseDsl<*>
-
-        return builder == other.builder
-    }
-
-    override fun hashCode(): Int {
-        return builder.hashCode()
-    }
-
-    override fun toString(): String {
-        return "CaseDsl(" +
-            "builder=$builder)"
     }
 }

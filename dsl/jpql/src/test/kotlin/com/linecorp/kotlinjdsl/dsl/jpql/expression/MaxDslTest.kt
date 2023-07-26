@@ -1,159 +1,85 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-import com.linecorp.kotlinjdsl.querymodel.jpql.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import org.junit.jupiter.api.Test
 
 class MaxDslTest : AbstractJpqlDslTest() {
     @Test
-    fun `max expression`() {
+    fun `max int property`() {
         // when
         val expression = testJpql {
-            max(path(TestTable::int1))
+            max(TestTable1::int1)
         }.toExpression()
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Expression<Int> = expression // for type check
 
         // then
         val expected = Expressions.max(
-            Paths.path(TestTable::int1),
             distinct = false,
+            Paths.path(TestTable1::int1),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `max expression distinct true`() {
+    fun `maxDistinct int property`() {
         // when
         val expression = testJpql {
-            max(path(TestTable::int1), distinct = true)
+            maxDistinct(TestTable1::int1)
         }.toExpression()
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Expression<Int> = expression // for type check
 
         // then
         val expected = Expressions.max(
-            Paths.path(TestTable::int1),
             distinct = true,
+            Paths.path(TestTable1::int1),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `max expression distinct false`() {
+    fun `max int expression`() {
         // when
         val expression = testJpql {
-            max(path(TestTable::int1), distinct = false)
+            max(path(TestTable1::int1))
         }.toExpression()
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Expression<Int> = expression // for type check
 
         // then
         val expected = Expressions.max(
-            Paths.path(TestTable::int1),
             distinct = false,
+            Paths.path(TestTable1::int1),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `max nullable expression`() {
+    fun `maxDistinct int expression`() {
         // when
         val expression = testJpql {
-            max(path(TestTable::nullableInt1))
+            maxDistinct(path(TestTable1::int1))
         }.toExpression()
 
-        val actual: Expression<Int?> = expression // for type check
+        val actual: Expression<Int> = expression // for type check
 
         // then
         val expected = Expressions.max(
-            Paths.path(TestTable::nullableInt1),
-            distinct = false,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `max nullable expression distinct true`() {
-        // when
-        val expression = testJpql {
-            max(path(TestTable::nullableInt1), distinct = true)
-        }.toExpression()
-
-        val actual: Expression<Int?> = expression // for type check
-
-        // then
-        val expected = Expressions.max(
-            Paths.path(TestTable::nullableInt1),
             distinct = true,
+            Paths.path(TestTable1::int1),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
-    @Test
-    fun `max nullable expression distinct false`() {
-        // when
-        val expression = testJpql {
-            max(path(TestTable::nullableInt1), distinct = false)
-        }.toExpression()
-
-        val actual: Expression<Int?> = expression // for type check
-
-        // then
-        val expected = Expressions.max(
-            Paths.path(TestTable::nullableInt1),
-            distinct = false,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `maxDistinct expression`() {
-        // when
-        val expression = testJpql {
-            maxDistinct(path(TestTable::int1))
-        }.toExpression()
-
-        val actual: Expression<Int?> = expression // for type check
-
-        // then
-        val expected = Expressions.max(
-            Paths.path(TestTable::int1),
-            distinct = true,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `maxDistinct nullable expression`() {
-        // when
-        val expression = testJpql {
-            maxDistinct(path(TestTable::nullableInt1))
-        }.toExpression()
-
-        val actual: Expression<Int?> = expression // for type check
-
-        // then
-        val expected = Expressions.max(
-            Paths.path(TestTable::nullableInt1),
-            distinct = true,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    private class TestTable {
+    private class TestTable1 {
         val int1: Int = 1
-
-        val nullableInt1: Int? = null
     }
 }
