@@ -9,6 +9,4 @@ interface UpdateQuerySetStep<T : Any> : UpdateQueryWhereStep<T>, JpqlQueryable<U
     fun <V : Any, S : V?> set(path: Path<V>, value: S): UpdateQuerySetStep<T>
 
     fun <V : Any> set(path: Path<V>, value: Expressionable<V>): UpdateQuerySetStep<T>
-
-    fun set(map: Map<Path<*>, Expressionable<*>>): UpdateQuerySetStep<T>
 }

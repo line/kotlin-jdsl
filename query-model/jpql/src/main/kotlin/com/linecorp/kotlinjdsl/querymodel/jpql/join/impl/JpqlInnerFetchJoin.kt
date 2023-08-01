@@ -7,9 +7,10 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.join.JoinType
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 @Internal
-data class JpqlJoin internal constructor(
-    val entity: Entity<*>,
+data class JpqlInnerFetchJoin<T : Any> internal constructor(
+    val entity: Entity<T>,
     val on: Predicate?,
-    val joinType: JoinType,
-    val fetch: Boolean,
-) : Join
+) : Join {
+    override val joinType: JoinType = JoinType.INNER
+    override val fetch: Boolean = true
+}

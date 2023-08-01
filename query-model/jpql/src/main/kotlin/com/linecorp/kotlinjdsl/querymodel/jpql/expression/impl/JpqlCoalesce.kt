@@ -9,5 +9,5 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
  */
 @Internal
 data class JpqlCoalesce<T : Any> internal constructor(
-    val expr: Iterable<Expression<out T>>,
+    val expr: Iterable<Expression<T>>,
 ) : Expression<T>

@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 
+@PublishedApi
 internal data class UpdateQuerySetStepFirstDsl<T : Any>(
     private val entity: Entity<T>,
 ) : UpdateQuerySetFirstStep<T> {
@@ -16,9 +17,5 @@ internal data class UpdateQuerySetStepFirstDsl<T : Any>(
 
     override fun <V : Any> set(path: Path<V>, value: Expressionable<V>): UpdateQuerySetStep<T> {
         return UpdateQueryDsl(entity, path, value.toExpression())
-    }
-
-    override fun set(map: Map<Path<*>, Expressionable<*>>): UpdateQuerySetStep<T> {
-        return UpdateQueryDsl(entity, map.mapValues { it.value.toExpression() })
     }
 }

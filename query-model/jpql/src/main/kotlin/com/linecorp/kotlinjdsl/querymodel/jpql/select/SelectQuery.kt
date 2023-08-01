@@ -6,5 +6,5 @@ import kotlin.reflect.KClass
 
 @SinceJdsl("3.0.0")
 interface SelectQuery<T : Any> : JpqlQuery<SelectQuery<T>> {
-    val returnType: KClass<*>
+    val returnType: KClass<T>
 }

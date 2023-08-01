@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
+@PublishedApi
 internal data class CaseDsl<T : Any>(
     private val builder: CaseBuilder<T>,
 ) : CaseWhenStep<T>,

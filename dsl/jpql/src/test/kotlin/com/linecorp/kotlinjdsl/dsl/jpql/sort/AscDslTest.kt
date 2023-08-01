@@ -12,13 +12,14 @@ class AscDslTest : AbstractJpqlDslTest() {
         // when
         val sort = testJpql {
             path(TestTable::int1).asc()
-        }
+        }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.asc(
-            Paths.path(TestTable::int1),
+            expr = Paths.path(TestTable::int1),
+            nullOrder = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -29,13 +30,14 @@ class AscDslTest : AbstractJpqlDslTest() {
         // when
         val sort = testJpql {
             path(TestTable::nullableInt1).asc()
-        }
+        }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.asc(
-            Paths.path(TestTable::nullableInt1),
+            expr = Paths.path(TestTable::nullableInt1),
+            nullOrder = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -46,13 +48,14 @@ class AscDslTest : AbstractJpqlDslTest() {
         // when
         val sort = testJpql {
             path(TestTable::int1).desc()
-        }
+        }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.desc(
-            Paths.path(TestTable::int1),
+            expr = Paths.path(TestTable::int1),
+            nullOrder = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -63,13 +66,14 @@ class AscDslTest : AbstractJpqlDslTest() {
         // when
         val sort = testJpql {
             path(TestTable::nullableInt1).desc()
-        }
+        }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.desc(
-            Paths.path(TestTable::nullableInt1),
+            expr = Paths.path(TestTable::nullableInt1),
+            nullOrder = null,
         )
 
         assertThat(actual).isEqualTo(expected)

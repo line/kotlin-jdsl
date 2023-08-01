@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
 
 @Internal
 data class JpqlSelectQuery<T : Any> internal constructor(
-    override val returnType: KClass<*>,
+    override val returnType: KClass<T>,
     val distinct: Boolean,
     val select: Iterable<Expression<*>>,
     val from: Iterable<From>,

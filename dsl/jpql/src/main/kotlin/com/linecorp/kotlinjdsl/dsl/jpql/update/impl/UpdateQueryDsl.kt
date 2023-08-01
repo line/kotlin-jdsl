@@ -9,10 +9,11 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 
+@PublishedApi
 internal data class UpdateQueryDsl<T : Any>(
     private val builder: UpdateQueryBuilder<T>
 ) : UpdateQuerySetFirstStep<T>,
@@ -33,40 +34,22 @@ internal data class UpdateQueryDsl<T : Any>(
         return this
     }
 
-    override fun set(map: Map<Path<*>, Expressionable<*>>): UpdateQuerySetStep<T> {
-        builder.set(map.mapValues { it.value.toExpression() })
-
-        return this
-    }
-
-    override fun where(predicate: Predicate?): JpqlQueryable<UpdateQuery<T>> {
+    override fun where(predicate: Predicatable?): JpqlQueryable<UpdateQuery<T>> {
         if (predicate != null) {
-            builder.where(predicate)
+            builder.where(predicate.toPredicate())
         }
 
         return this
     }
 
-    override fun whereAnd(vararg predicates: Predicate?): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(Predicates.and(predicates.toList()))
+    override fun whereAnd(vararg predicates: Predicatable?): JpqlQueryable<UpdateQuery<T>> {
+        builder.where(Predicates.and(predicates.mapNotNull { it?.toPredicate() }))
 
         return this
     }
 
-    override fun whereAnd(predicates: Iterable<Predicate?>): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(Predicates.and(predicates.toList()))
-
-        return this
-    }
-
-    override fun whereOr(vararg predicates: Predicate?): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(Predicates.or(predicates.toList()))
-
-        return this
-    }
-
-    override fun whereOr(predicates: Iterable<Predicate?>): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(Predicates.or(predicates.toList()))
+    override fun whereOr(vararg predicates: Predicatable?): JpqlQueryable<UpdateQuery<T>> {
+        builder.where(Predicates.or(predicates.mapNotNull { it?.toPredicate() }))
 
         return this
     }

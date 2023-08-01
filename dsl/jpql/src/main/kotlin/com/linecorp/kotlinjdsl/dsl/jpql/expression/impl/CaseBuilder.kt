@@ -1,13 +1,11 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 internal data class CaseBuilder<T : Any>(
-    private val whens: MutableMap<Predicatable, Expressionable<T>>,
+    private val whens: MutableMap<Predicate, Expression<T>>,
     private var `else`: Expression<T>? = null,
 
     private var currentPredicate: Predicate,

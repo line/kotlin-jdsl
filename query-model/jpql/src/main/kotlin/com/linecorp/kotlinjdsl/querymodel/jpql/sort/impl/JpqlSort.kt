@@ -5,5 +5,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 
 data class JpqlSort internal constructor(
     val expr: Expression<*>,
-    override val order: Sort.Order,
+    val order: Sort.Order,
+    val nullOrder: Sort.NullOrder?,
 ) : Sort

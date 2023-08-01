@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 
+@PublishedApi
 internal data class CaseValueDsl<T : Any, V : Any>(
     private val builder: CaseValueBuilder<T, V>,
 ) : CaseValueWhenStep<T, V>,

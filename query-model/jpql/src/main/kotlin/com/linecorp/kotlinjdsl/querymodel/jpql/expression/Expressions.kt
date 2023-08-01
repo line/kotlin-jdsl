@@ -1,10 +1,9 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql.expression
 
-import com.linecorp.kotlinjdsl.Experimental
 import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.*
-import com.linecorp.kotlinjdsl.querymodel.jpql.path.Pathable
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import java.math.BigDecimal
@@ -75,154 +74,136 @@ object Expressions {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T> plus(
-        value1: Expressionable<T>,
-        value2: Expressionable<S>,
-    ): Expression<T> {
-        return JpqlPlus(value1.toExpression(), value2.toExpression())
+    fun <T : Number, S : T> plus(value1: Expression<T>, value2: Expression<S>): Expression<T> {
+        return JpqlPlus(value1, value2)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T> minus(
-        value1: Expressionable<T>,
-        value2: Expressionable<S>,
-    ): Expression<T> {
-        return JpqlMinus(value1.toExpression(), value2.toExpression())
+    fun <T : Number, S : T> minus(value1: Expression<T>, value2: Expression<S>): Expression<T> {
+        return JpqlMinus(value1, value2)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T> times(
-        value1: Expressionable<T>,
-        value2: Expressionable<S>,
-    ): Expression<T> {
-        return JpqlTimes(value1.toExpression(), value2.toExpression())
+    fun <T : Number, S : T> times(value1: Expression<T>, value2: Expression<S>): Expression<T> {
+        return JpqlTimes(value1, value2)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T> div(
-        value1: Expressionable<T>,
-        value2: Expressionable<S>,
-    ): Expression<T> {
-        return JpqlDivide(value1.toExpression(), value2.toExpression())
+    fun <T : Number, S : T> div(value1: Expression<T>, value2: Expression<S>): Expression<T> {
+        return JpqlDivide(value1, value2)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> count(distinct: Boolean, expr: Expressionable<T>): Expression<Long> {
-        return JpqlCount(distinct, expr.toExpression())
+    fun <T : Any> count(distinct: Boolean, expr: Expression<T>): Expression<Long> {
+        return JpqlCount(distinct, expr)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> max(distinct: Boolean, expr: Expressionable<T>): Expression<T> {
-        return JpqlMax(distinct, expr.toExpression())
+    fun <T : Comparable<*>> max(distinct: Boolean, expr: Expression<T>): Expression<T> {
+        return JpqlMax(distinct, expr)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> min(distinct: Boolean, expr: Expressionable<T>): Expression<T> {
-        return JpqlMin(distinct, expr.toExpression())
+    fun <T : Comparable<*>> min(distinct: Boolean, expr: Expression<T>): Expression<T> {
+        return JpqlMin(distinct, expr)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number> avg(distinct: Boolean, expr: Expressionable<T>): Expression<Double> {
-        return JpqlAvg(distinct, expr.toExpression())
+    fun <T : Number> avg(distinct: Boolean, expr: Expression<T>): Expression<Double> {
+        return JpqlAvg(distinct, expr)
     }
 
     @JvmName("sum1")
     @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Int>): Expression<Long> {
-        return JpqlSum.IntSum(distinct, expr.toExpression())
+    fun sum(distinct: Boolean, expr: Expression<Int>): Expression<Long> {
+        return JpqlSum.IntSum(distinct, expr)
     }
 
     @JvmName("sum2")
     @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Long>): Expression<Long> {
-        return JpqlSum.LongSum(distinct, expr.toExpression())
+    fun sum(distinct: Boolean, expr: Expression<Long>): Expression<Long> {
+        return JpqlSum.LongSum(distinct, expr)
     }
 
     @JvmName("sum3")
     @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Float>): Expression<Double> {
-        return JpqlSum.FloatSum(distinct, expr.toExpression())
+    fun sum(distinct: Boolean, expr: Expression<Float>): Expression<Double> {
+        return JpqlSum.FloatSum(distinct, expr)
     }
 
     @JvmName("sum4")
     @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Double>): Expression<Double> {
-        return JpqlSum.DoubleSum(distinct, expr.toExpression())
+    fun sum(distinct: Boolean, expr: Expression<Double>): Expression<Double> {
+        return JpqlSum.DoubleSum(distinct, expr)
     }
 
     @JvmName("sum5")
     @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<BigInteger>): Expression<BigInteger> {
-        return JpqlSum.BigIntegerSum(distinct, expr.toExpression())
+    fun sum(distinct: Boolean, expr: Expression<BigInteger>): Expression<BigInteger> {
+        return JpqlSum.BigIntegerSum(distinct, expr)
     }
 
     @JvmName("sum6")
     @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<BigDecimal>): Expression<BigDecimal> {
-        return JpqlSum.BigDecimalSum(distinct, expr.toExpression())
+    fun sum(distinct: Boolean, expr: Expression<BigDecimal>): Expression<BigDecimal> {
+        return JpqlSum.BigDecimalSum(distinct, expr)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> new(type: KClass<T>, args: Iterable<Expressionable<*>>): Expression<T> {
-        return JpqlNew(type, args.map { it.toExpression() })
+    fun <T : Any> new(type: KClass<T>, args: Iterable<Expression<*>>): Expression<T> {
+        return JpqlNew(type, args)
     }
 
     @SinceJdsl("3.0.0")
     fun <T : Any> case(
-        whens: Map<Predicatable, Expressionable<T>>,
-        `else`: Expressionable<T>? = null,
+        whens: Map<Predicate, Expression<T>>,
+        `else`: Expression<T>? = null,
     ): Expression<T> {
         return JpqlCase(
-            whens = whens.map { it.key.toPredicate() to it.value.toExpression() }.toMap(),
+            whens = whens.map { it.key to it.value }.toMap(),
             `else` = `else`?.toExpression(),
         )
     }
 
     @SinceJdsl("3.0.0")
     fun <T : Any, V : Any> caseValue(
-        value: Pathable<T>,
+        value: Path<T>,
         whens: Map<Expression<T>, Expression<V>>,
-        `else`: Expressionable<V>? = null,
+        `else`: Expression<V>? = null,
     ): Expression<V> {
         return JpqlCaseValue(
-            value = value.toPath(),
+            value = value,
             whens = whens,
-            `else` = `else`?.toExpression(),
+            `else` = `else`,
         )
     }
 
     @SinceJdsl("3.0.0")
     fun <T : Any> coalesce(
-        value: Expressionable<T>,
-        alternate: Expressionable<T>,
-        others: Iterable<Expressionable<T>>,
+        value: Expression<T>,
+        alternate: Expression<T>,
+        others: Iterable<Expression<T>>,
     ): Expression<T> {
         val expr = listOf(
-            value.toExpression(),
-            alternate.toExpression(),
-        ) + others.map {
-            it.toExpression()
-        }
+            value,
+            alternate,
+        ) + others
 
         return JpqlCoalesce(expr)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> nullIf(value: Expressionable<T>, compareValue: Expressionable<out T>): Expression<T> {
-        return JpqlNullIf(value.toExpression(), compareValue.toExpression())
+    fun <T : Any> nullIf(value: Expression<T>, compareValue: Expression<T>): Expression<T> {
+        return JpqlNullIf(value, compareValue)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> type(path: Pathable<T>): Expression<KClass<T>> {
-        return JpqlType(path.toPath())
+    fun <T : Any> type(path: Path<T>): Expression<KClass<T>> {
+        return JpqlType(path)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> function(
-        type: KClass<T>,
-        name: String,
-        args: Iterable<Expressionable<*>>
-    ): Expression<T> {
+    fun <T : Any> function(type: KClass<T>, name: String, args: Iterable<Expression<*>>): Expression<T> {
         return JpqlFunction(type, name, args.map { it.toExpression() })
     }
 
@@ -230,15 +211,13 @@ object Expressions {
     fun <T : Any> customExpression(
         type: KClass<T>,
         template: String,
-        args: Iterable<Expressionable<*>>
+        args: Iterable<Expression<*>>
     ): Expression<T> {
-        return JpqlCustomExpression(type, template, args.map { it.toExpression() })
+        return JpqlCustomExpression(type, template, args)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> subquery(
-        selectQuery: SelectQuery<T>
-    ): Subquery<T> {
+    fun <T : Any> subquery(selectQuery: SelectQuery<T>): Subquery<T> {
         val trimmed = if (selectQuery is JpqlSelectQuery) {
             JpqlSelectQuery(
                 returnType = selectQuery.returnType,
@@ -259,29 +238,12 @@ object Expressions {
         )
     }
 
-    @Experimental
-    fun <T : Any> all(subquery: Subquery<T>): Expression<T> {
-        return JpqlAll(subquery)
-    }
-
-    @Experimental
-    fun <T : Any> any(subquery: Subquery<T>): Expression<T> {
-        return JpqlAny(subquery)
-    }
-
-    @Experimental
-    fun <T : Any> some(subquery: Subquery<T>): Expression<T> {
-        return JpqlSome(subquery)
-    }
-
     @SinceJdsl("3.0.0")
-    fun <T : Any> alias(expr: Expressionable<T>, alias: String): Expression<T> {
-        val expression = expr.toExpression()
-
-        return if (expression is JpqlAliasedExpression) {
-            JpqlAliasedExpression(expression.expr, alias)
+    fun <T : Any> alias(expr: Expression<T>, alias: String): Expression<T> {
+        return if (expr is JpqlAliasedExpression) {
+            JpqlAliasedExpression(expr.expr, alias)
         } else {
-            JpqlAliasedExpression(expression, alias)
+            JpqlAliasedExpression(expr, alias)
         }
     }
 }

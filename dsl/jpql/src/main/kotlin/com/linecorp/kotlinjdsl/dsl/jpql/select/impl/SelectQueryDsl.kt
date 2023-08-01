@@ -11,9 +11,10 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.from.From
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
+import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sortable
 import kotlin.reflect.KClass
 
+@PublishedApi
 internal data class SelectQueryDsl<T : Any>(
     private val builder: SelectQueryBuilder<T>,
 ) : SelectQueryWhereStep<T>,
@@ -22,7 +23,7 @@ internal data class SelectQueryDsl<T : Any>(
     SelectQueryOrderByStep<T> {
 
     constructor(
-        returnType: KClass<*>,
+        returnType: KClass<T>,
         distinct: Boolean,
         select: Iterable<Expression<*>>,
         from: Iterable<From>,
@@ -39,36 +40,18 @@ internal data class SelectQueryDsl<T : Any>(
     }
 
     override fun whereAnd(vararg predicates: Predicatable?): SelectQueryGroupByStep<T> {
-        builder.where(Predicates.and(predicates.toList()))
-
-        return this
-    }
-
-    override fun whereAnd(predicates: Iterable<Predicatable?>): SelectQueryGroupByStep<T> {
-        builder.where(Predicates.and(predicates))
+        builder.where(Predicates.and(predicates.mapNotNull { it?.toPredicate() }))
 
         return this
     }
 
     override fun whereOr(vararg predicates: Predicatable?): SelectQueryGroupByStep<T> {
-        builder.where(Predicates.or(predicates.toList()))
-
-        return this
-    }
-
-    override fun whereOr(predicates: Iterable<Predicatable?>): SelectQueryGroupByStep<T> {
-        builder.where(Predicates.or(predicates))
+        builder.where(Predicates.or(predicates.mapNotNull { it?.toPredicate() }))
 
         return this
     }
 
     override fun groupBy(vararg expr: Expressionable<*>?): SelectQueryHavingStep<T> {
-        builder.groupBy(expr.mapNotNull { it?.toExpression() })
-
-        return this
-    }
-
-    override fun groupBy(expr: Iterable<Expressionable<*>?>): SelectQueryHavingStep<T> {
         builder.groupBy(expr.mapNotNull { it?.toExpression() })
 
         return this
@@ -83,37 +66,19 @@ internal data class SelectQueryDsl<T : Any>(
     }
 
     override fun havingAnd(vararg predicates: Predicatable?): SelectQueryOrderByStep<T> {
-        builder.having(Predicates.and(predicates.toList()))
-
-        return this
-    }
-
-    override fun havingAnd(predicates: Iterable<Predicatable?>): SelectQueryOrderByStep<T> {
-        builder.having(Predicates.and(predicates.toList()))
+        builder.having(Predicates.and(predicates.mapNotNull { it?.toPredicate() }))
 
         return this
     }
 
     override fun havingOr(vararg predicates: Predicatable?): SelectQueryOrderByStep<T> {
-        builder.having(Predicates.or(predicates.toList()))
+        builder.having(Predicates.or(predicates.mapNotNull { it?.toPredicate() }))
 
         return this
     }
 
-    override fun havingOr(predicates: Iterable<Predicatable?>): SelectQueryOrderByStep<T> {
-        builder.having(Predicates.or(predicates.toList()))
-
-        return this
-    }
-
-    override fun orderBy(vararg sorts: Sort?): JpqlQueryable<SelectQuery<T>> {
-        builder.orderBy(sorts.filterNotNull())
-
-        return this
-    }
-
-    override fun orderBy(sorts: Iterable<Sort?>): JpqlQueryable<SelectQuery<T>> {
-        builder.orderBy(sorts.filterNotNull())
+    override fun orderBy(vararg sorts: Sortable?): JpqlQueryable<SelectQuery<T>> {
+        builder.orderBy(sorts.mapNotNull { it?.toSort() })
 
         return this
     }

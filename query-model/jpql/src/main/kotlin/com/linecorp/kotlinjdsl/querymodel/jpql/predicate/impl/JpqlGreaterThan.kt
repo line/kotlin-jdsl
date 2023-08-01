@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 @Internal
-data class JpqlGreaterThan internal constructor(
-    val value: Expression<*>,
-    val compareValue: Expression<*>,
+data class JpqlGreaterThan<T : Any> internal constructor(
+    val value: Expression<T>,
+    val compareValue: Expression<T>,
 ) : Predicate

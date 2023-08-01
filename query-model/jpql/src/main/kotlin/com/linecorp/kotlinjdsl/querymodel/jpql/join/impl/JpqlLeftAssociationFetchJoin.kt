@@ -8,10 +8,12 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 @Internal
-data class JpqlAssociationJoin internal constructor(
-    val entity: Entity<*>,
-    val association: Path<*>,
+data class JpqlLeftAssociationFetchJoin<T : Any> internal constructor(
+    val entity: Entity<T>,
+    val association: Path<T>,
     val on: Predicate?,
-    val joinType: JoinType,
-    val fetch: Boolean,
-) : Join
+) : Join {
+    override val joinType: JoinType = JoinType.LEFT
+    override val fetch: Boolean = true
+}
+

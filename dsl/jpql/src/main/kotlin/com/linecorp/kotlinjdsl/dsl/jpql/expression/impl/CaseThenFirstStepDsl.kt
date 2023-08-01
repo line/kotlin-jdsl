@@ -6,6 +6,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
+@PublishedApi
 internal data class CaseThenFirstStepDsl(
     private val predicate: Predicate,
 ) : CaseThenFirstStep {

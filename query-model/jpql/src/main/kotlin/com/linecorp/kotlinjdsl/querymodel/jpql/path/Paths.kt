@@ -18,13 +18,11 @@ object Paths {
         return JpqlEntityProperty(Entities.entity(owner), property)
     }
 
-    @JvmName("path3")
     @SinceJdsl("3.0.0")
     fun <T : Any, V> path(path: Path<T>, property: KProperty1<T, @Exact V>): Path<V & Any> {
         return JpqlPathProperty(path, property)
     }
 
-    @JvmName("treat1")
     @SinceJdsl("3.0.0")
     fun <T : Any, S : T> treat(path: Path<T>, type: KClass<S>): Path<S> {
         return JpqlPathTreat(path, type)

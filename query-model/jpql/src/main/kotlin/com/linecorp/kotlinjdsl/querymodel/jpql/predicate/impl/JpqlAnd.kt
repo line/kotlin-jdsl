@@ -5,5 +5,5 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 @Internal
 data class JpqlAnd internal constructor(
-    val predicates: Iterable<Predicate?>,
+    val predicates: Iterable<Predicate>,
 ) : Predicate

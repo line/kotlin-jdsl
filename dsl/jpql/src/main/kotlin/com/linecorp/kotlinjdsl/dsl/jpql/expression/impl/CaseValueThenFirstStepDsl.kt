@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 
+@PublishedApi
 internal data class CaseValueThenFirstStepDsl<T : Any>(
     private val value: Path<T>,
     private val compareValue: Expression<T>,

@@ -19,7 +19,7 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
             is JpqlLiteral.DoubleLiteral -> serialize(part, writer)
             is JpqlLiteral.BooleanLiteral -> serialize(part, writer)
             is JpqlLiteral.StringLiteral -> serialize(part, writer)
-            is JpqlLiteral.NullLiteral -> serialize(part, writer)
+            is JpqlLiteral.NullLiteral -> serializeNull(writer)
         }
     }
 
@@ -57,7 +57,7 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
         writer.write("'")
     }
 
-    private fun serialize(part: JpqlLiteral.NullLiteral, writer: JpqlWriter) {
+    private fun serializeNull(writer: JpqlWriter) {
         writer.write("NULL")
     }
 }

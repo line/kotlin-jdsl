@@ -6,6 +6,4 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 
 interface SelectQueryGroupByStep<T : Any> : SelectQueryHavingStep<T>, JpqlQueryable<SelectQuery<T>> {
     fun groupBy(vararg expr: Expressionable<*>?): SelectQueryHavingStep<T>
-
-    fun groupBy(expr: Iterable<Expressionable<*>?>): SelectQueryHavingStep<T>
 }

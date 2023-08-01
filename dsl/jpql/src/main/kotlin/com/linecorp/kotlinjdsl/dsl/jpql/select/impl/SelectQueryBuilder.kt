@@ -9,7 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import kotlin.reflect.KClass
 
 internal data class SelectQueryBuilder<T : Any>(
-    private val returnType: KClass<*>,
+    private val returnType: KClass<T>,
     private val distinct: Boolean,
     private val select: Iterable<Expression<*>>,
     private var from: Iterable<From>,
