@@ -1,0 +1,29 @@
+package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
+
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
+import com.linecorp.kotlinjdsl.render.RenderContext
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
+import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
+import kotlin.reflect.KClass
+
+class JpqlMinSerializer : JpqlSerializer<JpqlMin<*>> {
+    override fun handledType(): KClass<JpqlMin<*>> {
+        return JpqlMin::class
+    }
+
+    override fun serialize(part: JpqlMin<*>, writer: JpqlWriter, context: RenderContext) {
+        val delegate = context.getValue(JpqlRenderSerializer)
+
+        writer.write("MIN")
+        writer.write("(")
+
+        if (part.distinct) {
+            writer.write("DISTINCT")
+        }
+
+        delegate.serialize(part.expr, writer, context)
+
+        writer.write(")")
+    }
+}
