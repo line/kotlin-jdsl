@@ -10,7 +10,7 @@ class JakartaJpqlIntrospector : JpqlIntrospector {
         val entity = type.findAnnotations(jakarta.persistence.Entity::class).firstOrNull()
 
         return if (entity != null) {
-            JakartaEntity(entity)
+            JakartaEntity(entity.name.takeIf { it.isNotBlank() } ?: type.simpleName!!)
         } else {
             null
         }
@@ -18,7 +18,5 @@ class JakartaJpqlIntrospector : JpqlIntrospector {
 }
 
 private data class JakartaEntity(
-    val entity: jakarta.persistence.Entity,
-) : JpqlEntityDescription {
-    override val name: String = entity.name
-}
+    override val name: String,
+) : JpqlEntityDescription

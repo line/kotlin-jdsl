@@ -1,8 +1,8 @@
 dependencies {
     compileOnly(libs.jakarta.persistence.api)
-    compileOnly(libs.spring.jpa3)
+    compileOnly(libs.spring.data.jpa)
     compileOnly(projects.jpqlQueryModel)
-    compileOnly(projects.sqlQueryModel)
     compileOnly(projects.jpqlRender)
+    compileOnly(projects.sqlQueryModel)
     compileOnly(projects.sqlRender)
 }

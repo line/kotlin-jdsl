@@ -1,9 +1,9 @@
 rootProject.name = "kotlin-jdsl"
 
 // Module
-module(name = ":module", path = "module")
-module(name = ":jpql-module", path = "module/jpql")
-module(name = ":sql-module", path = "module/sql")
+module(name = ":bundle", path = "bundle")
+module(name = ":jpql-jpa-bundle", path = "bundle/jpql-jpa")
+module(name = ":jpql-spring-jpa-bundle", path = "bundle/jpql-spring-jpa")
 
 module(name = ":dsl", path = "dsl")
 module(name = ":jpql-dsl", path = "dsl/jpql")
@@ -21,6 +21,10 @@ module(name = ":executor", path = "executor")
 module(name = ":jdbc-executor", path = "executor/jdbc")
 module(name = ":spring-jdbc-executor", path = "executor/spring-jdbc")
 module(name = ":spring-jpa-executor", path = "executor/spring-jpa")
+
+module(name = ":example", path = "example")
+module(name = ":jpql-jpa-example", path = "example/jpql-jpa")
+module(name = ":jpql-spring-jpa-example", path = "example/jpql-spring-jpa")
 
 // Version Catalog
 dependencyResolutionManagement {

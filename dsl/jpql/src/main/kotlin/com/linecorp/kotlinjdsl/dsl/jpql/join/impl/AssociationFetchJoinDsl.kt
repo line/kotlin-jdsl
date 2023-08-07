@@ -18,7 +18,7 @@ internal data class AssociationFetchJoinDsl<T : Any>(
 
     constructor(
         entity: Entity<T>,
-        association: Path<T>,
+        association: Path<*>,
         joinType: JoinType,
     ) : this(
         AssociationFetchJoinBuilder(

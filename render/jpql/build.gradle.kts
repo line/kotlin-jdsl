@@ -3,7 +3,7 @@ dependencies {
     api(projects.jpqlQueryModel)
 
     compileOnly(libs.jakarta.persistence.api)
-    compileOnly(libs.java.persistence.api)
+    compileOnly(libs.javax.persistence.api)
 
     implementation(libs.kotlin.reflect)
 

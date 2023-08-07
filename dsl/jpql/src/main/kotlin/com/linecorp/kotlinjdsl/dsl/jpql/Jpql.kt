@@ -134,13 +134,23 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.`as`(alias: String): Expression<T> {
+    fun <T : Any> Expressionable<T>.`as`(alias: Expression<T>): Expression<T> {
         return Expressions.alias(this.toExpression(), alias)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.alias(alias: String): Expression<T> {
+    fun <T : Any> Expressionable<T>.alias(alias: Expression<T>): Expression<T> {
         return Expressions.alias(this.toExpression(), alias)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> expression(type: KClass<T>, alias: String): Expression<T> {
+        return Expressions.expression(type, alias)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> expression(alias: String): Expression<T> {
+        return Expressions.expression(T::class, alias)
     }
 
     @SinceJdsl("3.0.0")
@@ -977,7 +987,20 @@ open class Jpql : JpqlDsl {
         return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
     }
 
+    @JvmName("joinCollection")
+    inline fun <T : Any, reified V, S : Collection<V>> join(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
     inline fun <reified T : Any> join(path: Path<T>): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    }
+
+    @JvmName("joinCollection")
+    inline fun <reified T : Any, S : Collection<T>> join(path: Path<S>): AssociationJoinOnStep<T> {
         return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
     }
 
@@ -996,7 +1019,20 @@ open class Jpql : JpqlDsl {
         return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
     }
 
+    @JvmName("innerJoinCollection")
+    inline fun <T : Any, reified V, S : Collection<V>> innerJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
     inline fun <reified T : Any> innerJoin(path: Path<T>): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    }
+
+    @JvmName("innerJoinCollection")
+    inline fun <reified T : Any, S : Collection<T>> innerJoin(path: Path<S>): AssociationJoinOnStep<T> {
         return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
     }
 
@@ -1015,7 +1051,20 @@ open class Jpql : JpqlDsl {
         return AssociationJoinDsl(entity, Paths.path(property), JoinType.LEFT)
     }
 
+    @JvmName("leftJoinCollection")
+    inline fun <T : Any, reified V, S : Collection<V>> leftJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationJoinDsl(entity, Paths.path(property), JoinType.LEFT)
+    }
+
     inline fun <reified T : Any> leftJoin(path: Path<T>): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
+    }
+
+    @JvmName("leftJoinCollection")
+    inline fun <reified T : Any, S : Collection<T>> leftJoin(path: Path<S>): AssociationJoinOnStep<T> {
         return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
     }
 
@@ -1034,7 +1083,20 @@ open class Jpql : JpqlDsl {
         return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
     }
 
+    @JvmName("fetchJoinCollection")
+    inline fun <T : Any, reified V, S : Collection<V>> fetchJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
     inline fun <reified T : Any> fetchJoin(path: Path<T>): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    }
+
+    @JvmName("fetchJoinCollection")
+    inline fun <reified T : Any, S : Collection<T>> fetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
         return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
     }
 
@@ -1053,7 +1115,20 @@ open class Jpql : JpqlDsl {
         return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
     }
 
+    @JvmName("innerFetchJoinCollection")
+    inline fun <T : Any, reified V, S : Collection<V>> innerFetchJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
     inline fun <reified T : Any> innerFetchJoin(path: Path<T>): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    }
+
+    @JvmName("innerFetchJoinCollection")
+    inline fun <reified T : Any, S : Collection<T>> innerFetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
         return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
     }
 
@@ -1072,7 +1147,20 @@ open class Jpql : JpqlDsl {
         return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.LEFT)
     }
 
+    @JvmName("leftFetchJoinCollection")
+    inline fun <T : Any, reified V, S : Collection<V>> leftFetchJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.LEFT)
+    }
+
     inline fun <reified T : Any> leftFetchJoin(path: Path<T>): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
+    }
+
+    @JvmName("leftFetchJoinCollection")
+    inline fun <reified T : Any, S : Collection<T>> leftFetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
         return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
     }
 

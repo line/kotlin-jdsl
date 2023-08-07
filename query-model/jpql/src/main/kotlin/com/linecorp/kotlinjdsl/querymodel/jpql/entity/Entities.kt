@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.impl.JpqlDerivedEntity
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.impl.JpqlEntity
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import kotlin.reflect.KClass
 
 object Entities {
@@ -17,6 +18,24 @@ object Entities {
         selectQuery: SelectQuery<T>,
         alias: String = selectQuery.returnType.simpleName!!,
     ): Entity<T> {
-        return JpqlDerivedEntity(selectQuery, alias)
+        val trimmed = if (selectQuery is JpqlSelectQuery) {
+            JpqlSelectQuery(
+                returnType = selectQuery.returnType,
+                select = selectQuery.select,
+                distinct = selectQuery.distinct,
+                from = selectQuery.from,
+                where = selectQuery.where,
+                groupBy = selectQuery.groupBy,
+                having = selectQuery.having,
+                orderBy = null,
+            )
+        } else {
+            selectQuery
+        }
+
+        return JpqlDerivedEntity(
+            selectQuery = trimmed,
+            alias = alias,
+        )
     }
 }

@@ -17,7 +17,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 @Internal
 data class JpqlInnerAssociationJoin<T : Any> internal constructor(
     val entity: Entity<T>,
-    val association: Path<T>,
+    val association: Path<*>,
     val on: Predicate?,
 ) : Join {
     override val joinType: JoinType = JoinType.INNER

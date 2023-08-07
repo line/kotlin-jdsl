@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Pathable
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
@@ -22,14 +23,14 @@ internal data class UpdateQueryDsl<T : Any>(
     constructor(entity: Entity<T>, path: Path<*>, value: Expression<*>) : this(UpdateQueryBuilder(entity, path, value))
     constructor(entity: Entity<T>, map: Map<Path<*>, Expression<*>>) : this(UpdateQueryBuilder(entity, map))
 
-    override fun <V : Any, S : V?> set(path: Path<V>, value: S): UpdateQuerySetStep<T> {
-        builder.set(path, Expressions.value(value))
+    override fun <V : Any, S : V?> set(path: Pathable<V>, value: S): UpdateQuerySetStep<T> {
+        builder.set(path.toPath(), Expressions.value(value))
 
         return this
     }
 
-    override fun <V : Any> set(path: Path<V>, value: Expressionable<V>): UpdateQuerySetStep<T> {
-        builder.set(path, value.toExpression())
+    override fun <V : Any> set(path: Pathable<V>, value: Expressionable<V>): UpdateQuerySetStep<T> {
+        builder.set(path.toPath(), value.toExpression())
 
         return this
     }

@@ -22,6 +22,15 @@ class JpqlLiteralSerializerTest : WithAssertions {
     private val singleQuote: String = "'"
 
     @Test
+    fun handledType() {
+        // when
+        val actual = sut.handledType()
+
+        // then
+        assertThat(actual).isEqualTo(JpqlLiteral::class)
+    }
+
+    @Test
     fun `serialize int`() {
         // given
         val writer = mockkClass(JpqlWriter::class) {

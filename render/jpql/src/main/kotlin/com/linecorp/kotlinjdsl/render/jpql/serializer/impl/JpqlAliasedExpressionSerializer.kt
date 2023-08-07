@@ -15,21 +15,19 @@ class JpqlAliasedExpressionSerializer : JpqlSerializer<JpqlAliasedExpression<*>>
     }
 
     override fun serialize(part: JpqlAliasedExpression<*>, writer: JpqlWriter, context: RenderContext) {
+        val delegate = context.getValue(JpqlRenderSerializer)
+
         val statement = context.getValue(JpqlRenderStatement)
         val clause = context.getValue(JpqlRenderClause)
 
-        val delegate = context.getValue(JpqlRenderSerializer)
-
-        if ((statement.isSelect() && clause.isSelect())
-            || (statement.isUpdate() && clause.isUpdate())
-            || (statement.isDelete() && clause.isDeleteFrom())
-        ) {
+        if ((statement.isSelect() && clause.isSelect())) {
             delegate.serialize(part.expr, writer, context)
+
             writer.writeIfAbsent(" ")
             writer.write("AS")
             writer.write(" ")
         }
 
-        writer.write(part.alias)
+        delegate.serialize(part.alias, writer, context)
     }
 }

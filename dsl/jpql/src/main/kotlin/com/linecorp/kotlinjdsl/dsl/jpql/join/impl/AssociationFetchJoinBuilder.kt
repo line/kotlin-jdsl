@@ -9,7 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 internal data class AssociationFetchJoinBuilder<T : Any>(
     private var entity: Entity<T>,
-    private val association: Path<T>,
+    private val association: Path<*>,
     private var joinType: JoinType,
     private var predicate: Predicate? = null,
 ) {

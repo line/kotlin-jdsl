@@ -239,11 +239,16 @@ object Expressions {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> alias(expr: Expression<T>, alias: String): Expression<T> {
+    fun <T : Any> alias(expr: Expression<T>, alias: Expression<T>): Expression<T> {
         return if (expr is JpqlAliasedExpression) {
             JpqlAliasedExpression(expr.expr, alias)
         } else {
             JpqlAliasedExpression(expr, alias)
         }
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> expression(type: KClass<T>, alias: String): Expression<T> {
+        return JpqlExpression(type, alias)
     }
 }

@@ -13,15 +13,15 @@ interface JpqlWriter {
 
     fun write(boolean: Boolean)
 
-    fun write(string: CharSequence)
+    fun write(string: String)
 
-    fun writeIfAbsent(string: CharSequence)
+    fun writeIfAbsent(string: String)
 
     fun <T> writeEach(
         iterable: Iterable<T>,
-        separator: CharSequence = ", ",
-        prefix: CharSequence = "",
-        postfix: CharSequence = "",
+        separator: String = ", ",
+        prefix: String = "",
+        postfix: String = "",
         write: (T) -> Unit,
     )
 

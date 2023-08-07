@@ -10,7 +10,7 @@ class JavaxJpqlIntrospector : JpqlIntrospector {
         val entity = type.findAnnotations(javax.persistence.Entity::class).firstOrNull()
 
         return if (entity != null) {
-            JavaxEntity(entity)
+            JavaxEntity(entity.name.takeIf { it.isNotBlank() } ?: type.simpleName!!)
         } else {
             null
         }
@@ -18,7 +18,5 @@ class JavaxJpqlIntrospector : JpqlIntrospector {
 }
 
 private data class JavaxEntity(
-    val entity: javax.persistence.Entity,
-) : JpqlEntityDescription {
-    override val name: String = entity.name
-}
+    override val name: String,
+) : JpqlEntityDescription

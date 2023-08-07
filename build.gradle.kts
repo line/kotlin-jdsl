@@ -56,6 +56,10 @@ subprojects {
 
         testFixturesApi(testFixtures(rootProject))
     }
+
+    kotlin {
+        jvmToolchain(17)
+    }
 }
 
 koverReport {

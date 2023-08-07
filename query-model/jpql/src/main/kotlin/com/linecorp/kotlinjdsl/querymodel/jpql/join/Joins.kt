@@ -18,7 +18,7 @@ object Joins {
     @SinceJdsl("3.0.0")
     fun <T : Any> innerJoin(
         entity: Entity<T>,
-        association: Path<T>,
+        association: Path<*>,
         predicate: Predicate?,
     ): Join {
         return JpqlInnerAssociationJoin(entity, association, predicate)
@@ -35,7 +35,7 @@ object Joins {
     @SinceJdsl("3.0.0")
     fun <T : Any> leftJoin(
         entity: Entity<T>,
-        association: Path<T>,
+        association: Path<*>,
         predicate: Predicate?,
     ): Join {
         return JpqlLeftAssociationJoin(entity, association, predicate)
@@ -52,7 +52,7 @@ object Joins {
     @SinceJdsl("3.0.0")
     fun <T : Any> innerFetchJoin(
         entity: Entity<T>,
-        association: Path<T>,
+        association: Path<*>,
         predicate: Predicate?,
     ): Join {
         return JpqlInnerAssociationFetchJoin(entity, association, predicate)
@@ -69,7 +69,7 @@ object Joins {
     @SinceJdsl("3.0.0")
     fun <T : Any> leftFetchJoin(
         entity: Entity<T>,
-        association: Path<T>,
+        association: Path<*>,
         predicate: Predicate?,
     ): Join {
         return JpqlLeftAssociationFetchJoin(entity, association, predicate)

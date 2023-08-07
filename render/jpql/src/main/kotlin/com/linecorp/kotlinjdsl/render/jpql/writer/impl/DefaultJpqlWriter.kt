@@ -15,10 +15,6 @@ class DefaultJpqlWriter(
 
     private val incrementer: Incrementer = Incrementer()
 
-    override fun write(string: CharSequence) {
-        stringBuilder.append(string)
-    }
-
     override fun write(short: Short) {
         stringBuilder.append(short)
     }
@@ -43,7 +39,11 @@ class DefaultJpqlWriter(
         stringBuilder.append(boolean)
     }
 
-    override fun writeIfAbsent(string: CharSequence) {
+    override fun write(string: String) {
+        stringBuilder.append(string)
+    }
+
+    override fun writeIfAbsent(string: String) {
         if (!stringBuilder.endsWith(string)) {
             stringBuilder.append(string)
         }
@@ -51,9 +51,9 @@ class DefaultJpqlWriter(
 
     override fun <T> writeEach(
         iterable: Iterable<T>,
-        separator: CharSequence,
-        prefix: CharSequence,
-        postfix: CharSequence,
+        separator: String,
+        prefix: String,
+        postfix: String,
         write: (T) -> Unit
     ) {
         write(prefix)
@@ -70,7 +70,7 @@ class DefaultJpqlWriter(
     }
 
     override fun writeParam(value: Any?) {
-        val name = incrementer.getNext().toString()
+        val name = "param${incrementer.getNext()}"
 
         writeParam(name, value)
     }

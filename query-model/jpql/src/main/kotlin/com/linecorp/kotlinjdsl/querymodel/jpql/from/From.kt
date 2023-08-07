@@ -1,3 +1,5 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql.from
 
-interface From : Fromable
+import com.linecorp.kotlinjdsl.querymodel.QueryPart
+
+interface From : Fromable, QueryPart
