@@ -81,6 +81,7 @@ class JpqlMinSerializerTest : WithAssertions {
             writer.write("MIN")
             writer.write("(")
             writer.write("DISTINCT")
+            writer.write(" ")
             serializer.serialize(part.expr, writer, context)
             writer.write(")")
         }

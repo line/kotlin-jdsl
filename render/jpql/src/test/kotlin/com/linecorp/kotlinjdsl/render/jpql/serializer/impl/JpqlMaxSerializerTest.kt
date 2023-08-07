@@ -80,6 +80,7 @@ class JpqlMaxSerializerTest : WithAssertions {
             writer.write("MAX")
             writer.write("(")
             writer.write("DISTINCT")
+            writer.write(" ")
             serializer.serialize(part.expr, writer, context)
             writer.write(")")
         }
