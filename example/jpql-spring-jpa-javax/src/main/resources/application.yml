@@ -1,0 +1,6 @@
+spring.jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate.ddl-auto: none
+
+spring.datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL

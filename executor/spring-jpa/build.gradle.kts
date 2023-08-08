@@ -1,8 +1,13 @@
 dependencies {
     compileOnly(libs.jakarta.persistence.api)
-    compileOnly(libs.spring.data.jpa)
-    compileOnly(projects.jpqlQueryModel)
-    compileOnly(projects.jpqlRender)
-    compileOnly(projects.sqlQueryModel)
-    compileOnly(projects.sqlRender)
+    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
+    compileOnly(libs.spring.data.jpa3)
+    compileOnly(projects.queryModelJpql)
+    compileOnly(projects.renderJpql)
+    compileOnly(projects.queryModelSql)
+    compileOnly(projects.renderSql)
+}
+
+kotlin {
+    jvmToolchain(17)
 }

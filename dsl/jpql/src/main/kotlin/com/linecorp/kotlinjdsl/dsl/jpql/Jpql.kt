@@ -134,12 +134,12 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.`as`(alias: Expression<T>): Expression<T> {
+    fun <T : Any> Expressionable<@Exact T>.`as`(alias: Expression<T>): Expression<T> {
         return Expressions.alias(this.toExpression(), alias)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.alias(alias: Expression<T>): Expression<T> {
+    fun <T : Any> Expressionable<@Exact T>.alias(alias: Expression<T>): Expression<T> {
         return Expressions.alias(this.toExpression(), alias)
     }
 
@@ -159,42 +159,42 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T?> Expressionable<T>.plus(value: S): Expression<T> {
+    fun <T : Number, S : T?> Expressionable<@Exact T>.plus(value: S): Expression<T> {
         return Expressions.plus(this.toExpression(), Expressions.value(value))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T> Expressionable<T>.plus(value: Expressionable<S>): Expression<T> {
+    fun <T : Number, S : T> Expressionable<@Exact T>.plus(value: Expressionable<S>): Expression<T> {
         return Expressions.plus(this.toExpression(), value.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T?> Expressionable<T>.minus(value: S): Expression<T> {
+    fun <T : Number, S : T?> Expressionable<@Exact T>.minus(value: S): Expression<T> {
         return Expressions.minus(this.toExpression(), Expressions.value(value))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T> Expressionable<T>.minus(value: Expressionable<S>): Expression<T> {
+    fun <T : Number, S : T> Expressionable<@Exact T>.minus(value: Expressionable<S>): Expression<T> {
         return Expressions.minus(this.toExpression(), value.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T?> Expressionable<T>.times(value: S): Expression<T> {
+    fun <T : Number, S : T?> Expressionable<@Exact T>.times(value: S): Expression<T> {
         return Expressions.times(this.toExpression(), Expressions.value(value))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T> Expressionable<T>.times(value: Expressionable<S>): Expression<T> {
+    fun <T : Number, S : T> Expressionable<@Exact T>.times(value: Expressionable<S>): Expression<T> {
         return Expressions.times(this.toExpression(), value.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T?> Expressionable<T>.div(value: S): Expression<T> {
+    fun <T : Number, S : T?> Expressionable<@Exact T>.div(value: S): Expression<T> {
         return Expressions.div(this.toExpression(), Expressions.value(value))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Number, S : T> Expressionable<T>.div(value: Expressionable<S>): Expression<T> {
+    fun <T : Number, S : T> Expressionable<@Exact T>.div(value: Expressionable<S>): Expression<T> {
         return Expressions.div(this.toExpression(), value.toExpression())
     }
 
@@ -294,7 +294,7 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> max(distinct: Boolean, expr: Expressionable<T>): Expression<T> {
+    fun <T : Comparable<*>> max(distinct: Boolean, expr: Expressionable<@Exact T>): Expression<T> {
         return Expressions.max(distinct, expr.toExpression())
     }
 
@@ -304,7 +304,7 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> max(expr: Expressionable<T>): Expression<T> {
+    fun <T : Comparable<*>> max(expr: Expressionable<@Exact T>): Expression<T> {
         return max(distinct = false, expr)
     }
 
@@ -314,7 +314,7 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> maxDistinct(expr: Expressionable<T>): Expression<T> {
+    fun <T : Comparable<*>> maxDistinct(expr: Expressionable<@Exact T>): Expression<T> {
         return max(distinct = true, expr)
     }
 
@@ -354,7 +354,7 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> min(distinct: Boolean, expr: Expressionable<T>): Expression<T> {
+    fun <T : Comparable<*>> min(distinct: Boolean, expr: Expressionable<@Exact T>): Expression<T> {
         return Expressions.min(distinct, expr.toExpression())
     }
 
@@ -364,7 +364,7 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> min(expr: Expressionable<T>): Expression<T> {
+    fun <T : Comparable<*>> min(expr: Expressionable<@Exact T>): Expression<T> {
         return min(distinct = false, expr)
     }
 
@@ -374,7 +374,7 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> minDistinct(expr: Expressionable<T>): Expression<T> {
+    fun <T : Comparable<*>> minDistinct(expr: Expressionable<@Exact T>): Expression<T> {
         return min(distinct = true, expr)
     }
 
@@ -414,7 +414,7 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Number> avg(distinct: Boolean, expr: Expressionable<T>): Expression<Double> {
+    fun <T : Number> avg(distinct: Boolean, expr: Expressionable<@Exact T>): Expression<Double> {
         return Expressions.avg(distinct, expr.toExpression())
     }
 
@@ -424,7 +424,7 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Number> avg(expr: Expressionable<T>): Expression<Double> {
+    fun <T : Number> avg(expr: Expressionable<@Exact T>): Expression<Double> {
         return avg(distinct = false, expr)
     }
 
@@ -434,7 +434,7 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Number> avgDistinct(expr: Expressionable<T>): Expression<Double> {
+    fun <T : Number> avgDistinct(expr: Expressionable<@Exact T>): Expression<Double> {
         return avg(distinct = true, expr)
     }
 
@@ -868,7 +868,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, S : T?> coalesce(
-        value: Expressionable<T>,
+        value: Expressionable<@Exact T>,
         alternate: S,
         vararg others: S,
     ): Expression<T> {
@@ -885,7 +885,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, S : T> coalesce(
-        value: Expressionable<T>,
+        value: Expressionable<@Exact T>,
         alternate: Expressionable<S>,
         vararg others: Expressionable<S>,
     ): Expression<T> {
@@ -902,7 +902,7 @@ open class Jpql : JpqlDsl {
      * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END. ```
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T?> nullIf(value: Expressionable<T>, compareValue: S): Expression<T> {
+    fun <T : Any, S : T?> nullIf(value: Expressionable<@Exact T>, compareValue: S): Expression<T> {
         return Expressions.nullIf(value.toExpression(), Expressions.value(compareValue))
     }
 
@@ -912,7 +912,7 @@ open class Jpql : JpqlDsl {
      * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END. ```
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any> nullIf(value: Expressionable<T>, compareValue: Expressionable<T>): Expression<T> {
+    fun <T : Any> nullIf(value: Expressionable<@Exact T>, compareValue: Expressionable<T>): Expression<T> {
         return Expressions.nullIf(value.toExpression(), compareValue.toExpression())
     }
 
@@ -1198,91 +1198,91 @@ open class Jpql : JpqlDsl {
         return Predicates.or(listOf(this.toPredicate(), predicate.toPredicate()))
     }
 
-    fun <T : Any> Expressionable<T>.isNull(): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.isNull(): Predicate {
         return Predicates.isNull(this.toExpression())
     }
 
-    fun <T : Any> Expressionable<T>.isNotNull(): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.isNotNull(): Predicate {
         return Predicates.isNotNull(this.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T?> Expressionable<T>.equal(value: S): Predicate {
+    fun <T : Any, S : T?> Expressionable<@Exact T>.equal(value: S): Predicate {
         return Predicates.equal(this.toExpression(), Expressions.value(value))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.equal(value: Expressionable<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.equal(value: Expressionable<T>): Predicate {
         return Predicates.equal(this.toExpression(), value.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.equalAll(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.equalAll(subquery: Subquery<T>): Predicate {
         return Predicates.equalAll(this.toExpression(), subquery)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.equalAny(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.equalAny(subquery: Subquery<T>): Predicate {
         return Predicates.equalAny(this.toExpression(), subquery)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T?> Expressionable<T>.eq(compareValue: S): Predicate {
+    fun <T : Any, S : T?> Expressionable<@Exact T>.eq(compareValue: S): Predicate {
         return Predicates.equal(this.toExpression(), Expressions.value(compareValue))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.eq(compareValue: Expressionable<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.eq(compareValue: Expressionable<T>): Predicate {
         return Predicates.equal(this.toExpression(), compareValue.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.eqAll(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.eqAll(subquery: Subquery<T>): Predicate {
         return Predicates.equalAll(this.toExpression(), subquery)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.eqAny(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.eqAny(subquery: Subquery<T>): Predicate {
         return Predicates.equalAny(this.toExpression(), subquery)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T?> Expressionable<T>.notEqual(value: S): Predicate {
+    fun <T : Any, S : T?> Expressionable<@Exact T>.notEqual(value: S): Predicate {
         return Predicates.notEqual(this.toExpression(), Expressions.value(value))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.notEqual(value: Expressionable<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notEqual(value: Expressionable<T>): Predicate {
         return Predicates.notEqual(this.toExpression(), value.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.notEqualAll(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notEqualAll(subquery: Subquery<T>): Predicate {
         return Predicates.notEqualAll(this.toExpression(), subquery)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.notEqualAny(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notEqualAny(subquery: Subquery<T>): Predicate {
         return Predicates.notEqualAny(this.toExpression(), subquery)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T?> Expressionable<T>.ne(value: S): Predicate {
+    fun <T : Any, S : T?> Expressionable<@Exact T>.ne(value: S): Predicate {
         return Predicates.notEqual(this.toExpression(), Expressions.value(value))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.ne(value: Expressionable<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.ne(value: Expressionable<T>): Predicate {
         return Predicates.notEqual(this.toExpression(), value.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.neAll(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.neAll(subquery: Subquery<T>): Predicate {
         return Predicates.notEqualAll(this.toExpression(), subquery)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.neAny(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.neAny(subquery: Subquery<T>): Predicate {
         return Predicates.notEqualAny(this.toExpression(), subquery)
     }
 
@@ -1290,7 +1290,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.lessThan(value: S, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.lessThan(value: S, inclusive: Boolean): Predicate {
         return if (inclusive) {
             Predicates.lessThanOrEqualTo(this.toExpression(), Expressions.value(value))
         } else {
@@ -1302,7 +1302,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.lessThan(value: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.lessThan(value: S): Predicate {
         return lessThan(value, inclusive = false)
     }
 
@@ -1310,7 +1310,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lessThan(value: Expressionable<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThan(value: Expressionable<T>, inclusive: Boolean): Predicate {
         return if (inclusive) {
             Predicates.lessThanOrEqualTo(this.toExpression(), value.toExpression())
         } else {
@@ -1319,7 +1319,7 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lessThanAll(subquery: Subquery<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThanAll(subquery: Subquery<T>, inclusive: Boolean): Predicate {
         return if (inclusive) {
             Predicates.lessThanOrEqualToAll(this.toExpression(), subquery)
         } else {
@@ -1328,7 +1328,7 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lessThanAny(subquery: Subquery<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThanAny(subquery: Subquery<T>, inclusive: Boolean): Predicate {
         return if (inclusive) {
             Predicates.lessThanOrEqualToAny(this.toExpression(), subquery)
         } else {
@@ -1340,17 +1340,17 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lessThan(value: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThan(value: Expressionable<T>): Predicate {
         return lessThan(value, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lessThanAll(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThanAll(subquery: Subquery<T>): Predicate {
         return lessThanAll(subquery, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lessThanAny(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThanAny(subquery: Subquery<T>): Predicate {
         return lessThanAny(subquery, inclusive = false)
     }
 
@@ -1358,7 +1358,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lt(value: T, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lt(value: T, inclusive: Boolean): Predicate {
         return lessThan(value, inclusive)
     }
 
@@ -1366,7 +1366,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.lt(value: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.lt(value: S): Predicate {
         return lessThan(value, inclusive = false)
     }
 
@@ -1374,17 +1374,17 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lt(value: Expressionable<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lt(value: Expressionable<T>, inclusive: Boolean): Predicate {
         return lessThan(value, inclusive)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.ltAll(subquery: Subquery<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.ltAll(subquery: Subquery<T>, inclusive: Boolean): Predicate {
         return lessThanAll(subquery, inclusive)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.ltAny(subquery: Subquery<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.ltAny(subquery: Subquery<T>, inclusive: Boolean): Predicate {
         return lessThanAny(subquery, inclusive)
     }
 
@@ -1392,17 +1392,17 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lt(value: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lt(value: Expressionable<T>): Predicate {
         return lessThan(value, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.ltAll(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.ltAll(subquery: Subquery<T>): Predicate {
         return lessThanAll(subquery, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.ltAny(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.ltAny(subquery: Subquery<T>): Predicate {
         return lessThanAny(subquery, inclusive = false)
     }
 
@@ -1410,7 +1410,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than or equal to the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.lessThanOrEqualTo(value: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.lessThanOrEqualTo(value: S): Predicate {
         return lessThan(value, inclusive = true)
     }
 
@@ -1418,17 +1418,17 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than or equal to the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lessThanOrEqualTo(value: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThanOrEqualTo(value: Expressionable<T>): Predicate {
         return lessThan(value, inclusive = true)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lessThanOrEqualToAll(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThanOrEqualToAll(subquery: Subquery<T>): Predicate {
         return lessThanAll(subquery, inclusive = true)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.lessThanOrEqualToAny(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThanOrEqualToAny(subquery: Subquery<T>): Predicate {
         return lessThanAny(subquery, inclusive = true)
     }
 
@@ -1436,7 +1436,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than or equal to the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.le(value: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.le(value: S): Predicate {
         return lessThan(value, inclusive = true)
     }
 
@@ -1444,17 +1444,17 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is less than or equal to the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.le(value: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.le(value: Expressionable<T>): Predicate {
         return lessThan(value, inclusive = true)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.leAll(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.leAll(subquery: Subquery<T>): Predicate {
         return lessThanAll(subquery, inclusive = true)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.leAny(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.leAny(subquery: Subquery<T>): Predicate {
         return lessThanAny(subquery, inclusive = true)
     }
 
@@ -1462,7 +1462,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.greaterThan(value: S, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.greaterThan(value: S, inclusive: Boolean): Predicate {
         return if (inclusive) {
             Predicates.greaterThanOrEqualTo(this.toExpression(), Expressions.value(value))
         } else {
@@ -1474,7 +1474,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.greaterThan(value: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.greaterThan(value: S): Predicate {
         return greaterThan(value, inclusive = false)
     }
 
@@ -1482,7 +1482,10 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.greaterThan(value: Expressionable<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThan(
+        value: Expressionable<T>,
+        inclusive: Boolean
+    ): Predicate {
         return if (inclusive) {
             Predicates.greaterThanOrEqualTo(this.toExpression(), value.toExpression())
         } else {
@@ -1491,7 +1494,10 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.greaterThanAll(subquery: Subquery<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThanAll(
+        subquery: Subquery<T>,
+        inclusive: Boolean
+    ): Predicate {
         return if (inclusive) {
             Predicates.greaterThanOrEqualToAll(this.toExpression(), subquery)
         } else {
@@ -1500,7 +1506,10 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.greaterThanAny(subquery: Subquery<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThanAny(
+        subquery: Subquery<T>,
+        inclusive: Boolean
+    ): Predicate {
         return if (inclusive) {
             Predicates.greaterThanOrEqualToAny(this.toExpression(), subquery)
         } else {
@@ -1512,17 +1521,17 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.greaterThan(value: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThan(value: Expressionable<T>): Predicate {
         return greaterThan(value, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.greaterThanAll(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThanAll(subquery: Subquery<T>): Predicate {
         return greaterThanAll(subquery, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.greaterThanAny(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThanAny(subquery: Subquery<T>): Predicate {
         return greaterThanAny(subquery, inclusive = false)
     }
 
@@ -1530,7 +1539,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.gt(value: S, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.gt(value: S, inclusive: Boolean): Predicate {
         return greaterThan(value, inclusive)
     }
 
@@ -1538,7 +1547,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.gt(value: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.gt(value: S): Predicate {
         return greaterThan(value, inclusive = false)
     }
 
@@ -1546,17 +1555,17 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.gt(value: Expressionable<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.gt(value: Expressionable<T>, inclusive: Boolean): Predicate {
         return greaterThan(value, inclusive)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.gtAll(subquery: Subquery<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.gtAll(subquery: Subquery<T>, inclusive: Boolean): Predicate {
         return greaterThanAll(subquery, inclusive)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.gtAny(subquery: Subquery<T>, inclusive: Boolean): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.gtAny(subquery: Subquery<T>, inclusive: Boolean): Predicate {
         return greaterThanAny(subquery, inclusive)
     }
 
@@ -1564,17 +1573,17 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.gt(value: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.gt(value: Expressionable<T>): Predicate {
         return greaterThan(value, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.gtAll(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.gtAll(subquery: Subquery<T>): Predicate {
         return greaterThanAll(subquery, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.gtAny(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.gtAny(subquery: Subquery<T>): Predicate {
         return greaterThanAny(subquery, inclusive = false)
     }
 
@@ -1582,7 +1591,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than or equal to the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.greaterThanOrEqualTo(value: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.greaterThanOrEqualTo(value: S): Predicate {
         return greaterThan(value, inclusive = true)
     }
 
@@ -1590,17 +1599,17 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than or equal to the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.greaterThanOrEqualTo(value: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThanOrEqualTo(value: Expressionable<T>): Predicate {
         return greaterThan(value, inclusive = true)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.greaterThanOrEqualToAll(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThanOrEqualToAll(subquery: Subquery<T>): Predicate {
         return greaterThanAll(subquery, inclusive = true)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.greaterThanOrEqualToAny(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThanOrEqualToAny(subquery: Subquery<T>): Predicate {
         return greaterThanAny(subquery, inclusive = true)
     }
 
@@ -1608,7 +1617,7 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than or equal to the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.ge(value: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.ge(value: S): Predicate {
         return greaterThan(value, inclusive = true)
     }
 
@@ -1616,89 +1625,95 @@ open class Jpql : JpqlDsl {
      * Predicate that tests if the [this] is greater than or equal to the [value].
      */
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.ge(value: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.ge(value: Expressionable<T>): Predicate {
         return greaterThan(value, inclusive = true)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.geAll(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.geAll(subquery: Subquery<T>): Predicate {
         return greaterThanAll(subquery, inclusive = true)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.geAny(subquery: Subquery<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.geAny(subquery: Subquery<T>): Predicate {
         return greaterThanAny(subquery, inclusive = true)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.between(min: S, max: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.between(min: S, max: S): Predicate {
         return Predicates.between(this.toExpression(), Expressions.value(min), Expressions.value(max))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.between(min: Expressionable<T>, max: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.between(
+        min: Expressionable<T>,
+        max: Expressionable<T>
+    ): Predicate {
         return Predicates.between(this.toExpression(), min.toExpression(), max.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>, S : T?> Expressionable<T>.notBetween(min: S, max: S): Predicate {
+    fun <T : Comparable<T>, S : T?> Expressionable<@Exact T>.notBetween(min: S, max: S): Predicate {
         return Predicates.notBetween(this.toExpression(), Expressions.value(min), Expressions.value(max))
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<T>.notBetween(min: Expressionable<T>, max: Expressionable<T>): Predicate {
+    fun <T : Comparable<T>> Expressionable<@Exact T>.notBetween(
+        min: Expressionable<T>,
+        max: Expressionable<T>
+    ): Predicate {
         return Predicates.notBetween(this.toExpression(), min.toExpression(), max.toExpression())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T?> Expressionable<T>.`in`(vararg compareValues: S): Predicate {
+    fun <T : Any, S : T?> Expressionable<@Exact T>.`in`(vararg compareValues: S): Predicate {
         return Predicates.`in`(this.toExpression(), compareValues.map { Expressions.value(it) })
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T?> Expressionable<T>.`in`(compareValues: Iterable<S>): Predicate {
+    fun <T : Any, S : T?> Expressionable<@Exact T>.`in`(compareValues: Iterable<S>): Predicate {
         return Predicates.`in`(this.toExpression(), compareValues.map { Expressions.value(it) })
     }
 
     @JvmName("inExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.`in`(compareValues: Iterable<Expressionable<T>?>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.`in`(compareValues: Iterable<Expressionable<T>?>): Predicate {
         return Predicates.`in`(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.`in`(vararg compareValues: Expressionable<T>?): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.`in`(vararg compareValues: Expressionable<T>?): Predicate {
         return Predicates.`in`(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.`in`(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.`in`(subquery: Subquery<T>): Predicate {
         return Predicates.`in`(this.toExpression(), subquery)
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T?> Expressionable<T>.notIn(compareValues: Iterable<S>): Predicate {
+    fun <T : Any, S : T?> Expressionable<@Exact T>.notIn(compareValues: Iterable<S>): Predicate {
         return Predicates.notIn(this.toExpression(), compareValues.map { Expressions.value(it) })
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T?> Expressionable<T>.notIn(vararg compareValues: S): Predicate {
+    fun <T : Any, S : T?> Expressionable<@Exact T>.notIn(vararg compareValues: S): Predicate {
         return Predicates.notIn(this.toExpression(), compareValues.map { Expressions.value(it) })
     }
 
     @JvmName("notInExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.notIn(compareValues: Iterable<Expressionable<T>?>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notIn(compareValues: Iterable<Expressionable<T>?>): Predicate {
         return Predicates.notIn(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.notIn(vararg compareValues: Expressionable<T>?): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notIn(vararg compareValues: Expressionable<T>?): Predicate {
         return Predicates.notIn(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<T>.notIn(subquery: Subquery<T>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notIn(subquery: Subquery<T>): Predicate {
         return Predicates.notIn(this.toExpression(), subquery)
     }
 

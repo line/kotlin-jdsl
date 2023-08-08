@@ -1,30 +1,35 @@
 rootProject.name = "kotlin-jdsl"
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.6.0"
+}
+
 // Module
 module(name = ":bundle", path = "bundle")
-module(name = ":jpql-jpa-bundle", path = "bundle/jpql-jpa")
-module(name = ":jpql-spring-jpa-bundle", path = "bundle/jpql-spring-jpa")
+module(name = ":bundle-jpql-jpa", path = "bundle/jpql-jpa")
+module(name = ":bundle-jpql-spring-jpa", path = "bundle/jpql-spring-jpa")
+module(name = ":bundle-jpql-spring-jpa-javax", path = "bundle/jpql-spring-jpa-javax")
 
 module(name = ":dsl", path = "dsl")
-module(name = ":jpql-dsl", path = "dsl/jpql")
-module(name = ":sql-dsl", path = "dsl/sql")
+module(name = ":dsl-jpql", path = "dsl/jpql")
+module(name = ":dsl-sql", path = "dsl/sql")
 
 module(name = ":query-model", path = "query-model")
-module(name = ":jpql-query-model", path = "query-model/jpql")
-module(name = ":sql-query-model", path = "query-model/sql")
+module(name = ":query-model-jpql", path = "query-model/jpql")
+module(name = ":query-model-sql", path = "query-model/sql")
 
 module(name = ":render", path = "render")
-module(name = ":jpql-render", path = "render/jpql")
-module(name = ":sql-render", path = "render/sql")
+module(name = ":render-jpql", path = "render/jpql")
+module(name = ":render-sql", path = "render/sql")
 
 module(name = ":executor", path = "executor")
-module(name = ":jdbc-executor", path = "executor/jdbc")
-module(name = ":spring-jdbc-executor", path = "executor/spring-jdbc")
-module(name = ":spring-jpa-executor", path = "executor/spring-jpa")
+module(name = ":executor-spring-jpa", path = "executor/spring-jpa")
+module(name = ":executor-spring-jpa-javax", path = "executor/spring-jpa-javax")
 
 module(name = ":example", path = "example")
-module(name = ":jpql-jpa-example", path = "example/jpql-jpa")
-module(name = ":jpql-spring-jpa-example", path = "example/jpql-spring-jpa")
+module(name = ":example-jpql-jpa", path = "example/jpql-jpa")
+module(name = ":example-jpql-spring-jpa", path = "example/jpql-spring-jpa")
+module(name = ":example-jpql-spring-jpa-javax", path = "example/jpql-spring-jpa-javax")
 
 // Version Catalog
 dependencyResolutionManagement {

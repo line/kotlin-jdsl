@@ -5,7 +5,7 @@ spring5 = "5.3.29"
 spring-boot2 = "2.7.14"
 
 spring = "6.0.11"
-spring-boot = "3.1.2"
+spring-boot3 = "3.1.2"
 
 [libraries]
 # kotlin
@@ -16,33 +16,43 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 javax-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
 jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.0.0" }
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.7" }
-jsqlparser = { module = "com.github.jsqlparser:jsqlparser", version = "4.5" }
 
 # SpringBoot
-spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
-spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
-spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
-spring-boot-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }
-spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
-spring-boot-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.9.0" }
+spring-boot3-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot3" }
+spring-boot3-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot3" }
+spring-boot3-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot3" }
+spring-boot3-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot3" }
+spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot3" }
+spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot3" }
+spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.9.0" }
+
+spring-boot2-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot2" }
+spring-boot2-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot2" }
+spring-boot2-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot2" }
+spring-boot2-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot2" }
+spring-boot2-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot2" }
+spring-boot2-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot2" }
+spring-boot2-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.8.1" }
 
 # Spring
-spring-core = { module = "org.springframework:spring-core", version.ref = "spring" }
-spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring" }
-spring-data-jpa = { module = "org.springframework.data:spring-data-jpa", version = "3.1.2" }
+
 spring-jdbc = { module = "org.springframework:spring-jdbc", version = "6.0.11" }
 spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.3.8" }
+
+# https://github.com/spring-projects/spring-data-jpa/issues/2812
+spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", version = "2.7.9" }
+spring-data-jpa3 = { module = "org.springframework.data:spring-data-jpa", version = "3.0.3" }
 
 # Test
 junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.9.2" }
 assertJ = { module = "org.assertj:assertj-core", version = "3.24.2" }
 mockk = { module = "io.mockk:mockk", version = "1.13.4" }
 
-h2 = { module = "com.h2database:h2", version = "2.1.214" }
+h2 = { module = "com.h2database:h2", version = "2.2.220" }
 
 [plugins]
-spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-boot2 = { id = "org.springframework.boot", version.ref = "spring-boot3" }
+spring-boot3 = { id = "org.springframework.boot", version.ref = "spring-boot3" }
 
 kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }

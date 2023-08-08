@@ -1,6 +1,10 @@
+plugins {
+
+}
+
 dependencies {
     api(projects.render)
-    api(projects.sqlQueryModel)
+    api(projects.queryModelSql)
 
     testImplementation(testFixtures(projects.render))
 }
