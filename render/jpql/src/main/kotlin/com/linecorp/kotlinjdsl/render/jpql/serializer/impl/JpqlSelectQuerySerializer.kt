@@ -51,7 +51,7 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
 
         val fromContext = context + JpqlRenderClause.From
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("FROM")
         writer.write(" ")
 
@@ -66,7 +66,7 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
 
         val whereContext = context + JpqlRenderClause.Where
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("WHERE")
         writer.write(" ")
 
@@ -79,7 +79,7 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
 
         val groupByContext = context + JpqlRenderClause.GroupBy
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("GROUP BY")
         writer.write(" ")
 
@@ -94,7 +94,7 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
 
         val havingContext = context + JpqlRenderClause.Having
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("HAVING")
         writer.write(" ")
 
@@ -107,7 +107,7 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
 
         val orderByContext = context + JpqlRenderClause.OrderBy
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("ORDER BY")
         writer.write(" ")
 

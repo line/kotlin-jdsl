@@ -1894,8 +1894,18 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
+    fun <T : Any> update(type: KClass<T>): UpdateQuerySetFirstStep<T> {
+        return UpdateQuerySetStepFirstDsl(Entities.entity(type))
+    }
+
+    @SinceJdsl("3.0.0")
     fun <T : Any> update(entity: Entity<T>): UpdateQuerySetFirstStep<T> {
         return UpdateQuerySetStepFirstDsl(entity)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> deleteFrom(type: KClass<T>): DeleteQueryWhereStep<T> {
+        return DeleteQueryDsl(Entities.entity(type))
     }
 
     @SinceJdsl("3.0.0")

@@ -15,13 +15,13 @@ class JpqlLeftJoinSerializer : JpqlSerializer<JpqlLeftJoin<*>> {
     override fun serialize(part: JpqlLeftJoin<*>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("LEFT JOIN")
         writer.write(" ")
 
         delegate.serialize(part.entity, writer, context)
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("ON")
         writer.write(" ")
 

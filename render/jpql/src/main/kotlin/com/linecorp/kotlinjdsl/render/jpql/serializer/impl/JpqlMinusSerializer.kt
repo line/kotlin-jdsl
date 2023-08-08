@@ -17,7 +17,7 @@ class JpqlMinusSerializer : JpqlSerializer<JpqlMinus<*>> {
 
         delegate.serialize(part.value1, writer, context)
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("-")
         writer.write(" ")
 

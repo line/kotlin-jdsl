@@ -15,13 +15,13 @@ class JpqlInnerAssociationJoinSerializer : JpqlSerializer<JpqlInnerAssociationJo
     override fun serialize(part: JpqlInnerAssociationJoin<*>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("INNER JOIN")
         writer.write(" ")
 
         delegate.serialize(part.association, writer, context)
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
 
         writer.write("AS")
         writer.write(" ")
@@ -30,7 +30,7 @@ class JpqlInnerAssociationJoinSerializer : JpqlSerializer<JpqlInnerAssociationJo
         val on = part.on
 
         if (on != null) {
-            writer.writeIfAbsent(" ")
+            writer.write(" ")
             writer.write("ON")
             writer.write(" ")
 

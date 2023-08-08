@@ -16,7 +16,7 @@ class JpqlJoinedEntitySerializer : JpqlSerializer<JpqlJoinedEntity> {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         delegate.serialize(part.entity, writer, context)
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         delegate.serialize(part.join, writer, context)
     }
 }

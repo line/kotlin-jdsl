@@ -23,7 +23,7 @@ class JpqlAliasedExpressionSerializer : JpqlSerializer<JpqlAliasedExpression<*>>
         if ((statement.isSelect() && clause.isSelect())) {
             delegate.serialize(part.expr, writer, context)
 
-            writer.writeIfAbsent(" ")
+            writer.write(" ")
             writer.write("AS")
             writer.write(" ")
         }

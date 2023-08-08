@@ -283,13 +283,13 @@ class SelectExample : WithAssertions {
     @Test
     fun `the number of employees who belong to more than one department`() {
         // given
-        data class Subquery(
+        data class DerivedEntity(
             val employeeId: Long,
             val count: Long,
         )
 
         val query = jpql {
-            val subquery = select<Subquery>(
+            val subquery = select<DerivedEntity>(
                 path(Employee::employeeId).`as`(expression("employeeId")),
                 count(Employee::employeeId).`as`(expression("count")),
             ).from(
@@ -302,7 +302,7 @@ class SelectExample : WithAssertions {
             )
 
             select(
-                count(Subquery::employeeId),
+                count(DerivedEntity::employeeId),
             ).from(
                 subquery.asEntity(),
             )

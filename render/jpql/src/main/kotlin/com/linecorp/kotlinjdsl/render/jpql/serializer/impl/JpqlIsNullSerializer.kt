@@ -17,7 +17,7 @@ class JpqlIsNullSerializer : JpqlSerializer<JpqlIsNull> {
 
         delegate.serialize(part.expr, writer, context)
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
         writer.write("IS NULL")
     }
 }

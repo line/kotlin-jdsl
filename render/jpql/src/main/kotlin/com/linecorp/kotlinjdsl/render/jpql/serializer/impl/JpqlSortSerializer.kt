@@ -18,7 +18,7 @@ class JpqlSortSerializer : JpqlSerializer<JpqlSort> {
 
         delegate.serialize(part.expr, writer, context)
 
-        writer.writeIfAbsent(" ")
+        writer.write(" ")
 
         when (part.order) {
             Sort.Order.ASC -> writer.write("ASC")
@@ -28,7 +28,7 @@ class JpqlSortSerializer : JpqlSerializer<JpqlSort> {
         val nullOrder = part.nullOrder
 
         if (nullOrder != null) {
-            writer.writeIfAbsent(" ")
+            writer.write(" ")
 
             when (nullOrder) {
                 Sort.NullOrder.FIRST -> writer.write("NULLS FIRST")
