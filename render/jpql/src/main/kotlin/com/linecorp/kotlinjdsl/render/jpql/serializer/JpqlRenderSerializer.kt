@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer
 
-import com.linecorp.kotlinjdsl.SuperClassDepthComparator
+import com.linecorp.kotlinjdsl.clazz.SuperClassDepthComparator
 import com.linecorp.kotlinjdsl.querymodel.QueryPart
 import com.linecorp.kotlinjdsl.render.AbstractRenderContextElement
 import com.linecorp.kotlinjdsl.render.RenderContext

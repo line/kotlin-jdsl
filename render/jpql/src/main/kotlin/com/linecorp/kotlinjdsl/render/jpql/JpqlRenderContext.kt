@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql
 
-import com.linecorp.kotlinjdsl.ClassUtils
+import com.linecorp.kotlinjdsl.clazz.ClassUtils
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospectorModifier

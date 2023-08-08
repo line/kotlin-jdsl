@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl
+package com.linecorp.kotlinjdsl.clazz
 
 object ClassUtils {
     fun isPresent(className: String, classLoader: ClassLoader? = null): Boolean {

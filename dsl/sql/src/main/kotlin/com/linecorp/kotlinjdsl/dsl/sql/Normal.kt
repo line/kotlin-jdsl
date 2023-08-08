@@ -1,7 +1,6 @@
 package com.linecorp.kotlinjdsl.dsl.sql
 
 import com.linecorp.kotlinjdsl.SinceJdsl
-import com.linecorp.kotlinjdsl.dsl.owner
 import com.linecorp.kotlinjdsl.dsl.sql.delete.DeleteQueryWhereStep
 import com.linecorp.kotlinjdsl.dsl.sql.delete.impl.DeleteQueryDsl
 import com.linecorp.kotlinjdsl.dsl.sql.expression.CaseWhenFirstStep
@@ -13,6 +12,7 @@ import com.linecorp.kotlinjdsl.dsl.sql.select.SelectQueryFromStep
 import com.linecorp.kotlinjdsl.dsl.sql.select.impl.SelectQueryDsl
 import com.linecorp.kotlinjdsl.dsl.sql.update.UpdateQuerySetFirstStep
 import com.linecorp.kotlinjdsl.dsl.sql.update.impl.UpdateQueryDsl
+import com.linecorp.kotlinjdsl.property.PropertyUtils
 import com.linecorp.kotlinjdsl.querymodel.sql.*
 import com.linecorp.kotlinjdsl.querymodel.sql.impl.*
 import kotlin.reflect.KClass
@@ -297,7 +297,7 @@ open class Normal : SqlDsl {
     @JvmName("col3")
     @SinceJdsl("3.0.0")
     fun <T : Any, V> col(property: KProperty1<T, V>): Column<T, V> {
-        return Column(table(property.owner()), property)
+        return Column(table(PropertyUtils.getOwner(property)), property)
     }
 
     @JvmName("column1")
@@ -318,7 +318,7 @@ open class Normal : SqlDsl {
     @JvmName("column3")
     @SinceJdsl("3.0.0")
     fun <T : Any, V> column(property: KProperty1<T, V>): Column<T, V> {
-        return Column(table(property.owner()), property)
+        return Column(table(PropertyUtils.getOwner(property)), property)
     }
 
     @JvmName("exits1")

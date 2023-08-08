@@ -1,4 +1,6 @@
-package com.linecorp.kotlinjdsl
+package com.linecorp.kotlinjdsl.clazz
+
+import com.linecorp.kotlinjdsl.Internal
 
 /**
  * A comparator capable of sorting types based on their depth from the [target] type.

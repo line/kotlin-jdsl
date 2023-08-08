@@ -273,9 +273,9 @@ class SelectExample : WithAssertions {
         // then
         assertThat(actual.resultList).isEqualTo(
             listOf(
-                Row(departmentId = 1, count = 6),
-                Row(departmentId = 2, count = 15),
-                Row(departmentId = 3, count = 18),
+                Row(1, 6),
+                Row(2, 15),
+                Row(3, 18),
             ),
         )
     }
