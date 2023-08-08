@@ -20,6 +20,7 @@ class JpqlCountSerializer : JpqlSerializer<JpqlCount> {
 
         if (part.distinct) {
             writer.write("DISTINCT")
+            writer.write(" ")
         }
 
         delegate.serialize(part.expr, writer, context)
