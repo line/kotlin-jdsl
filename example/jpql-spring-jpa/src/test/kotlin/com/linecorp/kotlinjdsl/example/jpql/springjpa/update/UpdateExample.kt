@@ -58,12 +58,9 @@ class UpdateExample : WithAssertions {
         )
 
         val employeeAnnualSalaries = jpql {
-            select(
-                new(
-                    Row::class,
-                    path(FullTimeEmployee::employeeId),
-                    path(FullTimeEmployee::annualSalary),
-                ),
+            selectNew<Row>(
+                path(FullTimeEmployee::employeeId),
+                path(FullTimeEmployee::annualSalary),
             ).from(
                 entity(FullTimeEmployee::class),
             ).orderBy(
@@ -129,12 +126,9 @@ class UpdateExample : WithAssertions {
         )
 
         val employeeNicknames = jpql {
-            select(
-                new(
-                    Row::class,
-                    path(Employee::employeeId),
-                    path(Employee::nickname),
-                ),
+            selectNew<Row>(
+                path(Employee::employeeId),
+                path(Employee::nickname),
             ).from(
                 entity(Employee::class),
             ).orderBy(

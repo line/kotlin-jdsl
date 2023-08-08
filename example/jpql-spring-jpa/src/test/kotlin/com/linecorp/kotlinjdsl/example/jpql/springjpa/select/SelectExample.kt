@@ -251,12 +251,9 @@ class SelectExample : WithAssertions {
         )
 
         val query = jpql {
-            select(
-                new(
-                    Row::class,
-                    path(EmployeeDepartment::departmentId),
-                    count(Employee::employeeId),
-                ),
+            selectNew<Row>(
+                path(EmployeeDepartment::departmentId),
+                count(Employee::employeeId),
             ).from(
                 entity(Employee::class),
                 join(Employee::departments),

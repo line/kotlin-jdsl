@@ -1894,6 +1894,104 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
+    fun <T : Any> selectNew(
+        distinct: Boolean,
+        returnType: KClass<T>,
+        expr: Iterable<Expressionable<*>>,
+    ): SelectQueryFromStep<T> {
+        return SelectQueryFromStepDsl(
+            returnType = returnType,
+            distinct = distinct,
+            select = listOf(Expressions.new(returnType, expr.map { it.toExpression() })),
+        )
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> selectNew(
+        distinct: Boolean,
+        returnType: KClass<T>,
+        vararg expr: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct, returnType, expr.toList())
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> selectNew(
+        distinct: Boolean,
+        expr: Iterable<Expressionable<*>>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct, T::class, expr)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> selectNew(
+        distinct: Boolean,
+        vararg expr: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct, T::class, expr.toList())
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> selectNew(
+        returnType: KClass<T>,
+        expr: Iterable<Expressionable<*>>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct = false, returnType, expr)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> selectNew(
+        returnType: KClass<T>,
+        vararg expr: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct = false, returnType, expr.toList())
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> selectNew(
+        expr: Iterable<Expressionable<*>>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct = false, T::class, expr)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> selectNew(
+        vararg expr: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct = false, T::class, expr.toList())
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> selectDistinctNew(
+        returnType: KClass<T>,
+        expr: Iterable<Expressionable<*>>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct = true, returnType, expr)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> selectDistinctNew(
+        returnType: KClass<T>,
+        vararg expr: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct = true, returnType, expr.toList())
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> selectDistinctNew(
+        expr: Iterable<Expressionable<*>>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct = true, T::class, expr)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> selectDistinctNew(
+        vararg expr: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return selectNew(distinct = true, T::class, expr.toList())
+    }
+
+    @SinceJdsl("3.0.0")
     fun <T : Any> update(type: KClass<T>): UpdateQuerySetFirstStep<T> {
         return UpdateQuerySetStepFirstDsl(Entities.entity(type))
     }
