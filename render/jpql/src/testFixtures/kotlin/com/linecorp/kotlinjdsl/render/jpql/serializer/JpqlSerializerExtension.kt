@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer
 
+import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlRenderIntrospector
 import io.mockk.every
 import io.mockk.excludeRecords
 import io.mockk.isMockKMock
@@ -17,6 +18,11 @@ class JpqlSerializerExtension : InvocationInterceptor {
         val args = invocationContext.arguments
 
         args.forEach {
+            if (it is JpqlRenderIntrospector && isMockKMock(it)) {
+                every { it.key } returns JpqlRenderIntrospector
+                excludeRecords { it.key }
+            }
+
             if (it is JpqlRenderSerializer && isMockKMock(it)) {
                 every { it.key } returns JpqlRenderSerializer
                 excludeRecords { it.key }
