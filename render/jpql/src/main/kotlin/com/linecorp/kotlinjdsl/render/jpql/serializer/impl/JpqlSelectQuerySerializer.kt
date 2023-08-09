@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.iterable.IterableUtils
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderClause
@@ -74,7 +75,7 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
     }
 
     private fun writeGroupBy(part: JpqlSelectQuery<*>, writer: JpqlWriter, context: RenderContext) {
-        val groupBy = part.groupBy ?: return
+        val groupBy = part.groupBy?.takeIf { IterableUtils.isNotEmpty(it) } ?: return
         val delegate = context.getValue(JpqlRenderSerializer)
 
         val groupByContext = context + JpqlRenderClause.GroupBy
@@ -102,7 +103,7 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
     }
 
     private fun writeOrderBy(part: JpqlSelectQuery<*>, writer: JpqlWriter, context: RenderContext) {
-        val orderBy = part.orderBy ?: return
+        val orderBy = part.orderBy?.takeIf { IterableUtils.isNotEmpty(it) } ?: return
         val delegate = context.getValue(JpqlRenderSerializer)
 
         val orderByContext = context + JpqlRenderClause.OrderBy

@@ -18,7 +18,8 @@ class JpqlEntitySerializer : JpqlSerializer<JpqlEntity<*>> {
         val statement = context.getValue(JpqlRenderStatement)
         val clause = context.getValue(JpqlRenderClause)
 
-        if ((statement.isSelect() && clause.isFrom())
+        if (
+            (statement.isSelect() && clause.isFrom())
             || (statement.isUpdate() && clause.isUpdate())
             || (statement.isDelete() && clause.isDeleteFrom())
         ) {

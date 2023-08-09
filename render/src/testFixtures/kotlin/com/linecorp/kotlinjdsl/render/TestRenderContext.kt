@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.render
 
-class TestRenderContext(
+data class TestRenderContext(
     private val elements: Map<RenderContext.Key<*>, RenderContext.Element>,
 ) : RenderContext {
     constructor(vararg elements: RenderContext.Element) : this(elements.associateBy { it.key })

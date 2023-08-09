@@ -15,7 +15,6 @@ class JpqlLeftJoinSerializer : JpqlSerializer<JpqlLeftJoin<*>> {
     override fun serialize(part: JpqlLeftJoin<*>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        writer.write(" ")
         writer.write("LEFT JOIN")
         writer.write(" ")
 

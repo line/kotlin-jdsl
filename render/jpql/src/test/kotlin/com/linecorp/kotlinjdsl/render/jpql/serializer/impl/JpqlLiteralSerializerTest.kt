@@ -4,11 +4,17 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.runs
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
+@JpqlSerializerTest
 class JpqlLiteralSerializerTest : WithAssertions {
     private val sut = JpqlLiteralSerializer()
 
@@ -31,16 +37,13 @@ class JpqlLiteralSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize int`() {
+    fun `serialize - int`(
+        @MockK writer: JpqlWriter,
+        @MockK serializer: JpqlRenderSerializer,
+    ) {
         // given
-        val writer = mockkClass(JpqlWriter::class) {
-            every { write(any<Int>()) } just runs
-        }
-
-        val serializer = mockkClass(JpqlRenderSerializer::class) {
-            every { key } returns JpqlRenderSerializer
-            every { serialize(any(), any(), any()) } just runs
-        }
+        every { writer.write(any<Int>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.intLiteral(int1)
         val context = TestRenderContext(serializer)
@@ -49,32 +52,20 @@ class JpqlLiteralSerializerTest : WithAssertions {
         sut.serialize(part as JpqlLiteral.IntLiteral, writer, context)
 
         // then
-        verify(exactly = 1) {
+        verifySequence {
             writer.write(int1)
         }
-
-        verify {
-            serializer.key
-        }
-
-        confirmVerified(
-            writer,
-            serializer,
-        )
     }
 
     @Test
-    fun `serialize long`() {
+    fun `serialize - long`(
+        @MockK writer: JpqlWriter,
+        @MockK serializer: JpqlRenderSerializer,
+    ) {
         // given
-        val writer = mockkClass(JpqlWriter::class) {
-            every { write(any<Long>()) } just runs
-            every { write(any<String>()) } just runs
-        }
-
-        val serializer = mockkClass(JpqlRenderSerializer::class) {
-            every { key } returns JpqlRenderSerializer
-            every { serialize(any(), any(), any()) } just runs
-        }
+        every { writer.write(any<Long>()) } just runs
+        every { writer.write(any<String>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.longLiteral(long1)
         val context = TestRenderContext(serializer)
@@ -83,33 +74,21 @@ class JpqlLiteralSerializerTest : WithAssertions {
         sut.serialize(part as JpqlLiteral.LongLiteral, writer, context)
 
         // then
-        verify(exactly = 1) {
+        verifySequence {
             writer.write(long1)
             writer.write("L")
         }
-
-        verify {
-            serializer.key
-        }
-
-        confirmVerified(
-            writer,
-            serializer,
-        )
     }
 
     @Test
-    fun `serialize float`() {
+    fun `serialize - float`(
+        @MockK writer: JpqlWriter,
+        @MockK serializer: JpqlRenderSerializer,
+    ) {
         // given
-        val writer = mockkClass(JpqlWriter::class) {
-            every { write(any<Float>()) } just runs
-            every { write(any<String>()) } just runs
-        }
-
-        val serializer = mockkClass(JpqlRenderSerializer::class) {
-            every { key } returns JpqlRenderSerializer
-            every { serialize(any(), any(), any()) } just runs
-        }
+        every { writer.write(any<Float>()) } just runs
+        every { writer.write(any<String>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.floatLiteral(float1)
         val context = TestRenderContext(serializer)
@@ -118,32 +97,20 @@ class JpqlLiteralSerializerTest : WithAssertions {
         sut.serialize(part as JpqlLiteral.FloatLiteral, writer, context)
 
         // then
-        verify(exactly = 1) {
+        verifySequence {
             writer.write(float1)
             writer.write("F")
         }
-
-        verify {
-            serializer.key
-        }
-
-        confirmVerified(
-            writer,
-            serializer,
-        )
     }
 
     @Test
-    fun `serialize double`() {
+    fun `serialize - double`(
+        @MockK writer: JpqlWriter,
+        @MockK serializer: JpqlRenderSerializer,
+    ) {
         // given
-        val writer = mockkClass(JpqlWriter::class) {
-            every { write(any<Double>()) } just runs
-        }
-
-        val serializer = mockkClass(JpqlRenderSerializer::class) {
-            every { key } returns JpqlRenderSerializer
-            every { serialize(any(), any(), any()) } just runs
-        }
+        every { writer.write(any<Double>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.doubleLiteral(double1)
         val context = TestRenderContext(serializer)
@@ -152,31 +119,19 @@ class JpqlLiteralSerializerTest : WithAssertions {
         sut.serialize(part as JpqlLiteral.DoubleLiteral, writer, context)
 
         // then
-        verify(exactly = 1) {
+        verifySequence {
             writer.write(double1)
         }
-
-        verify {
-            serializer.key
-        }
-
-        confirmVerified(
-            writer,
-            serializer,
-        )
     }
 
     @Test
-    fun `serialize boolean`() {
+    fun `serialize - boolean`(
+        @MockK writer: JpqlWriter,
+        @MockK serializer: JpqlRenderSerializer,
+    ) {
         // given
-        val writer = mockkClass(JpqlWriter::class) {
-            every { write(any<String>()) } just runs
-        }
-
-        val serializer = mockkClass(JpqlRenderSerializer::class) {
-            every { key } returns JpqlRenderSerializer
-            every { serialize(any(), any(), any()) } just runs
-        }
+        every { writer.write(any<String>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.booleanLiteral(boolean1)
         val context = TestRenderContext(serializer)
@@ -185,31 +140,19 @@ class JpqlLiteralSerializerTest : WithAssertions {
         sut.serialize(part as JpqlLiteral.BooleanLiteral, writer, context)
 
         // then
-        verify(exactly = 1) {
+        verifySequence {
             writer.write(boolean1.toString().uppercase())
         }
-
-        verify {
-            serializer.key
-        }
-
-        confirmVerified(
-            writer,
-            serializer,
-        )
     }
 
     @Test
-    fun `serialize string`() {
+    fun `serialize - string`(
+        @MockK writer: JpqlWriter,
+        @MockK serializer: JpqlRenderSerializer,
+    ) {
         // given
-        val writer = mockkClass(JpqlWriter::class) {
-            every { write(any<String>()) } just runs
-        }
-
-        val serializer = mockkClass(JpqlRenderSerializer::class) {
-            every { key } returns JpqlRenderSerializer
-            every { serialize(any(), any(), any()) } just runs
-        }
+        every { writer.write(any<String>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.stringLiteral(string1)
         val context = TestRenderContext(serializer)
@@ -223,28 +166,16 @@ class JpqlLiteralSerializerTest : WithAssertions {
             writer.write(string1)
             writer.write(singleQuote)
         }
-
-        verify {
-            serializer.key
-        }
-
-        confirmVerified(
-            writer,
-            serializer,
-        )
     }
 
     @Test
-    fun `serialize string single quote string`() {
+    fun `serialize - string single quote string`(
+        @MockK writer: JpqlWriter,
+        @MockK serializer: JpqlRenderSerializer,
+    ) {
         // given
-        val writer = mockkClass(JpqlWriter::class) {
-            every { write(any<String>()) } just runs
-        }
-
-        val serializer = mockkClass(JpqlRenderSerializer::class) {
-            every { key } returns JpqlRenderSerializer
-            every { serialize(any(), any(), any()) } just runs
-        }
+        every { writer.write(any<String>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.stringLiteral(string1 + singleQuote + string2)
         val context = TestRenderContext(serializer)
@@ -258,14 +189,5 @@ class JpqlLiteralSerializerTest : WithAssertions {
             writer.write(string1 + singleQuote + singleQuote + string2)
             writer.write(singleQuote)
         }
-
-        verify {
-            serializer.key
-        }
-
-        confirmVerified(
-            writer,
-            serializer,
-        )
     }
 }

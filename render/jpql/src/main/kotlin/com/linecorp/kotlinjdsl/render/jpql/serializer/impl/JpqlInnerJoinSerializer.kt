@@ -15,7 +15,6 @@ class JpqlInnerJoinSerializer : JpqlSerializer<JpqlInnerJoin<*>> {
     override fun serialize(part: JpqlInnerJoin<*>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        writer.write(" ")
         writer.write("INNER JOIN")
         writer.write(" ")
 

@@ -1174,34 +1174,62 @@ open class Jpql : JpqlDsl {
         return Predicates.not(predicate.toPredicate())
     }
 
+    /**
+     * Predicate that connects [predicates] with **AND**.
+     *
+     * If [predicates] is empty, then it represents **1 = 1**.
+     */
+    @SinceJdsl("3.0.0")
     fun and(vararg predicates: Predicatable?): Predicate {
         return Predicates.and(predicates.mapNotNull { it?.toPredicate() })
     }
 
+    /**
+     * Predicate that connects [predicates] with **AND**.
+     *
+     * If [predicates] is empty, then it represents **1 = 1**.
+     */
+    @SinceJdsl("3.0.0")
     fun and(predicates: Iterable<Predicatable?>): Predicate {
         return Predicates.and(predicates.mapNotNull { it?.toPredicate() })
     }
 
+    @SinceJdsl("3.0.0")
     fun Predicatable.and(predicate: Predicatable): Predicate {
         return Predicates.and(listOf(this.toPredicate(), predicate.toPredicate()))
     }
 
+    /**
+     * Predicate that connects [predicates] with **OR**.
+     *
+     * If [predicates] is empty, then it represents **0 = 1**.
+     */
+    @SinceJdsl("3.0.0")
     fun or(vararg predicates: Predicatable?): Predicate {
         return Predicates.or(predicates.mapNotNull { it?.toPredicate() })
     }
 
+    /**
+     * Predicate that connects [predicates] with **OR**.
+     *
+     * If [predicates] is empty, then it represents **0 = 1**.
+     */
+    @SinceJdsl("3.0.0")
     fun or(predicates: Iterable<Predicatable?>): Predicate {
         return Predicates.or(predicates.mapNotNull { it?.toPredicate() })
     }
 
+    @SinceJdsl("3.0.0")
     fun Predicatable.or(predicate: Predicatable): Predicate {
         return Predicates.or(listOf(this.toPredicate(), predicate.toPredicate()))
     }
 
+    @SinceJdsl("3.0.0")
     fun <T : Any> Expressionable<@Exact T>.isNull(): Predicate {
         return Predicates.isNull(this.toExpression())
     }
 
+    @SinceJdsl("3.0.0")
     fun <T : Any> Expressionable<@Exact T>.isNotNull(): Predicate {
         return Predicates.isNotNull(this.toExpression())
     }
