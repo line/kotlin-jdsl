@@ -8,4 +8,6 @@ dependencies {
     compileOnly(libs.javax.persistence.api)
 
     testImplementation(testFixtures(projects.render))
+
+    testFixturesImplementation(libs.kotlin.reflect)
 }

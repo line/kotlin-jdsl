@@ -18,6 +18,12 @@ import org.junit.jupiter.api.Test
 class JpqlMinSerializerTest : WithAssertions {
     private val sut = JpqlMinSerializer()
 
+    @MockK
+    private lateinit var writer: JpqlWriter
+
+    @MockK
+    private lateinit var serializer: JpqlRenderSerializer
+
     @Test
     fun handledType() {
         // when
@@ -28,10 +34,7 @@ class JpqlMinSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN distinct is disabled, THEN draw min function only`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - WHEN distinct is disabled, THEN draw min function only`() {
         // given
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
@@ -52,10 +55,7 @@ class JpqlMinSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN distinct is enabled, THEN draw min function with distinct`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - WHEN distinct is enabled, THEN draw min function with distinct`() {
         // given
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs

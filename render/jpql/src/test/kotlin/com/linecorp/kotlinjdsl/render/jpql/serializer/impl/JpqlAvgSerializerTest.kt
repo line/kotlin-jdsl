@@ -18,6 +18,12 @@ import org.junit.jupiter.api.Test
 class JpqlAvgSerializerTest : WithAssertions {
     private val sut = JpqlAvgSerializer()
 
+    @MockK
+    private lateinit var writer: JpqlWriter
+
+    @MockK
+    private lateinit var serializer: JpqlRenderSerializer
+
     @Test
     fun handledType() {
         // when
@@ -28,10 +34,7 @@ class JpqlAvgSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN distinct is disabled, THEN draw avg function only`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - WHEN distinct is disabled, THEN draw avg function only`() {
         // given
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
@@ -52,10 +55,7 @@ class JpqlAvgSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN distinct is enabled, THEN draw avg function with distinct`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - WHEN distinct is enabled, THEN draw avg function with distinct`() {
         // given
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs

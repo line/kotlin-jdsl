@@ -20,6 +20,12 @@ import org.junit.jupiter.api.Test
 class JpqlAliasedExpressionSerializerTest : WithAssertions {
     private val sut = JpqlAliasedExpressionSerializer()
 
+    @MockK
+    private lateinit var writer: JpqlWriter
+
+    @MockK
+    private lateinit var serializer: JpqlRenderSerializer
+
     @Test
     fun handledType() {
         // when
@@ -30,10 +36,51 @@ class JpqlAliasedExpressionSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN statement is select and clause is select, THEN draw full syntax`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - WHEN statement is not select and clause is not select, THEN draw only alias`() {
+        // given
+        every { writer.write(any<String>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
+
+        val part = Expressions.alias(
+            Expressions.stringLiteral("name"),
+            Expressions.expression(String::class, "alias"),
+        )
+
+        val context = TestRenderContext(serializer, JpqlRenderStatement.Delete, JpqlRenderClause.DeleteFrom)
+
+        // when
+        sut.serialize(part as JpqlAliasedExpression<*>, writer, context)
+
+        // then
+        verifySequence {
+            serializer.serialize(part.alias, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize - WHEN statement is select and clause is not select, THEN draw only alias`() {
+        // given
+        every { writer.write(any<String>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
+
+        val part = Expressions.alias(
+            Expressions.stringLiteral("name"),
+            Expressions.expression(String::class, "alias"),
+        )
+
+        val context = TestRenderContext(serializer, JpqlRenderStatement.Select, JpqlRenderClause.From)
+
+        // when
+        sut.serialize(part as JpqlAliasedExpression<*>, writer, context)
+
+        // then
+        verifySequence {
+            serializer.serialize(part.alias, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize - WHEN statement is select and clause is select, THEN draw full syntax`() {
         // given
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs

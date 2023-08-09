@@ -18,6 +18,12 @@ import org.junit.jupiter.api.Test
 class JpqlLiteralSerializerTest : WithAssertions {
     private val sut = JpqlLiteralSerializer()
 
+    @MockK
+    private lateinit var writer: JpqlWriter
+
+    @MockK
+    private lateinit var serializer: JpqlRenderSerializer
+
     private val int1: Int = 1
     private val long1: Long = 1
     private val float1: Float = 1f
@@ -37,10 +43,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - int`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - int`() {
         // given
         every { writer.write(any<Int>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
@@ -58,10 +61,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - long`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - long`() {
         // given
         every { writer.write(any<Long>()) } just runs
         every { writer.write(any<String>()) } just runs
@@ -81,10 +81,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - float`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - float`() {
         // given
         every { writer.write(any<Float>()) } just runs
         every { writer.write(any<String>()) } just runs
@@ -104,10 +101,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - double`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - double`() {
         // given
         every { writer.write(any<Double>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
@@ -125,10 +119,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - boolean`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - boolean`() {
         // given
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
@@ -146,10 +137,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - string`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - string`() {
         // given
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
@@ -169,10 +157,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - string single quote string`(
-        @MockK writer: JpqlWriter,
-        @MockK serializer: JpqlRenderSerializer,
-    ) {
+    fun `serialize - string single quote string`() {
         // given
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
