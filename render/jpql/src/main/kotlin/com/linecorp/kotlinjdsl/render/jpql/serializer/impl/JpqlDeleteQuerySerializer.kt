@@ -15,7 +15,7 @@ class JpqlDeleteQuerySerializer : JpqlSerializer<JpqlDeleteQuery<*>> {
     }
 
     override fun serialize(part: JpqlDeleteQuery<*>, writer: JpqlWriter, context: RenderContext) {
-        val updateContext = context + JpqlRenderStatement.Update
+        val updateContext = context + JpqlRenderStatement.Delete
 
         writeDelete(part, writer, updateContext)
         writeWhere(part, writer, updateContext)
@@ -25,7 +25,7 @@ class JpqlDeleteQuerySerializer : JpqlSerializer<JpqlDeleteQuery<*>> {
         val entity = part.entity
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val selectContext = context + JpqlRenderClause.Update
+        val selectContext = context + JpqlRenderClause.DeleteFrom
 
         writer.write("DELETE")
         writer.write(" ")
