@@ -1,6 +1,6 @@
 @file:Suppress("SqlSourceToSinkFlow")
 
-package com.linecorp.kotlinjdsl.executor.spring.jpa.javax.sql
+package com.linecorp.kotlinjdsl.executor.spring.jpa.sql
 
 import com.linecorp.kotlinjdsl.querymodel.sql.SqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext

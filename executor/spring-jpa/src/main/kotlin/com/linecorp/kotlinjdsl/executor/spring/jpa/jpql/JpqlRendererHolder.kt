@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.executor.spring.jpa.javax.jpql
+package com.linecorp.kotlinjdsl.executor.spring.jpa.jpql
 
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderer
 

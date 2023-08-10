@@ -164,4 +164,25 @@ class JpqlLiteralSerializerTest : WithAssertions {
             writer.write(singleQuote)
         }
     }
+
+    @Test
+    fun `serialize - enum`() {
+        // given
+        every { writer.write(any<String>()) } just runs
+
+        val part = Expressions.enumLiteral(TestEnum.TEST)
+        val context = TestRenderContext(serializer)
+
+        // when
+        sut.serialize(part as JpqlLiteral.EnumLiteral, writer, context)
+
+        // then
+        verifySequence {
+            writer.write(TestEnum::class.java.name + "." + TestEnum.TEST.name)
+        }
+    }
+
+    private enum class TestEnum {
+        TEST
+    }
 }

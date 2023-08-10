@@ -58,6 +58,11 @@ object Expressions {
     }
 
     @SinceJdsl("3.0.0")
+    fun <T : Enum<T>> enumLiteral(enum: T): Expression<T> {
+        return JpqlLiteral.EnumLiteral(enum)
+    }
+
+    @SinceJdsl("3.0.0")
     fun <T : Any> nullLiteral(): Expression<T> {
         @Suppress("UNCHECKED_CAST")
         return JpqlLiteral.NullLiteral as Expression<T>

@@ -8,13 +8,16 @@ import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.book.BookPrice
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.EmployeeDepartment
-import com.linecorp.kotlinjdsl.executor.spring.jpa.javax.createQuery
+import com.linecorp.kotlinjdsl.executor.spring.jpa.createQuery
+import com.linecorp.kotlinjdsl.executor.spring.jpa.queryForPage
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.transaction.annotation.Transactional
 import java.time.OffsetDateTime
 
@@ -73,6 +76,28 @@ class SelectExample : WithAssertions {
 
         // then
         assertThat(actual.resultList).isEqualTo(listOf(4L))
+    }
+
+    @Test
+    fun books() {
+        // given
+        val query = jpql {
+            select(
+                path(Book::isbn),
+            ).from(
+                entity(Book::class),
+            )
+        }
+
+        val pageable = PageRequest.of(1, 3, Sort.by(Sort.Direction.ASC, "isbn"))
+
+        // when
+        val actual = entityManager.queryForPage(query, pageable, context)
+
+        // then
+        assertThat(actual.content).isEqualTo(listOf(Isbn("04"), Isbn("05"), Isbn("06")))
+        assertThat(actual.totalPages).isEqualTo(4L)
+        assertThat(actual.totalElements).isEqualTo(12L)
     }
 
     @Test

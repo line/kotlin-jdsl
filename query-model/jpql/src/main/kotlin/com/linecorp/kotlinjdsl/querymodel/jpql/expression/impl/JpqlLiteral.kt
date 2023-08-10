@@ -48,5 +48,9 @@ sealed interface JpqlLiteral<T : Any> : Expression<T> {
         val string: String
     ) : JpqlLiteral<String>
 
+    data class EnumLiteral<T : Enum<T>> internal constructor(
+        val enum: T
+    ) : JpqlLiteral<T>
+
     data object NullLiteral : JpqlLiteral<Any>
 }

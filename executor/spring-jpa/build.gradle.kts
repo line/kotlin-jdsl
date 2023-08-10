@@ -1,11 +1,19 @@
 dependencies {
-    compileOnly(libs.jakarta.persistence.api)
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     compileOnly(libs.spring.data.jpa3)
+    compileOnly(libs.jakarta.persistence.api)
     compileOnly(projects.queryModelJpql)
-    compileOnly(projects.renderJpql)
     compileOnly(projects.queryModelSql)
+    compileOnly(projects.renderJpql)
     compileOnly(projects.renderSql)
+
+    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
+    testImplementation(libs.spring.data.jpa3)
+    testImplementation(libs.jakarta.persistence.api)
+    testImplementation(projects.queryModelJpql)
+    testImplementation(projects.queryModelSql)
+    testImplementation(projects.renderJpql)
+    testImplementation(projects.renderSql)
 }
 
 kotlin {

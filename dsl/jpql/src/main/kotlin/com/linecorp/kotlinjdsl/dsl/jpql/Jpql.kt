@@ -99,6 +99,11 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
+    fun <T : Enum<T>> enumLiteral(enum: T): Expression<T> {
+        return Expressions.enumLiteral(enum)
+    }
+
+    @SinceJdsl("3.0.0")
     fun <T : Any> nullLiteral(): Expression<T> {
         return Expressions.nullLiteral()
     }

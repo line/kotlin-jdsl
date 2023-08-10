@@ -1,14 +1,14 @@
-package com.linecorp.kotlinjdsl.executor.spring.jpa.javax
+package com.linecorp.kotlinjdsl.executor.spring.jpa
 
-import com.linecorp.kotlinjdsl.executor.spring.jpa.javax.jpql.JpqlEntityManagerUtils
-import com.linecorp.kotlinjdsl.executor.spring.jpa.javax.sql.SqlEntityManagerUtils
+import com.linecorp.kotlinjdsl.executor.spring.jpa.jpql.JpqlEntityManagerUtils
+import com.linecorp.kotlinjdsl.executor.spring.jpa.sql.SqlEntityManagerUtils
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.querymodel.sql.SqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
+import jakarta.persistence.EntityManager
 import org.springframework.data.domain.Pageable
-import javax.persistence.EntityManager
 import kotlin.reflect.KClass
 
 fun <T : Any> EntityManager.createQuery(

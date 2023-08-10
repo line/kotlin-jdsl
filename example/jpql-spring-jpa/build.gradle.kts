@@ -9,11 +9,11 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.example)
-    implementation(projects.bundleJpqlSpringJpa)
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     implementation(libs.spring.boot3.jpa)
     implementation(libs.spring.boot3.p6spy)
+    implementation(projects.example)
+    implementation(projects.bundleJpqlSpringJpa)
 
     testImplementation(libs.spring.boot3.test)
 

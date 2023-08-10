@@ -19,6 +19,7 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
             is JpqlLiteral.DoubleLiteral -> serialize(part, writer)
             is JpqlLiteral.BooleanLiteral -> serialize(part, writer)
             is JpqlLiteral.StringLiteral -> serialize(part, writer)
+            is JpqlLiteral.EnumLiteral -> serialize(part, writer)
             is JpqlLiteral.NullLiteral -> serializeNull(writer)
         }
     }
@@ -49,6 +50,10 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
         writer.write("'")
         writer.write(encodedString)
         writer.write("'")
+    }
+
+    private fun serialize(part: JpqlLiteral.EnumLiteral<*>, writer: JpqlWriter) {
+        writer.write(part.enum::class.java.name + "." + part.enum.name)
     }
 
     private fun serializeNull(writer: JpqlWriter) {

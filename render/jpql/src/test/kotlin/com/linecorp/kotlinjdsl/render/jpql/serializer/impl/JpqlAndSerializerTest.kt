@@ -51,12 +51,9 @@ class JpqlAndSerializerTest : WithAssertions {
     @Test
     fun `serialize - WHEN predicates is not empty, THEN draw all predicates with AND`() {
         // given
-        @Suppress("UNCHECKED_CAST")
         every { writer.writeEach<Predicate>(any(), any(), any(), any(), any()) } answers {
-            val args = it.invocation.args
-
-            val predicates = args[0] as List<Predicate>
-            val write = args[4] as (Predicate) -> Unit
+            val predicates: List<Predicate> = arg(0)
+            val write: (Predicate) -> Unit = arg(4)
 
             predicates.forEach { predicate -> write(predicate) }
         }
@@ -67,8 +64,8 @@ class JpqlAndSerializerTest : WithAssertions {
             listOf(
                 mockkClass(Predicate::class),
                 mockkClass(Predicate::class),
-                mockkClass(Predicate::class)
-            )
+                mockkClass(Predicate::class),
+            ),
         )
         val context = TestRenderContext(serializer)
 

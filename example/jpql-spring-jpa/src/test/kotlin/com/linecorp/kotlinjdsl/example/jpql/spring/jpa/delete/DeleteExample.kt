@@ -6,7 +6,7 @@ import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.department.Department
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.EmployeeDepartment
-import com.linecorp.kotlinjdsl.executor.spring.jpa.javax.createQuery
+import com.linecorp.kotlinjdsl.executor.spring.jpa.createQuery
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.WithAssertions
