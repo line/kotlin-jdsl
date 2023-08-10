@@ -11,6 +11,7 @@ spring-boot3 = "3.1.2"
 # kotlin
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version = "0.4.9" }
 
 # Common
 javax-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
@@ -54,6 +55,7 @@ h2 = { module = "com.h2database:h2", version = "2.2.220" }
 spring-boot2 = { id = "org.springframework.boot", version.ref = "spring-boot3" }
 spring-boot3 = { id = "org.springframework.boot", version.ref = "spring-boot3" }
 
+kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.9" }
 kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

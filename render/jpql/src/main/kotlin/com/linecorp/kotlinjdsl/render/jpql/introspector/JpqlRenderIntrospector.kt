@@ -34,6 +34,6 @@ class JpqlRenderIntrospector(
 
     private fun getDescription(clazz: KClass<*>): JpqlEntityDescription {
         return introspector.introspect(clazz)
-            ?: throw IllegalStateException("There is no description for $clazz")
+            ?: throw IllegalStateException("There is no description for ${clazz.java.name}")
     }
 }

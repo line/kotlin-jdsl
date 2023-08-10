@@ -1,9 +1,7 @@
 plugins {
     alias(libs.plugins.spring.boot3)
-
     alias(libs.plugins.kotlin.noarg)
     alias(libs.plugins.kotlin.allopen)
-
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.kotlin.jpa)
 }

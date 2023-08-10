@@ -31,6 +31,8 @@ module(name = ":example-jpql-jpa", path = "example/jpql-jpa")
 module(name = ":example-jpql-spring-jpa", path = "example/jpql-spring-jpa")
 module(name = ":example-jpql-spring-jpa-javax", path = "example/jpql-spring-jpa-javax")
 
+module(name = ":benchmark", path = "benchmark")
+
 // Version Catalog
 dependencyResolutionManagement {
     versionCatalogs {
