@@ -29,12 +29,10 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
 
     private fun serialize(part: JpqlLiteral.LongLiteral, writer: JpqlWriter) {
         writer.write(part.long)
-        writer.write("L")
     }
 
     private fun serialize(part: JpqlLiteral.FloatLiteral, writer: JpqlWriter) {
         writer.write(part.float)
-        writer.write("F")
     }
 
     private fun serialize(part: JpqlLiteral.DoubleLiteral, writer: JpqlWriter) {
@@ -42,11 +40,7 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
     }
 
     private fun serialize(part: JpqlLiteral.BooleanLiteral, writer: JpqlWriter) {
-        if (part.boolean) {
-            writer.write("TRUE")
-        } else {
-            writer.write("FALSE")
-        }
+        writer.write(part.boolean)
     }
 
     private fun serialize(part: JpqlLiteral.StringLiteral, writer: JpqlWriter) {

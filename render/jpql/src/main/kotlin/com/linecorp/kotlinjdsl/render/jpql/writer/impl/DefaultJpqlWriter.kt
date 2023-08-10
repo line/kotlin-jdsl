@@ -3,20 +3,26 @@ package com.linecorp.kotlinjdsl.render.jpql.writer.impl
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 
-class DefaultJpqlWriter(
+internal class DefaultJpqlWriter(
     params: Map<String, Any?>,
 ) : JpqlWriter {
     private val stringBuilder: StringBuilder = StringBuilder()
     private val params: MutableMap<String, Any?> = mutableMapOf()
 
+    private val incrementer: Incrementer
+
     init {
-        params.forEach { (name, value) -> addParamValue(name, value) }
-    }
+        val paramNumber = params.keys.mapNotNull {
+            numberSuffixRegex.find(it)?.value?.toInt()
+        }.maxOrNull()
 
-    private val incrementer: Incrementer = Incrementer()
+        incrementer = if (paramNumber == null) {
+            Incrementer(initial = 1)
+        } else {
+            Incrementer(initial = paramNumber + 1)
+        }
 
-    override fun write(short: Short) {
-        stringBuilder.append(short)
+        params.forEach { (name, value) -> putParamValue(name, value) }
     }
 
     override fun write(int: Int) {
@@ -24,11 +30,11 @@ class DefaultJpqlWriter(
     }
 
     override fun write(long: Long) {
-        stringBuilder.append(long)
+        stringBuilder.append(long).append("L")
     }
 
     override fun write(float: Float) {
-        stringBuilder.append(float)
+        stringBuilder.append(float).append("F")
     }
 
     override fun write(double: Double) {
@@ -36,7 +42,11 @@ class DefaultJpqlWriter(
     }
 
     override fun write(boolean: Boolean) {
-        stringBuilder.append(boolean)
+        if (boolean) {
+            stringBuilder.append("TRUE")
+        } else {
+            stringBuilder.append("FALSE")
+        }
     }
 
     override fun write(string: String) {
@@ -54,7 +64,7 @@ class DefaultJpqlWriter(
         separator: String,
         prefix: String,
         postfix: String,
-        write: (T) -> Unit
+        write: (T) -> Unit,
     ) {
         write(prefix)
 
@@ -77,7 +87,7 @@ class DefaultJpqlWriter(
 
     override fun writeParam(name: String, value: Any?) {
         writeParamName(name)
-        addParamValue(name, value)
+        putParamValue(name, value)
     }
 
     private fun writeParamName(name: String) {
@@ -90,14 +100,16 @@ class DefaultJpqlWriter(
         write(prefixedName)
     }
 
-    private fun addParamValue(name: String, value: Any?) {
+    private fun putParamValue(name: String, value: Any?) {
         val nonPrefixedName = if (name.startsWith(":")) {
             name.substring(1)
         } else {
             name
         }
 
-        params.putIfAbsent(nonPrefixedName, value)
+        if (!params.containsKey(nonPrefixedName)) {
+            params[nonPrefixedName] = value
+        }
     }
 
     fun getQuery(): String {
@@ -108,11 +120,15 @@ class DefaultJpqlWriter(
         return JpqlRenderedParams(params)
     }
 
-    private inner class Incrementer {
-        private var counter: Int = 0
+    private inner class Incrementer(
+        initial: Int,
+    ) {
+        private var counter: Int = initial
 
         fun getNext(): Int {
-            return ++counter
+            return counter++
         }
     }
 }
+
+private val numberSuffixRegex = Regex("[0-9]+$")

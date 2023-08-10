@@ -1,8 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.writer
 
 interface JpqlWriter {
-    fun write(short: Short)
-
     fun write(int: Int)
 
     fun write(long: Long)

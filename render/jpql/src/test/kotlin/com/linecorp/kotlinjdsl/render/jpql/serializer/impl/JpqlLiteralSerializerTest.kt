@@ -46,7 +46,6 @@ class JpqlLiteralSerializerTest : WithAssertions {
     fun `serialize - int`() {
         // given
         every { writer.write(any<Int>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.intLiteral(int1)
         val context = TestRenderContext(serializer)
@@ -64,8 +63,6 @@ class JpqlLiteralSerializerTest : WithAssertions {
     fun `serialize - long`() {
         // given
         every { writer.write(any<Long>()) } just runs
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.longLiteral(long1)
         val context = TestRenderContext(serializer)
@@ -76,7 +73,6 @@ class JpqlLiteralSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write(long1)
-            writer.write("L")
         }
     }
 
@@ -84,8 +80,6 @@ class JpqlLiteralSerializerTest : WithAssertions {
     fun `serialize - float`() {
         // given
         every { writer.write(any<Float>()) } just runs
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.floatLiteral(float1)
         val context = TestRenderContext(serializer)
@@ -96,7 +90,6 @@ class JpqlLiteralSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write(float1)
-            writer.write("F")
         }
     }
 
@@ -104,7 +97,6 @@ class JpqlLiteralSerializerTest : WithAssertions {
     fun `serialize - double`() {
         // given
         every { writer.write(any<Double>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.doubleLiteral(double1)
         val context = TestRenderContext(serializer)
@@ -121,8 +113,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
     @Test
     fun `serialize - boolean`() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
+        every { writer.write(any<Boolean>()) } just runs
 
         val part = Expressions.booleanLiteral(boolean1)
         val context = TestRenderContext(serializer)
@@ -132,7 +123,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
 
         // then
         verifySequence {
-            writer.write(boolean1.toString().uppercase())
+            writer.write(boolean1)
         }
     }
 
@@ -140,7 +131,6 @@ class JpqlLiteralSerializerTest : WithAssertions {
     fun `serialize - string`() {
         // given
         every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.stringLiteral(string1)
         val context = TestRenderContext(serializer)
@@ -160,7 +150,6 @@ class JpqlLiteralSerializerTest : WithAssertions {
     fun `serialize - string single quote string`() {
         // given
         every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.stringLiteral(string1 + singleQuote + string2)
         val context = TestRenderContext(serializer)
