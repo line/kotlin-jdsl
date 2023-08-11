@@ -146,7 +146,9 @@ private class DefaultModule : JpqlRenderModule {
 
         context.addAllSerializer(
             JpqlAliasedExpressionSerializer(),
+            JpqlAllSerializer(),
             JpqlAndSerializer(),
+            JpqlAnySerializer(),
             JpqlAvgSerializer(),
             JpqlBetweenSerializer(),
             JpqlCountSerializer(),
@@ -175,6 +177,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlParamSerializer(),
             JpqlPathPropertySerializer(),
             JpqlSelectQuerySerializer(),
+            JpqlSomeSerializer(),
             JpqlSortSerializer(),
             JpqlSubquerySerializer(),
             JpqlSumSerializer(),
