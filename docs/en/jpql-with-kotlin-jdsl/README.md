@@ -160,3 +160,7 @@ Kotlin JDSL provides the extension function for executing the query in the libra
 ```kotlin
 val jpaQuery: Query = entityManager.createQuery(query, context)
 ```
+
+## Example
+
+You can see many [examples](https://github.com/line/kotlin-jdsl/tree/main/example) on github.

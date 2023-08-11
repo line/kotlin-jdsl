@@ -1,6 +1,6 @@
 # Subqueries
 
-A subquery is the [Select statement](statement.md#select-statement) within another statement.
+A subquery is the [Select statement](statements.md#select-statement) within another statement.
 
 ## Derived entity
 
