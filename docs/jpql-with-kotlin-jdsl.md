@@ -1,2 +1,0 @@
-# JPQL with Kotlin JDSL
-
