@@ -1,3 +1,4 @@
 # Table of contents
 
-* [Page 1](README.md)
+* [Kotlin JDSL](README.md)
+* [JPQL with Kotlin JDSL](jpql-with-kotlin-jdsl.md)
