@@ -12,3 +12,29 @@ Kotlin JDSL is a Kotlin library that makes query building and execution easy. Yo
 
 ### JPQL
 
+You can create and execute the JPQL query using the Kotlin JDSL.
+
+```kotlin
+val query = jpql {
+    select(
+        path(Author::authorId),
+    ).from(
+        entity(Author::class),
+        join(BookAuthor::class).on(path(Author::authorId).equal(path(BookAuthor::authorId))),
+    ).groupBy(
+        path(Author::authorId),
+    ).orderBy(
+        count(Author::authorId).desc(),
+    )
+}
+```
+
+And you can easily execute the query that was created by Kotlin JDSL using the extension functions.
+
+```kotlin
+val `the most prolific author` = entityManager.createQuery(query, context).apply {
+    maxResults = 1
+}
+```
+
+See [more](jpql-with-kotlin-jdsl.md) for more details.
