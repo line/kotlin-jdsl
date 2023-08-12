@@ -1,20 +1,26 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.Joins
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlInnerJoin
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanOrEqualTo
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.runs
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
-class JpqlGreaterThanOrEqualToSerializerTest : WithAssertions {
-    private val sut = JpqlGreaterThanOrEqualToSerializer()
+class JpqlInnerJoinSerializerTest : WithAssertions {
+    private val sut = JpqlInnerJoinSerializer()
+    data class TestEntity(val id: Long, val name: String)
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -28,33 +34,39 @@ class JpqlGreaterThanOrEqualToSerializerTest : WithAssertions {
         val actual = sut.handledType()
 
         // then
-        assertThat(actual).isEqualTo(JpqlGreaterThanOrEqualTo::class)
+        assertThat(actual).isEqualTo(JpqlInnerJoin::class)
     }
 
     @Test
-    fun `serialize - WHEN greater than or equal to is given, THEN draw full syntax`() {
+    fun `serialize - WHEN inner join is not given, THEN draw full syntax`() {
         // given
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
 
-        val part = Predicates.greaterThanOrEqualTo(
-            Expressions.stringLiteral("value"),
-            Expressions.stringLiteral("compareValue")
+        val part = Joins.innerJoin(
+            Entities.entity(TestEntity::class, "test"),
+            Predicates.equal(
+                Expressions.stringLiteral("value"),
+                Expressions.stringLiteral("compare"),
+            ),
         )
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlGreaterThanOrEqualTo<*>, writer, context)
+        sut.serialize(part as JpqlInnerJoin<*>, writer, context)
 
         // then
         verifySequence {
-            serializer.serialize(part.value, writer, context)
-
-            writer.write(" ")
-            writer.write(">=")
+            writer.write("INNER JOIN")
             writer.write(" ")
 
-            serializer.serialize(part.compareValue, writer, context)
+            serializer.serialize(part.entity, writer, context)
+
+            writer.write(" ")
+            writer.write("ON")
+            writer.write(" ")
+
+            serializer.serialize(part.on, writer, context)
         }
     }
 }

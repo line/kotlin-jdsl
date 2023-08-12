@@ -3,7 +3,6 @@ package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.impl.JpqlEntityProperty
 import com.linecorp.kotlinjdsl.render.TestRenderContext
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
