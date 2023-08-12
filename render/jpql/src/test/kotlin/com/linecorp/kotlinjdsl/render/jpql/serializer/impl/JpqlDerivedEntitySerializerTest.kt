@@ -34,7 +34,7 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN statement is select and clause is delete, THEN draw only alias`() {
+    fun `serialize - WHEN statement is select and clause is not select, THEN draw only alias`() {
         // given
         every { writer.write(any<String>()) } just runs
 
