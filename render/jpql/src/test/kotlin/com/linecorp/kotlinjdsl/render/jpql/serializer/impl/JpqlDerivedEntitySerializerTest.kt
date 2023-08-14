@@ -2,7 +2,7 @@ package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.impl.JpqlDerivedEntity
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.*
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
@@ -15,6 +15,7 @@ import org.junit.jupiter.params.ParameterizedTest
 @JpqlSerializerTest
 class JpqlDerivedEntitySerializerTest : WithAssertions {
     private val sut = JpqlDerivedEntitySerializer()
+    data class TestEntity(val id: Long, val name: String)
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -46,8 +47,18 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
         // given
         every { writer.write(any<String>()) } just runs
 
+        val select = Selects.select(
+            returnType = TestEntity::class,
+            distinct = false,
+            select = emptyList(),
+            from = emptyList(),
+            where = null,
+            groupBy = null,
+            having = null,
+            orderBy = null,
+        )
         val part = Entities.derivedEntity(
-            selectQuery = mockkClass(type = JpqlSelectQuery::class, relaxed = true),
+            selectQuery = select,
             alias = "alias",
         )
         val context = TestRenderContext(serializer, JpqlRenderStatement.Select, JpqlRenderClause.DeleteFrom)
@@ -77,8 +88,18 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
 
+        val select = Selects.select(
+            returnType = TestEntity::class,
+            distinct = false,
+            select = emptyList(),
+            from = emptyList(),
+            where = null,
+            groupBy = null,
+            having = null,
+            orderBy = null,
+        )
         val part = Entities.derivedEntity(
-            selectQuery = mockkClass(type = JpqlSelectQuery::class, relaxed = true),
+            selectQuery = select,
             alias = "alias",
         )
         val context = TestRenderContext(serializer, statement, clause)
