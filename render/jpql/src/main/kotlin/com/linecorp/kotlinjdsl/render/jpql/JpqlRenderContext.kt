@@ -171,6 +171,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlMinusSerializer(),
             JpqlNewSerializer(),
             JpqlNotSerializer(),
+            JpqlNullIfSerializer(),
             JpqlOrSerializer(),
             JpqlParamSerializer(),
             JpqlPathPropertySerializer(),
