@@ -5,14 +5,13 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.impl.JpqlEntity
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlEntityDescription
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlRenderIntrospector
-import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderClause
-import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderStatement
-import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
+import com.linecorp.kotlinjdsl.render.jpql.serializer.*
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
 
 
 @JpqlSerializerTest
@@ -39,13 +38,23 @@ internal class JpqlEntitySerializerTest : WithAssertions {
         assertThat(actual).isEqualTo(JpqlEntity::class)
     }
 
-    @Test
-    fun `serialize - WHEN statement is select and clause is not select, THEN draw only alias`() {
+    @ParameterizedTest
+    @StatementClauseSource(
+        excludes = [
+            StatementClause(statement = JpqlRenderStatement.Select::class, clause = JpqlRenderClause.From::class),
+            StatementClause(statement = JpqlRenderStatement.Update::class, clause = JpqlRenderClause.Update::class),
+            StatementClause(statement = JpqlRenderStatement.Delete::class, clause = JpqlRenderClause.DeleteFrom::class),
+        ],
+    )
+    fun `serialize - WHEN a combination of statement and clause is given as source, THEN draw only alias`(
+        statement: JpqlRenderStatement,
+        clause: JpqlRenderClause,
+    ) {
         // given
         every { writer.write(any<String>()) } just runs
 
         val part = Entities.entity(type = TestEntity::class, alias = "alias")
-        val context = TestRenderContext(introspector, JpqlRenderStatement.Select, JpqlRenderClause.DeleteFrom)
+        val context = TestRenderContext(introspector, statement, clause)
 
         // when
         sut.serialize(part as JpqlEntity<*>, writer, context)
@@ -56,58 +65,24 @@ internal class JpqlEntitySerializerTest : WithAssertions {
         }
     }
 
-    @Test
-    fun `serialize - WHEN statement is select and clause is from, THEN draw entity name with alias`() {
+    @ParameterizedTest
+    @StatementClauseSource(
+        includes = [
+            StatementClause(statement = JpqlRenderStatement.Select::class, clause = JpqlRenderClause.From::class),
+            StatementClause(statement = JpqlRenderStatement.Update::class, clause = JpqlRenderClause.Update::class),
+            StatementClause(statement = JpqlRenderStatement.Delete::class, clause = JpqlRenderClause.DeleteFrom::class),
+        ],
+    )
+    fun `serialize - WHEN a combination of statement and clause is given as source, THEN draw full syntax`(
+        statement: JpqlRenderStatement,
+        clause: JpqlRenderClause,
+    ) {
         // given
         every { writer.write(any<String>()) } just runs
         every { introspector.introspect(any()) } returns entityDescription
 
         val part = Entities.entity(type = TestEntity::class, alias = "alias")
-        val context = TestRenderContext(introspector, JpqlRenderStatement.Select, JpqlRenderClause.From)
-
-        // when
-        sut.serialize(part as JpqlEntity<*>, writer, context)
-
-        // then
-        verifySequence {
-            writer.write(entityDescription.name)
-            writer.write(" ")
-            writer.write("AS")
-            writer.write(" ")
-            writer.write(part.alias)
-        }
-    }
-
-    @Test
-    fun `serialize - WHEN statement is update and clause is update, THEN draw entity name with alias`() {
-        // given
-        every { writer.write(any<String>()) } just runs
-        every { introspector.introspect(any()) } returns entityDescription
-
-        val part = Entities.entity(type = TestEntity::class, alias = "alias")
-        val context = TestRenderContext(introspector, JpqlRenderStatement.Update, JpqlRenderClause.Update)
-
-        // when
-        sut.serialize(part as JpqlEntity<*>, writer, context)
-
-        // then
-        verifySequence {
-            writer.write(entityDescription.name)
-            writer.write(" ")
-            writer.write("AS")
-            writer.write(" ")
-            writer.write(part.alias)
-        }
-    }
-
-    @Test
-    fun `serialize - WHEN statement is delete and clause is delete, THEN draw entity name with alias`() {
-        // given
-        every { writer.write(any<String>()) } just runs
-        every { introspector.introspect(any()) } returns entityDescription
-
-        val part = Entities.entity(type = TestEntity::class, alias = "alias")
-        val context = TestRenderContext(introspector, JpqlRenderStatement.Delete, JpqlRenderClause.DeleteFrom)
+        val context = TestRenderContext(introspector, statement, clause)
 
         // when
         sut.serialize(part as JpqlEntity<*>, writer, context)
