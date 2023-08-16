@@ -8,7 +8,5 @@
   * [Operators](jpql-with-kotlin-jdsl/operators.md)
   * [Subqueries](jpql-with-kotlin-jdsl/subqueries.md)
   * [Literals](jpql-with-kotlin-jdsl/literals.md)
+  * [Customizing](jpql-with-kotlin-jdsl/customizing.md)
   * [Spring supports](jpql-with-kotlin-jdsl/spring-supports.md)
-  * [Customizing](jpql-with-kotlin-jdsl/customizing.md)
-* [Community](community/README.md)
-  * [Developer guide](community/developer-guide.md)
