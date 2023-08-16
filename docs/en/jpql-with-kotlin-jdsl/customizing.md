@@ -65,7 +65,7 @@ class MyRegexLikeSerializer : JpqlSerializer<MyRegexLike> {
 }
 ```
 
-The JpqlRenderContext provides a registerModule function that allows you to register the JpqlSerializer you implemented. You can add your `JpqlSerializer` to the `JpqlRenderContext` by implementing the `JpqlRenderModule`. And when you execute the `JpqlQuery`, you can serialize it using your `JpqlSerializer` by passing it as the createQuery parameter.
+The JpqlRenderContext provides a registerModule function that allows you to register the JpqlSerializer you implemented. You can add your `JpqlSerializer` to the `JpqlRenderContext` by implementing the `JpqlRenderModule`. And when you execute the `JpqlQuery`, you can serialize it with your `JpqlSerializer` by passing it as a parameter to the `createQuery` function.
 
 ```kotlin
 val myModule = object : JpqlRenderModule {
