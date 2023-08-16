@@ -148,6 +148,25 @@ class JpqlLiteralSerializerTest : WithAssertions {
     }
 
     @Test
+    fun `serialize - single quote char`() {
+        // given
+        every { writer.write(any<String>()) } just runs
+
+        val part = Expressions.charLiteral(singleQuote[0])
+        val context = TestRenderContext(serializer)
+
+        // when
+        sut.serialize(part as JpqlLiteral.CharLiteral, writer, context)
+
+        // then
+        verifySequence {
+            writer.write(singleQuote)
+            writer.write("$singleQuote$singleQuote")
+            writer.write(singleQuote)
+        }
+    }
+
+    @Test
     fun `serialize - string`() {
         // given
         every { writer.write(any<String>()) } just runs
