@@ -13,7 +13,6 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 
-
 @JpqlSerializerTest
 internal class JpqlEntitySerializerTest : WithAssertions {
     private val sut = JpqlEntitySerializer()
