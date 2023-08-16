@@ -29,6 +29,7 @@ class JpqlLiteralSerializerTest : WithAssertions {
     private val float1: Float = 1f
     private val double1: Double = 1.0
     private val boolean1: Boolean = true
+    private val char1: Char = 'a'
     private val string1: String = "string1"
     private val string2: String = "string2"
     private val singleQuote: String = "'"
@@ -124,6 +125,25 @@ class JpqlLiteralSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write(boolean1)
+        }
+    }
+
+    @Test
+    fun `serialize - char`() {
+        // given
+        every { writer.write(any<String>()) } just runs
+
+        val part = Expressions.charLiteral(char1)
+        val context = TestRenderContext(serializer)
+
+        // when
+        sut.serialize(part as JpqlLiteral.CharLiteral, writer, context)
+
+        // then
+        verifySequence {
+            writer.write(singleQuote)
+            writer.write("$char1")
+            writer.write(singleQuote)
         }
     }
 

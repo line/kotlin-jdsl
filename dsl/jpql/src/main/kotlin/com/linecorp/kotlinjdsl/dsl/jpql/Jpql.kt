@@ -94,6 +94,11 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
+    fun charLiteral(char: Char): Expression<Char> {
+        return Expressions.charLiteral(char)
+    }
+
+    @SinceJdsl("3.0.0")
     fun stringLiteral(string: String): Expression<String> {
         return Expressions.stringLiteral(string)
     }

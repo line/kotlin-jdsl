@@ -18,6 +18,7 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
             is JpqlLiteral.FloatLiteral -> serialize(part, writer)
             is JpqlLiteral.DoubleLiteral -> serialize(part, writer)
             is JpqlLiteral.BooleanLiteral -> serialize(part, writer)
+            is JpqlLiteral.CharLiteral -> serialize(part, writer)
             is JpqlLiteral.StringLiteral -> serialize(part, writer)
             is JpqlLiteral.EnumLiteral -> serialize(part, writer)
             is JpqlLiteral.NullLiteral -> serializeNull(writer)
@@ -42,6 +43,12 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
 
     private fun serialize(part: JpqlLiteral.BooleanLiteral, writer: JpqlWriter) {
         writer.write(part.boolean)
+    }
+
+    private fun serialize(part: JpqlLiteral.CharLiteral, writer: JpqlWriter) {
+        writer.write("'")
+        writer.write("${part.char}")
+        writer.write("'")
     }
 
     private fun serialize(part: JpqlLiteral.StringLiteral, writer: JpqlWriter) {

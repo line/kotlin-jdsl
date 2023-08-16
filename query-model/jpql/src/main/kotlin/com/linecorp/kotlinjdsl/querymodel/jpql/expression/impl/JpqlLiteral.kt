@@ -44,6 +44,10 @@ sealed interface JpqlLiteral<T : Any> : Expression<T> {
         val boolean: Boolean
     ) : JpqlLiteral<Boolean>
 
+    data class CharLiteral internal constructor(
+        val char: Char
+    ) : JpqlLiteral<Char>
+
     data class StringLiteral internal constructor(
         val string: String
     ) : JpqlLiteral<String>

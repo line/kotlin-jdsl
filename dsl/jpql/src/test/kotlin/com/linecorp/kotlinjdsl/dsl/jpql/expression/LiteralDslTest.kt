@@ -11,6 +11,7 @@ class LiteralDslTest : AbstractJpqlDslTest() {
     private val float1: Float = 1f
     private val double1: Double = 1.0
     private val boolean1: Boolean = true
+    private val char1: Char = 'a'
     private val string1: String = "string1 "
 
     @Test
@@ -84,6 +85,21 @@ class LiteralDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = Expressions.booleanLiteral(boolean1)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun charLiteral() {
+        // when
+        val expression = testJpql {
+            charLiteral(char1)
+        }.toExpression()
+
+        val actual: Expression<Char> = expression // for type check
+
+        // then
+        val expected = Expressions.charLiteral(char1)
 
         assertThat(actual).isEqualTo(expected)
     }
