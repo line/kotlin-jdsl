@@ -22,5 +22,13 @@ class JpqlLikeSerializer : JpqlSerializer<JpqlLike> {
         writer.write(" ")
 
         delegate.serialize(part.pattern, writer, context)
+
+        part.escape?.let {
+            writer.write(" ")
+            writer.write("ESCAPE")
+            writer.write(" ")
+
+            delegate.serialize(it, writer, context)
+        }
     }
 }
