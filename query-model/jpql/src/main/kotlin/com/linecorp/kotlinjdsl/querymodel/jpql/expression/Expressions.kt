@@ -53,6 +53,11 @@ object Expressions {
     }
 
     @SinceJdsl("3.0.0")
+    fun charLiteral(char: Char): Expression<Char> {
+        return JpqlLiteral.CharLiteral(char)
+    }
+
+    @SinceJdsl("3.0.0")
     fun stringLiteral(string: String): Expression<String> {
         return JpqlLiteral.StringLiteral(string)
     }
