@@ -8,4 +8,5 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 data class JpqlNotLike internal constructor(
     val value: Expression<String>,
     val pattern: Expression<String>,
+    val escape: Expression<Char>?,
 ) : Predicate

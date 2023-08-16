@@ -181,8 +181,8 @@ object Predicates {
     }
 
     @SinceJdsl("3.0.0")
-    fun notLike(value: Expression<String>, pattern: Expression<String>): Predicate {
-        return JpqlNotLike(value, pattern)
+    fun notLike(value: Expression<String>, pattern: Expression<String>, escape: Expression<Char>? = null): Predicate {
+        return JpqlNotLike(value, pattern, escape)
     }
 
     @SinceJdsl("3.0.0")
