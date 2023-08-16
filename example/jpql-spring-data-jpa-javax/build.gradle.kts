@@ -11,7 +11,7 @@ dependencies {
     implementation(libs.spring.boot2.jpa)
     implementation(libs.spring.boot2.p6spy)
     implementation(projects.example)
-    implementation(projects.bundleJpqlSpringJpaJavax)
+    implementation(projects.bundleJpqlSpringDataJpaJavax)
 
     testImplementation(libs.spring.boot2.test)
 

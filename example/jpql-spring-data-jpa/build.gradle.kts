@@ -11,7 +11,7 @@ dependencies {
     implementation(libs.spring.boot3.jpa)
     implementation(libs.spring.boot3.p6spy)
     implementation(projects.example)
-    implementation(projects.bundleJpqlSpringJpa)
+    implementation(projects.bundleJpqlSpringDataJpa)
 
     testImplementation(libs.spring.boot3.test)
 

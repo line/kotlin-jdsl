@@ -14,8 +14,8 @@ plugins {
 // Module
 module(name = ":bundle", path = "bundle")
 module(name = ":bundle-jpql-jpa", path = "bundle/jpql-jpa")
-module(name = ":bundle-jpql-spring-jpa", path = "bundle/jpql-spring-jpa")
-module(name = ":bundle-jpql-spring-jpa-javax", path = "bundle/jpql-spring-jpa-javax")
+module(name = ":bundle-jpql-spring-data-jpa", path = "bundle/jpql-spring-data-jpa")
+module(name = ":bundle-jpql-spring-data-jpa-javax", path = "bundle/jpql-spring-data-jpa-javax")
 
 module(name = ":dsl", path = "dsl")
 module(name = ":dsl-jpql", path = "dsl/jpql")
@@ -30,13 +30,13 @@ module(name = ":render-jpql", path = "render/jpql")
 module(name = ":render-sql", path = "render/sql")
 
 module(name = ":executor", path = "executor")
-module(name = ":executor-spring-jpa", path = "executor/spring-jpa")
-module(name = ":executor-spring-jpa-javax", path = "executor/spring-jpa-javax")
+module(name = ":executor-spring-data-jpa", path = "executor/spring-data-jpa")
+module(name = ":executor-spring-data-jpa-javax", path = "executor/spring-data-jpa-javax")
 
 module(name = ":example", path = "example")
 module(name = ":example-jpql-jpa", path = "example/jpql-jpa")
-module(name = ":example-jpql-spring-jpa", path = "example/jpql-spring-jpa")
-module(name = ":example-jpql-spring-jpa-javax", path = "example/jpql-spring-jpa-javax")
+module(name = ":example-jpql-spring-data-jpa", path = "example/jpql-spring-data-jpa")
+module(name = ":example-jpql-spring-data-jpa-javax", path = "example/jpql-spring-data-jpa-javax")
 
 module(name = ":benchmark", path = "benchmark")
 
