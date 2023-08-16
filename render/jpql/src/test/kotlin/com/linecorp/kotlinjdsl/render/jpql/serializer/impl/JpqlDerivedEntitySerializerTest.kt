@@ -61,7 +61,7 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
             selectQuery = select,
             alias = "alias",
         )
-        val context = TestRenderContext(serializer, JpqlRenderStatement.Select, JpqlRenderClause.DeleteFrom)
+        val context = TestRenderContext(serializer, statement, clause)
 
         // when
         sut.serialize(part as JpqlDerivedEntity, writer, context)
