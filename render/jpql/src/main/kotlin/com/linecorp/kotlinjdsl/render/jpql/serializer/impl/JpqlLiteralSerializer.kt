@@ -47,7 +47,10 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
 
     private fun serialize(part: JpqlLiteral.CharLiteral, writer: JpqlWriter) {
         writer.write("'")
-        writer.write("${part.char}")
+        when (part.char) {
+            '\'' -> writer.write("''")
+            else -> writer.write("${part.char}")
+        }
         writer.write("'")
     }
 
