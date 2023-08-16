@@ -16,19 +16,25 @@ class JpqlCaseSerializer : JpqlSerializer<JpqlCase<*>> {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         writer.write("CASE")
+        writer.write(" ")
         writer.writeEach(part.whens.entries, separator = " ") {
-            writer.writeIfAbsent(" ")
-            writer.write("WHEN ")
+            writer.write("WHEN")
+            writer.write(" ")
             delegate.serialize(it.key, writer, context)
-            writer.write(" THEN ")
+            writer.write(" ")
+            writer.write("THEN")
+            writer.write(" ")
             delegate.serialize(it.value, writer, context)
         }
 
         part.`else`?.let {
-            writer.write(" ELSE ")
+            writer.write(" ")
+            writer.write("ELSE")
+            writer.write(" ")
             delegate.serialize(it, writer, context)
         }
 
-        writer.write(" END")
+        writer.write(" ")
+        writer.write("END")
     }
 }

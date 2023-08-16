@@ -36,7 +36,6 @@ class JpqlCaseSerializerTest : WithAssertions {
     fun `when else is null, just draw case whens and thens`() {
         // given
         every { writer.write(any<String>()) } just runs
-        every { writer.writeIfAbsent(any<String>()) } just runs
         every { writer.writeEach<Map.Entry<Predicate, Expression<*>>>(any(), any(), any(), any(), any()) } answers {
             val entries: Set<Map.Entry<Predicate, Expression<*>>> = arg(0)
             val write: (Map.Entry<Predicate, Expression<*>>) -> Unit = arg(4)
@@ -60,18 +59,24 @@ class JpqlCaseSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("CASE")
+            writer.write(" ")
             writer.writeEach(part.whens.entries, " ", "", "", any())
-            writer.writeIfAbsent(" ")
-            writer.write("WHEN ")
+            writer.write("WHEN")
+            writer.write(" ")
             serializer.serialize(part.whens.keys.elementAt(0), writer, context)
-            writer.write(" THEN ")
+            writer.write(" ")
+            writer.write("THEN")
+            writer.write(" ")
             serializer.serialize(part.whens.values.elementAt(0), writer, context)
-            writer.writeIfAbsent(" ")
-            writer.write("WHEN ")
+            writer.write("WHEN")
+            writer.write(" ")
             serializer.serialize(part.whens.keys.elementAt(1), writer, context)
-            writer.write(" THEN ")
+            writer.write(" ")
+            writer.write("THEN")
+            writer.write(" ")
             serializer.serialize(part.whens.values.elementAt(1), writer, context)
-            writer.write(" END")
+            writer.write(" ")
+            writer.write("END")
         }
     }
 
@@ -79,7 +84,6 @@ class JpqlCaseSerializerTest : WithAssertions {
     fun `when else is null, draw case whens and thens with else`() {
         // given
         every { writer.write(any<String>()) } just runs
-        every { writer.writeIfAbsent(any<String>()) } just runs
         every { writer.writeEach<Map.Entry<Predicate, Expression<*>>>(any(), any(), any(), any(), any()) } answers {
             val entries: Set<Map.Entry<Predicate, Expression<*>>> = arg(0)
             val write: (Map.Entry<Predicate, Expression<*>>) -> Unit = arg(4)
@@ -106,20 +110,28 @@ class JpqlCaseSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("CASE")
+            writer.write(" ")
             writer.writeEach(part.whens.entries, " ", "", "", any())
-            writer.writeIfAbsent(" ")
-            writer.write("WHEN ")
+            writer.write("WHEN")
+            writer.write(" ")
             serializer.serialize(part.whens.keys.elementAt(0), writer, context)
-            writer.write(" THEN ")
+            writer.write(" ")
+            writer.write("THEN")
+            writer.write(" ")
             serializer.serialize(part.whens.values.elementAt(0), writer, context)
-            writer.writeIfAbsent(" ")
-            writer.write("WHEN ")
+            writer.write("WHEN")
+            writer.write(" ")
             serializer.serialize(part.whens.keys.elementAt(1), writer, context)
-            writer.write(" THEN ")
+            writer.write(" ")
+            writer.write("THEN")
+            writer.write(" ")
             serializer.serialize(part.whens.values.elementAt(1), writer, context)
-            writer.write(" ELSE ")
+            writer.write(" ")
+            writer.write("ELSE")
+            writer.write(" ")
             serializer.serialize(part.`else`!!, writer, context)
-            writer.write(" END")
+            writer.write(" ")
+            writer.write("END")
         }
     }
 }
