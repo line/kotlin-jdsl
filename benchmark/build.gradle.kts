@@ -8,8 +8,8 @@ plugins {
 dependencies {
     implementation(libs.kotlin.benchmark)
     implementation(libs.jakarta.persistence.api)
-    implementation(projects.dslJpql)
-    implementation(projects.renderJpql)
+    implementation(projects.jpqlDsl)
+    implementation(projects.jpqlRender)
 }
 
 allOpen {

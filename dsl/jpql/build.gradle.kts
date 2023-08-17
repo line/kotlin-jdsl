@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(projects.dsl)
-    api(projects.queryModelJpql)
+    api(projects.jpqlQueryModel)
 }

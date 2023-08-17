@@ -4,16 +4,16 @@ dependencies {
     compileOnly(libs.spring.boot2.starter)
     compileOnly(libs.spring.data.jpa2)
     compileOnly(libs.javax.persistence.api)
-    compileOnly(projects.dslJpql)
-    compileOnly(projects.queryModelJpql)
-    compileOnly(projects.renderJpql)
+    compileOnly(projects.jpqlDsl)
+    compileOnly(projects.jpqlQueryModel)
+    compileOnly(projects.jpqlRender)
 
     testImplementation(libs.spring.boot2.starter)
     testImplementation(libs.spring.data.jpa2)
     testImplementation(libs.javax.persistence.api)
-    testImplementation(projects.dslJpql)
-    testImplementation(projects.queryModelJpql)
-    testImplementation(projects.renderJpql)
+    testImplementation(projects.jpqlDsl)
+    testImplementation(projects.jpqlQueryModel)
+    testImplementation(projects.jpqlRender)
 }
 
 kotlin {

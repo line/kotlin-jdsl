@@ -13,22 +13,22 @@ plugins {
 
 // Module
 module(name = ":dsl", path = "dsl")
-module(name = ":dsl-jpql", path = "dsl/jpql")
+module(name = ":jpql-dsl", path = "dsl/jpql")
 
 module(name = ":query-model", path = "query-model")
-module(name = ":query-model-jpql", path = "query-model/jpql")
+module(name = ":jpql-query-model", path = "query-model/jpql")
 
 module(name = ":render", path = "render")
-module(name = ":render-jpql", path = "render/jpql")
+module(name = ":jpql-render", path = "render/jpql")
 
 module(name = ":support", path = "support")
-module(name = ":support-spring-data-jpa", path = "support/spring-data-jpa")
-module(name = ":support-spring-data-jpa-javax", path = "support/spring-data-jpa-javax")
+module(name = ":spring-data-jpa-support", path = "support/spring-data-jpa")
+module(name = ":spring-data-jpa-javax-support", path = "support/spring-data-jpa-javax")
 
 module(name = ":example", path = "example")
-module(name = ":example-jpql-jpa", path = "example/jpql-jpa")
-module(name = ":example-jpql-spring-data-jpa", path = "example/jpql-spring-data-jpa")
-module(name = ":example-jpql-spring-data-jpa-javax", path = "example/jpql-spring-data-jpa-javax")
+module(name = ":jpql-jpa-example", path = "example/jpql-jpa")
+module(name = ":jpql-spring-data-jpa-example", path = "example/jpql-spring-data-jpa")
+module(name = ":jpql-spring-data-jpa-javax-exmaple", path = "example/jpql-spring-data-jpa-javax")
 
 module(name = ":benchmark", path = "benchmark")
 
