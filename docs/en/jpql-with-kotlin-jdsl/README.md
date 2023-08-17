@@ -8,7 +8,7 @@ Java 8 (or later) and Kotlin 1.9 (or later) are required to build and run an app
 
 ## Choosing the artifacts <a href="#setting-up-with-a-build-system" id="setting-up-with-a-build-system"></a>
 
-<table><thead><tr><th width="228">Artifact ID</th><th>Description</th></tr></thead><tbody><tr><td>eclipse-jpql</td><td>A bundle to build the JPQL query with Kotlin JDSL and execute it with EclipseLink.</td></tr><tr><td>hibernate-jpql</td><td>A bundle to build the JPQL query with Kotlin JDSL and execute it with Hibernate.</td></tr><tr><td>spring-data-jpql</td><td>A bundle to build the JPQL query with Kotlin JDSL and execute it with Spring Data Jpa.</td></tr><tr><td>spring-data-jpql-javax</td><td>A bundle to build the JPQL query with Kotlin JDSL and execute it with Spring Data Jpa for javax. You can use it if you use Spring Boot 2.X</td></tr></tbody></table>
+<table><thead><tr><th width="251">Artifact ID</th><th>Description</th></tr></thead><tbody><tr><td>jpql-dsl</td><td>Building the JPQL query through DSL.</td></tr><tr><td>jpql-render</td><td>Rendering the JPQL query from DSL as a string.</td></tr><tr><td>eclipse-support</td><td>Support to help you use Eclipse and Kotlin JDSL together.</td></tr><tr><td>hibernate-support</td><td>Support to help you use Eclipse and Kotlin JDSL together.</td></tr><tr><td>spring-batch-support</td><td>Support to help you use Spring Batch and Kotlin JDSL together.</td></tr><tr><td>spring-data-jpa-support</td><td>Support to help you use Spring Data Jpa and Kotlin JDSL together.</td></tr><tr><td>spring-data-jpa-javax-support</td><td>Support to help you use Spring Data Jpa 2.X and Kotlin JDSL together.</td></tr></tbody></table>
 
 ## Setting up with a build system <a href="#setting-up-with-a-build-system" id="setting-up-with-a-build-system"></a>
 
@@ -22,17 +22,20 @@ repositories {
 }
 
 dependencies {
-    implementation("com.linecorp.kotlin-jdsl:eclipse-jpql:3.0.0")
+    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.0.0")
+    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.0.0")
+    
     implementation("org.eclipse.persistence:org.eclipse.persistence.jpa:x.y.z")
+    implementation("com.linecorp.kotlin-jdsl:eclipse-support:3.0.0")
     // or
-    implementation("com.linecorp.kotlin-jdsl:hibernate-jpql:3.0.0")
     implementation("org.hibernate:hibernate-core:x.y.z")
+    implementation("com.linecorp.kotlin-jdsl:hibernate-support:3.0.0")
     // or
-    implementation("com.linecorp.kotlin-jdsl:spring-data-jpql:3.0.0")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.y.z")
+    implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:3.0.0")
     // or
-    implementation("com.linecorp.kotlin-jdsl:spring-data-jpql-javax:3.0.0")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.y.z")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.7.z")
+    implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-javax-support:3.0.0")
 }
 ```
 {% endtab %}
