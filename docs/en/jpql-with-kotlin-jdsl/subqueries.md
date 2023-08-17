@@ -35,7 +35,7 @@ val query = jpql {
 
 ## Subquery
 
-The Select statement can be treated as the Expression using the `asSubquery` extension function. And you can pass it to the [the Function](functions.md) or [the Operator](operators.md) to add condition in the Where clause. You can also pass it to the Select clause, depending on your JPA implementation.
+The Select statement can be treated as the Expression using the `asSubquery` extension function. And you can pass it to the [the Functions](functions.md) or [the Predicates](predicates.md) to add condition in the Where clause. You can also pass it to the Select clause, depending on your JPA implementation.
 
 ```kotlin
 val query = jpql {

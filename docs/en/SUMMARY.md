@@ -5,7 +5,7 @@
   * [Statements](jpql-with-kotlin-jdsl/statements.md)
   * [Expressions](jpql-with-kotlin-jdsl/expressions.md)
   * [Functions](jpql-with-kotlin-jdsl/functions.md)
-  * [Operators](jpql-with-kotlin-jdsl/operators.md)
+  * [Predicates](jpql-with-kotlin-jdsl/predicates.md)
   * [Subqueries](jpql-with-kotlin-jdsl/subqueries.md)
   * [Literals](jpql-with-kotlin-jdsl/literals.md)
   * [Customizing](jpql-with-kotlin-jdsl/customizing.md)

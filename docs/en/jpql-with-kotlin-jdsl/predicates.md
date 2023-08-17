@@ -1,4 +1,4 @@
-# Operators
+# Predicates
 
 ### And
 
@@ -21,11 +21,3 @@
 ### Less than
 
 ### Equal
-
-### Plus
-
-### Minus
-
-### Times
-
-### Divide
