@@ -1,34 +1,32 @@
 package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.delete
 
-import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.book.Book
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.department.Department
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee.EmployeeDepartment
-import com.linecorp.kotlinjdsl.executor.spring.jpa.javax.createQuery
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
+import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.repository.book.BookRepository
+import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.repository.employee.EmployeeRepository
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import java.time.OffsetDateTime
-import javax.persistence.EntityManager
 
 @Transactional
 @SpringBootTest
 class DeleteExample : WithAssertions {
     @Autowired
-    private lateinit var context: JpqlRenderContext
+    private lateinit var bookRepository: BookRepository
 
     @Autowired
-    private lateinit var entityManager: EntityManager
+    private lateinit var employeeRepository: EmployeeRepository
 
     @Test
     fun `delete all books published after June 2023`() {
-        // given
-        val query = jpql {
+        // when
+        bookRepository.delete {
             deleteFrom(
                 entity(Book::class),
             ).where(
@@ -36,23 +34,10 @@ class DeleteExample : WithAssertions {
             )
         }
 
-        // when
-        entityManager.createQuery(query, context).executeUpdate()
-
-        val bookIds = jpql {
-            select(
-                path(Book::isbn),
-            ).from(
-                entity(Book::class),
-            ).orderBy(
-                path(Book::isbn).asc(),
-            )
-        }
-
-        val actual = entityManager.createQuery(bookIds, context)
+        val actual = bookRepository.findAll().map { it.isbn }
 
         // then
-        assertThat(actual.resultList).isEqualTo(
+        assertThat(actual).isEqualTo(
             listOf(
                 Isbn("01"),
                 Isbn("02"),
@@ -65,8 +50,8 @@ class DeleteExample : WithAssertions {
 
     @Test
     fun `remove the employees from department 03`() {
-        // given
-        val query = jpql {
+        // when
+        employeeRepository.delete {
             val employeeIds = select<Long>(
                 path(EmployeeDepartment::employee)(Employee::employeeId),
             ).from(
@@ -84,23 +69,10 @@ class DeleteExample : WithAssertions {
             )
         }
 
-        // when
-        entityManager.createQuery(query, context).executeUpdate()
-
-        val employeeIds = jpql {
-            select(
-                path(Employee::employeeId),
-            ).from(
-                entity(Employee::class),
-            ).orderBy(
-                path(Employee::employeeId).asc(),
-            )
-        }
-
-        val actual = entityManager.createQuery(employeeIds, context)
+        val actual = employeeRepository.findAll().map { it.employeeId }
 
         // then
-        assertThat(actual.resultList).isEqualTo(
+        assertThat(actual).isEqualTo(
             listOf(
                 2L,
                 3L,

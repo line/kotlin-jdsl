@@ -5,22 +5,21 @@ import jakarta.persistence.*
 @Entity
 @DiscriminatorValue("PART_TIME")
 class PartTimeEmployee(
-    override val employeeId: Long,
+    employeeId: Long,
 
-    override var name: String,
+    name: String,
 
-    override var nickname: String?,
+    nickname: String?,
 
-    override var phone: String,
+    phone: String,
 
-    override var address: EmployeeAddress,
+    address: EmployeeAddress,
+
+    departments: MutableSet<EmployeeDepartment>,
 
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "weekly_salary"))
     val weeklySalary: EmployeeSalary,
-
-    @OneToMany(mappedBy = "employee")
-    override val departments: MutableSet<EmployeeDepartment>,
 ) : Employee(
     employeeId = employeeId,
     name = name,

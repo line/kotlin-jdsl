@@ -107,15 +107,15 @@ class JpqlRenderContext private constructor(
     }
 
     fun registerModule(module: JpqlRenderModule): JpqlRenderContext {
-        return JpqlRenderContext(modules + module)
+        return JpqlRenderContext(this.modules + module)
     }
 
     fun registerModules(vararg modules: JpqlRenderModule): JpqlRenderContext {
-        return JpqlRenderContext(modules.toList() + modules.toList())
+        return JpqlRenderContext(this.modules.toList() + modules.toList())
     }
 
     fun registerModules(modules: Iterable<JpqlRenderModule>): JpqlRenderContext {
-        return JpqlRenderContext(modules.toList() + modules.toList())
+        return JpqlRenderContext(this.modules.toList() + modules.toList())
     }
 
     override fun <E : RenderContext.Element> get(key: RenderContext.Key<E>): E? {

@@ -1,6 +1,5 @@
 package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.select
 
-import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.author.Author
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.book.Book
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.book.BookAuthor
@@ -8,9 +7,9 @@ import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.book.BookPri
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee.EmployeeDepartment
-import com.linecorp.kotlinjdsl.executor.spring.jpa.javax.createQuery
-import com.linecorp.kotlinjdsl.executor.spring.jpa.javax.queryForPage
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
+import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.repository.author.AuthorRepository
+import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.repository.book.BookRepository
+import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.repository.employee.EmployeeRepository
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,21 +18,23 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.transaction.annotation.Transactional
 import java.time.OffsetDateTime
-import javax.persistence.EntityManager
 
 @Transactional
 @SpringBootTest
 class SelectExample : WithAssertions {
     @Autowired
-    private lateinit var context: JpqlRenderContext
+    private lateinit var authorRepository: AuthorRepository
 
     @Autowired
-    private lateinit var entityManager: EntityManager
+    private lateinit var bookRepository: BookRepository
+
+    @Autowired
+    private lateinit var employeeRepository: EmployeeRepository
 
     @Test
     fun `the most prolific author`() {
-        // given
-        val query = jpql {
+        // when
+        val actual = authorRepository.findFirst {
             select(
                 path(Author::authorId),
             ).from(
@@ -46,19 +47,14 @@ class SelectExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context).apply {
-            maxResults = 1
-        }
-
         // then
-        assertThat(actual.resultList).isEqualTo(listOf(1L))
+        assertThat(actual).isEqualTo(1L)
     }
 
     @Test
     fun `authors who haven't written a book`() {
-        // given
-        val query = jpql {
+        // when
+        val actual = authorRepository.findAll {
             select(
                 path(Author::authorId),
             ).from(
@@ -71,28 +67,23 @@ class SelectExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context)
-
         // then
-        assertThat(actual.resultList).isEqualTo(listOf(4L))
+        assertThat(actual).isEqualTo(listOf(4L))
     }
 
     @Test
     fun books() {
         // given
-        val query = jpql {
+        val pageable = PageRequest.of(1, 3, Sort.by(Sort.Direction.ASC, "isbn"))
+
+        // when
+        val actual = bookRepository.findAll(pageable) {
             select(
                 path(Book::isbn),
             ).from(
                 entity(Book::class),
             )
         }
-
-        val pageable = PageRequest.of(1, 3, Sort.by(Sort.Direction.ASC, "isbn"))
-
-        // when
-        val actual = entityManager.queryForPage(query, pageable, context)
 
         // then
         assertThat(actual.content).isEqualTo(listOf(Isbn("04"), Isbn("05"), Isbn("06")))
@@ -102,8 +93,8 @@ class SelectExample : WithAssertions {
 
     @Test
     fun `the book with the most authors`() {
-        // given
-        val query = jpql {
+        // when
+        val actual = bookRepository.findFirst {
             select(
                 path(Book::isbn),
             ).from(
@@ -116,19 +107,14 @@ class SelectExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context).apply {
-            maxResults = 1
-        }
-
         // then
-        assertThat(actual.resultList).isEqualTo(listOf(Isbn("01")))
+        assertThat(actual).isEqualTo(Isbn("01"))
     }
 
     @Test
     fun `the most expensive book`() {
-        // given
-        val query = jpql {
+        // when
+        val actual = bookRepository.findFirst {
             select(
                 path(Book::isbn),
             ).from(
@@ -139,19 +125,14 @@ class SelectExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context).apply {
-            maxResults = 1
-        }
-
         // then
-        assertThat(actual.resultList).isEqualTo(listOf(Isbn("10")))
+        assertThat(actual).isEqualTo(Isbn("10"))
     }
 
     @Test
     fun `the most recently published book`() {
-        // given
-        val query = jpql {
+        // when
+        val actual = bookRepository.findFirst {
             select(
                 path(Book::isbn),
             ).from(
@@ -162,19 +143,14 @@ class SelectExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context).apply {
-            maxResults = 1
-        }
-
         // then
-        assertThat(actual.resultList).isEqualTo(listOf(Isbn("10")))
+        assertThat(actual).isEqualTo(Isbn("10"))
     }
 
     @Test
     fun `books published between January and June 2023`() {
-        // given
-        val query = jpql {
+        // when
+        val actual = bookRepository.findAll {
             select(
                 path(Book::isbn),
             ).from(
@@ -189,11 +165,8 @@ class SelectExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context)
-
         // then
-        assertThat(actual.resultList).isEqualTo(
+        assertThat(actual).isEqualTo(
             listOf(
                 Isbn("01"),
                 Isbn("02"),
@@ -207,34 +180,25 @@ class SelectExample : WithAssertions {
 
     @Test
     fun `the book with the biggest discounts`() {
-        // given
-        val query = jpql {
+        // when
+        val actual = bookRepository.findFirst {
             select(
                 path(Book::isbn),
             ).from(
                 entity(Book::class),
             ).orderBy(
-                path(Book::price)(BookPrice::value).minus(
-                    path(
-                        Book::salePrice,
-                    )(BookPrice::value),
-                ).desc(),
+                path(Book::price)(BookPrice::value).minus(path(Book::salePrice)(BookPrice::value)).desc(),
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context).apply {
-            maxResults = 1
-        }
-
         // then
-        assertThat(actual.resultList).isEqualTo(listOf(Isbn("12")))
+        assertThat(actual).isEqualTo(Isbn("12"))
     }
 
     @Test
     fun `employees without a nickname`() {
-        // given
-        val query = jpql {
+        // when
+        val actual = employeeRepository.findAll {
             select(
                 path(Employee::employeeId),
             ).from(
@@ -246,11 +210,8 @@ class SelectExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context)
-
         // then
-        assertThat(actual.resultList).isEqualTo(
+        assertThat(actual).isEqualTo(
             listOf(
                 1L,
                 2L,
@@ -279,7 +240,8 @@ class SelectExample : WithAssertions {
             val count: Long,
         )
 
-        val query = jpql {
+        // when
+        val actual = employeeRepository.findAll {
             selectNew<Row>(
                 path(EmployeeDepartment::departmentId),
                 count(Employee::employeeId),
@@ -293,11 +255,8 @@ class SelectExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context)
-
         // then
-        assertThat(actual.resultList).isEqualTo(
+        assertThat(actual).isEqualTo(
             listOf(
                 Row(1, 6),
                 Row(2, 15),
@@ -308,8 +267,8 @@ class SelectExample : WithAssertions {
 
     @Test
     fun `the number of employees who belong to more than one department`() {
-        // given
-        val query = jpql {
+        // when
+        val actual = employeeRepository.findAll {
             val subquery = select(
                 path(Employee::employeeId),
             ).from(
@@ -330,10 +289,7 @@ class SelectExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManager.createQuery(query, context)
-
         // then
-        assertThat(actual.resultList).isEqualTo(listOf(7L))
+        assertThat(actual).isEqualTo(listOf(7L))
     }
 }

@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.spring.boot3)
+    alias(libs.plugins.test.spring.boot3)
     alias(libs.plugins.kotlin.noarg)
     alias(libs.plugins.kotlin.allopen)
     alias(libs.plugins.kotlin.spring)
@@ -8,14 +8,16 @@ plugins {
 
 dependencies {
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
-    implementation(libs.spring.boot3.jpa)
-    implementation(libs.spring.boot3.p6spy)
+    implementation(libs.test.spring.boot3.jpa)
+    implementation(libs.test.spring.boot3.p6spy)
     implementation(projects.example)
-    implementation(projects.bundleJpqlSpringDataJpa)
+    implementation(projects.dslJpql)
+    implementation(projects.renderJpql)
+    implementation(projects.supportSpringDataJpa)
 
-    testImplementation(libs.spring.boot3.test)
+    testImplementation(libs.test.spring.boot3.test)
 
-    testRuntimeOnly(libs.h2)
+    testRuntimeOnly(libs.test.h2)
 }
 
 kotlin {

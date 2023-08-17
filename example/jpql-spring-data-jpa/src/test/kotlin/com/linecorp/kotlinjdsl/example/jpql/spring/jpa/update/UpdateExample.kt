@@ -1,14 +1,11 @@
 package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.update
 
-import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.department.Department
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.EmployeeSalary
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.FullTimeEmployee
-import com.linecorp.kotlinjdsl.executor.spring.jpa.createQuery
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
-import jakarta.persistence.EntityManager
+import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.repository.employee.EmployeeRepository
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,15 +17,18 @@ import java.math.BigDecimal
 @SpringBootTest
 class UpdateExample : WithAssertions {
     @Autowired
-    private lateinit var context: JpqlRenderContext
-
-    @Autowired
-    private lateinit var entityManager: EntityManager
+    private lateinit var employeeRepository: EmployeeRepository
 
     @Test
     fun increase_the_annual_salaries_of_employees_in_department_03_by_10_percent() {
         // given
-        val query = jpql {
+        data class Row(
+            val employeeId: Long,
+            val annualSalary: EmployeeSalary,
+        )
+
+        // when
+        employeeRepository.update {
             val employeeIds = select<Long>(
                 path(EmployeeDepartment::employee)(Employee::employeeId),
             ).from(
@@ -49,15 +49,7 @@ class UpdateExample : WithAssertions {
             )
         }
 
-        // when
-        entityManager.createQuery(query, context).executeUpdate()
-
-        data class Row(
-            val employeeId: Long,
-            val annualSalary: EmployeeSalary,
-        )
-
-        val employeeAnnualSalaries = jpql {
+        val actual = employeeRepository.findAll {
             selectNew<Row>(
                 path(FullTimeEmployee::employeeId),
                 path(FullTimeEmployee::annualSalary),
@@ -68,10 +60,8 @@ class UpdateExample : WithAssertions {
             )
         }
 
-        val actual = entityManager.createQuery(employeeAnnualSalaries, context)
-
         // then
-        assertThat(actual.resultList).isEqualTo(
+        assertThat(actual).isEqualTo(
             listOf(
                 Row(16, EmployeeSalary(1600)),
                 Row(17, EmployeeSalary(1700)),
@@ -95,7 +85,13 @@ class UpdateExample : WithAssertions {
     @Test
     fun set_the_nickname_to_the_name_for_employees_in_department_03_who_do_not_have_nicknames() {
         // given
-        val query = jpql {
+        data class Row(
+            val employeeId: Long,
+            val nickname: String?,
+        )
+
+        // when
+        employeeRepository.update {
             val employeeIds = select<Long>(
                 path(EmployeeDepartment::employee)(Employee::employeeId),
             ).from(
@@ -117,15 +113,7 @@ class UpdateExample : WithAssertions {
             )
         }
 
-        // when
-        entityManager.createQuery(query, context).executeUpdate()
-
-        data class Row(
-            val employeeId: Long,
-            val nickname: String?,
-        )
-
-        val employeeNicknames = jpql {
+        val actual = employeeRepository.findAll {
             selectNew<Row>(
                 path(Employee::employeeId),
                 path(Employee::nickname),
@@ -136,10 +124,8 @@ class UpdateExample : WithAssertions {
             )
         }
 
-        val actual = entityManager.createQuery(employeeNicknames, context)
-
         // then
-        assertThat(actual.resultList).isEqualTo(
+        assertThat(actual).isEqualTo(
             listOf(
                 Row(1, "Employee01"),
                 Row(2, null),

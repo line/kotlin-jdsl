@@ -27,6 +27,7 @@ class JpqlNotLikeSerializer : JpqlSerializer<JpqlNotLike> {
             writer.write(" ")
             writer.write("ESCAPE")
             writer.write(" ")
+            delegate.serialize(it, writer, context)
         }
     }
 }
