@@ -4,10 +4,6 @@
 
 ### Type
 
-### Custom expression
-
-### Path
-
 ### Plus
 
 ### Minus
@@ -16,3 +12,20 @@
 
 ### Divide
 
+### Coalesce
+
+### NullIf
+
+### Count&#x20;
+
+### Max
+
+### Min
+
+### Avg
+
+### Sum
+
+### Function
+
+### Custom expression
