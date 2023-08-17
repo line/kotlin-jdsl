@@ -4,15 +4,17 @@ description: 'Latest stable version: 3.0.0'
 
 # Kotlin JDSL
 
-## What is Kotlin JDSL?
+## Kotlin JDSL은?
 
-Kotlin JDSL is a Kotlin library that makes query building and execution easy. You can build queries using your own classes and Kotlin's built-in functions without an annotation processor, and easily execute them.
+Kotlin JDSL은 쿼리를 쉽게 만들고 실행시킬 수 있게 도와주는 Kotlin 라이브러리입니다. 어노테이션 프로세서 없이 본인이 작성한 클래스와 Kotlin에서 제공하는 함수들을 이용해서 쉽게 쿼리를 만들고 실행시킬 수 있습니다.&#x20;
 
 ## Features
 
 ### JPQL
 
-You can build and execute the JPQL query using the Kotlin JDSL.
+Kotlin JDSL을 이용하여 JPQL 쿼리를 만들고 실행시킬 수 있습니다.
+
+`jpql` DSL은 Kotlin JDSL이 제공하는 여러가지 DSL 함수들을 제공합니다. DSL 함수를 이용하여 JPQL 쿼리를 만들 수 있습니다.
 
 ```kotlin
 val query = jpql {
@@ -29,7 +31,7 @@ val query = jpql {
 }
 ```
 
-And you can easily execute the query that was created by Kotlin JDSL using the extension functions.
+만들어진 JPQL 쿼리는 Kotlin JDSL이 제공하는 Kotlin 확장함수를 이용하여 쉽게 실행시킬 수 있습니다.
 
 ```kotlin
 val `the most prolific author` = entityManager.createQuery(query, context).apply {
@@ -37,4 +39,4 @@ val `the most prolific author` = entityManager.createQuery(query, context).apply
 }
 ```
 
-See [more](jpql-with-kotlin-jdsl/) for more details.
+더 많은 정보를 원하신다면 이 문서를 봐주세요.
