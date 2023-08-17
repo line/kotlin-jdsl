@@ -20,6 +20,9 @@ jobs:
                 uses: gradle/wrapper-validation-action@v1
             -   name: CodeCoverage(with test) with Gradle
                 run: ./gradlew publish --info
+                env:
+                    SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+                    SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
             -   name: Cleanup Gradle Cache
                 # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
                 # Restoring these files from a GitHub Actions cache might cause problems for future builds.
