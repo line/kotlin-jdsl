@@ -1,9 +1,11 @@
-name: Publish snapshot to the Maven Central Repository
+name: Publish to the Maven Central Repository
 
 on:
     push:
         branches:
             - develop/*
+    release:
+        types: [ created ]
 
 jobs:
     publish:
@@ -18,7 +20,7 @@ jobs:
                     cache: gradle
             -   name: Validate Gradle wrapper
                 uses: gradle/wrapper-validation-action@v1
-            -   name: CodeCoverage(with test) with Gradle
+            -   name: Publish to the Maven Central Repository
                 run: ./gradlew publish --info
                 env:
                     SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
