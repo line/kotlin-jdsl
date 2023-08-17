@@ -166,6 +166,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlInnerJoinSerializer(),
             JpqlInSerializer(),
             JpqlInSubquerySerializer(),
+            JpqlNotInSubquerySerializer(),
             JpqlIsNullSerializer(),
             JpqlJoinedEntitySerializer(),
             JpqlLeftJoinSerializer(),
