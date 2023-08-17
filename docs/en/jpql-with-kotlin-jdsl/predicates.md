@@ -1,5 +1,7 @@
 # Predicates
 
+The Predicate interface represents a condition on a query or data change.
+
 ### And
 
 ### Or

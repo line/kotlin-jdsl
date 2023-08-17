@@ -1,5 +1,7 @@
 # Statements
 
+Kotlin JDSL supports the 3 statements: select, update, and delete. Each statement can be created using the Fluent-style DSL provided by the Kotlin JDSL.
+
 ## Select statement
 
 You can create a select statement by calling the `select` function inside the `jpql` function. The `select` function starts the select statement DSL, and the method chain allows you to see what types of functions are available and call them.
