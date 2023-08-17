@@ -26,9 +26,8 @@ module(name = ":spring-data-jpa-support", path = "support/spring-data-jpa")
 module(name = ":spring-data-jpa-javax-support", path = "support/spring-data-jpa-javax")
 
 module(name = ":example", path = "example")
-module(name = ":jpql-jpa-example", path = "example/jpql-jpa")
-module(name = ":jpql-spring-data-jpa-example", path = "example/jpql-spring-data-jpa")
-module(name = ":jpql-spring-data-jpa-javax-exmaple", path = "example/jpql-spring-data-jpa-javax")
+module(name = ":spring-data-jpa-example", path = "example/spring-data-jpa")
+module(name = ":spring-data-jpa-javax-example", path = "example/spring-data-jpa-javax")
 
 module(name = ":benchmark", path = "benchmark")
 

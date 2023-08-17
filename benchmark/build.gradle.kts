@@ -32,3 +32,6 @@ benchmark {
         register("main")
     }
 }
+
+tasks.withType<PublishToMavenRepository>().configureEach { enabled = false }
+tasks.withType<PublishToMavenLocal>().configureEach { enabled = false }

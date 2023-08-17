@@ -28,8 +28,8 @@ spring-jdbc = { module = "org.springframework:spring-jdbc", version = "6.0.11" }
 spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.3.8" }
 
 # https://github.com/spring-projects/spring-data-jpa/issues/2812
-spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", version = "2.7.9" }
 spring-data-jpa3 = { module = "org.springframework.data:spring-data-jpa", version = "3.0.3" }
+spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", version = "2.7.9" }
 
 # Test
 test-spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "test-spring-boot3" }
@@ -48,7 +48,7 @@ test-h2 = { module = "com.h2database:h2", version = "2.2.220" }
 
 [plugins]
 test-spring-boot3 = { id = "org.springframework.boot", version.ref = "test-spring-boot3" }
-test-spring-boot2 = { id = "org.springframework.boot", version.ref = "test-spring-boot3" }
+test-spring-boot2 = { id = "org.springframework.boot", version.ref = "test-spring-boot2" }
 
 kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.9" }
 kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }

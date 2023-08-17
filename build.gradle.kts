@@ -7,12 +7,15 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kover)
     `java-test-fixtures`
+    `maven-publish`
 }
 
 allprojects {
     apply(plugin = "kotlin")
     apply(plugin = "org.jetbrains.kotlinx.kover")
     apply(plugin = "java-test-fixtures")
+    apply(plugin = "maven-publish")
+    apply(plugin = "signing")
 
     group = "com.linecorp.kotlin-jdsl"
     version = "3.0.0-SNAPSHOT"
@@ -55,6 +58,56 @@ allprojects {
             showCauses = true
             showStackTraces = true
             events = setOf(FAILED)
+        }
+    }
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    publishing {
+        repositories {
+            maven {
+                val snapshotRepoUri = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+                val releaseRepoUri = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+                name = "OSSRH"
+                url = if (version.toString().endsWith("SNAPSHOT")) snapshotRepoUri else releaseRepoUri
+
+                val sonatypeUsername: String? = System.getenv("SONATYPE_USERNAME")
+                val sonatypePassword: String? = System.getenv("SONATYPE_PASSWORD")
+
+                credentials {
+                    username = sonatypeUsername ?: ""
+                    password = sonatypePassword ?: ""
+                }
+            }
+        }
+
+        publications {
+            create<MavenPublication>("maven") {
+                from(components["java"])
+
+                pom {
+                    name.set(artifactId)
+                    description.set("DSL for JPA Criteria API without generated metamodel and reflection.")
+                    url.set("https://github.com/line/kotlin-jdsl")
+
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+
+                    scm {
+                        connection.set("scm:git@github.com:line/kotlin-jdsl.git")
+                        developerConnection.set("scm:git:ssh://github.com:line/kotlin-jdsl.git")
+                        url.set("https://github.com/line/kotlin-jdsl")
+                    }
+                }
+            }
         }
     }
 }
