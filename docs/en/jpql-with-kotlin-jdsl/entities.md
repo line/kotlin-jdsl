@@ -1,21 +1,34 @@
 # Entities
 
-Kotlin JDSL has an Entity interface for representing entities in JPA. This entity interface can be treated as an expression and used in select clauses and where clauses, and it can also be treated as a from element and used in from clauses.
+Entity represents an entity in JPA. It can be represented by entity function or KClass.&#x20;
 
 ```kotlin
+entity(Book::class)
 ```
 
-Some DSL functions can treat KClasses as entities and pass them as parameters.&#x20;
+### Alias
+
+All entities have an alias. If you don't specify an alias in entity function, Kotlin JDSL automatically generates one from the class name.
 
 ```kotlin
+entity(Book::class) // == entity(Book::class, Book::class.simpleName!!)
+
+entity(Book::class, alias = "b")
 ```
 
-Entities must always have an alias. If you don't add an alias when creating an entity via the entity DSL function, Kotlin JDSL automatically creates an alias from the class name. So if you want to represent separate entities with the same entity type, you can use an alias to create entities with the same type but different references.
+### Expression
+
+Entity can be treated as an expression. It can be used where an expression is required, such as a [select clause](statements.md#select-clause) or [predicate](predicates.md), in which case only the alias is printed in the query and is used only to refer to the entity.
 
 ```kotlin
-```
-
-Select statements can also be treated as entities through the asEntity() DSL function. See this for more information.
-
-```kotlin
+// SELECT b FROM Book AS b
+jpql {
+    select(
+        entity(Book::class, "b"),
+    ).from(
+        entity(Book::class, "b"),
+    ).where(
+        entity(Book::class, "b")(Book::isbn).eq(Isbn("01")),
+    )
+}
 ```
