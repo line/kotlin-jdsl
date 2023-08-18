@@ -30,7 +30,7 @@ class JpqlValueSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN value is disabled, THEN draw full syntax`() {
+    fun `serialize - WHEN value is given, THEN draw full syntax`() {
         // given
         every { writer.writeParam(any()) } just runs
 
