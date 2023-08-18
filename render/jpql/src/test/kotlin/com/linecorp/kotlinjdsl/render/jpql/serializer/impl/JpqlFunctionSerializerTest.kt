@@ -34,14 +34,7 @@ class JpqlFunctionSerializerTest : WithAssertions {
     @Test
     fun `serialize - WHEN args is empty, THEN draw function without args`() {
         // given
-        every { writer.writeEach<Expression<*>>(any(), any(), any(), any(), any()) } answers {
-            val expressions: List<Expression<*>> = arg(0)
-            val write: (Expression<*>) -> Unit = arg(4)
-
-            expressions.forEach { expression -> write(expression) }
-        }
         every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Expressions.function(
             type = Long::class,
