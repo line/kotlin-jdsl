@@ -41,7 +41,7 @@ select(path(Author::authorId), path(Author::name))
 select<CustomEntity>(path(Author::authorId), path(Author::name)) 
 ```
 
-DTO projection can be represented by selectNew function. By specifying the DTO class you want to project in the selectNew function and passing the parameters of the class as parameters, you represent the DTO projection using JPQL's NEW keyword.
+DTO projection can be represented by selectNew function. By specifying the DTO class you want to project in the selectNew function and passing the parameters of the class as parameters, you can represent the DTO projection.
 
 ```kotlin
 data class Row(

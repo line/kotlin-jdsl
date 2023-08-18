@@ -21,14 +21,22 @@ entity(Book::class, alias = "b")
 Entity can be treated as an expression. It can be used where an expression is required, such as a [select clause](statements.md#select-clause) or [predicate](predicates.md), in which case only the alias is printed in the query and is used only to refer to the entity.
 
 ```kotlin
-// SELECT b FROM Book AS b
+// SELECT b FROM Book AS b WHERE b.isbn.value = :param1
 jpql {
     select(
         entity(Book::class, "b"),
     ).from(
         entity(Book::class, "b"),
     ).where(
-        entity(Book::class, "b")(Book::isbn).eq(Isbn("01")),
+        entity(Book::class, "b")(Book::isbn)(Ibsn::value).eq("01"),
     )
 }
+```
+
+### Treat
+
+Entity can be cast to sub-class using treat function.&#x20;
+
+```kotlin
+entity(Employee::class).treat(FullTimeEmployee::class)
 ```

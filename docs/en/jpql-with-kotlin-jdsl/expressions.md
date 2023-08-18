@@ -1,5 +1,9 @@
 # Expressions
 
+## Component
+
+## Alias
+
 ## New
 
 An expression that provides a DTO projection

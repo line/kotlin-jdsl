@@ -1,16 +1,38 @@
 # Paths
 
-Kotlin JDSL has a Path interface to represent associations and fields between entities. Path interfaces can be created from Entities and can continue to be related, like method chaining.&#x20;
+Path represents an path expression in JPA. It can be represented by path or invoke function.&#x20;
 
 ```kotlin
+// Book.isbn.value
+path(Book::isbn).path(Isbn::value)
+path(Book::isbn)(Isbn::value)
+
+// b.isbn.value
+entity(Book::class, "b").path(Book::isbn).path(Isbn::value)
+entity(Book::class, "b")(Book::isbn)(Isbn::value)
 ```
 
-You can treat paths as expressions and put them in Select and Where clauses, and also use them to express associations between objects when joining.
+### Expression
+
+Path can be treated as an expression. It can be used where an expression is required, such as a [select clause](statements.md#select-clause) or [predicate](predicates.md).
 
 ```kotlin
+// SELECT Book.isbn FROM Book AS Book WHERE Book.isbn.value = :param1
+jpql {
+    select(
+        path(Book::isbn),
+    ).from(
+        entity(Book::class),
+    ).where(
+        path(Book::isbn)(Ibsn::value).eq("01"),
+    )
+}
 ```
 
-Paths can also be cast to child classes via the Treat DSL function.
+### Treat
+
+Path can be cast to sub-class using treat function.&#x20;
 
 ```kotlin
+path(EmployeeDepartment::employee).treat(FullTimeEmployee::class)
 ```
