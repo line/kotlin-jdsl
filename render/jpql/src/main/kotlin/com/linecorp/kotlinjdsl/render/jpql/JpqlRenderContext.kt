@@ -160,6 +160,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlEntitySerializer(),
             JpqlEqualSerializer(),
             JpqlExpressionSerializer(),
+            JpqlFunctionSerializer(),
             JpqlGreaterThanOrEqualToSerializer(),
             JpqlGreaterThanSerializer(),
             JpqlInnerAssociationJoinSerializer(),
