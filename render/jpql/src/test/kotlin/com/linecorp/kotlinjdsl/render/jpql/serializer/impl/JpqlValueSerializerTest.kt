@@ -3,7 +3,6 @@ package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.render.TestRenderContext
-import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import io.mockk.every
@@ -21,9 +20,6 @@ class JpqlValueSerializerTest : WithAssertions {
     @MockK
     private lateinit var writer: JpqlWriter
 
-    @MockK
-    private lateinit var serializer: JpqlRenderSerializer
-
     @Test
     fun handledType() {
         // when
@@ -39,7 +35,7 @@ class JpqlValueSerializerTest : WithAssertions {
         every { writer.writeParam(any()) } just runs
 
         val part = Expressions.value("value")
-        val context = TestRenderContext(serializer)
+        val context = TestRenderContext()
 
         // when
         sut.serialize(part as JpqlValue<*>, writer, context)
