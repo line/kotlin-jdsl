@@ -156,6 +156,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlCountSerializer(),
             JpqlDeleteQuerySerializer(),
             JpqlDerivedEntitySerializer(),
+            JpqlDivideSerializer(),
             JpqlEntityPropertySerializer(),
             JpqlEntitySerializer(),
             JpqlEqualSerializer(),
