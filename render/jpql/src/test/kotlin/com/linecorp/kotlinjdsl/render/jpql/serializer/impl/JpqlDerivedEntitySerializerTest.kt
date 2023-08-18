@@ -15,7 +15,6 @@ import org.junit.jupiter.params.ParameterizedTest
 @JpqlSerializerTest
 class JpqlDerivedEntitySerializerTest : WithAssertions {
     private val sut = JpqlDerivedEntitySerializer()
-    data class TestEntity(val id: Long, val name: String)
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -48,7 +47,7 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
         every { writer.write(any<String>()) } just runs
 
         val select = Selects.select(
-            returnType = TestEntity::class,
+            returnType = TestTable1::class,
             distinct = false,
             select = emptyList(),
             from = emptyList(),
@@ -89,7 +88,7 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
         every { serializer.serialize(any(), any(), any()) } just runs
 
         val select = Selects.select(
-            returnType = TestEntity::class,
+            returnType = TestTable1::class,
             distinct = false,
             select = emptyList(),
             from = emptyList(),
@@ -120,4 +119,6 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
             writer.write(part.alias)
         }
     }
+
+    private class TestTable1
 }
