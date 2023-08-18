@@ -91,7 +91,7 @@ allprojects {
 
                 pom {
                     name.set(artifactId)
-                    description.set("DSL for JPA Criteria API without generated metamodel and reflection.")
+                    description.set("Kotlin library that makes it easy to build and execute queries without generated metamodel.")
                     url.set("https://github.com/line/kotlin-jdsl")
 
                     licenses {
@@ -121,3 +121,5 @@ subprojects {
         implementation(rootProject)
     }
 }
+
+
