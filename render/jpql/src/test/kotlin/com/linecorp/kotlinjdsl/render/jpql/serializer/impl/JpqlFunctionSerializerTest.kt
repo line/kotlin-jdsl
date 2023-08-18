@@ -32,7 +32,38 @@ class JpqlFunctionSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN function is given, THEN draw function with name and args`() {
+    fun `serialize - WHEN args is empty, THEN draw function without args`() {
+        // given
+        every { writer.writeEach<Expression<*>>(any(), any(), any(), any(), any()) } answers {
+            val expressions: List<Expression<*>> = arg(0)
+            val write: (Expression<*>) -> Unit = arg(4)
+
+            expressions.forEach { expression -> write(expression) }
+        }
+        every { writer.write(any<String>()) } just runs
+        every { serializer.serialize(any(), any(), any()) } just runs
+
+        val part = Expressions.function(
+            type = Long::class,
+            name = "calculate",
+            args = emptyList(),
+        )
+        val context = TestRenderContext(serializer)
+
+        // when
+        sut.serialize(part as JpqlFunction<*>, writer, context)
+
+        // then
+        verifySequence {
+            writer.write("FUNCTION")
+            writer.write("(")
+            writer.write("calculate")
+            writer.write(")")
+        }
+    }
+
+    @Test
+    fun `serialize - WHEN args is not empty, THEN draw function with name and args`() {
         // given
         every { writer.writeEach<Expression<*>>(any(), any(), any(), any(), any()) } answers {
             val expressions: List<Expression<*>> = arg(0)
@@ -62,6 +93,8 @@ class JpqlFunctionSerializerTest : WithAssertions {
             writer.write("FUNCTION")
             writer.write("(")
             writer.write("calculate")
+            writer.write(", ")
+            writer.write(" ")
             writer.writeEach(part.args, ", ", "", "", any())
             serializer.serialize(part.args.elementAt(0), writer, context)
             serializer.serialize(part.args.elementAt(1), writer, context)
