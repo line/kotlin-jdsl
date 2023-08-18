@@ -261,4 +261,9 @@ object Expressions {
     fun <T : Any> expression(type: KClass<T>, alias: String): Expression<T> {
         return JpqlExpression(type, alias)
     }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> parenthesis(expr: Expression<T>): Expression<T> {
+        return JpqlExpressionParenthesis(expr)
+    }
 }

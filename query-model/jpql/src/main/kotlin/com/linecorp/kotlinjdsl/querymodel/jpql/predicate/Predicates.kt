@@ -204,4 +204,9 @@ object Predicates {
     fun <T : Any> notExists(subquery: Subquery<T>): Predicate {
         return JpqlNotExists(subquery)
     }
+
+    @SinceJdsl("3.0.0")
+    fun parenthesis(predicate: Predicate): Predicate {
+        return JpqlPredicateParenthesis(predicate)
+    }
 }
