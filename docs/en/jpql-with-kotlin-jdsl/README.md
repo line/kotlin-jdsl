@@ -6,19 +6,19 @@ With Kotlin JDSL, you can easily build and execute JPQL queries.
 
 Java 8 (or later) and Kotlin 1.9 (or later) are required to build and run an application with Kotlin JDSL.
 
-## Choosing the artifacts <a href="#setting-up-with-a-build-system" id="setting-up-with-a-build-system"></a>
+## The artifacts <a href="#setting-up-with-a-build-system" id="setting-up-with-a-build-system"></a>
 
 Kotlin JDSL provides several artifacts. The most basic of these are jpql-dsl and jpql-render. By using these two artifacts as a base and adding a support artifact for your favorite libraries, you can easily build and execute queries.
 
 ### Basic
 
-<table><thead><tr><th width="251">Artifact ID</th><th>Description</th></tr></thead><tbody><tr><td>jpql-dsl</td><td>Building the JPQL query through DSL.</td></tr><tr><td>jpql-render</td><td>Rendering the JPQL query from DSL as a string.</td></tr></tbody></table>
+<table><thead><tr><th width="251">Artifact ID</th><th>Description</th></tr></thead><tbody><tr><td>jpql-dsl</td><td>Building the JPQL query using DSL.</td></tr><tr><td>jpql-render</td><td>Rendering the JPQL query from DSL as a string.</td></tr></tbody></table>
 
 ### Supports
 
 <table><thead><tr><th width="251">Artifact ID</th><th>Description</th></tr></thead><tbody><tr><td>eclipselink-support</td><td>Support to help you use EclipseLink and Kotlin JDSL together.</td></tr><tr><td>eclipselink-javax-support</td><td>Support to help you use EclipseLink and Kotlin JDSL together for javax.</td></tr><tr><td>hibernate-support</td><td>Support to help you use Hibernate and Kotlin JDSL together.</td></tr><tr><td>hibernate-javax-support</td><td>Support to help you use Hibernate and Kotlin JDSL together for javax.</td></tr><tr><td>spring-batch-support</td><td>Support to help you use Spring Batch and Kotlin JDSL together.</td></tr><tr><td>spring-data-jpa-support</td><td>Support to help you use Spring Data Jpa and Kotlin JDSL together.</td></tr><tr><td>spring-data-jpa-javax-support</td><td>Support to help you use Spring Data Jpa 2.X and Kotlin JDSL together.</td></tr></tbody></table>
 
-## Setting up with your build system <a href="#setting-up-with-a-build-system" id="setting-up-with-a-build-system"></a>
+## Maven Central configuration
 
 All JARs of Kotlin JDSL are available in [Maven Central Repository](https://central.sonatype.com/search?q=g%3Acom.linecorp.kotlin-jdsl) under group ID `com.linecorp.kotlin-jdsl` so that you can fetch them easily using your favorite build tool.
 
@@ -150,7 +150,7 @@ dependencies {
 
 ## JPQL queries with DSL
 
-The jpql function allows you to build JPQL queries using DSL functions. You can create a select statement, update statement, and delete statement using the [select](statements.md#select-statement), [update](statements.md#update-statement), and [deleteFrom](statements.md#delete-statement) functions.
+Jpql function allows you to build JPQL queries using DSL functions. You can create a select statement, update statement, and delete statement using the [select](statements.md#select-statement), [update](statements.md#update-statement), and [deleteFrom](statements.md#delete-statement) functions.
 
 To execute the created queries, there will be RenderContext. Kotlin JDSL provides JpqlRenderContext as the default RenderContext for JPQL, so you can use it to execute the queries.
 
@@ -179,6 +179,6 @@ val result = jpaQuery.resultList
 
 ### Customizing
 
-Kotlin JDSL can help you create your own DSL. To create your own DSL, you can inherit from Jpql class to add DSL functions, and you can build and execute queries through your own Query Model class by implementing JpqlSerializer interface.&#x20;
+Kotlin JDSL can help you create your own DSL. To create your own DSL, you can inherit from Jpql class to add DSL functions, and you can build and execute queries using your own Query Model class by implementing JpqlSerializer interface.&#x20;
 
 See [more](customizing.md) for more details.

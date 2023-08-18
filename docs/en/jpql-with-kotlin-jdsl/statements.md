@@ -1,34 +1,47 @@
 # Statements
 
-Kotlin JDSL supports the 3 statements: select, update, and delete. Each statement can be created using the Fluent-style DSL provided by the Kotlin JDSL.
+With Kotlin JDSL, you can create select, update, and delete statements.
 
 ## Select statement
 
-You can create a select statement by calling the `select` function inside the `jpql` function. The `select` function starts the select statement DSL, and the method chain allows you to see what types of functions are available and call them.
+By using the select function within a block of a jpql function, you can create a select statement. Each clause in the select statement can be represented by a function corresponding to the name of the clause.
 
 ```kotlin
-select(
-    path(Author::authorId),
-).from(
-    entity(Author::class),
-)
+val query = jpql {
+    select<Row>(
+        path(Employee::employeeId).`as`(expression("employeeId")),
+        count(Employee::employeeId).`as`(expression("count")),
+    ).from(
+        entity(Employee::class),
+        join(Employee::departments),
+    ).where(
+        path(EmployeeDepartment::departmentId).eq(3L)
+    ).groupBy(
+        path(Employee::employeeId),
+    ).having(
+        count(Employee::employeeId).greaterThan(1L),
+    ).orderBy(
+        expression<Long>("employeeId").asc()
+    )
+}
 ```
 
 ### Select clause
 
-You can represent a `select` clause by listing the expressions you want to look up in the `select` function. If you pass only one expression to the select function, it will automatically infer the type of the result of the projection. However, if you pass more than one expression, it will not be able to infer the type of the result of the projection, so you need to specify the type.
+A select clause can be represented using select function. Select function takes [expression](expressions.md)[s](expressions.md) as parameters. If you pass only one expression to select function, Kotlin JDSL will infer the type from the expression. However, if you pass multiple expressions, the Kotlin JDSL cannot infer the type, so you need to specify the result type for select.
 
 ```kotlin
-select(path(Author::authorId)) // It can infer the result type.
+// It can infer the result type.
+select(path(Author::authorId))
 
-select(path(Author::authorId), path(Author::name)) // It can't infer the result type.
+// It cannot infer the result type.
+select(path(Author::authorId), path(Author::name)) 
 
-select<CustomEntity>(path(Author::authorId), path(Author::name)) // This allows it to know the result type.
+// This allows it to know the result type.
+select<CustomEntity>(path(Author::authorId), path(Author::name)) 
 ```
 
-#### DTO projection
-
-You can use DTO projection by passing the DTO class you want to project and the expression in the order of the constructor parameters of DTO class to select new function.
+DTO projection can be represented using selectNew function. By specifying the DTO class you want to project in the selectNew function and passing the parameters of the class as parameters, you represent the DTO projection using JPQL's NEW keyword.
 
 ```kotlin
 data class Row(
@@ -44,99 +57,106 @@ selectNew<Row>(
 
 ### From clause
 
-You can represent a `from` clause by listing the froms you want to join in the `from` function. If null is passed as a parameter, it will be ignored. This allows you to dynamically create a `from` clause.
+A from clause can be represented using from function. From function takes [entities](entities.md) and [joins](statements.md#join) as parameters. The first parameter of the from function can take only an entity.
 
-<pre class="language-kotlin"><code class="lang-kotlin"><strong>select(
-</strong>    path(Author::name),
-).from(
-    entity(Author::class),
-    isbn?.let { join(BookAuthor::class).on(path(Author::authorId).equal(path(BookAuthor::authorId))) }, 
-).whereAnd(
-    isbn?.let { path(BookAuthor::isbn).equal(isbn) }, 
+<pre class="language-kotlin"><code class="lang-kotlin"><strong>from(
+</strong>    entity(Author::class),
+    join(BookAuthor::class).on(path(Author::authorId).equal(path(BookAuthor::authorId))),
 )
 </code></pre>
 
+### Join
+
+A join clause can be represented using join or fetchJoin functions. There are two types of joins: Join and Association join. Join represents a join between two unrelated entities, and the on condition is always required. Association join represents a join between two related entities, and the on condition is optional.
+
+```kotlin
+from(
+    entity(Book::class),
+    join(Book::authors),
+    join(Author::class).on(path(BookAuthor::authorId).eq(path(Author::authorId))),
+)
+```
+
+By using as function after the join function, you can use the aliased entity in other clauses of the select statement. If you want to include more than one entity of the same type in the from clause, you can use this.
+
+```kotlin
+from(
+    entity(Book::class),
+    join(Book::authors).`as`(entity(BookAuthor::class, "author")),
+)
+```
+
 ### Where clause
 
-You can represent a `where` clause by listing the predicates you want to filter in the `where` function. If null is passed as a parameter, it will be ignored. This allows you to dynamically create a `where` clause.
+A where clause can be represented using where function. Where function takes [predicates](predicates.md) as parameters. You can use the whereAnd and whereOr functions to combine predicates into AND or OR.
 
 {% hint style="info" %}
-If the list passed through the `whereAnd` function is empty or all null, this will print 1 = 1. For the `whereOr` function, this will print 1 = 0.
+If the all predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this will print 1 = 0.
 {% endhint %}
 
 ```kotlin
-select(
-    path(Book::isbn),
-).from(
-    entity(Book::class),
-).where(
+where(
     path(Book::publishDate).between(
         OffsetDateTime.parse("2023-01-01T00:00:00+09:00"),
         OffsetDateTime.parse("2023-06-30T23:59:59+09:00"),
     ),
-).orderBy(
-    path(Book::isbn).asc(),
 )
+```
+
+WhereAnd and whereOr functions ignore the passed parameter if it is null. You can use this feature to create readable dynamic queries.
+
+```kotlin
+data class BookSpec(
+    val isbn: Isbn?,
+    val publisherId: Long?,
+    val authorId: Long?,
+)
+
+val query = jpql {
+    select(
+        path(Book::isbn),
+    ).from(
+        entity(Book::class),
+        join(Book::publisher),
+        join(Book::authors),
+    ).whereAnd(
+        spec.isbn?.let { path(Book::isbn).eq(it) },
+        spec.publisherId?.let { path(BookPublisher::publisherId).eq(it) },
+        spec.authorId?.let { path(BookAuthor::authorId).eq(it) },
+    )
+}
 ```
 
 ### Group by clause
 
-You can represent a `group by` clause by listing the expressions you want to group in the `group by` function. If null is passed as a parameter, it will be ignored. This allows you to dynamically create a `group by` clause.
+A group by clause can be represented using groupBy function. GroupBy function takes [expressions](expressions.md) as parameters.&#x20;
 
 ```kotlin
-data class Row(
-    val departmentId: Long,
-    val count: Long,
-)
-
-selectNew<Row>(
-    path(EmployeeDepartment::departmentId),
-    count(Employee::employeeId),
-).from(
-    entity(Employee::class),
-    join(Employee::departments),
-).groupBy(
+groupBy(
     path(EmployeeDepartment::departmentId),
 )
 ```
 
 ### Having clause
 
-You can represent a `having` clause by listing the predicates you want to filter in the `having` function. If null is passed as a parameter, it will be ignored. This allows you to dynamically create a `having` clause.
+A having clause can be represented using having function. Having function takes [predicates](predicates.md) as parameters. You can use the havingAnd and havingOr functions to combine predicates into AND or OR.
 
 {% hint style="info" %}
-If the list passed through the `havingAnd` function is empty or all null, this will print 1 = 1. For the `havingOr` function, this will print 1 = 0.
+If the all predicates in havingAnd function are all null or empty, this will print 1 = 1. For the havingOr function, this will print 1 = 0.
 {% endhint %}
 
 ```kotlin
-data class Row(
-    val employeeId: Long,
-    val count: Long,
-)
-
-select<Row>(
-    path(Employee::employeeId).`as`(expression("employeeId")),
-    count(Employee::employeeId).`as`(expression("count")),
-).from(
-    entity(Employee::class),
-    join(Employee::departments),
-).groupBy(
-    path(Employee::employeeId),
-).having(
+having(
     count(Employee::employeeId).greaterThan(1L),
 )
 ```
 
 ### Order by clause
 
-You can represent a `order by` clause by listing the sorts you want to sort in the `order by` function. If null is passed as a parameter, it will be ignored. This allows you to dynamically create a `having` clause.
+A order by clause can be represented using orderBy function. OrderBy function takes [sorts](sorts.md) as parameters.&#x20;
 
 ```kotlin
-select(
-    path(Book::isbn),
-).from(
-    entity(Book::class),
-).orderBy(
+orderBy(
     path(Book::isbn).asc(),
 )
 ```
