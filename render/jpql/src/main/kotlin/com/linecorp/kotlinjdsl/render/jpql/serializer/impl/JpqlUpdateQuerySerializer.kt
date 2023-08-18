@@ -26,12 +26,12 @@ class JpqlUpdateQuerySerializer : JpqlSerializer<JpqlUpdateQuery<*>> {
         val entity = part.entity
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val selectContext = context + JpqlRenderClause.Update
+        val updateContext = context + JpqlRenderClause.Update
 
         writer.write("UPDATE")
         writer.write(" ")
 
-        delegate.serialize(entity, writer, selectContext)
+        delegate.serialize(entity, writer, updateContext)
     }
 
     private fun writeSet(part: JpqlUpdateQuery<*>, writer: JpqlWriter, context: RenderContext) {
