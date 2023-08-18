@@ -20,6 +20,8 @@ class JpqlNotInSerializer : JpqlSerializer<JpqlNotIn<*>> {
             return
         }
 
+        delegate.serialize(part.value, writer, context)
+
         writer.write("NOT IN")
         writer.write(" ")
         writer.write("(")
