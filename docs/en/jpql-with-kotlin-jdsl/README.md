@@ -148,7 +148,7 @@ dependencies {
 {% endtab %}
 {% endtabs %}
 
-## Building JPQL queries with DSL
+## JPQL queries with DSL
 
 The jpql function allows you to build JPQL queries using DSL functions. You can create a select statement, update statement, and delete statement using the [select](statements.md#select-statement), [update](statements.md#update-statement), and [deleteFrom](statements.md#delete-statement) functions.
 
