@@ -12,3 +12,4 @@
   * [Values](jpql-with-kotlin-jdsl/literals.md)
   * [Customizing](jpql-with-kotlin-jdsl/customizing.md)
   * [Spring supports](jpql-with-kotlin-jdsl/spring-supports.md)
+* [Kotlin JDSL Roadmap](kotlin-jdsl-roadmap.md)
