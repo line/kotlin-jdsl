@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.iterable.IterableUtils
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -20,8 +21,13 @@ class JpqlFunctionSerializer : JpqlSerializer<JpqlFunction<*>> {
 
         writer.write(part.name)
 
-        writer.writeEach(part.args, separator = ", ") {
-            delegate.serialize(it, writer, context)
+        if (IterableUtils.isNotEmpty(part.args)) {
+            writer.write(", ")
+            writer.write(" ")
+
+            writer.writeEach(part.args, separator = ", ") {
+                delegate.serialize(it, writer, context)
+            }
         }
 
         writer.write(")")
