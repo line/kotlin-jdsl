@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test
 @JpqlSerializerTest
 class JpqlEntityPropertySerializerTest : WithAssertions {
     private val sut = JpqlEntityPropertySerializer()
-    data class TestEntity(val id: Long, val name: String)
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -40,7 +39,7 @@ class JpqlEntityPropertySerializerTest : WithAssertions {
         every { writer.write(any<String>()) } just runs
         every { serializer.serialize(any(), any(), any()) } just runs
 
-        val part = Paths.path(TestEntity::name)
+        val part = Paths.path(TestTable1::int1)
         val context = TestRenderContext(serializer)
 
         // when
@@ -52,5 +51,9 @@ class JpqlEntityPropertySerializerTest : WithAssertions {
             writer.write(".")
             writer.write(part.property.name)
         }
+    }
+
+    private class TestTable1 {
+        val int1: Int = 1
     }
 }

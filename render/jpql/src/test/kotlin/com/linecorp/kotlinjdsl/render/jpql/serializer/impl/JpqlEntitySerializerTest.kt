@@ -19,7 +19,6 @@ internal class JpqlEntitySerializerTest : WithAssertions {
     private val entityDescription = object : JpqlEntityDescription {
         override val name = "entity"
     }
-    data class TestEntity(val id: Long, val name: String)
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -52,7 +51,7 @@ internal class JpqlEntitySerializerTest : WithAssertions {
         // given
         every { writer.write(any<String>()) } just runs
 
-        val part = Entities.entity(type = TestEntity::class, alias = "alias")
+        val part = Entities.entity(type = TestTable1::class, alias = "alias")
         val context = TestRenderContext(introspector, statement, clause)
 
         // when
@@ -80,7 +79,7 @@ internal class JpqlEntitySerializerTest : WithAssertions {
         every { writer.write(any<String>()) } just runs
         every { introspector.introspect(any()) } returns entityDescription
 
-        val part = Entities.entity(type = TestEntity::class, alias = "alias")
+        val part = Entities.entity(type = TestTable1::class, alias = "alias")
         val context = TestRenderContext(introspector, statement, clause)
 
         // when
@@ -95,4 +94,6 @@ internal class JpqlEntitySerializerTest : WithAssertions {
             writer.write(part.alias)
         }
     }
+
+    private class TestTable1
 }

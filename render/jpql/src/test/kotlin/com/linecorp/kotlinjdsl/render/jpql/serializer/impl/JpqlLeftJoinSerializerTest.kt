@@ -18,8 +18,6 @@ import org.junit.jupiter.api.Test
 class JpqlLeftJoinSerializerTest : WithAssertions {
     private val sut = JpqlLeftJoinSerializer()
 
-    data class TestEntity(val id: Long, val name: String)
-
     @MockK
     private lateinit var writer: JpqlWriter
 
@@ -42,7 +40,7 @@ class JpqlLeftJoinSerializerTest : WithAssertions {
         every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Joins.leftJoin(
-            Entities.entity(TestEntity::class),
+            Entities.entity(TestTable1::class),
             Predicates.isNull(Expressions.stringLiteral("value")),
         )
         val context = TestRenderContext(serializer)
@@ -64,4 +62,6 @@ class JpqlLeftJoinSerializerTest : WithAssertions {
             serializer.serialize(part.on, writer, context)
         }
     }
+
+    private class TestTable1
 }

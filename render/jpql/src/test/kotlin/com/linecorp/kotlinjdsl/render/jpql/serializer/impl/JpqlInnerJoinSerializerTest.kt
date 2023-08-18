@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test
 @JpqlSerializerTest
 class JpqlInnerJoinSerializerTest : WithAssertions {
     private val sut = JpqlInnerJoinSerializer()
-    data class TestEntity(val id: Long, val name: String)
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -44,7 +43,7 @@ class JpqlInnerJoinSerializerTest : WithAssertions {
         every { serializer.serialize(any(), any(), any()) } just runs
 
         val part = Joins.innerJoin(
-            Entities.entity(TestEntity::class, "test"),
+            Entities.entity(TestTable1::class, "test"),
             Predicates.equal(
                 Expressions.stringLiteral("value"),
                 Expressions.stringLiteral("compare"),
@@ -69,4 +68,6 @@ class JpqlInnerJoinSerializerTest : WithAssertions {
             serializer.serialize(part.on, writer, context)
         }
     }
+
+    private class TestTable1
 }

@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test
 @JpqlSerializerTest
 class JpqlInSubquerySerializerTest : WithAssertions {
     private val sut = JpqlInSubquerySerializer()
-    data class TestEntity(val id: Long, val name: String)
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -40,7 +39,7 @@ class JpqlInSubquerySerializerTest : WithAssertions {
         every { serializer.serialize(any(), any(), any()) } just runs
 
         val select = Selects.select(
-            returnType = TestEntity::class,
+            returnType = TestTable1::class,
             distinct = false,
             select = emptyList(),
             from = emptyList(),
@@ -49,7 +48,7 @@ class JpqlInSubquerySerializerTest : WithAssertions {
             having = null,
             orderBy = null,
         )
-        val part = Predicates.`in`(Expressions.expression(TestEntity::class, "test"), Expressions.subquery(select))
+        val part = Predicates.`in`(Expressions.expression(TestTable1::class, "test"), Expressions.subquery(select))
         val context = TestRenderContext(serializer)
 
         // when
@@ -66,4 +65,6 @@ class JpqlInSubquerySerializerTest : WithAssertions {
             serializer.serialize(part.subquery, writer, context)
         }
     }
+
+    private class TestTable1
 }
