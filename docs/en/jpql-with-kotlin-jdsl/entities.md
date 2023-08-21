@@ -6,7 +6,7 @@ Entity represents an entity in JPA. It can be represented by entity function or 
 entity(Book::class)
 ```
 
-### Alias
+## Alias
 
 All entities have an alias. If you don't specify an alias in entity function, Kotlin JDSL automatically generates one from the class name.
 
@@ -16,9 +16,9 @@ entity(Book::class) // == entity(Book::class, Book::class.simpleName!!)
 entity(Book::class, alias = "b")
 ```
 
-### Expression
+## Expression
 
-Entity can be treated as an expression. It can be used where an expression is required, such as a [select clause](statements.md#select-clause) or [predicate](predicates.md), in which case only the alias is printed in the query and is used only to refer to the entity.
+Entity can be used as an expression where an expression is required, such as in a [select clause](statements.md#select-clause) or [predicate](predicates.md), in which case only the alias is printed in the query and is used only to refer to the entity.
 
 ```kotlin
 // SELECT b FROM Book AS b WHERE b.isbn.value = :param1
@@ -33,7 +33,7 @@ jpql {
 }
 ```
 
-### Treat
+## Treat
 
 Entity can be cast to sub-class using treat function.&#x20;
 

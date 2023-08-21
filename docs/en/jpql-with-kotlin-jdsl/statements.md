@@ -41,19 +41,18 @@ select(path(Author::authorId), path(Author::name))
 select<CustomEntity>(path(Author::authorId), path(Author::name)) 
 ```
 
-DTO projection can be represented by selectNew function. By specifying the DTO class you want to project in the selectNew function and passing the parameters of the class as parameters, you can represent the DTO projection.
+DTO projection can be represented by selectNew function. By specifying the DTO class you want to project in selectNew function and passing the parameters of the class as parameters, you can represent the DTO projection.
 
-```kotlin
-data class Row(
-    val departmentId: Long,
+<pre class="language-kotlin"><code class="lang-kotlin"><strong>data class Row(
+</strong>    val departmentId: Long,
     val count: Long,
 )
 
-selectNew<Row>(
+selectNew&#x3C;Row>(
     path(EmployeeDepartment::departmentId),
     count(Employee::employeeId),
 )
-```
+</code></pre>
 
 ### From clause
 
@@ -77,7 +76,7 @@ from(
 )
 ```
 
-By using as function after the join function, you can use the aliased entity in other clauses of the select statement. If you want to include more than one entity of the same type in the from clause, you can use this.
+By using as function after join function, you can use the aliased entity in other clauses of the select statement. If you want to include more than one entity of the same type in the from clause, you can use this.
 
 ```kotlin
 from(

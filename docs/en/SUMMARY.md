@@ -9,7 +9,6 @@
   * [Predicates](jpql-with-kotlin-jdsl/predicates.md)
   * [Sorts](jpql-with-kotlin-jdsl/sorts.md)
   * [Subqueries](jpql-with-kotlin-jdsl/subqueries.md)
-  * [Values](jpql-with-kotlin-jdsl/literals.md)
   * [Customizing](jpql-with-kotlin-jdsl/customizing.md)
   * [Spring supports](jpql-with-kotlin-jdsl/spring-supports.md)
 * [Kotlin JDSL Roadmap](kotlin-jdsl-roadmap.md)

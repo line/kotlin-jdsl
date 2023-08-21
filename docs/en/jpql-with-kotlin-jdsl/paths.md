@@ -12,9 +12,9 @@ entity(Book::class, "b").path(Book::isbn).path(Isbn::value)
 entity(Book::class, "b")(Book::isbn)(Isbn::value)
 ```
 
-### Expression
+## Expression
 
-Path can be treated as an expression. It can be used where an expression is required, such as a [select clause](statements.md#select-clause) or [predicate](predicates.md).
+Path can be used as an expression where an expression is required, such as in a [select clause](statements.md#select-clause) or [predicate](predicates.md).
 
 ```kotlin
 // SELECT Book.isbn FROM Book AS Book WHERE Book.isbn.value = :param1
@@ -29,7 +29,7 @@ jpql {
 }
 ```
 
-### Treat
+## Treat
 
 Path can be cast to sub-class using treat function.&#x20;
 
