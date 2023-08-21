@@ -964,7 +964,7 @@ open class Jpql : JpqlDsl {
      *
      * Examples:
      * ```
-     * customExpression("CAST({0} AS VARCHAR)", path(User::age))
+     * customExpression(String::class, "CAST({0} AS VARCHAR)", path(User::age))
      * ```
      */
     @SinceJdsl("3.0.0")
