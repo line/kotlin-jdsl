@@ -154,62 +154,95 @@ Sum function takes a different return type depending on the type of a parameter.
 
 ## Functions
 
+Kotlin JDSL provides several functions to support built-in functions in JPA.
+
 ### String functions
 
-| Function  | Support |
-| --------- | ------- |
-| CONCAT    | not yet |
-| SUBSTRING | not yet |
-| TRIM      | not yet |
-| LOWER     | not yet |
-| UPPER     | not yet |
-| LENGTH    | not yet |
-| LOCATE    | not yet |
+| Function  | DSL function |
+| --------- | ------------ |
+| CONCAT    | not yet      |
+| SUBSTRING | not yet      |
+| TRIM      | not yet      |
+| LOWER     | not yet      |
+| UPPER     | not yet      |
+| LENGTH    | not yet      |
+| LOCATE    | not yet      |
 
 ### Arithmetic functions
 
-| Function | Support |
-| -------- | ------- |
-| ABS      | not yet |
-| CEILING  | not yet |
-| EXP      | not yet |
-| FLOOR    | not yet |
-| LN       | not yet |
-| MOD      | not yet |
-| POWER    | not yet |
-| ROUND    | not yet |
-| SIGN     | not yet |
-| SQRT     | not yet |
-| SIZE     | not yet |
-| INDEX    | not yet |
+| Function | DSL function |
+| -------- | ------------ |
+| ABS      | not yet      |
+| CEILING  | not yet      |
+| EXP      | not yet      |
+| FLOOR    | not yet      |
+| LN       | not yet      |
+| MOD      | not yet      |
+| POWER    | not yet      |
+| ROUND    | not yet      |
+| SIGN     | not yet      |
+| SQRT     | not yet      |
+| SIZE     | not yet      |
+| INDEX    | not yet      |
 
 ### Datetime functions
 
-| Function           | Support |
-| ------------------ | ------- |
-| CURRENT\_DATE      | not yet |
-| CURRENT\_TIME      | not yet |
-| CURRENT\_TIMESTAMP | not yet |
-| LOCAL DATE         | not yet |
-| LOCAL TIME         | not yet |
-| LOCAL DATETIME     | not yet |
-| EXTRACT            | not yet |
+| Function           | DSL function |
+| ------------------ | ------------ |
+| CURRENT\_DATE      | not yet      |
+| CURRENT\_TIME      | not yet      |
+| CURRENT\_TIMESTAMP | not yet      |
+| LOCAL DATE         | not yet      |
+| LOCAL TIME         | not yet      |
+| LOCAL DATETIME     | not yet      |
+| EXTRACT            | not yet      |
 
-### User-defined function
+### Database function
+
+The invocation of functions that can represent predefined database functions or user-defined database functions, can be represented by function function. By specifying the return type of the function and passing the parameters of the function as parameters, you can represent the predefined database functions or user-defined database functions.
+
+```kotlin
+function(String::class, "myFunction", path(Book::isbn))
+```
 
 ## Cases
 
-case when
+A case when clause can be represented by caseWhen or caseValue function.&#x20;
 
-case value when
+CaseWhen function allows you to represent a case when clause based on [predicates](predicates.md).
+
+```kotlin
+caseWhen(path(Book::price).lt(BigDecimal.valueOf(100))).then("0")
+    .`when`(path(Book::price).lt(BigDecimal.valueOf(200))).then("100")
+    .`when`(path(Book::price).lt(BigDecimal.valueOf(300))).then("200")
+    .`else`("300")
+```
+
+CaseWhen function allows you to represent a case when clause based on [expressions](expressions.md).
+
+```kotlin
+caseValue(path(Book::price))
+    .`when`(BigDecimal.valueOf("100")).then("10")
+    .`when`(BigDecimal.valueOf("200")).then("20")
+    .`when`(BigDecimal.valueOf("300")).then("30")
+    .`else`(path(Book::price))
+```
 
 ### Coalesce
 
-Expression that returns the first non-null value in the expressions, or null if there are no non-null value in expressions.
+Coalesce that returns the first non-null value in the parameters, or null if there are no non-null values in the parameters, can be represented by coalesce function.
+
+```kotlin
+coalesce(path(Employee::nickname), path(Employee::name))
+```
 
 ### NullIf
 
-Expression that returns null if left = right is true, otherwise returns left. This is the same as `CASE WHEN left = right THEN NULL ELSE left END`.
+NullIf that returns null if value1 = value2 is true, otherwise returns value1, can be represented by nullIf function.
+
+```kotlin
+nullIf(path(Book::price), BigDecimal.ZERO)
+```
 
 ## New
 
@@ -230,7 +263,7 @@ new(
 
 ## Type
 
-Type operator that can restrict query polymorphism can be represented by type function.&#x20;
+Type operator that can restrict query polymorphism, can be represented by type function.&#x20;
 
 ```kotlin
 select(
@@ -244,4 +277,10 @@ select(
 
 ## Custom expression
 
-cast
+Expressions that are not provided by the Kotlin JDSL, can be represented by customExpression function. By specifying the return type of the expression and passing the parameters of the expression as parameters, you can represent the your expression.&#x20;
+
+```kotlin
+customExpression(String::class, "CAST({0} AS VARCHAR)", path(Book::price))
+```
+
+If you find that you are using the same customExpression a lot, you may want to create your own DSL, see [Customizing](customizing.md).
