@@ -1,8 +1,8 @@
-name: PR Lint Commit Messages
+name: Lint Commit Messages
 on: [ pull_request ]
 
 jobs:
-  commitLint:
+  commit-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
