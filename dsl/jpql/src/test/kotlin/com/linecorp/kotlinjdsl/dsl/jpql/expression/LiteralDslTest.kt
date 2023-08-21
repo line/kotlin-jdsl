@@ -12,7 +12,11 @@ class LiteralDslTest : AbstractJpqlDslTest() {
     private val double1: Double = 1.0
     private val boolean1: Boolean = true
     private val char1: Char = 'a'
-    private val string1: String = "string1 "
+    private val string1: String = "string1"
+
+    private enum class TestEnum {
+        TEST
+    }
 
     @Test
     fun intLiteral() {
@@ -115,6 +119,21 @@ class LiteralDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = Expressions.stringLiteral(string1)
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun enumLiteral() {
+        // when
+        val expression = testJpql {
+            enumLiteral(TestEnum.TEST)
+        }.toExpression()
+
+        val actual: Expression<TestEnum> = expression // for type check
+
+        // then
+        val expected = Expressions.enumLiteral(TestEnum.TEST)
 
         assertThat(actual).isEqualTo(expected)
     }
