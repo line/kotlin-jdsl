@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  testReport:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
