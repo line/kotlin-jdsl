@@ -1,4 +1,4 @@
-name: Lint Commit Messages
+name: PR Lint Commit Messages
 on: [ pull_request ]
 
 jobs:
