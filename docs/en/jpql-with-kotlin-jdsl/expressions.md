@@ -1,6 +1,6 @@
 # Expressions
 
-Expression represents an expression in JPA.
+Expression represents an expression in JPQL.
 
 ## Alias
 
@@ -31,11 +31,26 @@ select(
 )
 ```
 
+### Type Cast
+
+In some cases, you may want to specify the return type of the expression you want to use, rather than the type inferred by Kotlin JDSL. For example, AVG returns Double, but in JPQL Double can be converted to BigDecimal, so you want AVG to return BigDecimal. For this Kotlin JDSL provides unsafe type casting by specifying the type you want with KClass in as function.
+
+{% hint style="info" %}
+This is just a shorthand for `as Expression<T>`, so it may not work for all JPA implementations.
+{% endhint %}
+
+```kotlin
+avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal::class)
+```
+
 ## Arithmetic operations
 
-Arithmetic operations are represented by the plus, minus, times and div methods.
+Arithmetic operations can be represented by plus, minus, times and div functions.
 
-* \+ (plus), - (minus), \* (times), / (div)
+* \+ (plus)
+* \- (minus)
+* \* (times)
+* / (div)
 
 ```kotlin
 path(Book::price).plus(path(Book::salePrice))
@@ -53,7 +68,7 @@ div(path(Book::price), path(Book::salePrice))
 
 ### Parenthesis
 
-When using arithmetic operations, if you want to order the operations using parentheses, call the arithmetic operations using a normal function instead of an extension function. With extension functions, Kotlin JDSL can't identify the order in which you want to call the operators. However, with normal functions, Kotlin JDSL can identify it from the parameters.
+When using arithmetic operators, if you want to order the operators using parentheses, call the arithmetic operators using a normal function instead of an extension function. With extension functions, Kotlin JDSL can't identify the order in which you want to call the operators. However, with normal functions, Kotlin JDSL can identify it from the parameters.
 
 ```kotlin
 // (Book.price - Book.salePrice) * (100)
@@ -71,7 +86,7 @@ path(Book::price).minus(path(Book::salePrice)).times(BigDecimal.valueOf(100))
 The value used in a query can be represented by value function. All values created by the value function are printed in the query as query parameters. These query parameters cannot be overridden.
 
 {% hint style="info" %}
-If a KClass or Class object is passed in the value function, [entity](entities.md) is printed.
+If KClass or Class object is passed in the value function, [entity](entities.md) is printed.
 {% endhint %}
 
 ```kotlin
@@ -123,7 +138,11 @@ When printing a string literal, if the string includes '(single quote), the '(si
 
 Aggregation functions can be represented by a function corresponding to its name.
 
-* COUNT(count), MIN(min), MAX(max), AVG(avg), SUM(sum)
+* COUNT (count)
+* MIN (min)
+* MAX (max)
+* AVG (avg)
+* SUM (sum)
 
 ```kotlin
 count(path(Book::price))

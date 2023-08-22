@@ -1,6 +1,6 @@
 # Paths
 
-Path represents an path expression in JPA. It can be represented by path or invoke function.&#x20;
+Path represents an path expression in JPQL. It can be represented by path or invoke function.&#x20;
 
 ```kotlin
 // Book.isbn.value

@@ -1,6 +1,6 @@
 # Entities
 
-Entity represents an entity in JPA. It can be represented by entity function or KClass.&#x20;
+Entity represents an entity in JPQL. It can be represented by entity function or KClass.&#x20;
 
 ```kotlin
 entity(Book::class)
