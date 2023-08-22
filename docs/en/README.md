@@ -6,17 +6,18 @@ description: 'Latest stable version: 3.0.0'
 
 ## What is Kotlin JDSL?
 
-Kotlin JDSL is a Kotlin library that makes it easy to build and execute queries without generated metamodel. Kotlin JDSL is not meant to replace your favorite library, but to help you build and execute queries with your favorite libraries.
+Kotlin JDSL is a Kotlin library that makes it easy to build and execute a query without a generated metamodel.
 
-With Kotlin JDSL, you can build queries using the Entity or Table class you wrote. Kotlin JDSL provides DSL for building queries over KClass and KProperty. This DSL allows you to build queries without a generated metamodel.
+Kotlin JDSL does not provide an executor or wrapper class, because it is designed to help you build and execute the
+query with the library you are using, not to replace it.
 
-Kotlin JDSL provides extension points to other libraries, so you can call your favorite libraries with queries created by the DSL.&#x20;
+Kotlin JDSL provides two things: DSL and extension functions. The DSL is based on KClass and KProperty, so it allows you
+to build the query using your entity and table classes. The extension functions allow you to use the library to execute
+the query created by the DSL.
 
 ## Supports
 
 ### JPQL
-
-With Kotlin JDSL, you can easily build and execute JPQL queries.
 
 ```kotlin
 val context = JpqlRenderContext()

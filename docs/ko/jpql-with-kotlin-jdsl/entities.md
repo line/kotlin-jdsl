@@ -1,6 +1,8 @@
 # Entities
 
-Entity represents an entity in JPQL. It can be represented by entity function or KClass.&#x20;
+Entity는 JPQL의 entity를 표현합니다.
+
+Entity represents an entity in JPQL. It can be represented by entity function or KClass.
 
 ```kotlin
 entity(Book::class)
@@ -35,7 +37,7 @@ jpql {
 
 ## Treat
 
-Entity can be cast to sub-class using treat function.&#x20;
+Entity can be cast to sub-class using treat function.
 
 ```kotlin
 entity(Employee::class).treat(FullTimeEmployee::class)

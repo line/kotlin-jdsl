@@ -2,12 +2,12 @@
 
 ## Mysql
 
-Kotlin JDSL provides a Mysql-specific DSL and Query Model that makes it easy to build and execute Mysql queries.
+Kotlin JDSL은 Mysql 기반의 DSL과 쿼리 모델을 제공하여 Mysql 쿼리를 쉽게 만들고 실행시킬 수 있게 만듭니다.
 
 ## Oracle
 
-Kotlin JDSL provides a Oracle-specific DSL and Query Model that makes it easy to build and execute Oracle queries.
+Kotlin JDSL은 Oracle 기반의 DSL과 쿼리 모델을 제공하여 Oracle 쿼리를 쉽게 만들고 실행시킬 수 있게 만듭니다.
 
 ## OpenSearch
 
-Kotlin JDSL provides a OpenSearch-specific DSL and Query Model that makes it easy to build and execute OpenSearch queries.
+Kotlin JDSL은 OpenSearch 기반의 DSL과 쿼리 모델을 제공하여 OpenSearch 쿼리를 쉽게 만들고 실행시킬 수 있게 만듭니다.

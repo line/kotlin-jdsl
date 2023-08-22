@@ -1,6 +1,6 @@
 # Sorts
 
-Sort represents an orderby item in JPQL.&#x20;
+Sort represents an orderby item in JPQL.
 
 Sort can be represented by the asc and desc extension functions in [expression](expressions.md).
 

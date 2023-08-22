@@ -1,6 +1,6 @@
 # Paths
 
-Path represents an path expression in JPQL. It can be represented by path or invoke function.&#x20;
+Path represents an path expression in JPQL. It can be represented by path or invoke function.
 
 ```kotlin
 // Book.isbn.value
@@ -31,7 +31,7 @@ jpql {
 
 ## Treat
 
-Path can be cast to sub-class using treat function.&#x20;
+Path can be cast to sub-class using treat function.
 
 ```kotlin
 path(EmployeeDepartment::employee).treat(FullTimeEmployee::class)

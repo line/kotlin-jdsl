@@ -102,7 +102,9 @@ select(
 
 ### Params
 
-You may want to create a query in advance without values, and then execute it later with calculated values. In this case, you can use param function, which represents a query parameter. Param function represents the query parameter the same as the value function, but unlike the value function, it can override the query parameter.&#x20;
+You may want to create a query in advance without values, and then execute it later with calculated values. In this
+case, you can use param function, which represents a query parameter. Param function represents the query parameter the
+same as the value function, but unlike the value function, it can override the query parameter.
 
 ```kotlin
 val context = JpqlRenderContext()
@@ -226,7 +228,7 @@ function(String::class, "myFunction", path(Book::isbn))
 
 ## Cases
 
-A case when clause can be represented by caseWhen or caseValue function.&#x20;
+A case when clause can be represented by caseWhen or caseValue function.
 
 CaseWhen function allows you to represent a case when clause based on [predicates](predicates.md).
 
@@ -282,7 +284,7 @@ new(
 
 ## Type
 
-Type operator that can restrict query polymorphism, can be represented by type function.&#x20;
+Type operator that can restrict query polymorphism, can be represented by type function.
 
 ```kotlin
 select(
@@ -296,7 +298,9 @@ select(
 
 ## Custom expression
 
-Expressions that are not provided by the Kotlin JDSL, can be represented by customExpression function. By specifying the return type of the expression and passing the parameters of the expression as parameters, you can represent the your expression.&#x20;
+Expressions that are not provided by the Kotlin JDSL, can be represented by customExpression function. By specifying the
+return type of the expression and passing the parameters of the expression as parameters, you can represent the your
+expression.
 
 ```kotlin
 customExpression(String::class, "CAST({0} AS VARCHAR)", path(Book::price))

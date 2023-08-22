@@ -35,7 +35,9 @@ val query = jpql {
 
 ## Subquery
 
-A [select statement](statements.md#select-statement) can be used as [expression](expressions.md) using asSubquery extension function. So you can pass it to [expression](expressions.md) or [predicate](predicates.md). You can also pass it to a [select clause](statements.md#select-clause), depending on your JPA implementation.
+A [select statement](statements.md#select-statement) can be used as [expression](expressions.md) using asSubquery
+extension function. So you can pass it to [expression](expressions.md) or [predicate](predicates.md). You can also pass
+it to a [select clause](statements.md#select-clause), depending on your JPA implementation.
 
 ```kotlin
 val query = jpql {

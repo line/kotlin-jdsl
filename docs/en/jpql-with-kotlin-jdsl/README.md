@@ -1,12 +1,85 @@
 # JPQL with Kotlin JDSL
 
-With Kotlin JDSL, you can easily build and execute JPQL queries.
-
-## Requirements <a href="#setting-up-with-a-build-system" id="setting-up-with-a-build-system"></a>
+## Requirements
 
 Java 8 (or later) and Kotlin 1.9 (or later) are required to build and run an application with Kotlin JDSL.
 
-## The artifacts <a href="#setting-up-with-a-build-system" id="setting-up-with-a-build-system"></a>
+## Configure the repositories
+
+Before adding Kotlin JDSL dependencies, you need to configure the repositories for this project:
+
+### Release
+
+{% tabs %}
+
+{% tab title="Gradle (Kotlin)" %}
+
+```kotlin
+repositories {
+    mavenCentral()
+}
+```
+
+{% endtab %}
+
+{% tab title="Gradle (Groovy)" %}
+
+```groovy
+repositories {
+    mavenCentral()
+}
+```
+
+{% endtab %}
+
+{% tab title="Maven" %}
+{% hint style="info" %}
+You don't need to add the Maven central repository in the pom.xml file since your project inherits the central
+repository from [Super POM](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html#super-pom).
+{% endhint %}
+{% endtab %}
+
+{% endtabs %}
+
+### Snapshot
+
+{% tabs %}
+
+{% tab title="Gradle (Kotlin)" %}
+
+```kotlin
+repositories {
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
+}
+```
+
+{% endtab %}
+
+{% tab title="Gradle (Groovy)" %}
+
+```groovy
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+```
+
+{% endtab %}
+
+{% tab title="Maven" %}
+
+```xml
+
+<repositories>
+    <repository>
+        <id>oss.sonatype.org-snapshot</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+</repositories>
+```
+
+{% endtab %}
+
+{% endtabs %}
 
 Kotlin JDSL provides several artifacts. The most basic of these are jpql-dsl and jpql-render. By using these two artifacts as a base and adding a support artifact for your favorite libraries, you can easily build and execute queries.
 
@@ -23,6 +96,7 @@ Kotlin JDSL provides several artifacts. The most basic of these are jpql-dsl and
 All JARs of Kotlin JDSL are available in [Maven Central Repository](https://central.sonatype.com/search?q=g%3Acom.linecorp.kotlin-jdsl) under group ID `com.linecorp.kotlin-jdsl` so that you can fetch them easily using your favorite build tool.
 
 {% tabs %}
+
 {% tab title="Gradle (Kotlin)" %}
 ```kotlin
 repositories {
@@ -32,7 +106,7 @@ repositories {
 dependencies {
     implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.0.0")
     implementation("com.linecorp.kotlin-jdsl:jpql-render:3.0.0")
-    
+
     implementation("org.eclipse.persistence:org.eclipse.persistence.jpa:x.y.z")
     implementation("com.linecorp.kotlin-jdsl:eclipselink-support:3.0.0")
     // or
@@ -78,14 +152,14 @@ dependencies {
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-         
+
     <repositories>
         <repository>
             <id>mavenCentral</id>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
     </repositories>
-    
+
     <dependencies>
         <dependency>
             <groupId>com.linecorp.kotlin-jdsl</groupId>
@@ -146,6 +220,7 @@ dependencies {
 </project>
 ```
 {% endtab %}
+
 {% endtabs %}
 
 ## JPQL queries with DSL
@@ -179,6 +254,8 @@ val result = jpaQuery.resultList
 
 ### Customizing
 
-Kotlin JDSL can help you create your own DSL. To create your own DSL, you can inherit from Jpql class to add DSL functions, and you can build and execute queries using your own Query Model class by implementing JpqlSerializer interface.&#x20;
+Kotlin JDSL can help you create your own DSL. To create your own DSL, you can inherit from Jpql class to add DSL
+functions, and you can build and execute queries using your own Query Model class by implementing JpqlSerializer
+interface.
 
 See [more](customizing.md) for more details.

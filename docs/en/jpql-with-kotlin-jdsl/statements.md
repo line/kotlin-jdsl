@@ -28,17 +28,20 @@ val query = jpql {
 
 ### Select clause
 
-A select clause can be represented by select function. Select function takes [expressions](expressions.md) as parameters. If you pass only one expression to select function, Kotlin JDSL will infer the type from the expression. However, if you pass multiple expressions, the Kotlin JDSL cannot infer the type, so you need to specify the result type for select.
+A select clause can be represented by select function. Select function takes [Expressions](expressions.md) as
+parameters. If you pass only one Expression to select function, Kotlin JDSL will infer the type from the Expression.
+However, if you pass multiple Expressions, Kotlin JDSL cannot infer the type, so you need to specify the result type for
+select.
 
 ```kotlin
 // It can infer the result type.
 select(path(Author::authorId))
 
 // It cannot infer the result type.
-select(path(Author::authorId), path(Author::name)) 
+select(path(Author::authorId), path(Author::name))
 
 // This allows it to know the result type.
-select<CustomEntity>(path(Author::authorId), path(Author::name)) 
+select<CustomEntity>(path(Author::authorId), path(Author::name))
 ```
 
 DTO projection can be represented by selectNew function. By specifying the DTO class you want to project in selectNew function and passing the parameters of the class as parameters, you can represent the DTO projection.
@@ -56,13 +59,15 @@ selectNew&#x3C;Row>(
 
 ### From clause
 
-A from clause can be represented by from function. From function takes [entities](entities.md) and [joins](statements.md#join) as parameters. The first parameter of the from function can take only an entity.
+A from clause can be represented by from function. From function takes [Entities](entities.md)
+and [Joins](statements.md#join) as parameters. The first parameter of the from function can take only Entity.
 
-<pre class="language-kotlin"><code class="lang-kotlin"><strong>from(
-</strong>    entity(Author::class),
+```kotlin
+from(
+    entity(Author::class),
     join(BookAuthor::class).on(path(Author::authorId).equal(path(BookAuthor::authorId))),
 )
-</code></pre>
+```
 
 ### Join
 
@@ -87,10 +92,12 @@ from(
 
 ### Where clause
 
-A where clause can be represented by where function. Where function takes [predicates](predicates.md) as parameters. You can use the whereAnd and whereOr functions to combine predicates into AND or OR.
+A where clause can be represented by where function. Where function takes [Predicates](predicates.md) as parameters. You
+can use the whereAnd and whereOr functions to combine Predicates into AND or OR.
 
 {% hint style="info" %}
-If the all predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this will print 1 = 0.
+If the all Predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this
+will print 1 = 0.
 {% endhint %}
 
 ```kotlin
@@ -128,7 +135,8 @@ val query = jpql {
 
 ### Group by clause
 
-A group by clause can be represented by groupBy function. GroupBy function takes [expressions](expressions.md) as parameters.&#x20;
+A group by clause can be represented by groupBy function. GroupBy function takes [Expressions](expressions.md) as
+parameters.
 
 ```kotlin
 groupBy(
@@ -138,10 +146,12 @@ groupBy(
 
 ### Having clause
 
-A having clause can be represented by having function. Having function takes [predicates](predicates.md) as parameters. You can use the havingAnd and havingOr functions to combine predicates into AND or OR.
+A having clause can be represented by having function. Having function takes [Predicates](predicates.md) as parameters.
+You can use the havingAnd and havingOr functions to combine Predicates into AND or OR.
 
 {% hint style="info" %}
-If the all predicates in havingAnd function are all null or empty, this will print 1 = 1. For the havingOr function, this will print 1 = 0.
+If the all Predicates in havingAnd function are all null or empty, this will print 1 = 1. For the havingOr function,
+this will print 1 = 0.
 {% endhint %}
 
 ```kotlin
@@ -152,7 +162,7 @@ having(
 
 ### Order by clause
 
-A order by clause can be represented by orderBy function. OrderBy function takes [sorts](sorts.md) as parameters.&#x20;
+A order by clause can be represented by orderBy function. OrderBy function takes [sorts](sorts.md) as parameters.
 
 ```kotlin
 orderBy(
@@ -162,7 +172,8 @@ orderBy(
 
 ## Update statement
 
-By using update function within a block of jpql function, you can create a update statement. Each clause in the update statement can be represented by a function corresponding to the name of the clause.
+By using update function within a block of jpql function, you can create an update statement. Each clause in the update
+statement can be represented by a function corresponding to the name of the clause.
 
 ```kotlin
 val query = jpql {
@@ -192,7 +203,9 @@ update(
 
 ### Set clause
 
-A set clause can be represented by set function. Set function takes [expressions](expressions.md) as parameters.  The first parameter of set function is the target to be assigned, and the second parameter is the value to assign. You can represent assignments to multiple columns by using set function after set function.
+A set clause can be represented by set function. Set function takes [Expressions](expressions.md) as parameters. The
+first parameter of set function is the target to be assigned, and the second parameter is the value to assign. You can
+represent assignments to multiple columns by using set function after set function.
 
 ```kotlin
 set(
@@ -206,10 +219,12 @@ set(
 
 ### Where clause
 
-A where clause can be represented by where function. Where function takes [predicates](predicates.md) as parameters. You can use the whereAnd and whereOr functions to combine predicates into AND or OR.
+A where clause can be represented by where function. Where function takes [Predicates](predicates.md) as parameters. You
+can use the whereAnd and whereOr functions to combine Predicates into AND or OR.
 
 {% hint style="info" %}
-If the all predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this will print 1 = 0.
+If the all Predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this
+will print 1 = 0.
 {% endhint %}
 
 ```kotlin
@@ -223,11 +238,7 @@ where(
 
 WhereAnd and whereOr functions ignore the passed parameter if it is null. You can use this feature to create readable dynamic queries.
 
-<pre class="language-kotlin"><code class="lang-kotlin">data class BookSpec(
-    val isbn: Isbn?,
-    val publishDate: OffsetDateTime?,
-)
-
+```kotlin
 val query = jpql {
     update(
         entity(Book::class)
@@ -237,19 +248,19 @@ val query = jpql {
     ).set(
         path(Book::salePrice)(BookPrice::value),
         BigDecimal.valueOf(80)
-<strong>    ).whereAnd(
-</strong>        spec.isbn?.let { path(Book::isbn).eq(it) },
+    ).whereAnd(
+        spec.isbn?.let { path(Book::isbn).eq(it) },
         spec.publishDate?.let { path(Book::publishDate).eq(it) },
     )
 }
-</code></pre>
+```
 
 ## Delete statement
 
 By using deleteFrom function within a block of jpql function, you can create a delete statement. Each clause in the delete statement can be represented by a function corresponding to the name of the clause.
 
 ```kotlin
-val query = jpql {    
+val query = jpql {
     deleteFrom(
         entity(Book::class),
     ).where(
@@ -270,10 +281,12 @@ deleteFrom(
 
 ### Where clause
 
-A where clause can be represented by where function. Where function takes [predicates](predicates.md) as parameters. You can use the whereAnd and whereOr functions to combine predicates into AND or OR.
+A where clause can be represented by where function. Where function takes [Predicates](predicates.md) as parameters. You
+can use the whereAnd and whereOr functions to combine Predicates into AND or OR.
 
 {% hint style="info" %}
-If the all predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this will print 1 = 0.
+If the all Predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this
+will print 1 = 0.
 {% endhint %}
 
 ```kotlin

@@ -1,14 +1,15 @@
 # JPQL with Kotlin JDSL
 
-With Kotlin JDSL, you can easily build and execute JPQL queries.
+Kotlin JDSL을 이용하면 쉽게 JPQL 쿼리를 만들고 실행시킬 수 있습니다.
 
 ## Requirements <a href="#setting-up-with-a-build-system" id="setting-up-with-a-build-system"></a>
 
-Java 8 (or later) and Kotlin 1.9 (or later) are required to build and run an application with Kotlin JDSL.
+Kotlin JDSL을 실행시키기 위해선 Java 8 (혹은 그 이상) 그리고 Kotlin 1.9 (혹은 그 이상) 버전이 요구됩니다.
 
 ## The artifacts <a href="#setting-up-with-a-build-system" id="setting-up-with-a-build-system"></a>
 
-Kotlin JDSL provides several artifacts. The most basic of these are jpql-dsl and jpql-render. By using these two artifacts as a base and adding a support artifact for your favorite libraries, you can easily build and execute queries.
+Kotlin JDSL은 여러가지 artifact를 제공합니다. 가장 기본이 되는 jpql-dsl과 jpql-render이 있으며, 이 두 개의 artifact를 포함하고 현재 사용하고 있는 라이브러리로 쿼리를 실행
+시키기 위한 support artifact를 추가하는 것으로 사용자는 현재 사용중이던 라이브러리에서 Kotlin JDSL을 이용해 쉽게 쿼리를 만들고 실행시킬 수 있습니다.
 
 ### Basic
 
@@ -20,7 +21,8 @@ Kotlin JDSL provides several artifacts. The most basic of these are jpql-dsl and
 
 ## Maven Central configuration
 
-All JARs of Kotlin JDSL are available in [Maven Central Repository](https://central.sonatype.com/search?q=g%3Acom.linecorp.kotlin-jdsl) under group ID `com.linecorp.kotlin-jdsl` so that you can fetch them easily using your favorite build tool.
+모든 JAR 파일들은 [Maven Central Repository](https://central.sonatype.com/search?q=g%3Acom.linecorp.kotlin-jdsl)
+에 `com.linecorp.kotlin-jdsl` group ID로 업로드 되어 있기 때문에 빌드 툴을 이용하여 쉽게 가져올 수 있습니다.
 
 {% tabs %}
 {% tab title="Gradle (Kotlin)" %}
@@ -32,7 +34,7 @@ repositories {
 dependencies {
     implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.0.0")
     implementation("com.linecorp.kotlin-jdsl:jpql-render:3.0.0")
-    
+
     implementation("org.eclipse.persistence:org.eclipse.persistence.jpa:x.y.z")
     implementation("com.linecorp.kotlin-jdsl:eclipselink-support:3.0.0")
     // or
@@ -78,14 +80,14 @@ dependencies {
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-         
+
     <repositories>
         <repository>
             <id>mavenCentral</id>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
     </repositories>
-    
+
     <dependencies>
         <dependency>
             <groupId>com.linecorp.kotlin-jdsl</groupId>
@@ -150,11 +152,14 @@ dependencies {
 
 ## JPQL queries with DSL
 
-Jpql function allows you to build JPQL queries using DSL functions. You can create a select statement, update statement, and delete statement using the [select](statements.md#select-statement), [update](statements.md#update-statement), and [deleteFrom](statements.md#delete-statement) functions.
+jpql 함수를 통해서 Kotlin JDSL이 제공하는 DSL 함수를 사용할 수
+있습니다. [select](statements.md#select-statement), [update](statements.md#update-statement), [deleteFrom](statements.md#delete-statement)
+함수들을 이용하면 select, update, delete statement를 생성할 수 있습니다.
 
-To execute the created queries, there will be RenderContext. Kotlin JDSL provides JpqlRenderContext as the default RenderContext for JPQL, so you can use it to execute the queries.
+이렇게 만들어진 쿼리를 실행시키기 위해서는 RenderContext가 필요합니다. Kotlin JDSL에서는 JpqlRenderContext를 JPQL의 기본 RenderContext로 제공하고 있으며, 이것을
+이용해서 쿼리를 실행시킬 수 있습니다.
 
-You can see more [examples](https://github.com/line/kotlin-jdsl/tree/main/example) on github.
+github의 [examples](https://github.com/line/kotlin-jdsl/tree/main/example)을 통해서 더 많은 예제들을 볼 수 있습니다.
 
 ```kotlin
 val context = JpqlRenderContext()
@@ -179,6 +184,7 @@ val result = jpaQuery.resultList
 
 ### Customizing
 
-Kotlin JDSL can help you create your own DSL. To create your own DSL, you can inherit from Jpql class to add DSL functions, and you can build and execute queries using your own Query Model class by implementing JpqlSerializer interface.&#x20;
+Kotlin JDSL을 이용하면 나만의 DSL을 만들 수 있습니다. Jpql 클래스를 상속해서 DSL 함수를 추가하는 것으로 나만의 DSL이 만들어집니다. 또 JpqlSerializer 인터페이스를 구현해서 나만의
+Query Model 클래스를 만들어 쿼리를 빌드하고 실행할 수 있습니다.
 
-See [more](customizing.md) for more details.
+더 자세한 내용이 궁금하시면 [여기](customizing.md)를 참고해주세요.

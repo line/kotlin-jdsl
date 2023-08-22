@@ -2,7 +2,8 @@
 
 ## DSL
 
-By inheriting from the Jpql class, you can create your own DSL functions. Jpql class has all the DSL functions provided by Kotlin JDSL. You can use them to create your own DSL functions.&#x20;
+By inheriting from the Jpql class, you can create your own DSL functions. Jpql class has all the DSL functions provided
+by Kotlin JDSL. You can use them to create your own DSL functions.
 
 If you want to create the DSL function that does more than the DSL functions provided by Kotlin JDSL, you can create and provide your own Query Model. Your query model just needs to implement [expression](expressions.md) or [predicate](predicates.md) interfaces and provide [JpqlSerializer](customizing.md#serializer) implementation to RenderContext to let the Kotlin JDSL know how to print.
 
@@ -15,7 +16,7 @@ class MyJpql : Jpql() {
     companion object Constructor : JpqlDsl.Constructor<MyJpql> {
         override fun newInstance(): MyJpql = MyJpql()
     }
-    
+
     fun myFunction(value: String): Expression<String> {
         return function(String::class, "myFunction", listOf(value(value)))
     }
@@ -38,7 +39,7 @@ val query = jpql(MyJpql) {
 
 ### Serializer
 
-To print your Query Model, you have to implement JpqlSerializer and provide it to the RenderContext.&#x20;
+To print your Query Model, you have to implement JpqlSerializer and provide it to the RenderContext.
 
 JpqlSerializer provides JpqlWriter and RenderContext for you to implement serialization. From RenderContext, you can get JpqlRenderSerializer, which can serialize other query parts in your QueryModel. And you can also get JpqlRenderStatement and JpqlRenderClause, which let you know which statement and clause are currently being rendered. You can use them to print your Query Model as a String using JpqlWriter.
 
