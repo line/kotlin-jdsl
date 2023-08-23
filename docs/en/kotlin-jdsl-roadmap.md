@@ -1,8 +1,8 @@
 # Kotlin JDSL Roadmap
 
-## Mysql
+## MySQL
 
-Kotlin JDSL provides a Mysql-specific DSL and Query Model that makes it easy to build and execute Mysql queries.
+Kotlin JDSL provides a Mysql-specific DSL and Query Model that makes it easy to build and execute MySQL queries.
 
 ## Oracle
 
