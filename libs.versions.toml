@@ -55,12 +55,12 @@ spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-tes
 spring-core = { module = "org.springframework:spring-core", version.ref = "spring-core" }
 spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-core" }
 spring-jpa = { module = "org.springframework.data:spring-data-jpa", version.ref = "spring-data-jpa" }
-spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.3.8" }
+spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.3.9" }
 
 spring6-core = { module = "org.springframework:spring-core", version.ref = "spring-core6" }
 spring6-beans = { module = "org.springframework:spring-beans", version.ref = "spring-core6" }
 spring-jpa3 = { module = "org.springframework.data:spring-data-jpa", version.ref = "spring-data-jpa3" }
-spring-batch5-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "5.0.2" }
+spring-batch5-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "5.0.3" }
 
 # Test
 junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.0" }
