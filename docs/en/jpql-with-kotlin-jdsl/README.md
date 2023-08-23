@@ -93,7 +93,7 @@ repositories {
 Every Kotlin JDSL application requires at least the following dependencies:
 
 - jpql-dsl: contains functions to build a JPQL query.
-- jpql-render: render the JPQL query created by DSL as String.
+- jpql-render: renders the JPQL query created by DSL as String.
 
 {% tabs %}
 
@@ -193,7 +193,7 @@ val jpaQuery: Query = entityManager.createQuery(query, context)
 val result = jpaQuery.resultList
 ```
 
-`RenderContext` has elements for rendering the query built using the DSL as String. Kotlin JDSL
+`RenderContext` has elements for rendering the query as String. Kotlin JDSL
 provides `JpqlRenderContext` as the default `RenderContext` for JPQL.
 
 Creating `RenderContext` is expensive, so the Kotlin JDSL recommends creating it once and reusing it.
