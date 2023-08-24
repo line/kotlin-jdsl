@@ -2,16 +2,16 @@
 
 ## Requirements
 
-Kotlin JDSL은 Java 8 (혹은 그 이상) and Kotlin 1.9 (혹은 그 이상)이 요구됩니다.
+Kotlin JDSL을 사용하기 위해서는 Java 8 (혹은 그 이상) and Kotlin 1.9 (그 이상)이 요구됩니다.
 
 ## Configure the repositories
 
-Kotlin JDSL 디펜던시를 추가하기 전에 레포지토리를 설정해야 합니다:
+Kotlin JDSL dependency를 추가하기 전에 maven repository가 추가 되어야 합니다.
 
 ### Release
 
-Kotlin JDSL 릴리즈 버전은 모두 [Maven central repository](https://central.sonatype.com/search?q=g%3Acom.linecorp.kotlin-jdsl)에
-올라가게 되어 maven 레포지토리 설정이 필요합니다:
+Kotlin JDSL의 release는 모두 [Maven central repository](https://central.sonatype.com/search?q=g%3Acom.linecorp.kotlin-jdsl)에 업로드 됩니다.
+이를 이용하기 위해서는 maven repository가 빌드 스크립트에 추가 되어 있어야 합니다.
 
 {% tabs %}
 
@@ -37,8 +37,7 @@ repositories {
 
 {% tab title="Maven" %}
 {% hint style="info" %}
-pom.xml에는 maven 레포지토리 설정이 불필요합니다. 왜냐하면 모든 maven
-프로젝트는 [Super POM](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html#super-pom)을 상속하기 때문입니다.
+maven 프로젝트는 이미 maven repository가 [Super POM](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html#super-pom)에 추가 되어 있어 추가로 maven repository를 설정할 필요가 없습니다.
 {% endhint %}
 {% endtab %}
 
@@ -46,7 +45,8 @@ pom.xml에는 maven 레포지토리 설정이 불필요합니다. 왜냐하면 �
 
 ### Snapshot
 
-Kotlin JDSL의 스냅샷 버전은 모두 OSS snapshot 레포지토리에 올라가게 됩니다.
+Kotlin JDSL의 snapshot은 모두 OSS snapshot repository에 업로드 됩니다.
+이를 이용하기 위해서는 OSS snapshot repository가 빌드 스크립트에 추가 되어 있어야 합니다.
 
 {% tabs %}
 
@@ -89,10 +89,10 @@ repositories {
 
 ### Core dependencies
 
-Kotlin JDSL을 실행시키기 위해서는 아래 디펜던시들을 포함하고 있어야 합니다.
+Kotlin JDSL을 실행시키기 위해서는 다음 dependency들이 필수로 요구됩니다.
 
-- jpql-dsl: JPQL 쿼리를 만들기 위한 DSL 라이브러리
-- jpql-render: DSL로 만들어진 쿼리를 String으로 랜더링하기 위한 라이브러리
+- jpql-dsl: JPQL 쿼리를 만들 수 있게 도와주는 DSL
+- jpql-render: DSL로 만든 쿼리를 String 변화시켜주는 라이브러리
 
 {% tabs %}
 
@@ -142,27 +142,26 @@ dependencies {
 
 ### Support dependencies
 
-Support 디펜던시를 추가하는 것으로 DSL을 통해 만들어진 쿼리를 사용하던 JPA 라이브러리에서 쉽게 실행시킬 수 있습니다. Kotlin JDSL 아래 디펜던시들을 제공합니다:
+Kotlin JDSL은 DSL로 생성된 쿼리를 실행시킬 수 있는 Support dependency를 제공합니다.
+각 JPA 제공자에 맞춰 다음 dependency들 중에서 선택하여 사용할 수 있습니다.
 
-- hibernate-support: Hibernate를 통해 쿼리를 실행시키게 도와주는 라이브러리
-- eclipselink-support: EclipseLink를 통해 쿼리를 실행시키게 도와주는 라이브러리
-- spring-batch-support: Spring Batch를 통해 쿼리를 실행시키게 도와주는 라이브러리
-- spring-data-jpa-support: Spring Data JPA를 통해 쿼리를 실행시키게 도와주는 라이브러리
+- hibernate-support: Hibernate를 통해 쿼리를 실행하도록 도움을 주는 라이브러리.
+- eclipselink-support: EclipseLink를 통해 쿼리를 실행하도록 도움을 주는 라이브러리.
+- spring-batch-support: Spring Batch와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
+- spring-data-jpa-support: Spring Data Jpa와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
 
 #### Javax
 
-Javax 패키지를 위해서는 아래의 디펜던시들을 제공합니다:
+javax 패키지를 사용하는 경우 다음 dependency들 중에서 선택하여 사용할 수 있습니다.
 
-- hibernate-javax-support: Hibernate를 통해 쿼리를 실행시키게 도와주는 라이브러리
-- eclipselink-javax-support: EclipseLink를 통해 쿼리를 실행시키게 도와주는 라이브러리
-- spring-batch-javax-support: Spring Batch를 통해 쿼리를 실행시키게 도와주는 라이브러리
-- spring-data-jpa-javax-support: Spring Data JPA를 통해 쿼리를 실행시키게 도와주는 라이브러리
+- hibernate-javax-support: Hibernate를 통해 쿼리를 실행하도록 도움을 주는 라이브러리.
+- eclipselink-javax-support: EclipseLink를 통해 쿼리를 실행하도록 도움을 주는 라이브러리.
+- spring-batch-javax-support: Spring Batch와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
+- spring-data-jpa-javax-support: Spring Data Jpa와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
 
 ## Build a query
 
-jpql()
-
-You can call `select()` in `jpql()` to build a [select statement](statements.md#select-statement):
+`jpql()`에서 `select()`를 호출하는 것으로 [select statement](statements.md#select-statement)를 만들 수 있습니다.
 
 ```kotlin
 val query = jpql {
@@ -174,16 +173,15 @@ val query = jpql {
 }
 ```
 
-Similarly, Kotlin JDSL provides functions for all the other
-statements: [update statement](statements.md#update-statement), [delete statement](statements.md#delete-statement). You
-can also see more [examples](https://github.com/line/kotlin-jdsl/tree/main/example) on GitHub.
+유사하게 Kotlin JDSL은 다른 statement를 위한 함수도 지원합니다: [update statement](statements.md#update-statement), [delete statement](statements.md#delete-statement).
+더 많은 에제를 보고 싶으시면 GitHub에 [examples](https://github.com/line/kotlin-jdsl/tree/main/example)을 참고해주세요.
 
-In addition, you can also create your own [custom DSL](custom-dsl.md)
+추가로 [custom DSL](custom-dsl.md)을 통해 본인만의 DSL을 만들 수도 있습니다.
 
 ## Execute the query
 
-After building the query, you can use `RenderContext` to execute the query. For example, you can use `JpqlRenderContext`
-to execute the query:
+쿼리를 만든 뒤에는 `RenderContext`를 이용해 쿼리를 실행할 수 있습니다.
+예를 들어 `JpqlRenderContext`로 다음과 같이 실행이 가능합니다.
 
 ```kotlin
 val context = JpqlRenderContext()
@@ -193,8 +191,8 @@ val jpaQuery: Query = entityManager.createQuery(query, context)
 val result = jpaQuery.resultList
 ```
 
-`RenderContext` has elements for rendering the query as String. Kotlin JDSL
-provides `JpqlRenderContext` as the default `RenderContext` for the JPQL.
+`RenderContext`는 쿼리를 String으로 랜더링할 수 있는 요소들을 가지고 있습니다.
+Kotlin JDSL은 `RenderContext`의 default 구현체로 `JpqlRenderContext`를 제공합니다.
 
-Creating `RenderContext` is expensive, so the Kotlin JDSL recommends creating it once and reusing it.
-Since `RenderContext` is immutable, you can access `RenderContext` from multiple threads.
+`RenderContext`를 만드는 비용은 비싸기 때문에 한번만 만들고 이를 재활용하는 것을 추천드립니다.
+`RenderContext`는 immutable 객체로 멀티 쓰레드 환경에서 사용하기에 안전합니다.

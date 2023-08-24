@@ -1,7 +1,7 @@
 # Paths
 
-Kotlin JDSL has `Path` interface to represent a path expression in JPQL. To build `Path`, you can use `path()`
-and `invoke()`.
+Kotlin JDSL has `Path` interface to represent a path expression in JPQL.
+To build `Path`, you can use `path()` and `invoke()`.
 
 ```kotlin
 // Book.isbn.value
@@ -15,8 +15,7 @@ entity(Book::class, "b")(Book::isbn)(Isbn::value)
 
 ## Expression
 
-`Path` can be used as [`Expression`](expressions.md), such as in a [select clause](statements.md#select-clause)
-or [predicate](predicates.md).
+`Path` can be used as [`Expression`](expressions.md), such as in a [select clause](statements.md#select-clause) or [predicate](predicates.md).
 
 ```kotlin
 // SELECT Book.isbn FROM Book AS Book WHERE Book.isbn.value = :param1

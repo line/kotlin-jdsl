@@ -1,6 +1,6 @@
 # Predicates
 
-Kotlin JDSL has `Predicate` interface to represent an entity in JPQL.
+Kotlin JDSL has `Predicate` interface to represent a conditional expression in JPQL.
 
 ## Logical operators
 
@@ -11,8 +11,8 @@ To build logical operations, you can use following functions:
 * NOT (not)
 
 {% hint style="info" %}
-If there is no `Predicate` in `and()` and `or()`, `and()` will be interpreted as `1 = 1` and `or()` will be interpreted
-as `0 = 1`. So be careful when creating a dynamic query.
+If there is no `Predicate` in `and()` and `or()`, `and()` will be interpreted as `1 = 1` and `or()` will be interpreted as `0 = 1`.
+So be careful when creating a dynamic query.
 {% endhint %}
 
 ```kotlin
@@ -27,8 +27,8 @@ not(path(Employee::name).eq("Employee01"))
 
 ### Parenthesis
 
-Calling logical operators using a normal function instead of an extension function allows you to order the operators
-using parentheses. In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
+Calling logical operators using a normal function instead of an extension function allows you to order the operators using parentheses.
+In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
 // (Employee.name = 'Employee01' AND Employee.nickname = 'E01') or (Employee.name = 'Employee02' AND Employee.nickname = 'E02')
@@ -99,7 +99,7 @@ val query = jpql {
 
 ## Null
 
-To build null comparison operations, you can use `isNull` and `isNotNull`.
+To build null comparison operations, you can use `isNull()` and `isNotNull()`.
 
 ```kotlin
 path(Employee::nickname).isNull()
@@ -109,7 +109,7 @@ path(Employee::nickname).isNotNull()
 
 ## Like
 
-To build like comparison operations, you can use `like` and `notLike`.
+To build like comparison operations, you can use `like()` and `notLike()`.
 
 ```kotlin
 path(Employee::nickname).like("E%")
@@ -121,7 +121,7 @@ path(Employee::nickname).isNotNull("E_", escape = '_')
 
 ## Between
 
-To build between comparison operations, you can use `between` and `notBetween`.
+To build between comparison operations, you can use `between()` and `notBetween()`.
 
 ```kotlin
 path(Employee::price).between(BigDecimal.valueOf(100), BigDecimal.valueOf(200))
@@ -131,7 +131,7 @@ path(Employee::price).notBetween(BigDecimal.valueOf(100), BigDecimal.valueOf(200
 
 ## In
 
-To build in comparison operations, you can use `in` and `notIn`.
+To build in comparison operations, you can use `in()` and `notIn()`.
 
 ```kotlin
 path(Employee::price).`in`(BigDecimal.valueOf(100), BigDecimal.valueOf(200))
@@ -141,7 +141,7 @@ path(Employee::price).notIn(BigDecimal.valueOf(100), BigDecimal.valueOf(200))
 
 ## Exists
 
-To build exists operations, you can use `exists` and `notExists`.
+To build exists operations, you can use `exists()` and `notExists()`.
 
 ```kotlin
 exists(subquery)
@@ -151,7 +151,8 @@ notExists(subquery)
 
 ## Empty
 
-To build empty operations, you can use `isEmpty` and `isNotEmpty`. These test if the collection is empty.
+To build empty operations, you can use `isEmpty()` and `isNotEmpty()`.
+These test if the collection is empty.
 
 ```kotlin
 path(Employee::departments).isEmpty()

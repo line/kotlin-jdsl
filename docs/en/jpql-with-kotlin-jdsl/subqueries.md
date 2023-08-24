@@ -1,7 +1,6 @@
 # Subqueries
 
-Calling `asEntity()` and `asSubquery()` after a [select statement](statements.md#select-statement) allows you to build a
-subquery.
+Calling `asEntity()` and `asSubquery()` after a [select statement](statements.md#select-statement) allows you to build a subquery.
 
 ## Derived entity
 

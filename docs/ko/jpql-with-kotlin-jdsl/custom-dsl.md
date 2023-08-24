@@ -2,16 +2,15 @@
 
 ## DSL
 
-By inheriting from the Jpql class, you can create your own DSL functions. Jpql class has all the DSL functions provided
-by Kotlin JDSL. You can use them to create your own DSL functions.
+`Jpql` 클래스를 상속하고 나만의 함수를 추가하는 것으로 나만의 DSL을 만들 수 있습니다.
 
-If you want to create the DSL function that does more than the DSL functions provided by Kotlin JDSL, you can create and
-provide your own Query Model. Your query model just needs to implement [expression](expressions.md)
-or [predicate](predicates.md) interfaces and provide [JpqlSerializer](custom-dsl.md#serializer) implementation to
-RenderContext to let the Kotlin JDSL know how to print.
+`Jpql`은 Kotlin JDSL이 제공하는 모든 기본 DSL 함수를 가지고 있습니다.
+이를 이용해 나만의 함수를 만들 수 있습니다.
+그리고 [`Expression`](expressions.md) 혹은 [`Predicate`](predicates.md)를 구현한 나만의 `Model` 클래스를 만들고, 이를 반환하는 함수를 만들 수 있습니다.
+이 경우 [`JpqlSerializer`](custom-dsl.md#serializer)를 구현하여 `Model`을 String으로 랜더링하는 방법을 Kotlin JDSL에게 알려줄 수 있습니다.
 
 {% hint style="info" %}
-You must to implement JpqlDsl.Constructor as a companion object so that jpql function can recognize the DSL class and create an object of it.
+`jpql()`이 DSL을 인식하기 위해서 `JpqlDsl.Constructor`를 companion object로 구현해야 합니다.
 {% endhint %}
 
 ```kotlin
@@ -42,9 +41,12 @@ val query = jpql(MyJpql) {
 
 ### Serializer
 
-To print your Query Model, you have to implement JpqlSerializer and provide it to the RenderContext.
+나만의 `Model`을 String을 랜더링하기 위해 `JpqlSerializer`를 구현하고 이를 `RenderContext`에 추가해야 합니다.
 
-JpqlSerializer provides JpqlWriter and RenderContext for you to implement serialization. From RenderContext, you can get JpqlRenderSerializer, which can serialize other query parts in your QueryModel. And you can also get JpqlRenderStatement and JpqlRenderClause, which let you know which statement and clause are currently being rendered. You can use them to print your Query Model as a String using JpqlWriter.
+`JpqlSerializer`는 랜더링 로직을 구현할 수 있도록 `JpqlWriter`와 `RenderContext`를 제공합니다.
+`RenderContext`를 통해 `JpqlRenderSerializer`를 얻어 나의 `Model`이 가지고 있는 다른 `Model`을 랜더링할 수 있습니다.
+또 `RenderContext`를 통해 `JpqlRenderStatement`와 `JpqlRenderClause`를 얻어 현재 어떤 statement와 clause 안에서 랜더링하고 있는지 알 수 있습니다.
+이것들을 이용해서 나만의 `Model`을 String으로 랜더링할 수 있습니다.
 
 ```kotlin
 class MyRegexLikeSerializer : JpqlSerializer<MyRegexLike> {
@@ -71,7 +73,7 @@ class MyRegexLikeSerializer : JpqlSerializer<MyRegexLike> {
 }
 ```
 
-JpqlRenderContext provides a registerModule function that allows you to register the JpqlSerializer implementation.
+`JpqlRenderContext`는 `JpqlSerializer` 구현체를 추가할 수 있도록 `registerModule()`를 제공합니다.
 
 ```kotlin
 val myModule = object : JpqlRenderModule {

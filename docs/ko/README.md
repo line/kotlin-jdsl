@@ -6,12 +6,12 @@ description: 'Latest stable version: 3.0.0'
 
 ## What is Kotlin JDSL?
 
-Kotlin JDSL은 메타모델 생성 없이 쿼리를 쉽게 만들 수 있게 도와주는 Kotlin 라이브러리입니다. Annotation Processor Tool (APT)을 이용하여 쿼리를 쉽게 만들 수 있게 도와주는
-라이브러리는 많이 존재합니다. 하지만 APT를 사용하면 entity 혹은 table 클래스의 타입이나 필드명이 변경 되었을 때 다시 컴파일 해야 하는 불편함이 있습니다. Kotlin JDSL은 KClass와
-KProperty 기반의 Domain-Specific Language (DSL)을 제공하여 APT 없이도 쉽게 쿼리를 만들 수 있게 도와줍니다.
+Kotlin JDSL은 메타모델 없이 쿼리를 쉽게 만들 수 있게 도와주는 Kotlin 라이브러리입니다.
+이미 Annotation Processor Tool (APT)을 이용해서 쿼리를 쉽게 만들도록 도와주는 라이브러리는 많이 있습니다.
+하지만 APT를 이용하면 클래스명이나 필드명이 변경되었을 때마다 다시 컴파일 해야 하는 불편함이 있습니다.
+Kotlin JDSL은 이런 불편함을 해소하면서 쉽게 쿼리를 만들 수 있도록 KClass와 KProperty 기반의 Domain-Specific Language를 제공합니다.
 
-Kotlin JDSL은 실행을 위한 구현체나 라이브러리의 래퍼 클래스를 제공하지 않습니다. 왜냐하면 Kotlin JDSL은 사용하고 있던 라이브러리 대체하기 보다 그대로 쓰면서 쿼리 만들 때 불편했던 부분을 도와주기
-위해서 만들어졌기 때문입니다.
+Kotlin JDSL은 새로운 DB 라이브러리가 아닌 DB 라이브러리를 사용할 때 도움을 주기 위해서 만들어진 라이브러리이기 때문에 직접 쿼리를 실행하거나 DB 라이브러리를 래핑하는 등의 작업은 하지 않습니다.
 
 ## Supports
 
@@ -38,4 +38,4 @@ val `the most prolific author` = entityManager.createQuery(query, context).apply
 }
 ```
 
-더 자세한 내용이 궁금하시면 [여기](jpql-with-kotlin-jdsl/)를 확인해주세요.
+JPQL에 대해 더 궁금하시면 [여기](jpql-with-kotlin-jdsl/)를 참고해주세요.

@@ -1,42 +1,43 @@
 # Expressions
 
-Expression represents an expression in JPQL.
+Kotlin JDSL은 JPQL의 expression를 표현하기 위해 `Expression` 인터페이스를 가지고 있습니다.
 
 ## Alias
 
-By using as function, you can use the aliased expression in other clauses of the [select statement](statements.md#select-statement). As function takes an expression object to refer to the source of as function. The expression for reference can be created using expression function.
+`Expression`의 `as()`를 호출하는 것으로 `Expression`에 alias를 걸 수 있습니다.
+`expression()`을 이용하면 `Expression`의 참조를 만들 수 있습니다.
+참조는 alias를 통해서 구분되며 동일한 alias를 가지고 있는 `Expression`을 참조할 수 있습니다.
+이를 통해 `Expression`에 alias를 걸고 alias가 걸린 `Expression`을 다른 clause에서 참조할 수 있습니다.
 
 ```kotlin
 val bookPrice = expression(BigDecimal::class, "price")
-// or val bookPrice = expression<BigDecimal>("price")
 
 select(
-    path(BookPrice::class).`as`(bookPrice)
+    path(Book::price)(BookPrice::value).`as`(bookPrice)
 ).from(
     entity(Book::class)
 ).where(
     bookPrice.eq(BigDecimal.valueOf(100))
 )
-```
 
-You don't have to use an object with the same identity to reference an aliased expression. Because an expression is referenced by an alias, even if you create multiple expression objects, if they have the same alias, they will refer to the same aliased expression.
+// OR
 
-```kotlin
 select(
-    path(BookPrice::class).`as`(expression("price"))
+    path(Book::price)(BookPrice::value).`as`(expression("price"))
 ).from(
     entity(Book::class)
 ).where(
-    expression("price").eq(BigDecimal.valueOf(100))
+    expression(BigDecimal::class, "price").eq(BigDecimal.valueOf(100))
 )
 ```
 
 ### Type Cast
 
-In some cases, you may want to specify the return type of the expression you want to use, rather than the type inferred by Kotlin JDSL. For example, AVG returns Double, but in JPQL Double can be converted to BigDecimal, so you want AVG to return BigDecimal. For this Kotlin JDSL provides unsafe type casting by specifying the type you want with KClass in as function.
+어떤 경우에는 `Expression`의 타입을 원하는 타입으로 변경하고 싶을 때가 있을 것입니다.
+이를 위해 Kotlin JDSL은 `as()`를 통해서 unsafe type casting을 지원합니다.
 
 {% hint style="info" %}
-This is just a shorthand for `as Expression<T>`, so it may not work for all JPA implementations.
+This is a shortened form of `as Expression<T>`, so it may not work as expected.
 {% endhint %}
 
 ```kotlin
@@ -45,7 +46,7 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 
 ## Arithmetic operations
 
-Arithmetic operations can be represented by plus, minus, times and div functions.
+산술 연사자를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
 
 * \+ (plus)
 * \- (minus)
@@ -68,7 +69,11 @@ div(path(Book::price), path(Book::salePrice))
 
 ### Parenthesis
 
-When using arithmetic operators, if you want to order the operators using parentheses, call the arithmetic operators using a normal function instead of an extension function. With extension functions, Kotlin JDSL can't identify the order in which you want to call the operators. However, with normal functions, Kotlin JDSL can identify it from the parameters.
+확장 함수가 아닌 일반 함수를 호출하는 것으로 산술 연산자에 연산 순서를 위한 소괄호를 추가할 수 있습니다.
+확장 함수의 경우 연산 순서가 모호해서 소괄호를 추가할 수 없습니다.
+
+Calling arithmetic operators using a normal function instead of an extension function allows you to order the operators
+using parentheses. In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
 // (Book.price - Book.salePrice) * (100)
@@ -83,10 +88,11 @@ path(Book::price).minus(path(Book::salePrice)).times(BigDecimal.valueOf(100))
 
 ## Values
 
-The value used in a query can be represented by value function. All values created by the value function are printed in the query as query parameters. These query parameters cannot be overridden.
+값을 만들기 위해, `value()`를 사용할 수 있습니다.
+모든 값은 쿼리 파라미터로 치환되며, 이 파라미터는 변경할 수 없습니다.
 
 {% hint style="info" %}
-If KClass or Class object is passed in the value function, [entity](entities.md) is printed.
+만약 KClass가 `value()`에 전달되면 이는 [Entity](entities.md)로 인식됩니다.
 {% endhint %}
 
 ```kotlin
@@ -102,9 +108,8 @@ select(
 
 ### Params
 
-You may want to create a query in advance without values, and then execute it later with calculated values. In this
-case, you can use param function, which represents a query parameter. Param function represents the query parameter the
-same as the value function, but unlike the value function, it can override the query parameter.
+쿼리 파라미터를 만들기 위해, `value()` 대신 `param()`을 사용할 수 있습니다.
+`param()`으로 만들어진 파라미터는 변경이 가능합니다.
 
 ```kotlin
 val context = JpqlRenderContext()
@@ -128,17 +133,26 @@ entityManager.createQuery(query, queryParams, context)
 
 ### Literals
 
-Instead of printing a value as a query parameter, you can use literal to print a value directly into the query. A select clause can be represented by select function.
+literal을 만들기 위해, `value()` 대신 `xxxLiteral()`을 이용할 수 있습니다.
 
 {% hint style="info" %}
-When printing a string literal, if the string includes '(single quote), the '(single quote) is changed to ''(two single quotes). For example: 'literal''s'.
+string literal을 출력할 때 만약 '(작은 따옴표)가 있으면 '(작은 따옴표)는 ''(작은 따옴표 2개)로 변경되어 출력됩니다. 예로 'literal''s' 처럼 출력됩니다.
 {% endhint %}
 
-<table><thead><tr><th width="155.33333333333331">Type</th><th>Function</th><th>Rendered</th></tr></thead><tbody><tr><td>Int</td><td>intLiteral</td><td>{value}</td></tr><tr><td>Long</td><td>longLiteral</td><td>{value}L</td></tr><tr><td>Float</td><td>floatLiteral</td><td>{value}F</td></tr><tr><td>Double</td><td>doubleLiteral</td><td>{value}</td></tr><tr><td>Boolean</td><td>booleanLiteral</td><td>TRUE or FALSE</td></tr><tr><td>Char</td><td>charLiteral</td><td>'{value}'</td></tr><tr><td>String</td><td>stringLiteral</td><td>'{value}'</td></tr><tr><td>Enum</td><td>enumLiteral</td><td>{qualified name}.{enum name}</td></tr></tbody></table>
+| Type    | Function       | Rendered                     |
+|---------|----------------|------------------------------|
+| Int     | intLiteral     | {value}                      |
+| Long    | longLiteral    | {value}L                     |
+| Float   | floatLiteral   | {value}F                     |
+| Double  | doubleLiteral  | {value}                      |
+| Boolean | booleanLiteral | TRUE or FALSE                |
+| Char    | charLiteral    | '{value}'                    |
+| String  | stringLiteral  | '{value}'                    |
+| Enum    | enumLiteral    | {qualified name}.{enum name} |
 
 ## Aggregation functions
 
-Aggregation functions can be represented by a function corresponding to its name.
+집합 함수를 만들기 위해, 다음 함수들을 사용할 수 있습니다.
 
 * COUNT (count)
 * MIN (min)
@@ -162,10 +176,10 @@ sumDistinct(path(Book::price))
 
 ### Sum
 
-Sum function takes a different return type depending on the type of a parameter.
+`sum()`은 파라미터에 따라 다른 반환 타입을 가지게 됩니다.
 
 | Type       | Return Type |
-| ---------- | ----------- |
+|------------|-------------|
 | Int        | Long        |
 | Long       | Long        |
 | Float      | Double      |
@@ -175,12 +189,12 @@ Sum function takes a different return type depending on the type of a parameter.
 
 ## Functions
 
-Kotlin JDSL provides several functions to support built-in functions in JPA.
+Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 함수들을 제공합니다.
 
 ### String functions
 
 | Function  | DSL function |
-| --------- | ------------ |
+|-----------|--------------|
 | CONCAT    | not yet      |
 | SUBSTRING | not yet      |
 | TRIM      | not yet      |
@@ -192,7 +206,7 @@ Kotlin JDSL provides several functions to support built-in functions in JPA.
 ### Arithmetic functions
 
 | Function | DSL function |
-| -------- | ------------ |
+|----------|--------------|
 | ABS      | not yet      |
 | CEILING  | not yet      |
 | EXP      | not yet      |
@@ -209,7 +223,7 @@ Kotlin JDSL provides several functions to support built-in functions in JPA.
 ### Datetime functions
 
 | Function           | DSL function |
-| ------------------ | ------------ |
+|--------------------|--------------|
 | CURRENT\_DATE      | not yet      |
 | CURRENT\_TIME      | not yet      |
 | CURRENT\_TIMESTAMP | not yet      |
@@ -220,7 +234,7 @@ Kotlin JDSL provides several functions to support built-in functions in JPA.
 
 ### Database function
 
-The invocation of functions that can represent predefined database functions or user-defined database functions, can be represented by function function. By specifying the return type of the function and passing the parameters of the function as parameters, you can represent the predefined database functions or user-defined database functions.
+DB 함수나 사용자 정의 함수를 만들기 위해, `function()`을 사용할 수 있습니다.
 
 ```kotlin
 function(String::class, "myFunction", path(Book::isbn))
@@ -228,20 +242,14 @@ function(String::class, "myFunction", path(Book::isbn))
 
 ## Cases
 
-A case when clause can be represented by caseWhen or caseValue function.
-
-CaseWhen function allows you to represent a case when clause based on [predicates](predicates.md).
+case를 만들기 위해, `caseWhen()`과 `caseValue()`를 사용할 수 있습니다.
 
 ```kotlin
 caseWhen(path(Book::price).lt(BigDecimal.valueOf(100))).then("0")
     .`when`(path(Book::price).lt(BigDecimal.valueOf(200))).then("100")
     .`when`(path(Book::price).lt(BigDecimal.valueOf(300))).then("200")
     .`else`("300")
-```
 
-CaseWhen function allows you to represent a case when clause based on [expressions](expressions.md).
-
-```kotlin
 caseValue(path(Book::price))
     .`when`(BigDecimal.valueOf("100")).then("10")
     .`when`(BigDecimal.valueOf("200")).then("20")
@@ -251,7 +259,7 @@ caseValue(path(Book::price))
 
 ### Coalesce
 
-Coalesce that returns the first non-null value in the parameters, or null if there are no non-null values in the parameters, can be represented by coalesce function.
+coalesce를 만들기 위해, `coalesce()`을 사용할 수 있습니다.
 
 ```kotlin
 coalesce(path(Employee::nickname), path(Employee::name))
@@ -259,7 +267,7 @@ coalesce(path(Employee::nickname), path(Employee::name))
 
 ### NullIf
 
-NullIf that returns null if value1 = value2 is true, otherwise returns value1, can be represented by nullIf function.
+nullIf를 만들기 위해, `nullIf()`을 사용할 수 있습니다.
 
 ```kotlin
 nullIf(path(Book::price), BigDecimal.ZERO)
@@ -267,7 +275,7 @@ nullIf(path(Book::price), BigDecimal.ZERO)
 
 ## New
 
-DTO projection can be represented by new function. By specifying the DTO class you want to project in new function and passing the parameters of the class as parameters, you can represent the DTO projection.
+DTO 프로젝션을 만들기 위해, `new()`를 사용할 수 있습니다.
 
 ```kotlin
 data class Row(
@@ -284,7 +292,7 @@ new(
 
 ## Type
 
-Type operator that can restrict query polymorphism, can be represented by type function.
+type 연산자를 만들기 위해, `type()`을 사용할 수 있습니다.
 
 ```kotlin
 select(
@@ -298,13 +306,10 @@ select(
 
 ## Custom expression
 
-Expressions that are not provided by the Kotlin JDSL, can be represented by customExpression function. By specifying the
-return type of the expression and passing the parameters of the expression as parameters, you can represent the your
-expression.
+커스텀 expression을 만들기 위해, `customExpression()`을 사용할 수 있습니다.
 
 ```kotlin
 customExpression(String::class, "CAST({0} AS VARCHAR)", path(Book::price))
 ```
 
-If you find that you are using the same customExpression a lot, you may want to create your own DSL,
-see [Customizing](custom-dsl.md).
+만약 `customExpression()`을 많이 사용한다면 [나만의 DSL](custom-dsl.md)을 만드는 것을 고려해보세요.

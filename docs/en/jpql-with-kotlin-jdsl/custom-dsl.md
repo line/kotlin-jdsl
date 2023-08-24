@@ -4,10 +4,9 @@
 
 Inheriting `Jpql` class and adding your own functions allows you to create your own DSL.
 
-`Jpql` has all the DSL functions provided by Kotlin JDSL. You can use them to create your own functions. You can also
-create your own `Model` that implements [`Expression`](expressions.md) or [`Predicate`](predicates.md) and create a
-function to return this Model. Implementing [`JpqlSerializer`](custom-dsl.md#serializer) for the Model allows Kotlin
-JDSL to render the Model to a String.
+`Jpql` has all the DSL functions provided by Kotlin JDSL. You can use them to create your own functions.
+You can also create your own `Model` that implements [`Expression`](expressions.md) or [`Predicate`](predicates.md) and create a function to return this Model.
+Implementing [`JpqlSerializer`](custom-dsl.md#serializer) for the Model allows Kotlin JDSL to render the Model to a String.
 
 {% hint style="info" %}
 You need to implement `JpqlDsl.Constructor` as a companion object so that `jpql()` can recognize the DSL.
@@ -41,12 +40,12 @@ val query = jpql(MyJpql) {
 
 ### Serializer
 
-To render your Model to String, you can implement JpqlSerializer and provide it to `RenderContext`.
+To render your Model to String, you can implement `JpqlSerializer` and provide it to `RenderContext`.
 
-`JpqlSerializer` provides `JpqlWriter` and `RenderContext` for you to implement rendering. From `RenderContext`, you can
-get `JpqlRenderSerializer`, which can render other model in your Model. And you can also get `JpqlRenderStatement`
-and `JpqlRenderClause`, which let you know which statement and clause are currently being rendered. You can use them to
-render your Model as String.
+`JpqlSerializer` provides `JpqlWriter` and `RenderContext` for you to implement rendering.
+From `RenderContext`, you can get `JpqlRenderSerializer`, which can render other model in your Model.
+And you can also get `JpqlRenderStatement` and `JpqlRenderClause`, which let you know which statement and clause are currently being rendered.
+You can use them to render your Model as String.
 
 ```kotlin
 class MyRegexLikeSerializer : JpqlSerializer<MyRegexLike> {

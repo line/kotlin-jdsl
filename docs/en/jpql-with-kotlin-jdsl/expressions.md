@@ -4,9 +4,10 @@ Kotlin JDSL has `Expression` interface to represent an expression in JPQL.
 
 ## Alias
 
-Calling `as()` on `Expression` allows you to alias `Expression`. You can create a reference to `Expression` using
-expression(). The reference is identified by an alias and references `Expression` with the same alias. This allows you
-to alias `Expression` or reference the aliased `Expression` in other clauses.
+Calling `as()` on `Expression` allows you to alias `Expression`.
+You can create a reference of `Expression` using expression().
+The reference is identified by an alias and references `Expression` with the same alias.
+This allows you to alias `Expression` or reference the aliased `Expression` in other clauses.
 
 ```kotlin
 val bookPrice = expression(BigDecimal::class, "price")
@@ -32,8 +33,8 @@ select(
 
 ### Type Cast
 
-In some cases, you may want to change the type of `Expression` you want to use. For this, Kotlin JDSL provides unsafe
-type casting through `as()`.
+In some cases, you may want to change the type of `Expression` you want to use.
+For this, Kotlin JDSL provides unsafe type casting through `as()`.
 
 {% hint style="info" %}
 This is a shortened form of `as Expression<T>`, so it may not work as expected.
@@ -68,8 +69,8 @@ div(path(Book::price), path(Book::salePrice))
 
 ### Parenthesis
 
-Calling arithmetic operators using a normal function instead of an extension function allows you to order the operators
-using parentheses. In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
+Calling arithmetic operators using a normal function instead of an extension function allows you to order the operators using parentheses.
+In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
 // (Book.price - Book.salePrice) * (100)
@@ -84,11 +85,12 @@ path(Book::price).minus(path(Book::salePrice)).times(BigDecimal.valueOf(100))
 
 ## Values
 
-To build value, you can use `value()`. All values built by `value()` are interpreted as query parameters. These query
-parameters cannot be overridden.
+To build value, you can use `value()`.
+All values built by `value()` are interpreted as query parameters.
+These query parameters cannot be overridden.
 
 {% hint style="info" %}
-If KClass or Class is passed to `value()`, it is considered [Entity](entities.md).
+If KClass is passed to `value()`, it is considered [Entity](entities.md).
 {% endhint %}
 
 ```kotlin
@@ -131,7 +133,8 @@ entityManager.createQuery(query, queryParams, context)
 Calling `xxxLiteral()` instead of `value()` allows you to build a literal in query.
 
 {% hint style="info" %}
-When printing a string literal, if the string includes '(single quote), the '(single quote) is changed to ''(two single quotes). For example: 'literal''s'.
+When printing a string literal, if the string includes '(single quote), the '(single quote) is changed to ''(two single quotes).
+For example: 'literal''s'.
 {% endhint %}
 
 | Type    | Function       | Rendered                     |
@@ -254,8 +257,8 @@ caseValue(path(Book::price))
 
 ### Coalesce
 
-To build coalesce, you can use `coalesce()`. `coalesce()` returns the first non-null value in the parameters, or null if
-there are no non-null values in the parameters.
+To build coalesce, you can use `coalesce()`.
+`coalesce()` returns the first non-null value in the parameters, or null if there are no non-null values in the parameters.
 
 ```kotlin
 coalesce(path(Employee::nickname), path(Employee::name))
@@ -263,7 +266,7 @@ coalesce(path(Employee::nickname), path(Employee::name))
 
 ### NullIf
 
-To build nullIf, you can use `nullIf()`. `nullIf()` returns null if value1 = value2 is true, otherwise returns value1
+To build nullIf, you can use `nullIf()`. `nullIf()` returns null if value1 = value2 is true, otherwise returns value1.
 
 ```kotlin
 nullIf(path(Book::price), BigDecimal.ZERO)
