@@ -306,4 +306,5 @@ expression.
 customExpression(String::class, "CAST({0} AS VARCHAR)", path(Book::price))
 ```
 
-If you find that you are using the same customExpression a lot, you may want to create your own DSL, see [Customizing](customizing.md).
+If you find that you are using the same customExpression a lot, you may want to create your own DSL,
+see [Customizing](custom-dsl.md).

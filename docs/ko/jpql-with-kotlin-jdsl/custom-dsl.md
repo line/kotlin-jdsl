@@ -1,11 +1,14 @@
-# Customizing
+# Custom DSL
 
 ## DSL
 
 By inheriting from the Jpql class, you can create your own DSL functions. Jpql class has all the DSL functions provided
 by Kotlin JDSL. You can use them to create your own DSL functions.
 
-If you want to create the DSL function that does more than the DSL functions provided by Kotlin JDSL, you can create and provide your own Query Model. Your query model just needs to implement [expression](expressions.md) or [predicate](predicates.md) interfaces and provide [JpqlSerializer](customizing.md#serializer) implementation to RenderContext to let the Kotlin JDSL know how to print.
+If you want to create the DSL function that does more than the DSL functions provided by Kotlin JDSL, you can create and
+provide your own Query Model. Your query model just needs to implement [expression](expressions.md)
+or [predicate](predicates.md) interfaces and provide [JpqlSerializer](custom-dsl.md#serializer) implementation to
+RenderContext to let the Kotlin JDSL know how to print.
 
 {% hint style="info" %}
 You must to implement JpqlDsl.Constructor as a companion object so that jpql function can recognize the DSL class and create an object of it.

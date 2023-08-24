@@ -85,7 +85,8 @@ from(
 )
 ```
 
-Calling `as()` after `join()`, you can alias the entity being joined. This can be useful if you use multiple entities
+Calling `as()` after `join()` allows you to alias the entity being joined. This can be useful if you use multiple
+entities
 with the same type in a from clause.
 
 ```kotlin

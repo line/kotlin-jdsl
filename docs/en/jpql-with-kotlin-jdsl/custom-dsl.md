@@ -2,16 +2,15 @@
 
 ## DSL
 
-By inheriting from the Jpql class, you can create your own DSL functions. Jpql class has all the DSL functions provided
-by Kotlin JDSL. You can use them to create your own DSL functions.
+Inheriting `Jpql` class and adding your own functions allows you to create your own DSL.
 
-If you want to create the DSL function that does more than the DSL functions provided by Kotlin JDSL, you can create and
-provide your own Query Model. Your query model just needs to implement [expression](expressions.md)
-or [predicate](predicates.md) interfaces and provide [JpqlSerializer](custom-dsl.md#serializer) implementation to
-RenderContext to let the Kotlin JDSL know how to print.
+`Jpql` has all the DSL functions provided by Kotlin JDSL. You can use them to create your own functions. You can also
+create your own `Model` that implements [`Expression`](expressions.md) or [`Predicate`](predicates.md) and create a
+function to return this Model. Implementing [`JpqlSerializer`](custom-dsl.md#serializer) for the Model allows Kotlin
+JDSL to render the Model to a String.
 
 {% hint style="info" %}
-You must to implement JpqlDsl.Constructor as a companion object so that jpql function can recognize the DSL class and create an object of it.
+You need to implement `JpqlDsl.Constructor` as a companion object so that `jpql()` can recognize the DSL.
 {% endhint %}
 
 ```kotlin
@@ -42,9 +41,12 @@ val query = jpql(MyJpql) {
 
 ### Serializer
 
-To print your Query Model, you have to implement JpqlSerializer and provide it to the RenderContext.
+To render your Model to String, you can implement JpqlSerializer and provide it to `RenderContext`.
 
-JpqlSerializer provides JpqlWriter and RenderContext for you to implement serialization. From RenderContext, you can get JpqlRenderSerializer, which can serialize other query parts in your QueryModel. And you can also get JpqlRenderStatement and JpqlRenderClause, which let you know which statement and clause are currently being rendered. You can use them to print your Query Model as a String using JpqlWriter.
+`JpqlSerializer` provides `JpqlWriter` and `RenderContext` for you to implement rendering. From `RenderContext`, you can
+get `JpqlRenderSerializer`, which can render other model in your Model. And you can also get `JpqlRenderStatement`
+and `JpqlRenderClause`, which let you know which statement and clause are currently being rendered. You can use them to
+render your Model as String.
 
 ```kotlin
 class MyRegexLikeSerializer : JpqlSerializer<MyRegexLike> {
@@ -71,7 +73,7 @@ class MyRegexLikeSerializer : JpqlSerializer<MyRegexLike> {
 }
 ```
 
-JpqlRenderContext provides a registerModule function that allows you to register the JpqlSerializer implementation.
+`JpqlRenderContext` provides `registerModule()` that allows you to register the `JpqlSerializer` implementation.
 
 ```kotlin
 val myModule = object : JpqlRenderModule {

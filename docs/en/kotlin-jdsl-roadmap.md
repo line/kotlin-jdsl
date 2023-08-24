@@ -2,12 +2,12 @@
 
 ## MySQL
 
-Kotlin JDSL provides a Mysql-specific DSL and Query Model that makes it easy to build and execute MySQL queries.
+Kotlin JDSL provides a Mysql-specific DSL that makes it easy to build MySQL queries.
 
 ## Oracle
 
-Kotlin JDSL provides a Oracle-specific DSL and Query Model that makes it easy to build and execute Oracle queries.
+Kotlin JDSL provides an Oracle-specific DSL that makes it easy to build Oracle queries.
 
 ## OpenSearch
 
-Kotlin JDSL provides a OpenSearch-specific DSL and Query Model that makes it easy to build and execute OpenSearch queries.
+Kotlin JDSL provides a OpenSearch-specific DSL that makes it easy to build OpenSearch queries.

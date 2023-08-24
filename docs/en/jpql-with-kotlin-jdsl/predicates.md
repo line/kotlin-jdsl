@@ -1,17 +1,18 @@
 # Predicates
 
-Predicate represents a conditional expression in JPQL.
+Kotlin JDSL has `Predicate` interface to represent an entity in JPQL.
 
 ## Logical operators
 
-Logical operations can be represented by and, or, and not functions.
+To build logical operations, you can use following functions:
 
 * AND (and)
 * OR (or)
 * NOT (not)
 
 {% hint style="info" %}
-The AND and OR operators print 1 = 1 in the case of AND and 0 = 1 in the case of OR if there is no expression to enclose in AND and OR, so be careful when creating dynamic queries.
+If there is no `Predicate` in `and()` and `or()`, `and()` will be interpreted as `1 = 1` and `or()` will be interpreted
+as `0 = 1`. So be careful when creating a dynamic query.
 {% endhint %}
 
 ```kotlin
@@ -26,7 +27,8 @@ not(path(Employee::name).eq("Employee01"))
 
 ### Parenthesis
 
-When using logical operators, if you want to order the operators using parentheses, call the logical operators using a normal function instead of an extension function. With extension functions, Kotlin JDSL can't identify the order in which you want to call the operators. However, with normal functions, Kotlin JDSL can identify it from the parameters.
+Calling logical operators using a normal function instead of an extension function allows you to order the operators
+using parentheses. In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
 // (Employee.name = 'Employee01' AND Employee.nickname = 'E01') or (Employee.name = 'Employee02' AND Employee.nickname = 'E02')
@@ -41,7 +43,7 @@ path(Employee::name).eq("Employee01").and(path(Employee::nickname).eq("E01")).or
 
 ## Comparison operators
 
-Comparison operations can be represented by several functions.
+To build comparison operations, you can use following functions:
 
 * \= (equal or eq)
 * <> (notEqual or ne)
@@ -72,10 +74,11 @@ path(Book::price).le(BigDecimal.valueOf(100))
 
 ### All or Any
 
-By appending all and any to the end of the function name, it can also represent an All or Any conditional expression.
+Appending `all` and `any` to the end of the function name allows you to use All and Any operators on a subquery.
 
-<pre class="language-kotlin"><code class="lang-kotlin"><strong>val query = jpql {
-</strong>    val annualSalariesInDepartment3 = select(
+```kotlin
+val query = jpql {
+    val annualSalaries = select(
         path(FullTimeEmployee::annualSalary)(EmployeeSalary::value),
     ).from(
         entity(FullTimeEmployee::class),
@@ -89,14 +92,14 @@ By appending all and any to the end of the function name, it can also represent 
     ).from(
         entity(FullTimeEmployee::class),
     ).where(
-        path(FullTimeEmployee::annualSalary)(EmployeeSalary::value).gtAll(annualSalariesInDepartment3),
+        path(FullTimeEmployee::annualSalary)(EmployeeSalary::value).gtAll(annualSalaries),
     )
 }
-</code></pre>
+```
 
 ## Null
 
-Null comparison operators can be represented by isNull or isNotNull functions.
+To build null comparison operations, you can use `isNull` and `isNotNull`.
 
 ```kotlin
 path(Employee::nickname).isNull()
@@ -106,7 +109,7 @@ path(Employee::nickname).isNotNull()
 
 ## Like
 
-Like comparison operators can be represented by like or notLike functions.
+To build like comparison operations, you can use `like` and `notLike`.
 
 ```kotlin
 path(Employee::nickname).like("E%")
@@ -118,7 +121,7 @@ path(Employee::nickname).isNotNull("E_", escape = '_')
 
 ## Between
 
-Between comparison operators can be represented by between or notBetween functions.
+To build between comparison operations, you can use `between` and `notBetween`.
 
 ```kotlin
 path(Employee::price).between(BigDecimal.valueOf(100), BigDecimal.valueOf(200))
@@ -128,7 +131,7 @@ path(Employee::price).notBetween(BigDecimal.valueOf(100), BigDecimal.valueOf(200
 
 ## In
 
-In comparison operators can be represented by in or notIn functions.
+To build in comparison operations, you can use `in` and `notIn`.
 
 ```kotlin
 path(Employee::price).`in`(BigDecimal.valueOf(100), BigDecimal.valueOf(200))
@@ -138,7 +141,7 @@ path(Employee::price).notIn(BigDecimal.valueOf(100), BigDecimal.valueOf(200))
 
 ## Exists
 
-Exists that is true only if the result of the subquery consists of one or more values and that is false otherwise, can be represented by exists or notExists functions.
+To build exists operations, you can use `exists` and `notExists`.
 
 ```kotlin
 exists(subquery)
@@ -146,35 +149,9 @@ exists(subquery)
 notExists(subquery)
 ```
 
-```kotlin
-val query = jpql {
-    val subqueryEmployee = entity(Employee::class, "SubqueryEmployee")
-    val subqueryEmployeeDepartment = entity(EmployeeDepartment::class, "SubqueryEmployeeDepartment")
-
-    val subquery = select(
-        subqueryEmployee(Employee::employeeId),
-    ).from(
-        subqueryEmployee,
-        join(subqueryEmployee(Employee::departments)).`as`(subqueryEmployeeDepartment),
-    ).whereAnd(
-        subqueryEmployee(Employee::nickname).isNotNull(),
-        subqueryEmployeeDepartment(EmployeeDepartment::departmentId).eq(path(EmployeeDepartment::departmentId)),
-    ).asSubquery()
-
-    select(
-        path(Employee::employeeId),
-    ).from(
-        entity(Employee::class),
-        join(Employee::departments),
-    ).where(
-        exists(subquery),
-    )
-}
-```
-
 ## Empty
 
-Empty that tests whether or not the collection designated by the collection-valued path expression is empty, can be represented by isEmpty or isNotEmpty functions.
+To build empty operations, you can use `isEmpty` and `isNotEmpty`. These test if the collection is empty.
 
 ```kotlin
 path(Employee::departments).isEmpty()

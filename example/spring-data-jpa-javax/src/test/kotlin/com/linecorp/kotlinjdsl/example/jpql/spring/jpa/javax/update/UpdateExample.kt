@@ -40,7 +40,7 @@ class UpdateExample : WithAssertions {
             ).asSubquery()
 
             update(
-                FullTimeEmployee::class,
+                entity(FullTimeEmployee::class),
             ).set(
                 path(FullTimeEmployee::annualSalary)(EmployeeSalary::value),
                 path(FullTimeEmployee::annualSalary)(EmployeeSalary::value).times(BigDecimal.valueOf(1.1)),
@@ -103,7 +103,7 @@ class UpdateExample : WithAssertions {
             ).asSubquery()
 
             update(
-                Employee::class,
+                entity(Employee::class),
             ).set(
                 path(Employee::nickname),
                 path(Employee::name),

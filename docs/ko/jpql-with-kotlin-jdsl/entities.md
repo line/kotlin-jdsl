@@ -1,8 +1,7 @@
 # Entities
 
-Entity는 JPQL의 entity를 표현합니다.
-
-Entity represents an entity in JPQL. It can be represented by entity function or KClass.
+Kotlin JDSL has `Entity` interface. `Entity` is an interface to represent an entity in JPQL. To build `Entity`, you can
+use `entity()`.
 
 ```kotlin
 entity(Book::class)
@@ -10,17 +9,22 @@ entity(Book::class)
 
 ## Alias
 
-All entities have an alias. If you don't specify an alias in entity function, Kotlin JDSL automatically generates one from the class name.
+`Entity` has an alias. If you don't specify an alias in `entity()`, Kotlin JDSL generates an alias from the class
+name. `Entity` is distinguished by an alias, so if you use more than one `Entity` with the same type, you need to alias
+them to distinguish them.
 
 ```kotlin
-entity(Book::class) // == entity(Book::class, Book::class.simpleName!!)
+entity(Book::class)
+entity(Book::class, Book::class.simpleName!!)
 
-entity(Book::class, alias = "b")
+entity(Book::class, alias = "book1")
+entity(Book::class, alias = "book2")
 ```
 
 ## Expression
 
-Entity can be used as an expression where an expression is required, such as in a [select clause](statements.md#select-clause) or [predicate](predicates.md), in which case only the alias is printed in the query and is used only to refer to the entity.
+`Entity` can be used as [`Expression`](expressions.md), such as in a [select clause](statements.md#select-clause)
+or [predicate](predicates.md).
 
 ```kotlin
 // SELECT b FROM Book AS b WHERE b.isbn.value = :param1
@@ -37,7 +41,7 @@ jpql {
 
 ## Treat
 
-Entity can be cast to sub-class using treat function.
+To cast type of `Entity` to subclass, you can use `treat()`.
 
 ```kotlin
 entity(Employee::class).treat(FullTimeEmployee::class)

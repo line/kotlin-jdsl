@@ -146,32 +146,6 @@ exists(subquery)
 notExists(subquery)
 ```
 
-```kotlin
-val query = jpql {
-    val subqueryEmployee = entity(Employee::class, "SubqueryEmployee")
-    val subqueryEmployeeDepartment = entity(EmployeeDepartment::class, "SubqueryEmployeeDepartment")
-
-    val subquery = select(
-        subqueryEmployee(Employee::employeeId),
-    ).from(
-        subqueryEmployee,
-        join(subqueryEmployee(Employee::departments)).`as`(subqueryEmployeeDepartment),
-    ).whereAnd(
-        subqueryEmployee(Employee::nickname).isNotNull(),
-        subqueryEmployeeDepartment(EmployeeDepartment::departmentId).eq(path(EmployeeDepartment::departmentId)),
-    ).asSubquery()
-
-    select(
-        path(Employee::employeeId),
-    ).from(
-        entity(Employee::class),
-        join(Employee::departments),
-    ).where(
-        exists(subquery),
-    )
-}
-```
-
 ## Empty
 
 Empty that tests whether or not the collection designated by the collection-valued path expression is empty, can be represented by isEmpty or isNotEmpty functions.

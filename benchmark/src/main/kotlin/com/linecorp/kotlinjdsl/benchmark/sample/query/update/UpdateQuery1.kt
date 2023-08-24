@@ -20,7 +20,7 @@ object UpdateQuery1 : () -> UpdateQuery<*> {
             ).asSubquery()
 
             update(
-                Employee::class,
+                entity(Employee::class),
             ).set(
                 path(Employee::nickname),
                 path(Employee::name),

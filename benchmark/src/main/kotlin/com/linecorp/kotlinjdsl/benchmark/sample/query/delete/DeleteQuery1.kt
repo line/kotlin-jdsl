@@ -20,7 +20,7 @@ object DeleteQuery1 : () -> DeleteQuery<*> {
             ).asSubquery()
 
             deleteFrom(
-                Employee::class,
+                entity(Employee::class),
             ).where(
                 path(Employee::employeeId).`in`(employeeIds),
             )
