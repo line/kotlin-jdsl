@@ -38,35 +38,6 @@ class AndDslTest : AbstractJpqlDslTest() {
     }
 
     @Test
-    fun `and collection predicate predicate`() {
-        // when
-        val actual = testJpql {
-            and(
-                listOf(
-                    path(TestTable::int1).equal(int1),
-                    path(TestTable::int1).equal(int2),
-                ),
-            )
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.and(
-                listOf(
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int1),
-                    ),
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int2),
-                    ),
-                ),
-            ),
-        )
-    }
-
-    @Test
     fun `predicate and predicate`() {
         // when
         val actual = testJpql {

@@ -67,7 +67,7 @@ path(Book::price).div(path(Book::salePrice))
 div(path(Book::price), path(Book::salePrice))
 ```
 
-### Parenthesis
+### Parentheses
 
 Calling arithmetic operators using a normal function instead of an extension function allows you to order the operators using parentheses.
 In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.

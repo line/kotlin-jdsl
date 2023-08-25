@@ -7,13 +7,11 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlInnerAssociationJoi
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.runs
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
@@ -28,6 +26,15 @@ class JpqlInnerAssociationJoinSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val entity1 = Entities.entity(Book::class, "book01")
+
+    private val path1 = Paths.path(entity1, Book::authors)
+
+    private val predicate1 = Predicates.equal(
+        Paths.path(entity1, Book::title),
+        Expressions.value("Book01"),
+    )
+
     @Test
     fun handledType() {
         // when
@@ -38,15 +45,11 @@ class JpqlInnerAssociationJoinSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN predicate is not given, THEN draw inner join and alias only`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
         val part = Joins.innerJoin(
-            Entities.entity(TestTable1::class, "test"),
-            Paths.path(TestTable1::int1),
-            null,
+            entity1,
+            path1,
         )
         val context = TestRenderContext(serializer)
 
@@ -57,30 +60,21 @@ class JpqlInnerAssociationJoinSerializerTest : WithAssertions {
         verifySequence {
             writer.write("INNER JOIN")
             writer.write(" ")
-
-            serializer.serialize(part.association, writer, context)
-
+            serializer.serialize(path1, writer, context)
             writer.write(" ")
-
             writer.write("AS")
             writer.write(" ")
-            writer.write(part.entity.alias)
+            writer.write(entity1.alias)
         }
     }
 
     @Test
-    fun `serialize - WHEN predicate is given, THEN draw full syntax`() {
+    fun `serialize() draws the ON, when the predicate is not null`() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
         val part = Joins.innerJoin(
-            Entities.entity(TestTable1::class, "test"),
-            Paths.path(TestTable1::int1),
-            Predicates.equal(
-                Expressions.stringLiteral("value"),
-                Expressions.stringLiteral("compare"),
-            ),
+            entity1,
+            path1,
+            predicate1,
         )
         val context = TestRenderContext(serializer)
 
@@ -91,24 +85,15 @@ class JpqlInnerAssociationJoinSerializerTest : WithAssertions {
         verifySequence {
             writer.write("INNER JOIN")
             writer.write(" ")
-
-            serializer.serialize(part.association, writer, context)
-
+            serializer.serialize(path1, writer, context)
             writer.write(" ")
-
             writer.write("AS")
             writer.write(" ")
-            writer.write(part.entity.alias)
-
+            writer.write(entity1.alias)
             writer.write(" ")
             writer.write("ON")
             writer.write(" ")
-
-            serializer.serialize(part.on!!, writer, context)
+            serializer.serialize(predicate1, writer, context)
         }
-    }
-
-    private class TestTable1 {
-        val int1: Int = 1
     }
 }

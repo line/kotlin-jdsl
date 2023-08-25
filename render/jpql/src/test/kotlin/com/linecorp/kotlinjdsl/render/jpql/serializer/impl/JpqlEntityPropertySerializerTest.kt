@@ -1,15 +1,14 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.impl.JpqlEntityProperty
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.runs
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
@@ -24,6 +23,9 @@ class JpqlEntityPropertySerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val entity1 = Entities.entity(Book::class, "book01")
+    private val property1 = Book::price
+
     @Test
     fun handledType() {
         // when
@@ -34,12 +36,12 @@ class JpqlEntityPropertySerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN entity property is given, THEN draw alias and name`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Paths.path(TestTable1::int1)
+        val part = Paths.path(
+            entity1,
+            property1,
+        )
         val context = TestRenderContext(serializer)
 
         // when
@@ -47,13 +49,9 @@ class JpqlEntityPropertySerializerTest : WithAssertions {
 
         // then
         verifySequence {
-            writer.write(part.entity.alias)
+            writer.write(entity1.alias)
             writer.write(".")
-            writer.write(part.property.name)
+            writer.write(property1.name)
         }
-    }
-
-    private class TestTable1 {
-        val int1: Int = 1
     }
 }

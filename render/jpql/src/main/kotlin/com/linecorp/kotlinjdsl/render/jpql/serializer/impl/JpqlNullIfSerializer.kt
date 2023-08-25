@@ -17,15 +17,14 @@ class JpqlNullIfSerializer : JpqlSerializer<JpqlNullIf<*>> {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         writer.write("NULLIF")
-        writer.write("(")
 
-        delegate.serialize(part.value, writer, context)
+        writer.writeParentheses {
+            delegate.serialize(part.value, writer, context)
 
-        writer.write(",")
-        writer.write(" ")
+            writer.write(",")
+            writer.write(" ")
 
-        delegate.serialize(part.compareValue, writer, context)
-
-        writer.write(")")
+            delegate.serialize(part.compareValue, writer, context)
+        }
     }
 }

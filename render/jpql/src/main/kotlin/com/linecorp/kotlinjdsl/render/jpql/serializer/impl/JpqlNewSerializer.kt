@@ -20,12 +20,10 @@ class JpqlNewSerializer : JpqlSerializer<JpqlNew<*>> {
 
         writer.write(part.type.java.name)
 
-        writer.write("(")
-
-        writer.writeEach(part.args, separator = ", ") {
-            delegate.serialize(it, writer, context)
+        writer.writeParentheses {
+            writer.writeEach(part.args, separator = ", ") {
+                delegate.serialize(it, writer, context)
+            }
         }
-
-        writer.write(")")
     }
 }

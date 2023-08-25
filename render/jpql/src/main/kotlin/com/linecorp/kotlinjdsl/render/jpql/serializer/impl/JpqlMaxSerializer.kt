@@ -16,15 +16,14 @@ class JpqlMaxSerializer : JpqlSerializer<JpqlMax<*>> {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         writer.write("MAX")
-        writer.write("(")
 
-        if (part.distinct) {
-            writer.write("DISTINCT")
-            writer.write(" ")
+        writer.writeParentheses {
+            if (part.distinct) {
+                writer.write("DISTINCT")
+                writer.write(" ")
+            }
+
+            delegate.serialize(part.expr, writer, context)
         }
-
-        delegate.serialize(part.expr, writer, context)
-
-        writer.write(")")
     }
 }

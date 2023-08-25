@@ -48,27 +48,6 @@ class NewDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(expected)
     }
 
-    @Test
-    fun `new type collection int expression int expression`() {
-        // when
-        val expression = testJpql {
-            new(Row::class, listOf(path(TestTable::int1), path(TestTable::int2)))
-        }.toExpression()
-
-        val actual: Expression<Row> = expression // for type check
-
-        // then
-        val expected = Expressions.new(
-            Row::class,
-            listOf(
-                Paths.path(TestTable::int1),
-                Paths.path(TestTable::int2),
-            ),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
     private class TestTable {
         val int1: Int = 1
         val int2: Int = 1

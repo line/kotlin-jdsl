@@ -9,7 +9,7 @@ object Deletes {
     @SinceJdsl("3.0.0")
     fun <T : Any> delete(
         entity: Entity<T>,
-        where: Predicate?,
+        where: Predicate? = null,
     ): DeleteQuery<T> {
         return JpqlDeleteQuery(
             entity = entity,

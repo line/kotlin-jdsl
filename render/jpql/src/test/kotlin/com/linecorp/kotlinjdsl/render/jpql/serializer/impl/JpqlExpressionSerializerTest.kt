@@ -5,10 +5,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.runs
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
@@ -20,6 +17,8 @@ class JpqlExpressionSerializerTest: WithAssertions {
     @MockK
     private lateinit var writer: JpqlWriter
 
+    private val alias1 = "alias1"
+
     @Test
     fun handledType() {
         // when
@@ -30,11 +29,9 @@ class JpqlExpressionSerializerTest: WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN expression is given, THEN draw alias`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-
-        val part = Expressions.expression(Long::class, "alias")
+        val part = Expressions.expression(String::class, alias1)
         val context = TestRenderContext()
 
         // when
@@ -42,7 +39,7 @@ class JpqlExpressionSerializerTest: WithAssertions {
 
         // then
         verifySequence {
-            writer.write(part.alias)
+            writer.write(alias1)
         }
     }
 }

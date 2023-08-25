@@ -17,10 +17,9 @@ class JpqlNotExistsSerializer : JpqlSerializer<JpqlNotExists> {
 
         writer.write("NOT EXISTS")
         writer.write(" ")
-        writer.write("(")
 
-        delegate.serialize(part.subquery, writer, context)
-
-        writer.write(")")
+        writer.writeParentheses {
+            delegate.serialize(part.subquery, writer, context)
+        }
     }
 }

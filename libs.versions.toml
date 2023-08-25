@@ -5,7 +5,7 @@ spring6 = "6.0.11"
 spring5 = "5.3.29"
 
 test-spring-boot3 = "3.1.2"
-test-spring-boot2 = "2.7.14"
+test-spring-boot2 = "2.7.15"
 
 [libraries]
 # kotlin

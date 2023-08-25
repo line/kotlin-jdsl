@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.benchmark.entity.author
+package com.linecorp.kotlinjdsl.benchmark.sample.entity.author
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

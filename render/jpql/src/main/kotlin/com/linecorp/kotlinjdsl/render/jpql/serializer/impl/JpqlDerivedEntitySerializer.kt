@@ -25,9 +25,9 @@ class JpqlDerivedEntitySerializer : JpqlSerializer<JpqlDerivedEntity<*>> {
             || (statement.isUpdate() && clause.isUpdate())
             || (statement.isDelete() && clause.isDeleteFrom())
         ) {
-            writer.write("(")
-            delegate.serialize(part.selectQuery, writer, context)
-            writer.write(")")
+            writer.writeParentheses {
+                delegate.serialize(part.selectQuery, writer, context)
+            }
 
             writer.write(" ")
             writer.write("AS")

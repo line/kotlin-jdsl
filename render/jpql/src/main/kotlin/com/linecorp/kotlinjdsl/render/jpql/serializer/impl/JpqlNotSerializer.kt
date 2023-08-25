@@ -16,10 +16,9 @@ class JpqlNotSerializer : JpqlSerializer<JpqlNot> {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         writer.write("NOT")
-        writer.write("(")
 
-        delegate.serialize(part.predicate, writer, context)
-
-        writer.write(")")
+        writer.writeParentheses {
+            delegate.serialize(part.predicate, writer, context)
+        }
     }
 }

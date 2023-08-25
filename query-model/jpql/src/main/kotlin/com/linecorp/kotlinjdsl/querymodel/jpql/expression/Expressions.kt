@@ -170,8 +170,8 @@ object Expressions {
         `else`: Expression<T>? = null,
     ): Expression<T> {
         return JpqlCase(
-            whens = whens.map { it.key to it.value }.toMap(),
-            `else` = `else`?.toExpression(),
+            whens = whens,
+            `else` = `else`,
         )
     }
 
@@ -214,7 +214,7 @@ object Expressions {
 
     @SinceJdsl("3.0.0")
     fun <T : Any> function(type: KClass<T>, name: String, args: Iterable<Expression<*>>): Expression<T> {
-        return JpqlFunction(type, name, args.map { it.toExpression() })
+        return JpqlFunction(type, name, args)
     }
 
     @SinceJdsl("3.0.0")
@@ -263,7 +263,7 @@ object Expressions {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> parenthesis(expr: Expression<T>): Expression<T> {
-        return JpqlExpressionParenthesis(expr)
+    fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
+        return JpqlExpressionParentheses(expr)
     }
 }

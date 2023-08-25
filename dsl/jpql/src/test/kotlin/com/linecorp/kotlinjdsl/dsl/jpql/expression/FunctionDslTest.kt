@@ -13,7 +13,7 @@ class FunctionDslTest : AbstractJpqlDslTest() {
     fun `function type template`() {
         // when
         val expression = testJpql {
-            function(Int::class, functionName1, listOf(path(TestTable1::int1)))
+            function(Int::class, functionName1, path(TestTable1::int1))
         }.toExpression()
 
         val actual: Expression<Int> = expression // for type check

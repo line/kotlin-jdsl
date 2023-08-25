@@ -25,13 +25,10 @@ or(path(Employee::name).eq("Employee01"), path(Employee::nickname).eq("E01"))
 not(path(Employee::name).eq("Employee01"))
 ```
 
-### Parenthesis
+### Parentheses
 
 확장 함수가 아닌 일반 함수를 호출하는 것으로 논리 연산자에 연산 순서를 위한 소괄호를 추가할 수 있습니다.
 확장 함수의 경우 연산 순서가 모호해서 소괄호를 추가할 수 없습니다.
-
-Calling logical operators using a normal function instead of an extension function allows you to order the operators
-using parentheses. In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
 // (Employee.name = 'Employee01' AND Employee.nickname = 'E01') or (Employee.name = 'Employee02' AND Employee.nickname = 'E02')

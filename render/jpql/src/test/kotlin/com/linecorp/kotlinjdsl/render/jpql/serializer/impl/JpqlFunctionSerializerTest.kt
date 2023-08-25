@@ -1,14 +1,13 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
@@ -22,6 +21,12 @@ class JpqlFunctionSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val functionName1 = "functionName1"
+
+    private val expression1 = Expressions.value(1)
+    private val expression2 = Expressions.value(2)
+    private val expression3 = Expressions.value(3)
+
     @Test
     fun handledType() {
         // when
@@ -32,14 +37,18 @@ class JpqlFunctionSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN args is empty, THEN draw function without args`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
+        val expressions = listOf(
+            expression1,
+            expression2,
+            expression3,
+        )
 
         val part = Expressions.function(
-            type = Long::class,
-            name = "calculate",
-            args = emptyList(),
+            String::class,
+            functionName1,
+            expressions,
         )
         val context = TestRenderContext(serializer)
 
@@ -49,32 +58,24 @@ class JpqlFunctionSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("FUNCTION")
-            writer.write("(")
-            writer.write("calculate")
-            writer.write(")")
+            writer.writeParentheses(any())
+            writer.write(functionName1)
+            writer.write(",")
+            writer.write(" ")
+            writer.writeEach(expressions, ", ", "", "", any())
+            serializer.serialize(expression1, writer, context)
+            serializer.serialize(expression2, writer, context)
+            serializer.serialize(expression3, writer, context)
         }
     }
 
     @Test
-    fun `serialize - WHEN args is not empty, THEN draw function with name and args`() {
+    fun `serialize() draws only the function name, when the args is empty`() {
         // given
-        every { writer.writeEach<Expression<*>>(any(), any(), any(), any(), any()) } answers {
-            val expressions: List<Expression<*>> = arg(0)
-            val write: (Expression<*>) -> Unit = arg(4)
-
-            expressions.forEach { expression -> write(expression) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
         val part = Expressions.function(
-            type = Long::class,
-            name = "calculate",
-            args = listOf(
-                mockkClass(Expression::class) { every { toExpression() } returns mockkClass(Expression::class) },
-                mockkClass(Expression::class) { every { toExpression() } returns mockkClass(Expression::class) },
-                mockkClass(Expression::class) { every { toExpression() } returns mockkClass(Expression::class) },
-            ),
+            String::class,
+            functionName1,
+            emptyList(),
         )
         val context = TestRenderContext(serializer)
 
@@ -84,15 +85,8 @@ class JpqlFunctionSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("FUNCTION")
-            writer.write("(")
-            writer.write("calculate")
-            writer.write(", ")
-            writer.write(" ")
-            writer.writeEach(part.args, ", ", "", "", any())
-            serializer.serialize(part.args.elementAt(0), writer, context)
-            serializer.serialize(part.args.elementAt(1), writer, context)
-            serializer.serialize(part.args.elementAt(2), writer, context)
-            writer.write(")")
+            writer.writeParentheses(any())
+            writer.write(functionName1)
         }
     }
 }

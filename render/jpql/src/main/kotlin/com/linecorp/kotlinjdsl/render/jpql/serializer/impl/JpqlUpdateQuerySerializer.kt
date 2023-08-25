@@ -15,43 +15,43 @@ class JpqlUpdateQuerySerializer : JpqlSerializer<JpqlUpdateQuery<*>> {
     }
 
     override fun serialize(part: JpqlUpdateQuery<*>, writer: JpqlWriter, context: RenderContext) {
-        val updateContext = context + JpqlRenderStatement.Update
+        val newContext = context + JpqlRenderStatement.Update
 
-        writeUpdate(part, writer, updateContext)
-        writeSet(part, writer, updateContext)
-        writeWhere(part, writer, updateContext)
+        writeUpdate(part, writer, newContext)
+        writeSet(part, writer, newContext)
+        writeWhere(part, writer, newContext)
     }
 
     private fun writeUpdate(part: JpqlUpdateQuery<*>, writer: JpqlWriter, context: RenderContext) {
         val entity = part.entity
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val updateContext = context + JpqlRenderClause.Update
+        val newContext = context + JpqlRenderClause.Update
 
         writer.write("UPDATE")
         writer.write(" ")
 
-        delegate.serialize(entity, writer, updateContext)
+        delegate.serialize(entity, writer, newContext)
     }
 
     private fun writeSet(part: JpqlUpdateQuery<*>, writer: JpqlWriter, context: RenderContext) {
         val set = part.set
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val fromContext = context + JpqlRenderClause.Set
+        val newContext = context + JpqlRenderClause.Set
 
         writer.write(" ")
         writer.write("SET")
         writer.write(" ")
 
         writer.writeEach(set.entries, separator = ", ") { (path, expr) ->
-            delegate.serialize(path, writer, fromContext)
+            delegate.serialize(path, writer, newContext)
 
             writer.write(" ")
             writer.write("=")
             writer.write(" ")
 
-            delegate.serialize(expr, writer, fromContext)
+            delegate.serialize(expr, writer, newContext)
         }
     }
 
@@ -59,12 +59,12 @@ class JpqlUpdateQuerySerializer : JpqlSerializer<JpqlUpdateQuery<*>> {
         val where = part.where ?: return
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val whereContext = context + JpqlRenderClause.Where
+        val newContext = context + JpqlRenderClause.Where
 
         writer.write(" ")
         writer.write("WHERE")
         writer.write(" ")
 
-        delegate.serialize(where, writer, whereContext)
+        delegate.serialize(where, writer, newContext)
     }
 }

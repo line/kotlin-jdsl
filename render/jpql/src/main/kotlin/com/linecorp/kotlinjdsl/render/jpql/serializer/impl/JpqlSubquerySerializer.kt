@@ -15,8 +15,8 @@ class JpqlSubquerySerializer : JpqlSerializer<JpqlSubquery<*>> {
     override fun serialize(part: JpqlSubquery<*>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        writer.write("(")
-        delegate.serialize(part.selectQuery, writer, context)
-        writer.write(")")
+        writer.writeParentheses {
+            delegate.serialize(part.selectQuery, writer, context)
+        }
     }
 }

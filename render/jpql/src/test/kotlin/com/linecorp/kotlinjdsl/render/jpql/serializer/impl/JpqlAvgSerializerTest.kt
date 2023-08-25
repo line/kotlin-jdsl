@@ -2,14 +2,13 @@ package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.runs
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
@@ -24,6 +23,8 @@ class JpqlAvgSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val expression1 = Paths.path(Book::price)
+
     @Test
     fun handledType() {
         // when
@@ -34,12 +35,12 @@ class JpqlAvgSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN distinct is disabled, THEN draw avg function only`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Expressions.avg(false, Expressions.doubleLiteral(3.0))
+        val part = Expressions.avg(
+            distinct = false,
+            expression1,
+        )
         val context = TestRenderContext(serializer)
 
         // when
@@ -48,19 +49,18 @@ class JpqlAvgSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("AVG")
-            writer.write("(")
-            serializer.serialize(part.expr, writer, context)
-            writer.write(")")
+            writer.writeParentheses(any())
+            serializer.serialize(expression1, writer, context)
         }
     }
 
     @Test
-    fun `serialize - WHEN distinct is enabled, THEN draw avg function with distinct`() {
+    fun `serialize() draws the DISTINCT, when the distinct is enabled`() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Expressions.avg(true, Expressions.doubleLiteral(3.0))
+        val part = Expressions.avg(
+            distinct = true,
+            expression1,
+        )
         val context = TestRenderContext(serializer)
 
         // when
@@ -69,11 +69,10 @@ class JpqlAvgSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("AVG")
-            writer.write("(")
+            writer.writeParentheses(any())
             writer.write("DISTINCT")
             writer.write(" ")
-            serializer.serialize(part.expr, writer, context)
-            writer.write(")")
+            serializer.serialize(expression1, writer, context)
         }
     }
 }

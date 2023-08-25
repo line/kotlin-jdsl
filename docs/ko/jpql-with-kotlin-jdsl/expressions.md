@@ -67,13 +67,10 @@ path(Book::price).div(path(Book::salePrice))
 div(path(Book::price), path(Book::salePrice))
 ```
 
-### Parenthesis
+### Parentheses
 
 확장 함수가 아닌 일반 함수를 호출하는 것으로 산술 연산자에 연산 순서를 위한 소괄호를 추가할 수 있습니다.
 확장 함수의 경우 연산 순서가 모호해서 소괄호를 추가할 수 없습니다.
-
-Calling arithmetic operators using a normal function instead of an extension function allows you to order the operators
-using parentheses. In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
 // (Book.price - Book.salePrice) * (100)

@@ -2,12 +2,14 @@ package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.impl.JpqlDerivedEntity
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.*
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -22,6 +24,15 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val selectQuery1 = Selects.select(
+        returnType = String::class,
+        distinct = false,
+        select = listOf(Paths.path(Book::title)),
+        from = listOf(Entities.entity(Book::class)),
+    )
+
+    private val alias1 = "alias1"
+
     @Test
     fun handledType() {
         // when
@@ -33,32 +44,20 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
 
     @ParameterizedTest
     @StatementClauseSource(
-        excludes = [
-            StatementClause(statement = JpqlRenderStatement.Select::class, clause = JpqlRenderClause.From::class),
-            StatementClause(statement = JpqlRenderStatement.Update::class, clause = JpqlRenderClause.Update::class),
-            StatementClause(statement = JpqlRenderStatement.Delete::class, clause = JpqlRenderClause.DeleteFrom::class),
+        includes = [
+            StatementClause(JpqlRenderStatement.Select::class, JpqlRenderClause.From::class),
+            StatementClause(JpqlRenderStatement.Update::class, JpqlRenderClause.Update::class),
+            StatementClause(JpqlRenderStatement.Delete::class, JpqlRenderClause.DeleteFrom::class),
         ],
     )
-    fun `serialize - WHEN a combination of statement and clause is given as source, THEN draw only alias`(
+    fun serialize(
         statement: JpqlRenderStatement,
         clause: JpqlRenderClause,
     ) {
         // given
-        every { writer.write(any<String>()) } just runs
-
-        val select = Selects.select(
-            returnType = TestTable1::class,
-            distinct = false,
-            select = emptyList(),
-            from = emptyList(),
-            where = null,
-            groupBy = null,
-            having = null,
-            orderBy = null,
-        )
         val part = Entities.derivedEntity(
-            selectQuery = select,
-            alias = "alias",
+            selectQuery = selectQuery1,
+            alias = alias1,
         )
         val context = TestRenderContext(serializer, statement, clause)
 
@@ -67,39 +66,31 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
 
         // then
         verifySequence {
-            writer.write("alias")
+            writer.writeParentheses(any())
+            serializer.serialize(selectQuery1, writer, context)
+            writer.write(" ")
+            writer.write("AS")
+            writer.write(" ")
+            writer.write(alias1)
         }
     }
 
     @ParameterizedTest
     @StatementClauseSource(
-        includes = [
-            StatementClause(statement = JpqlRenderStatement.Select::class, clause = JpqlRenderClause.From::class),
-            StatementClause(statement = JpqlRenderStatement.Update::class, clause = JpqlRenderClause.Update::class),
-            StatementClause(statement = JpqlRenderStatement.Delete::class, clause = JpqlRenderClause.DeleteFrom::class),
+        excludes = [
+            StatementClause(JpqlRenderStatement.Select::class, JpqlRenderClause.From::class),
+            StatementClause(JpqlRenderStatement.Update::class, JpqlRenderClause.Update::class),
+            StatementClause(JpqlRenderStatement.Delete::class, JpqlRenderClause.DeleteFrom::class),
         ],
     )
-    fun `serialize - WHEN a combination of statement and clause is given as source, THEN draw full syntax`(
+    fun `serialize() draws only the alias, when given the statement and clause of the source`(
         statement: JpqlRenderStatement,
         clause: JpqlRenderClause,
     ) {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val select = Selects.select(
-            returnType = TestTable1::class,
-            distinct = false,
-            select = emptyList(),
-            from = emptyList(),
-            where = null,
-            groupBy = null,
-            having = null,
-            orderBy = null,
-        )
         val part = Entities.derivedEntity(
-            selectQuery = select,
-            alias = "alias",
+            selectQuery = selectQuery1,
+            alias = alias1,
         )
         val context = TestRenderContext(serializer, statement, clause)
 
@@ -108,17 +99,7 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
 
         // then
         verifySequence {
-            writer.write("(")
-            serializer.serialize(part.selectQuery, writer, context)
-            writer.write(")")
-
-            writer.write(" ")
-            writer.write("AS")
-            writer.write(" ")
-
-            writer.write(part.alias)
+            writer.write(alias1)
         }
     }
-
-    private class TestTable1
 }

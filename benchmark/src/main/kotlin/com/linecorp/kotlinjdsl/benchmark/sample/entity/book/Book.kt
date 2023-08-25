@@ -1,6 +1,6 @@
 @file:Suppress("LeakingThis")
 
-package com.linecorp.kotlinjdsl.benchmark.entity.book
+package com.linecorp.kotlinjdsl.benchmark.sample.entity.book
 
 import jakarta.persistence.*
 import java.time.OffsetDateTime

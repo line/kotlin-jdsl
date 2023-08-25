@@ -38,35 +38,6 @@ class OrDslTest : AbstractJpqlDslTest() {
     }
 
     @Test
-    fun `or collection predicate predicate`() {
-        // when
-        val actual = testJpql {
-            or(
-                listOf(
-                    path(TestTable::int1).equal(int1),
-                    path(TestTable::int1).equal(int2),
-                ),
-            )
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.or(
-                listOf(
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int1),
-                    ),
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int2),
-                    ),
-                ),
-            ),
-        )
-    }
-
-    @Test
     fun `predicate or predicate`() {
         // when
         val actual = testJpql {

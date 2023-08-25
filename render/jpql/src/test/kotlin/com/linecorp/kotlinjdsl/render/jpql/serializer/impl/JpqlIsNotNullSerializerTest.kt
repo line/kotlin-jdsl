@@ -1,23 +1,17 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIsNotNull
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.employee.Employee
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
-import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.runs
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 @JpqlSerializerTest
 internal class JpqlIsNotNullSerializerTest: WithAssertions {
@@ -29,6 +23,8 @@ internal class JpqlIsNotNullSerializerTest: WithAssertions {
     @MockK
     private lateinit var serializer : JpqlRenderSerializer
 
+    private val expression1 = Paths.path(Employee::nickname)
+
     @Test
     fun handledType() {
         // when
@@ -39,12 +35,11 @@ internal class JpqlIsNotNullSerializerTest: WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN is not null is given, THEN draw full syntax`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Predicates.isNotNull(Expressions.stringLiteral("field"))
+        val part = Predicates.isNotNull(
+            expression1,
+        )
         val context = TestRenderContext(serializer)
 
         // when
@@ -52,8 +47,7 @@ internal class JpqlIsNotNullSerializerTest: WithAssertions {
 
         // then
         verifySequence {
-            serializer.serialize(part.expr, writer, context)
-
+            serializer.serialize(expression1, writer, context)
             writer.write(" ")
             writer.write("IS NOT NULL")
         }

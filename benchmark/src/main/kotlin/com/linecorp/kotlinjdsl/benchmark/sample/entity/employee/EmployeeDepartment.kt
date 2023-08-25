@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.benchmark.entity.employee
+package com.linecorp.kotlinjdsl.benchmark.sample.entity.employee
 
 import com.linecorp.kotlinjdsl.benchmark.sample.annotation.CompositeId
 import jakarta.persistence.*

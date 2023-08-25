@@ -12,7 +12,7 @@ object Updates {
     fun <T : Any> update(
         entity: Entity<T>,
         set: Map<Path<*>, Expression<*>>,
-        where: Predicate?,
+        where: Predicate? = null,
     ): UpdateQuery<T> {
         return JpqlUpdateQuery(
             entity = entity,

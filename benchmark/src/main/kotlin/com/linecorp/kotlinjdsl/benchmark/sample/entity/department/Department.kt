@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.benchmark.entity.department
+package com.linecorp.kotlinjdsl.benchmark.sample.entity.department
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

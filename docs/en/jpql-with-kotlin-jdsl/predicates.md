@@ -25,7 +25,7 @@ or(path(Employee::name).eq("Employee01"), path(Employee::nickname).eq("E01"))
 not(path(Employee::name).eq("Employee01"))
 ```
 
-### Parenthesis
+### Parentheses
 
 Calling logical operators using a normal function instead of an extension function allows you to order the operators using parentheses.
 In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.

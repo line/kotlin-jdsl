@@ -16,14 +16,14 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
     }
 
     override fun serialize(part: JpqlSelectQuery<*>, writer: JpqlWriter, context: RenderContext) {
-        val selectContext = context + JpqlRenderStatement.Select
+        val newContext = context + JpqlRenderStatement.Select
 
-        writeSelect(part, writer, selectContext)
-        writeFrom(part, writer, selectContext)
-        writeWhere(part, writer, selectContext)
-        writeGroupBy(part, writer, selectContext)
-        writeHaving(part, writer, selectContext)
-        writeOrderBy(part, writer, selectContext)
+        writeSelect(part, writer, newContext)
+        writeFrom(part, writer, newContext)
+        writeWhere(part, writer, newContext)
+        writeGroupBy(part, writer, newContext)
+        writeHaving(part, writer, newContext)
+        writeOrderBy(part, writer, newContext)
     }
 
     private fun writeSelect(part: JpqlSelectQuery<*>, writer: JpqlWriter, context: RenderContext) {
@@ -31,7 +31,7 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
         val distinct = part.distinct
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val selectContext = context + JpqlRenderClause.Select
+        val newContext = context + JpqlRenderClause.Select
 
         writer.write("SELECT")
         writer.write(" ")
@@ -42,7 +42,7 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
         }
 
         writer.writeEach(select, separator = ", ") {
-            delegate.serialize(it, writer, selectContext)
+            delegate.serialize(it, writer, newContext)
         }
     }
 
@@ -50,14 +50,14 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
         val from = part.from
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val fromContext = context + JpqlRenderClause.From
+        val newContext = context + JpqlRenderClause.From
 
         writer.write(" ")
         writer.write("FROM")
         writer.write(" ")
 
         writer.writeEach(from, separator = ", ") {
-            delegate.serialize(it, writer, fromContext)
+            delegate.serialize(it, writer, newContext)
         }
     }
 
@@ -65,27 +65,27 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
         val where = part.where ?: return
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val whereContext = context + JpqlRenderClause.Where
+        val newContext = context + JpqlRenderClause.Where
 
         writer.write(" ")
         writer.write("WHERE")
         writer.write(" ")
 
-        delegate.serialize(where, writer, whereContext)
+        delegate.serialize(where, writer, newContext)
     }
 
     private fun writeGroupBy(part: JpqlSelectQuery<*>, writer: JpqlWriter, context: RenderContext) {
         val groupBy = part.groupBy?.takeIf { IterableUtils.isNotEmpty(it) } ?: return
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val groupByContext = context + JpqlRenderClause.GroupBy
+        val newContext = context + JpqlRenderClause.GroupBy
 
         writer.write(" ")
         writer.write("GROUP BY")
         writer.write(" ")
 
         writer.writeEach(groupBy, separator = ", ") {
-            delegate.serialize(it, writer, groupByContext)
+            delegate.serialize(it, writer, newContext)
         }
     }
 
@@ -93,27 +93,27 @@ class JpqlSelectQuerySerializer : JpqlSerializer<JpqlSelectQuery<*>> {
         val having = part.having ?: return
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val havingContext = context + JpqlRenderClause.Having
+        val newContext = context + JpqlRenderClause.Having
 
         writer.write(" ")
         writer.write("HAVING")
         writer.write(" ")
 
-        delegate.serialize(having, writer, havingContext)
+        delegate.serialize(having, writer, newContext)
     }
 
     private fun writeOrderBy(part: JpqlSelectQuery<*>, writer: JpqlWriter, context: RenderContext) {
         val orderBy = part.orderBy?.takeIf { IterableUtils.isNotEmpty(it) } ?: return
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        val orderByContext = context + JpqlRenderClause.OrderBy
+        val newContext = context + JpqlRenderClause.OrderBy
 
         writer.write(" ")
         writer.write("ORDER BY")
         writer.write(" ")
 
         writer.writeEach(orderBy, separator = ", ") {
-            delegate.serialize(it, writer, orderByContext)
+            delegate.serialize(it, writer, newContext)
         }
     }
 }

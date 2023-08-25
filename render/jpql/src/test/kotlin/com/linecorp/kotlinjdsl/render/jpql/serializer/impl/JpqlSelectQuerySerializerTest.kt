@@ -1,19 +1,22 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.from.From
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sorts
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.author.Author
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderClause
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderStatement
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
@@ -27,6 +30,19 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val expression1 = Paths.path(Book::price)
+    private val expression2 = Paths.path(Book::salePrice)
+    private val expression3 = Paths.path(Book::isbn)
+    private val expression4 = Paths.path(Book::title)
+
+    private val entity1 = Entities.entity(Book::class)
+    private val entity2 = Entities.entity(Author::class)
+
+    private val predicate1 = Predicates.equal(Paths.path(Book::title), Expressions.value("Book01"))
+
+    private val sort1 = Sorts.asc(Paths.path(Book::isbn))
+    private val sort2 = Sorts.asc(Paths.path(Book::title))
+
     @Test
     fun handledType() {
         // when
@@ -37,26 +53,23 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN all optional properties is empty, THEN draw only select and from`() {
+    fun serialize() {
         // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: List<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
+        val expressions = listOf(
+            expression1,
+            expression2,
+        )
 
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
+        val entities = listOf(
+            entity1,
+            entity2,
+        )
 
         val part = Selects.select(
-            returnType = TestTable1::class,
+            returnType = String::class,
             distinct = false,
-            select = emptyList(),
-            from = emptyList(),
-            where = null,
-            groupBy = null,
-            having = null,
-            orderBy = null,
+            select = expressions,
+            from = entities,
         )
         val context = TestRenderContext(serializer)
 
@@ -67,38 +80,52 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-
-            writer.writeEach(part.select, ", ", "", "", any())
-
+            writer.writeEach(expressions, ", ", "", "", any())
+            serializer.serialize(
+                expression1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
+            serializer.serialize(
+                expression2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-
-            writer.writeEach(part.from, separator = ", ", "", "", any())
+            writer.writeEach(entities, separator = ", ", "", "", any())
+            serializer.serialize(
+                entity1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
+            serializer.serialize(
+                entity2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
         }
     }
 
     @Test
-    fun `serialize - WHEN distinct is enabled, THEN draw DISTINCT`() {
+    fun `serialize() draws the DISTINCT, when the distinct is enabled`() {
         // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: List<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
+        val expressions = listOf(
+            expression1,
+            expression2,
+        )
 
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
+        val entities = listOf(
+            entity1,
+            entity2,
+        )
 
         val part = Selects.select(
-            returnType = TestTable1::class,
+            returnType = String::class,
             distinct = true,
-            select = emptyList(),
-            from = emptyList(),
-            where = null,
-            groupBy = null,
-            having = null,
-            orderBy = null,
+            select = expressions,
+            from = entities,
         )
         val context = TestRenderContext(serializer)
 
@@ -109,124 +136,30 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-
             writer.write("DISTINCT")
             writer.write(" ")
-
-            writer.writeEach(part.select, ", ", "", "", any())
-
-            writer.write(" ")
-            writer.write("FROM")
-            writer.write(" ")
-
-            writer.writeEach(part.from, separator = ", ", "", "", any())
-        }
-    }
-
-    @Test
-    fun `serialize - WHEN select is not empty, THEN draw select elements`() {
-        // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: List<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
-
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Selects.select(
-            returnType = TestTable1::class,
-            distinct = false,
-            select = listOf(
-                Expressions.stringLiteral("field1"),
-                Expressions.stringLiteral("field2"),
-            ),
-            from = emptyList(),
-            where = null,
-            groupBy = null,
-            having = null,
-            orderBy = null,
-        )
-        val context = TestRenderContext(serializer)
-
-        // when
-        sut.serialize(part as JpqlSelectQuery<*>, writer, context)
-
-        // then
-        verifySequence {
-            writer.write("SELECT")
-            writer.write(" ")
-
-            writer.writeEach(part.select, ", ", "", "", any())
+            writer.writeEach(expressions, ", ", "", "", any())
             serializer.serialize(
-                part.select.elementAt(0),
+                expression1,
                 writer,
                 context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
             )
             serializer.serialize(
-                part.select.elementAt(1),
+                expression2,
                 writer,
                 context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
             )
-
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-
-            writer.writeEach(part.from, separator = ", ", "", "", any())
-        }
-    }
-
-    @Test
-    fun `serialize - WHEN from is not empty, THEN draw from elements`() {
-        // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: List<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
-
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Selects.select(
-            returnType = TestTable1::class,
-            distinct = false,
-            select = emptyList(),
-            from = listOf(
-                mockkClass(From::class),
-                mockkClass(From::class),
-            ),
-            where = null,
-            groupBy = null,
-            having = null,
-            orderBy = null,
-        )
-        val context = TestRenderContext(serializer)
-
-        // when
-        sut.serialize(part as JpqlSelectQuery<*>, writer, context)
-
-        // then
-        verifySequence {
-            writer.write("SELECT")
-            writer.write(" ")
-
-            writer.writeEach(part.select, ", ", "", "", any())
-
-            writer.write(" ")
-            writer.write("FROM")
-            writer.write(" ")
-
-            writer.writeEach(part.from, separator = ", ", "", "", any())
+            writer.writeEach(entities, separator = ", ", "", "", any())
             serializer.serialize(
-                part.from.elementAt(0),
+                entity1,
                 writer,
                 context + JpqlRenderStatement.Select + JpqlRenderClause.From,
             )
             serializer.serialize(
-                part.from.elementAt(1),
+                entity2,
                 writer,
                 context + JpqlRenderStatement.Select + JpqlRenderClause.From,
             )
@@ -234,26 +167,24 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN where is not null, THEN draw where clause`() {
+    fun `serialize() draws the WHERE, when the where is not null`() {
         // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: List<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
+        val expressions = listOf(
+            expression1,
+            expression2,
+        )
 
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
+        val entities = listOf(
+            entity1,
+            entity2,
+        )
 
         val part = Selects.select(
-            returnType = TestTable1::class,
+            returnType = String::class,
             distinct = false,
-            select = emptyList(),
-            from = emptyList(),
-            where = Predicates.isNull(Expressions.stringLiteral("field1")),
-            groupBy = null,
-            having = null,
-            orderBy = null,
+            select = expressions,
+            from = entities,
+            where = predicate1,
         )
         val context = TestRenderContext(serializer)
 
@@ -264,47 +195,66 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-
-            writer.writeEach(part.select, ", ", "", "", any())
-
+            writer.writeEach(expressions, ", ", "", "", any())
+            serializer.serialize(
+                expression1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
+            serializer.serialize(
+                expression2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-
-            writer.writeEach(part.from, separator = ", ", "", "", any())
-
+            writer.writeEach(entities, separator = ", ", "", "", any())
+            serializer.serialize(
+                entity1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
+            serializer.serialize(
+                entity2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
             writer.write(" ")
             writer.write("WHERE")
             writer.write(" ")
-
-            serializer.serialize(part.where!!, writer, context + JpqlRenderStatement.Select + JpqlRenderClause.Where)
+            serializer.serialize(
+                predicate1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Where,
+            )
         }
     }
 
     @Test
-    fun `serialize - WHEN group by is not null, THEN draw group by clause`() {
+    fun `serialize() draws the GROUP BY, when the groupBy is not null`() {
         // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: List<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
+        val expressions1 = listOf(
+            expression1,
+            expression2,
+        )
 
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
+        val expressions2 = listOf(
+            expression3,
+            expression4,
+        )
+
+        val entities = listOf(
+            entity1,
+            entity2,
+        )
 
         val part = Selects.select(
-            returnType = TestTable1::class,
+            returnType = String::class,
             distinct = false,
-            select = emptyList(),
-            from = emptyList(),
-            where = null,
-            groupBy = listOf(
-                Expressions.stringLiteral("field1"),
-                Expressions.stringLiteral("field2"),
-            ),
-            having = null,
-            orderBy = null,
+            select = expressions1,
+            from = entities,
+            groupBy = expressions2,
         )
         val context = TestRenderContext(serializer)
 
@@ -315,27 +265,42 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-
-            writer.writeEach(part.select, ", ", "", "", any())
-
+            writer.writeEach(expressions1, ", ", "", "", any())
+            serializer.serialize(
+                expression1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
+            serializer.serialize(
+                expression2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-
-            writer.writeEach(part.from, separator = ", ", "", "", any())
-
+            writer.writeEach(entities, separator = ", ", "", "", any())
+            serializer.serialize(
+                entity1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
+            serializer.serialize(
+                entity2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
             writer.write(" ")
             writer.write("GROUP BY")
             writer.write(" ")
-
-            writer.writeEach(part.groupBy!!, separator = ", ", "", "", any())
+            writer.writeEach(expressions2, ", ", "", "", any())
             serializer.serialize(
-                part.groupBy!!.elementAt(0),
+                expression3,
                 writer,
                 context + JpqlRenderStatement.Select + JpqlRenderClause.GroupBy,
             )
             serializer.serialize(
-                part.groupBy!!.elementAt(1),
+                expression4,
                 writer,
                 context + JpqlRenderStatement.Select + JpqlRenderClause.GroupBy,
             )
@@ -343,26 +308,24 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN having is not null, THEN draw having clause`() {
+    fun `serialize() draws the HAVING, when the having is not null`() {
         // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: List<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
+        val expressions = listOf(
+            expression1,
+            expression2,
+        )
 
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
+        val entities = listOf(
+            entity1,
+            entity2,
+        )
 
         val part = Selects.select(
-            returnType = TestTable1::class,
+            returnType = String::class,
             distinct = false,
-            select = emptyList(),
-            from = emptyList(),
-            where = null,
-            groupBy = emptyList(),
-            having = Predicates.isNull(Expressions.stringLiteral("field1")),
-            orderBy = null,
+            select = expressions,
+            from = entities,
+            having = predicate1,
         )
         val context = TestRenderContext(serializer)
 
@@ -373,47 +336,66 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-
-            writer.writeEach(part.select, ", ", "", "", any())
-
+            writer.writeEach(expressions, ", ", "", "", any())
+            serializer.serialize(
+                expression1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
+            serializer.serialize(
+                expression2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-
-            writer.writeEach(part.from, separator = ", ", "", "", any())
-
+            writer.writeEach(entities, separator = ", ", "", "", any())
+            serializer.serialize(
+                entity1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
+            serializer.serialize(
+                entity2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
             writer.write(" ")
             writer.write("HAVING")
             writer.write(" ")
-
-            serializer.serialize(part.having!!, writer, context + JpqlRenderStatement.Select + JpqlRenderClause.Having)
+            serializer.serialize(
+                predicate1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Having,
+            )
         }
     }
 
     @Test
-    fun `serialize - WHEN order by is not null, THEN draw order by clause`() {
+    fun `serialize() draws the ORDER BY, when the orderBy is not null`() {
         // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: List<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
+        val expressions = listOf(
+            expression1,
+            expression2,
+        )
 
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
+        val sorts = listOf(
+            sort1,
+            sort2,
+        )
+
+        val entities = listOf(
+            entity1,
+            entity2,
+        )
 
         val part = Selects.select(
-            returnType = TestTable1::class,
+            returnType = String::class,
             distinct = false,
-            select = emptyList(),
-            from = emptyList(),
-            where = null,
-            groupBy = emptyList(),
-            having = null,
-            orderBy = listOf(
-                Sorts.asc(Expressions.stringLiteral("field1"), null),
-                Sorts.desc(Expressions.stringLiteral("field2"), null),
-            ),
+            select = expressions,
+            from = entities,
+            orderBy = sorts,
         )
         val context = TestRenderContext(serializer)
 
@@ -424,32 +406,45 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-
-            writer.writeEach(part.select, ", ", "", "", any())
-
+            writer.writeEach(expressions, ", ", "", "", any())
+            serializer.serialize(
+                expression1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
+            serializer.serialize(
+                expression2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.Select,
+            )
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-
-            writer.writeEach(part.from, separator = ", ", "", "", any())
-
+            writer.writeEach(entities, separator = ", ", "", "", any())
+            serializer.serialize(
+                entity1,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
+            serializer.serialize(
+                entity2,
+                writer,
+                context + JpqlRenderStatement.Select + JpqlRenderClause.From,
+            )
             writer.write(" ")
             writer.write("ORDER BY")
             writer.write(" ")
-
-            writer.writeEach(part.orderBy!!, separator = ", ", "", "", any())
+            writer.writeEach(sorts, ", ", "", "", any())
             serializer.serialize(
-                part.orderBy!!.elementAt(0),
+                sort1,
                 writer,
                 context + JpqlRenderStatement.Select + JpqlRenderClause.OrderBy,
             )
             serializer.serialize(
-                part.orderBy!!.elementAt(1),
+                sort2,
                 writer,
                 context + JpqlRenderStatement.Select + JpqlRenderClause.OrderBy,
             )
         }
     }
-
-    private class TestTable1
 }

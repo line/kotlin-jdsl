@@ -24,10 +24,11 @@ class JpqlInSerializer : JpqlSerializer<JpqlIn<*>> {
 
         writer.write("IN")
         writer.write(" ")
-        writer.write("(")
-        writer.writeEach(part.compareValues, separator = ", ") {
-            delegate.serialize(it, writer, context)
+
+        writer.writeParentheses {
+            writer.writeEach(part.compareValues, separator = ", ") {
+                delegate.serialize(it, writer, context)
+            }
         }
-        writer.write(")")
     }
 }

@@ -21,6 +21,8 @@ class JpqlInSubquerySerializer : JpqlSerializer<JpqlInSubquery<*>> {
         writer.write("IN")
         writer.write(" ")
 
-        delegate.serialize(part.subquery, writer, context)
+        writer.writeParentheses {
+            delegate.serialize(part.subquery, writer, context)
+        }
     }
 }

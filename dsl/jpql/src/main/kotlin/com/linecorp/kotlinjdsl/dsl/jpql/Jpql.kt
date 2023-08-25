@@ -849,11 +849,6 @@ open class Jpql : JpqlDsl {
         return Expressions.new(type, args.map { it.toExpression() })
     }
 
-    @SinceJdsl("3.0.0")
-    fun <T : Any> new(type: KClass<T>, args: Iterable<Expressionable<*>>): Expression<T> {
-        return Expressions.new(type, args.map { it.toExpression() })
-    }
-
     /**
      * Expression that returns the result for the first predicate that is true.
      * If no predicate is true, the result after ELSE is returned, or NULL if there is no ELSE part.
@@ -948,7 +943,7 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> function(type: KClass<T>, name: String, args: Iterable<Expressionable<*>>): Expression<T> {
+    fun <T : Any> function(type: KClass<T>, name: String, vararg args: Expressionable<*>): Expression<T> {
         return Expressions.function(type, name, args.map { it.toExpression() })
     }
 
@@ -1194,16 +1189,6 @@ open class Jpql : JpqlDsl {
         return Predicates.and(predicates.mapNotNull { it?.toPredicate() })
     }
 
-    /**
-     * Predicate that connects [predicates] with **AND**.
-     *
-     * If [predicates] is empty, then it represents **1 = 1**.
-     */
-    @SinceJdsl("3.0.0")
-    fun and(predicates: Iterable<Predicatable?>): Predicate {
-        return Predicates.and(predicates.mapNotNull { it?.toPredicate() })
-    }
-
     @SinceJdsl("3.0.0")
     fun Predicatable.and(predicate: Predicatable): Predicate {
         return Predicates.and(listOf(this.toPredicate(), predicate.toPredicate()))
@@ -1216,16 +1201,6 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun or(vararg predicates: Predicatable?): Predicate {
-        return Predicates.or(predicates.mapNotNull { it?.toPredicate() })
-    }
-
-    /**
-     * Predicate that connects [predicates] with **OR**.
-     *
-     * If [predicates] is empty, then it represents **0 = 1**.
-     */
-    @SinceJdsl("3.0.0")
-    fun or(predicates: Iterable<Predicatable?>): Predicate {
         return Predicates.or(predicates.mapNotNull { it?.toPredicate() })
     }
 
@@ -1806,62 +1781,17 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> select(
-        distinct: Boolean,
-        returnType: KClass<T>,
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return SelectQueryFromStepDsl(returnType, distinct, expr.map { it.toExpression() })
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> select(
-        distinct: Boolean,
-        returnType: KClass<T>,
-        vararg expr: Expressionable<*>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct, returnType, expr.toList())
-    }
-
-    @SinceJdsl("3.0.0")
     inline fun <reified T : Any> select(
-        distinct: Boolean,
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct, T::class, expr)
-    }
-
-    @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> select(
-        distinct: Boolean,
-        vararg expr: Expressionable<*>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct, T::class, expr.toList())
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> select(
-        distinct: Boolean,
-        returnType: KClass<T>,
         expr: Expressionable<T>,
     ): SelectQueryFromStep<T> {
-        return select(distinct, returnType, listOf(expr))
+        return SelectQueryFromStepDsl(T::class, distinct = false, listOf(expr.toExpression()))
     }
 
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> select(
-        distinct: Boolean,
-        expr: Expressionable<T>,
+        vararg expr: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return select(distinct, T::class, listOf(expr))
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> select(
-        returnType: KClass<T>,
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct = false, returnType, expr)
+        return SelectQueryFromStepDsl(T::class, distinct = false, expr.map { it.toExpression() })
     }
 
     @SinceJdsl("3.0.0")
@@ -1869,44 +1799,21 @@ open class Jpql : JpqlDsl {
         returnType: KClass<T>,
         vararg expr: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return select(distinct = false, returnType, expr.toList())
+        return SelectQueryFromStepDsl(returnType, distinct = false, expr.map { it.toExpression() })
     }
 
     @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> select(
-        expr: Iterable<Expressionable<*>>,
+    inline fun <reified T : Any> selectDistinct(
+        expr: Expressionable<T>,
     ): SelectQueryFromStep<T> {
-        return select(distinct = false, T::class, expr)
+        return SelectQueryFromStepDsl(T::class, distinct = true, listOf(expr.toExpression()))
     }
 
     @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> select(
+    inline fun <reified T : Any> selectDistinct(
         vararg expr: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return select(distinct = false, T::class, expr.toList())
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> select(
-        returnType: KClass<T>,
-        expr: Expressionable<T>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct = false, returnType, listOf(expr))
-    }
-
-    @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> select(
-        expr: Expressionable<T>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct = false, T::class, listOf(expr))
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> selectDistinct(
-        returnType: KClass<T>,
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct = true, returnType, expr)
+        return SelectQueryFromStepDsl(T::class, distinct = true, expr.map { it.toExpression() })
     }
 
     @SinceJdsl("3.0.0")
@@ -1914,112 +1821,41 @@ open class Jpql : JpqlDsl {
         returnType: KClass<T>,
         vararg expr: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return select(distinct = true, returnType, expr.toList())
+        return SelectQueryFromStepDsl(returnType, distinct = true, expr.map { it.toExpression() })
     }
 
     @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> selectDistinct(
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct = true, T::class, expr)
-    }
-
-    @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> selectDistinct(
+    inline fun <reified T : Any> selectNew(
         vararg expr: Expressionable<*>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct = true, T::class, expr.toList())
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> selectDistinct(
-        returnType: KClass<T>,
-        expr: Expressionable<T>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct = true, returnType, listOf(expr))
-    }
-
-    @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> selectDistinct(
-        expr: Expressionable<T>,
-    ): SelectQueryFromStep<T> {
-        return select(distinct = true, T::class, listOf(expr))
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> selectNew(
-        distinct: Boolean,
-        returnType: KClass<T>,
-        expr: Iterable<Expressionable<*>>,
     ): SelectQueryFromStep<T> {
         return SelectQueryFromStepDsl(
-            returnType = returnType,
-            distinct = distinct,
-            select = listOf(Expressions.new(returnType, expr.map { it.toExpression() })),
+            returnType = T::class,
+            distinct = false,
+            select = listOf(Expressions.new(T::class, expr.map { it.toExpression() })),
         )
     }
 
     @SinceJdsl("3.0.0")
     fun <T : Any> selectNew(
-        distinct: Boolean,
         returnType: KClass<T>,
         vararg expr: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return selectNew(distinct, returnType, expr.toList())
+        return SelectQueryFromStepDsl(
+            returnType = returnType,
+            distinct = false,
+            select = listOf(Expressions.new(returnType, expr.map { it.toExpression() })),
+        )
     }
 
     @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> selectNew(
-        distinct: Boolean,
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return selectNew(distinct, T::class, expr)
-    }
-
-    @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> selectNew(
-        distinct: Boolean,
+    inline fun <reified T : Any> selectDistinctNew(
         vararg expr: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return selectNew(distinct, T::class, expr.toList())
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> selectNew(
-        returnType: KClass<T>,
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return selectNew(distinct = false, returnType, expr)
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> selectNew(
-        returnType: KClass<T>,
-        vararg expr: Expressionable<*>,
-    ): SelectQueryFromStep<T> {
-        return selectNew(distinct = false, returnType, expr.toList())
-    }
-
-    @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> selectNew(
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return selectNew(distinct = false, T::class, expr)
-    }
-
-    @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> selectNew(
-        vararg expr: Expressionable<*>,
-    ): SelectQueryFromStep<T> {
-        return selectNew(distinct = false, T::class, expr.toList())
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> selectDistinctNew(
-        returnType: KClass<T>,
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return selectNew(distinct = true, returnType, expr)
+        return SelectQueryFromStepDsl(
+            returnType = T::class,
+            distinct = true,
+            select = listOf(Expressions.new(T::class, expr.map { it.toExpression() })),
+        )
     }
 
     @SinceJdsl("3.0.0")
@@ -2027,21 +1863,11 @@ open class Jpql : JpqlDsl {
         returnType: KClass<T>,
         vararg expr: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return selectNew(distinct = true, returnType, expr.toList())
-    }
-
-    @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> selectDistinctNew(
-        expr: Iterable<Expressionable<*>>,
-    ): SelectQueryFromStep<T> {
-        return selectNew(distinct = true, T::class, expr)
-    }
-
-    @SinceJdsl("3.0.0")
-    inline fun <reified T : Any> selectDistinctNew(
-        vararg expr: Expressionable<*>,
-    ): SelectQueryFromStep<T> {
-        return selectNew(distinct = true, T::class, expr.toList())
+        return SelectQueryFromStepDsl(
+            returnType = returnType,
+            distinct = true,
+            select = listOf(Expressions.new(returnType, expr.map { it.toExpression() })),
+        )
     }
 
     @SinceJdsl("3.0.0")

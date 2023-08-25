@@ -21,6 +21,8 @@ class JpqlNotInSubquerySerializer : JpqlSerializer<JpqlNotInSubquery<*>> {
         writer.write("NOT IN")
         writer.write(" ")
 
-        delegate.serialize(part.subquery, writer, context)
+        writer.writeParentheses {
+            delegate.serialize(part.subquery, writer, context)
+        }
     }
 }

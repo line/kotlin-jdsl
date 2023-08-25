@@ -3,60 +3,17 @@ package com.linecorp.kotlinjdsl.render.jpql.writer.impl
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 
-internal class DefaultJpqlWriter(
-    params: Map<String, Any?>,
+internal class DefaultJpqlWriter private constructor(
+    private var internal: InternalJpqlWriter,
 ) : JpqlWriter {
-    private val stringBuilder: StringBuilder = StringBuilder()
-    private val params: MutableMap<String, Any?> = mutableMapOf()
-
-    private val incrementer: Incrementer
-
-    init {
-        val paramNumber = params.keys.mapNotNull {
-            numberSuffixRegex.find(it)?.value?.toInt()
-        }.maxOrNull()
-
-        incrementer = if (paramNumber == null) {
-            Incrementer(initial = 1)
-        } else {
-            Incrementer(initial = paramNumber + 1)
-        }
-
-        params.forEach { (name, value) -> putParamValue(name, value) }
-    }
-
-    override fun write(int: Int) {
-        stringBuilder.append(int)
-    }
-
-    override fun write(long: Long) {
-        stringBuilder.append(long).append("L")
-    }
-
-    override fun write(float: Float) {
-        stringBuilder.append(float).append("F")
-    }
-
-    override fun write(double: Double) {
-        stringBuilder.append(double)
-    }
-
-    override fun write(boolean: Boolean) {
-        if (boolean) {
-            stringBuilder.append("TRUE")
-        } else {
-            stringBuilder.append("FALSE")
-        }
-    }
+    constructor(params: Map<String, Any?>) : this(InternalJpqlWriter(params))
 
     override fun write(string: String) {
-        stringBuilder.append(string)
+        internal.write(string)
     }
 
     override fun writeIfAbsent(string: String) {
-        if (!stringBuilder.endsWith(string)) {
-            stringBuilder.append(string)
-        }
+        internal.writeIfAbsent(string)
     }
 
     override fun <T> writeEach(
@@ -79,15 +36,81 @@ internal class DefaultJpqlWriter(
         write(postfix)
     }
 
+    override fun writeParentheses(inner: () -> Unit) {
+        val origin = internal
+
+        internal = InternalJpqlWriter(origin.incrementer)
+
+        inner()
+
+        val innerQuery = internal.stringBuilder.toString()
+        val innerParams = internal.params
+
+        internal = origin
+
+        if (innerQuery.startsWith("(") && innerQuery.endsWith(")")) {
+            write(innerQuery)
+        } else {
+            write("(")
+            write(innerQuery)
+            write(")")
+        }
+
+        internal.putAllParams(innerParams)
+    }
+
     override fun writeParam(value: Any?) {
+        internal.writeParam(value)
+    }
+
+    override fun writeParam(name: String, value: Any?) {
+        internal.writeParam(name, value)
+    }
+
+    fun getQuery(): String {
+        return internal.stringBuilder.toString()
+    }
+
+    fun getParams(): JpqlRenderedParams {
+        return JpqlRenderedParams(internal.params)
+    }
+}
+
+private class InternalJpqlWriter(
+    val params: MutableMap<String, Any?>,
+    val incrementer: Incrementer,
+) {
+    constructor(incrementer: Incrementer) : this(mutableMapOf(), incrementer)
+
+    init {
+        params.forEach { (name, value) -> putParamValue(name, value) }
+    }
+
+    val stringBuilder: StringBuilder = StringBuilder()
+
+    fun write(string: String) {
+        stringBuilder.append(string)
+    }
+
+    fun writeIfAbsent(string: String) {
+        if (!stringBuilder.endsWith(string)) {
+            stringBuilder.append(string)
+        }
+    }
+
+    fun writeParam(value: Any?) {
         val name = "param${incrementer.getNext()}"
 
         writeParam(name, value)
     }
 
-    override fun writeParam(name: String, value: Any?) {
+    fun writeParam(name: String, value: Any?) {
         writeParamName(name)
         putParamValue(name, value)
+    }
+
+    fun putAllParams(params: Map<String, Any?>) {
+        params.forEach { (name, value) -> putParamValue(name, value) }
     }
 
     private fun writeParamName(name: String) {
@@ -111,24 +134,30 @@ internal class DefaultJpqlWriter(
             params[nonPrefixedName] = value
         }
     }
+}
 
-    fun getQuery(): String {
-        return stringBuilder.toString()
+private fun InternalJpqlWriter(params: Map<String, Any?>): InternalJpqlWriter {
+    val paramNumber = params.keys.mapNotNull {
+        suffixNumber.find(it)?.value?.toInt()
+    }.maxOrNull()
+
+    val incrementer = if (paramNumber == null) {
+        Incrementer(initial = 1)
+    } else {
+        Incrementer(initial = paramNumber + 1)
     }
 
-    fun getParams(): JpqlRenderedParams {
-        return JpqlRenderedParams(params)
-    }
+    return InternalJpqlWriter(params.toMutableMap(), incrementer)
+}
 
-    private inner class Incrementer(
-        initial: Int,
-    ) {
-        private var counter: Int = initial
+private class Incrementer(
+    initial: Int
+) {
+    private var counter: Int = initial
 
-        fun getNext(): Int {
-            return counter++
-        }
+    fun getNext(): Int {
+        return counter++
     }
 }
 
-private val numberSuffixRegex = Regex("[0-9]+$")
+private val suffixNumber = Regex("[0-9]+$")

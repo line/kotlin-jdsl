@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.benchmark.sample.query.select
 
-import com.linecorp.kotlinjdsl.benchmark.entity.author.Author
-import com.linecorp.kotlinjdsl.benchmark.entity.book.BookAuthor
+import com.linecorp.kotlinjdsl.benchmark.sample.entity.author.Author
+import com.linecorp.kotlinjdsl.benchmark.sample.entity.book.BookAuthor
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 

@@ -206,7 +206,7 @@ object Predicates {
     }
 
     @SinceJdsl("3.0.0")
-    fun parenthesis(predicate: Predicate): Predicate {
-        return JpqlPredicateParenthesis(predicate)
+    fun parentheses(predicate: Predicate): Predicate {
+        return JpqlPredicateParentheses(predicate)
     }
 }

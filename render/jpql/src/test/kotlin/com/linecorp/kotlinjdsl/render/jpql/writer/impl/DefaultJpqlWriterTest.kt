@@ -6,6 +6,10 @@ import org.junit.jupiter.api.Test
 class DefaultJpqlWriterTest : WithAssertions {
     private val sut = DefaultJpqlWriter(emptyMap())
 
+    private val string1 = "string1"
+    private val string2 = "string2"
+    private val string3 = "string3"
+
     private val paramKey1 = "paramKey1"
     private val paramKey2 = "paramKey2"
     private val paramValue1 = "paramValue1"
@@ -14,7 +18,7 @@ class DefaultJpqlWriterTest : WithAssertions {
     private val paramValue4 = "paramValue4"
 
     @Test
-    fun `constructor - WHEN params is not empty, THEN put all params`() {
+    fun `constructor() has all params, when the params is not empty`() {
         // given
         val sut = DefaultJpqlWriter(
             mapOf(
@@ -33,116 +37,38 @@ class DefaultJpqlWriterTest : WithAssertions {
     }
 
     @Test
-    fun `write - int`() {
+    fun writeIfAbsent() {
         // when
-        sut.write(1)
+        sut.writeIfAbsent(string1)
 
         val actualParam = sut.getParams()
         val actualQuery = sut.getQuery()
 
         // then
         assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("1")
+        assertThat(actualQuery).isEqualTo(string1)
     }
 
     @Test
-    fun `write - long`() {
-        // when
-        sut.write(1L)
-
-        val actualParam = sut.getParams()
-        val actualQuery = sut.getQuery()
-
-        // then
-        assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("1L")
-    }
-
-    @Test
-    fun `write - float`() {
-        // when
-        sut.write(1F)
-
-        val actualParam = sut.getParams()
-        val actualQuery = sut.getQuery()
-
-        // then
-        assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("1.0F")
-    }
-
-    @Test
-    fun `write - double`() {
-        // when
-        sut.write(1.0)
-
-        val actualParam = sut.getParams()
-        val actualQuery = sut.getQuery()
-
-        // then
-        assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("1.0")
-    }
-
-    @Test
-    fun `write - true`() {
-        // when
-        sut.write(true)
-
-        val actualParam = sut.getParams()
-        val actualQuery = sut.getQuery()
-
-        // then
-        assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("TRUE")
-    }
-
-    @Test
-    fun `write - false`() {
-        // when
-        sut.write(false)
-
-        val actualParam = sut.getParams()
-        val actualQuery = sut.getQuery()
-
-        // then
-        assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("FALSE")
-    }
-
-    @Test
-    fun `writeIfAbsent - WHEN last appended string is not input, THEN prints input`() {
-        // when
-        sut.writeIfAbsent("string1")
-
-        val actualParam = sut.getParams()
-        val actualQuery = sut.getQuery()
-
-        // then
-        assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("string1")
-    }
-
-    @Test
-    fun `writeIfAbsent - WHEN last appended string is input, THEN does not print input`() {
+    fun `writeIfAbsent() does not print the string, when preprinted string contains the string`() {
         // given
-        sut.write("string1")
+        sut.write(string1)
 
         // when
-        sut.writeIfAbsent("string1")
+        sut.writeIfAbsent(string1)
 
         val actualParam = sut.getParams()
         val actualQuery = sut.getQuery()
 
         // then
         assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("string1")
+        assertThat(actualQuery).isEqualTo(string1)
     }
 
     @Test
     fun writeEach() {
         // given
-        val strings = listOf("string1", "string2", "string3")
+        val strings = listOf(string1, string2, string3)
 
         // when
         sut.writeEach(strings, separator = ", ", prefix = "(", postfix = ")") {
@@ -154,11 +80,64 @@ class DefaultJpqlWriterTest : WithAssertions {
 
         // then
         assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("(string1, string2, string3)")
+        assertThat(actualQuery).isEqualTo("($string1, $string2, $string3)")
     }
 
     @Test
-    fun `writeParam - WHEN there is no param name, THEN print param with auto increment name`() {
+    fun writeParentheses() {
+        // when
+        sut.writeParentheses {
+            sut.write(string1)
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        // then
+        assertThat(actualParam).isEmpty()
+        assertThat(actualQuery).isEqualTo("($string1)")
+    }
+
+    @Test
+    fun `writeParentheses() prints only one parentheses, when there are duplicated parentheses`() {
+        // when
+        sut.writeParentheses {
+            sut.writeParentheses {
+                sut.write("(")
+                sut.write(string1)
+                sut.write(")")
+            }
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        // then
+        assertThat(actualParam).isEmpty()
+        assertThat(actualQuery).isEqualTo("($string1)")
+    }
+
+    @Test
+    fun `writeParentheses() prints all parentheses, when there are no duplicated parentheses`() {
+        // when
+        sut.writeParentheses {
+            sut.writeParentheses {
+                sut.write(string1)
+            }
+            sut.write(" ")
+            sut.write(string2)
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        // then
+        assertThat(actualParam).isEmpty()
+        assertThat(actualQuery).isEqualTo("(($string1) $string2)")
+    }
+
+    @Test
+    fun writeParam() {
         // when
         sut.writeParam(paramValue1)
         sut.writeParam(paramValue2)
@@ -179,7 +158,7 @@ class DefaultJpqlWriterTest : WithAssertions {
     }
 
     @Test
-    fun `writeParam - WHEN there are initial param with number suffix, THEN print param with auto increment from initial param`() {
+    fun `writeParam() prints the param with an auto increment from initial param, when there are an initial param with a number suffix`() {
         // given
         val sut = DefaultJpqlWriter(
             mapOf(
@@ -211,7 +190,7 @@ class DefaultJpqlWriterTest : WithAssertions {
     }
 
     @Test
-    fun `writeParam - WHEN initial params exist, THEN it does not override initial params`() {
+    fun `writeParam() cannot override an initial params, when an initial params exist`() {
         // given
         val sut = DefaultJpqlWriter(
             mapOf(

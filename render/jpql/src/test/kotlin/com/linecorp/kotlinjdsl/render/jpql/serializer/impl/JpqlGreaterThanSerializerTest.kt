@@ -7,8 +7,8 @@ import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
@@ -22,6 +22,9 @@ class JpqlGreaterThanSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val expression1 = Expressions.value(1)
+    private val expression2 = Expressions.value(2)
+
     @Test
     fun handledType() {
         // when
@@ -32,14 +35,11 @@ class JpqlGreaterThanSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN greater than to is given, THEN draw full syntax`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
         val part = Predicates.greaterThan(
-            Expressions.stringLiteral("value"),
-            Expressions.stringLiteral("compareValue")
+            expression1,
+            expression2,
         )
         val context = TestRenderContext(serializer)
 
@@ -48,13 +48,11 @@ class JpqlGreaterThanSerializerTest : WithAssertions {
 
         // then
         verifySequence {
-            serializer.serialize(part.value, writer, context)
-
+            serializer.serialize(expression1, writer, context)
             writer.write(" ")
             writer.write(">")
             writer.write(" ")
-
-            serializer.serialize(part.compareValue, writer, context)
+            serializer.serialize(expression2, writer, context)
         }
     }
 }

@@ -16,10 +16,10 @@ object Selects {
         distinct: Boolean,
         select: Iterable<Expression<*>>,
         from: Iterable<From>,
-        where: Predicate?,
-        groupBy: Iterable<Expression<*>>?,
-        having: Predicate?,
-        orderBy: Iterable<Sort>?,
+        where: Predicate? = null,
+        groupBy: Iterable<Expression<*>>? = null,
+        having: Predicate? = null,
+        orderBy: Iterable<Sort>? = null,
     ): SelectQuery<T> {
         return JpqlSelectQuery(
             returnType = returnType,

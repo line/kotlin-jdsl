@@ -7,8 +7,8 @@ import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
@@ -22,6 +22,14 @@ class JpqlNewSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val expression1 = Expressions.value(1)
+    private val expression2 = Expressions.value(2)
+
+    private data class Row(
+        val value1: Int,
+        val value2: Int,
+    )
+
     @Test
     fun handledType() {
         // when
@@ -32,48 +40,16 @@ class JpqlNewSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN arguments is empty, THEN draw NEW only`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { writer.writeEach<String>(any(), any(), any(), any(), any()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Expressions.new(String::class, emptyList())
-        val context = TestRenderContext(serializer)
-
-        // when
-        sut.serialize(part as JpqlNew<*>, writer, context)
-
-        // then
-        verifySequence {
-            writer.write("NEW")
-            writer.write(" ")
-
-            writer.write(part.type.java.name)
-
-            writer.write("(")
-
-            writer.writeEach(part.args, separator = ", ", prefix = "", postfix = "", any())
-
-            writer.write(")")
-        }
-    }
-
-    @Test
-    fun `serialize - WHEN arguments is not empty, THEN draw arguments with NEW`() {
-        // given
-        every { writer.write(any<String>()) } just runs
-        every { writer.writeEach<Expression<String>>(any(), any(), any(), any(), any()) } answers {
-            val predicates: List<Expression<String>> = arg(0)
-            val write: (Expression<String>) -> Unit = arg(4)
-
-            predicates.forEach { expression -> write(expression) }
-        }
-        every { serializer.serialize(any(), any(), any()) } just runs
+        val expressions = listOf(
+            expression1,
+            expression2,
+        )
 
         val part = Expressions.new(
-            String::class,
-            listOf(Expressions.stringLiteral("arg1"), Expressions.stringLiteral("arg2")),
+            Row::class,
+            expressions,
         )
         val context = TestRenderContext(serializer)
 
@@ -84,16 +60,33 @@ class JpqlNewSerializerTest : WithAssertions {
         verifySequence {
             writer.write("NEW")
             writer.write(" ")
+            writer.write(Row::class.java.name)
+            writer.writeParentheses(any())
+            writer.writeEach(expressions, separator = ", ", prefix = "", postfix = "", any())
+            serializer.serialize(expression1, writer, context)
+            serializer.serialize(expression2, writer, context)
+        }
+    }
 
-            writer.write(part.type.java.name)
+    @Test
+    fun `serialize() draws the NEW without args, when the args is empty`() {
+        // given
+        val part = Expressions.new(
+            Row::class,
+            emptyList(),
+        )
+        val context = TestRenderContext(serializer)
 
-            writer.write("(")
+        // when
+        sut.serialize(part as JpqlNew<*>, writer, context)
 
-            writer.writeEach(part.args, separator = ", ", prefix = "", postfix = "", any())
-            serializer.serialize(part.args.elementAt(0), writer, context)
-            serializer.serialize(part.args.elementAt(1), writer, context)
-
-            writer.write(")")
+        // then
+        verifySequence {
+            writer.write("NEW")
+            writer.write(" ")
+            writer.write(Row::class.java.name)
+            writer.writeParentheses(any())
+            writer.writeEach(emptyList<Expression<*>>(), separator = ", ", prefix = "", postfix = "", any())
         }
     }
 }
