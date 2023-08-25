@@ -37,26 +37,27 @@ internal class DefaultJpqlWriter private constructor(
     }
 
     override fun writeParentheses(inner: () -> Unit) {
-        val origin = internal
+        val originWriter = internal
+        val innerWriter = InternalJpqlWriter(originWriter.incrementer)
 
-        internal = InternalJpqlWriter(origin.incrementer)
+        internal = innerWriter
 
         inner()
 
-        val innerQuery = internal.stringBuilder.toString()
-        val innerParams = internal.params
-
-        internal = origin
+        val innerQuery = innerWriter.stringBuilder.toString()
+        val innerParams = innerWriter.params
 
         if (innerQuery.startsWith("(") && innerQuery.endsWith(")")) {
-            write(innerQuery)
+            originWriter.write(innerQuery)
         } else {
-            write("(")
-            write(innerQuery)
-            write(")")
+            originWriter.write("(")
+            originWriter.write(innerQuery)
+            originWriter.write(")")
         }
 
-        internal.putAllParams(innerParams)
+        originWriter.putAllParams(innerParams)
+
+        internal = originWriter
     }
 
     override fun writeParam(value: Any?) {
