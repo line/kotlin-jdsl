@@ -24,7 +24,7 @@ class DefaultJpqlWriterTest : WithAssertions {
             mapOf(
                 paramKey1 to paramValue1,
                 paramKey2 to paramValue2,
-            )
+            ),
         )
 
         // when
@@ -137,6 +137,36 @@ class DefaultJpqlWriterTest : WithAssertions {
     }
 
     @Test
+    fun `writeParentheses() has all params written inside writeParentheses()`() {
+        // when
+        sut.writeParentheses {
+            sut.writeParam(paramValue1)
+
+            sut.write(" ")
+
+            sut.writeParentheses {
+                sut.write(string1)
+            }
+
+            sut.write(" ")
+
+            sut.writeParam(paramValue2)
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        // then
+        assertThat(actualParam).containsAllEntriesOf(
+            mapOf(
+                "param1" to paramValue1,
+                "param2" to paramValue2,
+            ),
+        )
+        assertThat(actualQuery).isEqualTo("(:param1 ($string1) :param2)")
+    }
+
+    @Test
     fun writeParam() {
         // when
         sut.writeParam(paramValue1)
@@ -152,7 +182,7 @@ class DefaultJpqlWriterTest : WithAssertions {
                 "param1" to paramValue1,
                 "param2" to paramValue2,
                 "param3" to paramValue3,
-            )
+            ),
         )
         assertThat(actualQuery).isEqualTo(":param1:param2:param3")
     }
@@ -165,7 +195,7 @@ class DefaultJpqlWriterTest : WithAssertions {
                 "param5" to paramValue1,
                 "param3" to paramValue2,
                 "param1" to paramValue3,
-            )
+            ),
         )
 
         // when
@@ -184,7 +214,7 @@ class DefaultJpqlWriterTest : WithAssertions {
                 "param3" to paramValue2,
                 "param1" to paramValue3,
                 "param6" to paramValue4,
-            )
+            ),
         )
         assertThat(actualQuery).isEqualTo(":param5:param3:param1:param6")
     }
@@ -197,7 +227,7 @@ class DefaultJpqlWriterTest : WithAssertions {
                 "paramA" to paramValue1,
                 "paramB" to paramValue2,
                 "paramC" to null,
-            )
+            ),
         )
 
         // when
@@ -214,7 +244,7 @@ class DefaultJpqlWriterTest : WithAssertions {
                 "paramA" to paramValue1,
                 "paramB" to paramValue2,
                 "paramC" to null,
-            )
+            ),
         )
         assertThat(actualQuery).isEqualTo(":paramA:paramB:paramC")
     }
