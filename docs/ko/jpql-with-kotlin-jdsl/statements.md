@@ -79,6 +79,38 @@ Join에는 2종류가 있으며 일반 Join과 연관관계 Join이 있습니다
 두 Join은 연관관계가 있는 entity를 조인하는지 없는 entity를 조인하는지에 따라 구별됩니다.
 
 ```kotlin
+@Entity
+// ...
+class Book(
+    // ...
+
+    @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val authors: MutableSet<BookAuthor>,
+)
+
+@Entity
+// ...
+class BookAuthor(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+) {
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "isbn")
+    lateinit var book: Book
+}
+
+@Entity
+// ...
+class Author(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+
+    // ...
+)
+
 from(
     entity(Book::class),
     join(Book::authors), // Association Join

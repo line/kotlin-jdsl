@@ -73,13 +73,13 @@ div(path(Book::price), path(Book::salePrice))
 확장 함수의 경우 연산 순서가 모호해서 소괄호를 추가할 수 없습니다.
 
 ```kotlin
-// (Book.price - Book.salePrice) * (100)
+// 일반 함수: (Book.price - Book.salePrice) * (100)
 times(
     path(Book::price).minus(path(Book::salePrice)),
     BigDecimal.valueOf(100),
 )
 
-// Book.price - Book.salePrice * 100
+// 확장 함수: Book.price - Book.salePrice * 100
 path(Book::price).minus(path(Book::salePrice)).times(BigDecimal.valueOf(100))
 ```
 

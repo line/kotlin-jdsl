@@ -73,13 +73,13 @@ Calling arithmetic operators using a normal function instead of an extension fun
 In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
-// (Book.price - Book.salePrice) * (100)
+// normal function: (Book.price - Book.salePrice) * (100)
 times(
     path(Book::price).minus(path(Book::salePrice)),
     BigDecimal.valueOf(100),
 )
 
-// Book.price - Book.salePrice * 100
+// extension function: Book.price - Book.salePrice * 100
 path(Book::price).minus(path(Book::salePrice)).times(BigDecimal.valueOf(100))
 ```
 

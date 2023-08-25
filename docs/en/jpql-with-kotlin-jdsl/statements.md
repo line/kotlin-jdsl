@@ -30,7 +30,7 @@ val query = jpql {
 
 To build a select clause in the select statement, you can use `select()` and pass [`Expression`](expressions.md) to project.
 If you pass only one `Expression` to `select()`, it will infer a return type from `Expression`.
-However, if you pass more than one `Expressions`, it cannot infer the type, so you need to specify the type.
+However, if you pass more than one `Expression`, it cannot infer the type, so you need to specify the type.
 
 ```kotlin
 // It can infer the result type.
@@ -77,6 +77,38 @@ There are two types of `join()`: Join and Association Join.
 This is distinguished by whether `join()` is used between two unrelated entities or between two related entities.
 
 ```kotlin
+@Entity
+// ...
+class Book(
+    // ...
+
+    @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val authors: MutableSet<BookAuthor>,
+)
+
+@Entity
+// ...
+class BookAuthor(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+) {
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "isbn")
+    lateinit var book: Book
+}
+
+@Entity
+// ...
+class Author(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+
+    // ...
+)
+
 from(
     entity(Book::class),
     join(Book::authors), // Association Join

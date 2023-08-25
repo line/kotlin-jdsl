@@ -31,13 +31,13 @@ not(path(Employee::name).eq("Employee01"))
 확장 함수의 경우 연산 순서가 모호해서 소괄호를 추가할 수 없습니다.
 
 ```kotlin
-// (Employee.name = 'Employee01' AND Employee.nickname = 'E01') or (Employee.name = 'Employee02' AND Employee.nickname = 'E02')
+// 일반 함수: (Employee.name = 'Employee01' AND Employee.nickname = 'E01') or (Employee.name = 'Employee02' AND Employee.nickname = 'E02')
 or(
     path(Employee::name).eq("Employee01").and(path(Employee::nickname).eq("E01")),
     path(Employee::name).eq("Employee02").and(path(Employee::nickname).eq("E02")),
 )
 
-// Employee.name = 'Employee01' AND Employee.nickname = 'E01' or Employee.name = 'Employee02' AND Employee.nickname = 'E02'
+// 확장 함수: Employee.name = 'Employee01' AND Employee.nickname = 'E01' or Employee.name = 'Employee02' AND Employee.nickname = 'E02'
 path(Employee::name).eq("Employee01").and(path(Employee::nickname).eq("E01")).or(path(Employee::name).eq("Employee02").and(path(Employee::nickname).eq("E02")))
 ```
 
@@ -115,8 +115,8 @@ like 비교 연산을 만들기 위해, `like()`와 `notLike()`를 사용할 수
 path(Employee::nickname).like("E%")
 path(Employee::nickname).like("E_", escape = '_')
 
-path(Employee::nickname).isNotNull("E%")
-path(Employee::nickname).isNotNull("E_", escape = '_')
+path(Employee::nickname).notLike("E%")
+path(Employee::nickname).notLike("E_", escape = '_')
 ```
 
 ## Between

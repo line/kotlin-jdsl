@@ -31,13 +31,13 @@ Calling logical operators using a normal function instead of an extension functi
 In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
-// (Employee.name = 'Employee01' AND Employee.nickname = 'E01') or (Employee.name = 'Employee02' AND Employee.nickname = 'E02')
+// normal function: (Employee.name = 'Employee01' AND Employee.nickname = 'E01') or (Employee.name = 'Employee02' AND Employee.nickname = 'E02')
 or(
     path(Employee::name).eq("Employee01").and(path(Employee::nickname).eq("E01")),
     path(Employee::name).eq("Employee02").and(path(Employee::nickname).eq("E02")),
 )
 
-// Employee.name = 'Employee01' AND Employee.nickname = 'E01' or Employee.name = 'Employee02' AND Employee.nickname = 'E02'
+// extension function: Employee.name = 'Employee01' AND Employee.nickname = 'E01' or Employee.name = 'Employee02' AND Employee.nickname = 'E02'
 path(Employee::name).eq("Employee01").and(path(Employee::nickname).eq("E01")).or(path(Employee::name).eq("Employee02").and(path(Employee::nickname).eq("E02")))
 ```
 
@@ -115,8 +115,8 @@ To build like comparison operations, you can use `like()` and `notLike()`.
 path(Employee::nickname).like("E%")
 path(Employee::nickname).like("E_", escape = '_')
 
-path(Employee::nickname).isNotNull("E%")
-path(Employee::nickname).isNotNull("E_", escape = '_')
+path(Employee::nickname).notLike("E%")
+path(Employee::nickname).notLike("E_", escape = '_')
 ```
 
 ## Between
