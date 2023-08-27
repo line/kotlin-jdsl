@@ -164,6 +164,11 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
+    fun <T : Any, S : T> Entity<T>.treat(type: KClass<S>): Entity<S> {
+        return Entities.treat(this, type)
+    }
+
+    @SinceJdsl("3.0.0")
     fun <T : Any, S : T> Path<T>.treat(type: KClass<S>): Path<S> {
         return Paths.treat(this, type)
     }
