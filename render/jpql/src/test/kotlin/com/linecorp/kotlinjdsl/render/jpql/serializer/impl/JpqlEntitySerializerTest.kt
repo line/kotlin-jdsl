@@ -63,6 +63,7 @@ internal class JpqlEntitySerializerTest : WithAssertions {
 
         // then
         verifySequence {
+            introspector.introspect(Book::class)
             writer.write(entityDescription1.name)
             writer.write(" ")
             writer.write("AS")

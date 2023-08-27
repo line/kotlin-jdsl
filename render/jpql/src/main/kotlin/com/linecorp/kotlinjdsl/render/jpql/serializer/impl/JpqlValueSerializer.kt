@@ -20,8 +20,8 @@ class JpqlValueSerializer : JpqlSerializer<JpqlValue<*>> {
             val entity = introspector.introspect(value)
 
             writer.write(entity.name)
+        } else {
+            writer.writeParam(part.value)
         }
-
-        writer.writeParam(part.value)
     }
 }
