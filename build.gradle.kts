@@ -120,6 +120,19 @@ subprojects {
     dependencies {
         implementation(rootProject)
     }
+
+    kover {
+        excludeSourceSets {
+            names(sourceSets.testFixtures.name)
+        }
+    }
 }
 
-
+koverReport {
+    filters {
+        excludes {
+            packages("com.linecorp.kotlinjdsl.example.*")
+            packages("com.linecorp.kotlinjdsl.benchmark.*")
+        }
+    }
+}
