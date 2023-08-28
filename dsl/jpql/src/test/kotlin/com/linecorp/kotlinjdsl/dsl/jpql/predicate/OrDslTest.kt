@@ -24,13 +24,17 @@ class OrDslTest : AbstractJpqlDslTest() {
         assertThat(actual).isEqualTo(
             Predicates.or(
                 listOf(
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int1),
+                    Predicates.parentheses(
+                        Predicates.equal(
+                            Paths.path(TestTable::int1),
+                            Expressions.value(int1),
+                        ),
                     ),
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int2),
+                    Predicates.parentheses(
+                        Predicates.equal(
+                            Paths.path(TestTable::int1),
+                            Expressions.value(int2),
+                        ),
                     ),
                 ),
             ),

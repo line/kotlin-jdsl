@@ -8,6 +8,7 @@ plugins {
 dependencies {
     implementation(libs.kotlin.benchmark)
     implementation(libs.jakarta.persistence.api)
+    implementation(libs.logback)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
 }
@@ -25,7 +26,6 @@ benchmark {
             iterations = 10
             iterationTime = 1
             iterationTimeUnit = "sec"
-            param("size", 1000)
         }
     }
     targets {

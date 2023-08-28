@@ -15,7 +15,7 @@ class TypeDslTest : AbstractJpqlDslTest() {
             type(path(TestTable1::field1))
         }.toExpression()
 
-        val actual: Expression<KClass<TestField1>> = expression // for type check
+        val actual: Expression<KClass<*>> = expression // for type check
 
         // then
         val expected = Expressions.type(

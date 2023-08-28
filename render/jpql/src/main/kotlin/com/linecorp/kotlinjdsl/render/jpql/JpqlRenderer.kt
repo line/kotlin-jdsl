@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.impl.DefaultJpqlWriter
+import org.slf4j.LoggerFactory
 
 class JpqlRenderer {
     fun render(query: JpqlQuery<*>, context: RenderContext): JpqlRendered {
@@ -16,9 +17,16 @@ class JpqlRenderer {
 
         serializer.serialize(query, writer, context)
 
+        val renderedQuery = writer.getQuery()
+        val renderedParams = writer.getParams()
+
+        if (log.isDebugEnabled) {
+            log.debug("The query is rendered.\n{}\n{}", renderedQuery, renderedParams.toMap())
+        }
+
         return JpqlRendered(
-            query = writer.getQuery(),
-            params = writer.getParams(),
+            query = renderedQuery,
+            params = renderedParams,
         )
     }
 
@@ -26,3 +34,5 @@ class JpqlRenderer {
         return DefaultJpqlWriter(params)
     }
 }
+
+private val log = LoggerFactory.getLogger(JpqlRenderer::class.java)

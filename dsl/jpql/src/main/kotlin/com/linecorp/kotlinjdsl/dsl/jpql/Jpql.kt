@@ -23,6 +23,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entityable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
@@ -164,8 +165,8 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T> Entity<T>.treat(type: KClass<S>): Entity<S> {
-        return Entities.treat(this, type)
+    fun <T : Any, S : T> Entityable<T>.treat(type: KClass<S>): Entity<S> {
+        return Entities.treat(this.toEntity(), type)
     }
 
     @SinceJdsl("3.0.0")
@@ -1106,7 +1107,28 @@ open class Jpql : JpqlDsl {
      * ```
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any> type(path: Pathable<T>): Expression<KClass<T>> {
+    fun type(entity: Entityable<*>): Expression<KClass<*>> {
+        return Expressions.type(entity.toEntity())
+    }
+
+    /**
+     * Expression that returns the type of the entity.
+     *
+     * This is the same as ```TYPE(entity)``` and can be used to restrict query polymorphism.
+     *
+     * Examples:
+     * ```sql
+     * TYPE(entity) IN (Exempt, Contractor)
+     * ```
+     * ```sql
+     * CASE TYPE(entity) WHEN Exempt THEN 'Exempt'
+     *                   WHEN Contractor THEN 'Contractor'
+     *                   ELSE 'NonExempt'
+     * END
+     * ```
+     */
+    @SinceJdsl("3.0.0")
+    fun type(path: Pathable<*>): Expression<KClass<*>> {
         return Expressions.type(path.toPath())
     }
 
@@ -1149,8 +1171,8 @@ open class Jpql : JpqlDsl {
         return JoinDsl(Entities.entity(entity), JoinType.INNER)
     }
 
-    fun <T : Any> join(entity: Entity<T>): JoinOnStep<T> {
-        return JoinDsl(entity, JoinType.INNER)
+    fun <T : Any> join(entity: Entityable<T>): JoinOnStep<T> {
+        return JoinDsl(entity.toEntity(), JoinType.INNER)
     }
 
     inline fun <T : Any, reified V> join(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
@@ -1181,8 +1203,8 @@ open class Jpql : JpqlDsl {
         return JoinDsl(Entities.entity(entity), JoinType.INNER)
     }
 
-    fun <T : Any> innerJoin(entity: Entity<T>): JoinOnStep<T> {
-        return JoinDsl(entity, JoinType.INNER)
+    fun <T : Any> innerJoin(entity: Entityable<T>): JoinOnStep<T> {
+        return JoinDsl(entity.toEntity(), JoinType.INNER)
     }
 
     inline fun <T : Any, reified V> innerJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
@@ -1213,8 +1235,8 @@ open class Jpql : JpqlDsl {
         return JoinDsl(Entities.entity(entity), JoinType.LEFT)
     }
 
-    fun <T : Any> leftJoin(entity: Entity<T>): JoinOnStep<T> {
-        return JoinDsl(entity, JoinType.LEFT)
+    fun <T : Any> leftJoin(entity: Entityable<T>): JoinOnStep<T> {
+        return JoinDsl(entity.toEntity(), JoinType.LEFT)
     }
 
     inline fun <T : Any, reified V> leftJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
@@ -1245,8 +1267,8 @@ open class Jpql : JpqlDsl {
         return FetchJoinDsl(Entities.entity(entity), JoinType.INNER)
     }
 
-    fun <T : Any> fetchJoin(entity: Entity<T>): JoinOnStep<T> {
-        return FetchJoinDsl(entity, JoinType.INNER)
+    fun <T : Any> fetchJoin(entity: Entityable<T>): JoinOnStep<T> {
+        return FetchJoinDsl(entity.toEntity(), JoinType.INNER)
     }
 
     inline fun <T : Any, reified V> fetchJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
@@ -1277,8 +1299,8 @@ open class Jpql : JpqlDsl {
         return FetchJoinDsl(Entities.entity(entity), JoinType.INNER)
     }
 
-    fun <T : Any> innerFetchJoin(entity: Entity<T>): JoinOnStep<T> {
-        return FetchJoinDsl(entity, JoinType.INNER)
+    fun <T : Any> innerFetchJoin(entity: Entityable<T>): JoinOnStep<T> {
+        return FetchJoinDsl(entity.toEntity(), JoinType.INNER)
     }
 
     inline fun <T : Any, reified V> innerFetchJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
@@ -1309,8 +1331,8 @@ open class Jpql : JpqlDsl {
         return FetchJoinDsl(Entities.entity(entity), JoinType.LEFT)
     }
 
-    fun <T : Any> leftFetchJoin(entity: Entity<T>): JoinOnStep<T> {
-        return FetchJoinDsl(entity, JoinType.LEFT)
+    fun <T : Any> leftFetchJoin(entity: Entityable<T>): JoinOnStep<T> {
+        return FetchJoinDsl(entity.toEntity(), JoinType.LEFT)
     }
 
     inline fun <T : Any, reified V> leftFetchJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
@@ -1354,7 +1376,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun and(vararg predicates: Predicatable?): Predicate {
-        return Predicates.and(predicates.mapNotNull { it?.toPredicate() })
+        return Predicates.and(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) })
     }
 
     @SinceJdsl("3.0.0")
@@ -1369,7 +1391,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun or(vararg predicates: Predicatable?): Predicate {
-        return Predicates.or(predicates.mapNotNull { it?.toPredicate() })
+        return Predicates.or(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) })
     }
 
     @SinceJdsl("3.0.0")
@@ -2039,12 +2061,12 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> update(entity: Entity<T>): UpdateQuerySetFirstStep<T> {
-        return UpdateQuerySetStepFirstDsl(entity)
+    fun <T : Any> update(entity: Entityable<T>): UpdateQuerySetFirstStep<T> {
+        return UpdateQuerySetStepFirstDsl(entity.toEntity())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> deleteFrom(entity: Entity<T>): DeleteQueryWhereStep<T> {
-        return DeleteQueryDsl(entity)
+    fun <T : Any> deleteFrom(entity: Entityable<T>): DeleteQueryWhereStep<T> {
+        return DeleteQueryDsl(entity.toEntity())
     }
 }

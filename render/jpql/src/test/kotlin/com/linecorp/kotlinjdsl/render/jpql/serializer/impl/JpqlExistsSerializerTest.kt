@@ -47,7 +47,9 @@ class JpqlExistsSerializerTest : WithAssertions {
     @Test
     fun serialize() {
         // given
-        val part = Predicates.exists(subquery1)
+        val part = Predicates.exists(
+            subquery1,
+        )
         val context = TestRenderContext(serializer)
 
         // when

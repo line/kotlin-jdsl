@@ -27,4 +27,7 @@ class PartTimeEmployee(
     phone = phone,
     address = address,
     departments = departments,
-)
+) {
+    override fun toString(): String = "PartTimeEmployee(weeklySalary=$weeklySalary)"
+}
+

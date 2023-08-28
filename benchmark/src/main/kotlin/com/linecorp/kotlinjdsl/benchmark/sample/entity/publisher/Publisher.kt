@@ -18,4 +18,6 @@ class Publisher(
 ) {
     override fun equals(other: Any?): Boolean = Objects.equals(publisherId, (other as? Publisher)?.publisherId)
     override fun hashCode(): Int = Objects.hashCode(publisherId)
+
+    override fun toString(): String = "Publisher(publisherId=$publisherId)"
 }

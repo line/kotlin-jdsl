@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.linecorp.kotlinjdsl.benchmark.render.jpql.introspector
+package com.linecorp.kotlinjdsl.benchmark.render.jpql
 
 import com.linecorp.kotlinjdsl.benchmark.sample.query.Queries
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
@@ -20,7 +20,7 @@ class JpqlRenderBenchmark {
 
     private lateinit var query: JpqlQuery<*>
 
-    @Param("0", "1", "2", "3", "4")
+    @Param("0", "1", "2", "3", "4", "5")
     private var index = 0
 
     @Setup(Level.Trial)

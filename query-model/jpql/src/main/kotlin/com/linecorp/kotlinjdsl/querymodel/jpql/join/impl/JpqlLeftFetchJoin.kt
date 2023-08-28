@@ -9,7 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 @Internal
 data class JpqlLeftFetchJoin<T : Any> internal constructor(
     val entity: Entity<T>,
-    val on: Predicate?,
+    val on: Predicate,
 ) : Join {
     override val joinType: JoinType = JoinType.LEFT
     override val fetch: Boolean = true

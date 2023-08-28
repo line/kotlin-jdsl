@@ -26,6 +26,9 @@ class EmployeeDepartment(
     override fun hashCode(): Int =
         Objects.hashCode(employeeDepartmentId)
 
+    override fun toString(): String =
+        "EmployeeDepartment(employeeDepartmentId=$employeeDepartmentId)"
+
     @CompositeId
     data class EmployeeDepartmentId(
         val employee: Long,
