@@ -173,48 +173,208 @@ open class Jpql : JpqlDsl {
         return Paths.treat(this, type)
     }
 
+    /**
+     * Expression that returns the plus of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) + (value2)```.
+     */
+    @JvmName("plusWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> plus(value1: Expressionable<@Exact T>, value2: S): Expression<T> {
+        return Expressions.plus(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(Expressions.value(value2)),
+        )
+    }
+
+    /**
+     * Expression that returns the plus of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) + (value2)```.
+     */
+    @JvmName("plusWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T> plus(value1: Expressionable<@Exact T>, value2: Expressionable<S>): Expression<T> {
+        return Expressions.plus(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(value2.toExpression()),
+        )
+    }
+
+    /**
+     * Expression that returns the plus of [this] and [plus].
+     *
+     * This is the same as ```value1 + value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T?> Expressionable<@Exact T>.plus(value: S): Expression<T> {
         return Expressions.plus(this.toExpression(), Expressions.value(value))
     }
 
+    /**
+     * Expression that returns the plus of [this] and [plus].
+     *
+     * This is the same as ```value1 + value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.plus(value: Expressionable<S>): Expression<T> {
         return Expressions.plus(this.toExpression(), value.toExpression())
     }
 
+    /**
+     * Expression that returns the minus of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) - (value2)```.
+     */
+    @JvmName("minusWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> minus(value1: Expressionable<@Exact T>, value2: S): Expression<T> {
+        return Expressions.minus(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(Expressions.value(value2)),
+        )
+    }
+
+    /**
+     * Expression that returns the minus of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) - (value2)```.
+     */
+    @JvmName("minusWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T> minus(value1: Expressionable<@Exact T>, value2: Expressionable<S>): Expression<T> {
+        return Expressions.minus(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(value2.toExpression()),
+        )
+    }
+
+    /**
+     * Expression that returns the minus of [this] and [plus].
+     *
+     * This is the same as ```value1 - value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T?> Expressionable<@Exact T>.minus(value: S): Expression<T> {
         return Expressions.minus(this.toExpression(), Expressions.value(value))
     }
 
+    /**
+     * Expression that returns the minus of [this] and [plus].
+     *
+     * This is the same as ```value1 - value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.minus(value: Expressionable<S>): Expression<T> {
         return Expressions.minus(this.toExpression(), value.toExpression())
     }
 
+    /**
+     * Expression that returns the times of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) * (value2)```.
+     */
+    @JvmName("timesWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> times(value1: Expressionable<@Exact T>, value2: S): Expression<T> {
+        return Expressions.times(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(Expressions.value(value2)),
+        )
+    }
+
+    /**
+     * Expression that returns the times of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) * (value2)```.
+     */
+    @JvmName("timesWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T> times(value1: Expressionable<@Exact T>, value2: Expressionable<S>): Expression<T> {
+        return Expressions.times(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(value2.toExpression()),
+        )
+    }
+
+    /**
+     * Expression that returns the times of [this] and [plus].
+     *
+     * This is the same as ```value1 * value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T?> Expressionable<@Exact T>.times(value: S): Expression<T> {
         return Expressions.times(this.toExpression(), Expressions.value(value))
     }
 
+    /**
+     * Expression that returns the times of [this] and [plus].
+     *
+     * This is the same as ```value1 * value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.times(value: Expressionable<S>): Expression<T> {
         return Expressions.times(this.toExpression(), value.toExpression())
     }
 
+    /**
+     * Expression that returns the divide of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) / (value2)```.
+     */
+    @JvmName("divWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> div(value1: Expressionable<@Exact T>, value2: S): Expression<T> {
+        return Expressions.div(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(Expressions.value(value2)),
+        )
+    }
+
+    /**
+     * Expression that returns the divide of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) / (value2)```.
+     */
+    @JvmName("divWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T> div(value1: Expressionable<@Exact T>, value2: Expressionable<S>): Expression<T> {
+        return Expressions.div(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(value2.toExpression()),
+        )
+    }
+
+    /**
+     * Expression that returns the divide of [this] and [plus].
+     *
+     * This is the same as ```value1 / value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T?> Expressionable<@Exact T>.div(value: S): Expression<T> {
         return Expressions.div(this.toExpression(), Expressions.value(value))
     }
 
+    /**
+     * Expression that returns the divide of [this] and [plus].
+     *
+     * This is the same as ```value1 / value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.div(value: Expressionable<S>): Expression<T> {
         return Expressions.div(this.toExpression(), value.toExpression())
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expr].
+     * Expression that returns the count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
@@ -224,7 +384,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expr].
+     * Expression that returns the count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
@@ -234,7 +394,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expr].
+     * Expression that returns the count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
@@ -244,7 +404,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expr].
+     * Expression that returns the count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
@@ -254,7 +414,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expr].
+     * Expression that returns the count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
@@ -264,7 +424,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expr].
+     * Expression that returns the count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
@@ -849,6 +1009,9 @@ open class Jpql : JpqlDsl {
         return sum(distinct = true, expr)
     }
 
+    /**
+     * Expression that return the object specified by [type].
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> new(type: KClass<T>, vararg args: Expressionable<*>): Expression<T> {
         return Expressions.new(type, args.map { it.toExpression() })
@@ -909,7 +1072,7 @@ open class Jpql : JpqlDsl {
     /**
      * Expression that returns null if left = right is true, otherwise returns left.
      *
-     * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END. ```
+     * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END```.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, S : T?> nullIf(value: Expressionable<@Exact T>, compareValue: S): Expression<T> {
@@ -919,7 +1082,7 @@ open class Jpql : JpqlDsl {
     /**
      * Expression that returns null if left = right is true, otherwise returns left.
      *
-     * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END. ```
+     * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END```.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> nullIf(value: Expressionable<@Exact T>, compareValue: Expressionable<T>): Expression<T> {
