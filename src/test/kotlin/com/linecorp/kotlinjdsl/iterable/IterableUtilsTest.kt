@@ -18,7 +18,7 @@ class IterableUtilsTest : WithAssertions {
         assertThat(IterableUtils.isNotEmpty(listOf<Int>())).isFalse
         assertThat(IterableUtils.isNotEmpty(Iterable { iterator<Int> { } })).isFalse
 
-        assertThat(IterableUtils.isNotEmpty(listOf(1))).isFalse
-        assertThat(IterableUtils.isNotEmpty(Iterable { iterator { yield(1) } })).isFalse
+        assertThat(IterableUtils.isNotEmpty(listOf(1))).isTrue
+        assertThat(IterableUtils.isNotEmpty(Iterable { iterator { yield(1) } })).isTrue
     }
 }
