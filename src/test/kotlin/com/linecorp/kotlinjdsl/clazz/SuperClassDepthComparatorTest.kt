@@ -1,6 +1,5 @@
-package com.linecorp.kotlinjdsl
+package com.linecorp.kotlinjdsl.clazz
 
-import com.linecorp.kotlinjdsl.clazz.SuperClassDepthComparator
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
