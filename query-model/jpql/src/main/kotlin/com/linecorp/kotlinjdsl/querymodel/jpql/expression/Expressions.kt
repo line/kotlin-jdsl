@@ -166,7 +166,7 @@ object Expressions {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> case(
+    fun <T : Any> caseWhen(
         whens: Map<Predicate, Expression<T>>,
         `else`: Expression<T>? = null,
     ): Expression<T> {

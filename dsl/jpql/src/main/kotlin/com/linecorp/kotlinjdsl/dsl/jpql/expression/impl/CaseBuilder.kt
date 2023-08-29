@@ -38,7 +38,7 @@ internal data class CaseBuilder<T : Any>(
     }
 
     fun build(): Expression<T> {
-        return Expressions.case(
+        return Expressions.caseWhen(
             whens = whens,
             `else` = `else`,
         )

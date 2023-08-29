@@ -1,17 +1,21 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class CountDslTest : AbstractJpqlDslTest() {
+class CountDslTest : WithAssertions {
+    private val expression1 = Paths.path(Book::salePrice)
+
     @Test
-    fun `count int property`() {
+    fun `count() with a property`() {
         // when
-        val expression = testJpql {
-            count(TestTable1::int1)
+        val expression = queryPart {
+            count(Book::price)
         }.toExpression()
 
         val actual: Expression<Long> = expression // for type check
@@ -19,35 +23,17 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.count(
             distinct = false,
-            Paths.path(TestTable1::int1),
+            expr = Paths.path(Book::price),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `countDistinct int property`() {
+    fun `count() with a expression`() {
         // when
-        val expression = testJpql {
-            countDistinct(TestTable1::int1)
-        }.toExpression()
-
-        val actual: Expression<Long> = expression // for type check
-
-        // then
-        val expected = Expressions.count(
-            distinct = true,
-            Paths.path(TestTable1::int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `count int expression`() {
-        // when
-        val expression = testJpql {
-            count(path(TestTable1::int1))
+        val expression = queryPart {
+            count(expression1)
         }.toExpression()
 
         val actual: Expression<Long> = expression // for type check
@@ -55,17 +41,17 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.count(
             distinct = false,
-            Paths.path(TestTable1::int1),
+            expr = expression1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `countDistinct int expression`() {
+    fun `countDistinct() with a property`() {
         // when
-        val expression = testJpql {
-            countDistinct(path(TestTable1::int1))
+        val expression = queryPart {
+            countDistinct(Book::price)
         }.toExpression()
 
         val actual: Expression<Long> = expression // for type check
@@ -73,13 +59,27 @@ class CountDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.count(
             distinct = true,
-            Paths.path(TestTable1::int1),
+            expr = Paths.path(Book::price),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
-    private class TestTable1 {
-        val int1: Int = 1
+    @Test
+    fun `countDistinct() with a expression`() {
+        // when
+        val expression = queryPart {
+            countDistinct(expression1)
+        }.toExpression()
+
+        val actual: Expression<Long> = expression // for type check
+
+        // then
+        val expected = Expressions.count(
+            distinct = true,
+            expr = expression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
     }
 }

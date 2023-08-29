@@ -48,7 +48,7 @@ class JpqlCaseSerializerTest : WithAssertions {
             predicate2 to expression2,
         )
 
-        val part = Expressions.case(
+        val part = Expressions.caseWhen(
             whens = predicateAndExpressions,
         )
         val context = TestRenderContext(serializer)
@@ -88,7 +88,7 @@ class JpqlCaseSerializerTest : WithAssertions {
             predicate2 to expression2,
         )
 
-        val part = Expressions.case(
+        val part = Expressions.caseWhen(
             whens = predicateAndExpressions,
             `else` = expression3,
         )

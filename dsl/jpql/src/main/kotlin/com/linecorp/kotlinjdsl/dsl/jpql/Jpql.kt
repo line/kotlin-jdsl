@@ -380,38 +380,8 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, it returns 0.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> count(distinct: Boolean, expr: KProperty1<T, @Exact V>): Expression<Long> {
-        return Expressions.count(distinct, Paths.path(expr))
-    }
-
-    /**
-     * Expression that returns the count of the number of non-null values of [expr].
-     *
-     * If there are no matching rows, it returns 0.
-     */
-    @SinceJdsl("3.0.0")
     fun <T : Any, V> count(expr: KProperty1<T, @Exact V>): Expression<Long> {
-        return count(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the count of the number of non-null values of [expr].
-     *
-     * If there are no matching rows, it returns 0.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V> countDistinct(expr: KProperty1<T, @Exact V>): Expression<Long> {
-        return count(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the count of the number of non-null values of [expr].
-     *
-     * If there are no matching rows, it returns 0.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any> count(distinct: Boolean, expr: Expressionable<T>): Expression<Long> {
-        return Expressions.count(distinct, expr.toExpression())
+        return Expressions.count(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -421,7 +391,17 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> count(expr: Expressionable<T>): Expression<Long> {
-        return count(distinct = false, expr)
+        return Expressions.count(distinct = false, expr.toExpression())
+    }
+
+    /**
+     * Expression that returns the count of the number of non-null values of [expr].
+     *
+     * If there are no matching rows, it returns 0.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, V> countDistinct(expr: KProperty1<T, @Exact V>): Expression<Long> {
+        return Expressions.count(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -431,7 +411,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> countDistinct(expr: Expressionable<T>): Expression<Long> {
-        return count(distinct = true, expr)
+        return Expressions.count(distinct = true, expr.toExpression())
     }
 
     /**
@@ -560,38 +540,8 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any, V : Number?> avg(distinct: Boolean, expr: KProperty1<T, @Exact V>): Expression<Double> {
-        return Expressions.avg(distinct, Paths.path(expr))
-    }
-
-    /**
-     * Expression that returns the average value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
     fun <T : Any, V : Number?> avg(expr: KProperty1<T, @Exact V>): Expression<Double> {
-        return avg(distinct = false, Paths.path(expr))
-    }
-
-    /**
-     * Expression that returns the average value of [expr]
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Number?> avgDistinct(expr: KProperty1<T, @Exact V>): Expression<Double> {
-        return avg(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the average value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Number> avg(distinct: Boolean, expr: Expressionable<@Exact T>): Expression<Double> {
-        return Expressions.avg(distinct, expr.toExpression())
+        return Expressions.avg(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -601,7 +551,17 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Number> avg(expr: Expressionable<@Exact T>): Expression<Double> {
-        return avg(distinct = false, expr)
+        return Expressions.avg(distinct = false, expr.toExpression())
+    }
+
+    /**
+     * Expression that returns the average value of [expr]
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, V : Number?> avgDistinct(expr: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.avg(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -611,7 +571,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Number> avgDistinct(expr: Expressionable<@Exact T>): Expression<Double> {
-        return avg(distinct = true, expr)
+        return Expressions.avg(distinct = true, expr.toExpression())
     }
 
     /**
@@ -1014,6 +974,14 @@ open class Jpql : JpqlDsl {
      * Expression that return the object specified by [type].
      */
     @SinceJdsl("3.0.0")
+    fun <T : Any> new(type: KClass<T>, vararg args: Any): Expression<T> {
+        return Expressions.new(type, args.map { Expressions.value(it) })
+    }
+
+    /**
+     * Expression that return the object specified by [type].
+     */
+    @SinceJdsl("3.0.0")
     fun <T : Any> new(type: KClass<T>, vararg args: Expressionable<*>): Expression<T> {
         return Expressions.new(type, args.map { it.toExpression() })
     }
@@ -1032,7 +1000,7 @@ open class Jpql : JpqlDsl {
      * If no comparison is true, the result after ELSE is returned, or NULL if there is no ELSE part.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any> case(value: Pathable<T>): CaseValueWhenFirstStep<T> {
+    fun <T : Any> caseValue(value: Pathable<T>): CaseValueWhenFirstStep<T> {
         return CaseValueWhenFirstStepDsl(value.toPath())
     }
 
@@ -1133,8 +1101,33 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
+    fun <T : Any> function(type: KClass<T>, name: String, vararg args: Any): Expression<T> {
+        return Expressions.function(type, name, args.map { Expressions.value(it) })
+    }
+
+    @SinceJdsl("3.0.0")
     fun <T : Any> function(type: KClass<T>, name: String, vararg args: Expressionable<*>): Expression<T> {
         return Expressions.function(type, name, args.map { it.toExpression() })
+    }
+
+    /**
+     * Expression that renders the user-defined string to JPQL.
+     *
+     * The user-defined string can have PlaceHolders.
+     * PlaceHolders in string are replaced with Expression in args, matching with index.
+     *
+     * ```
+     * PlaceHolder: { ArgumentIndex }
+     * ```
+     *
+     * Examples:
+     * ```
+     * customExpression(String::class, "CAST({0} AS VARCHAR)", 100)
+     * ```
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any> customExpression(type: KClass<T>, template: String, vararg args: Any): Expression<T> {
+        return Expressions.customExpression(type, template, args.map { Expressions.value(it) })
     }
 
     /**
