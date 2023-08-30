@@ -1342,6 +1342,14 @@ open class Jpql : JpqlDsl {
         }
     }
 
+    /**
+     * Predicate that tests if the [this] is less than the [value].
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThan(value: Expressionable<T>): Predicate {
+        return lessThan(value, inclusive = false)
+    }
+
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>> Expressionable<@Exact T>.lessThanAll(subquery: Subquery<T>, inclusive: Boolean): Predicate {
         return if (inclusive) {
@@ -1358,14 +1366,6 @@ open class Jpql : JpqlDsl {
         } else {
             Predicates.lessThanAny(this.toExpression(), subquery)
         }
-    }
-
-    /**
-     * Predicate that tests if the [this] is less than the [value].
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThan(value: Expressionable<T>): Predicate {
-        return lessThan(value, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")

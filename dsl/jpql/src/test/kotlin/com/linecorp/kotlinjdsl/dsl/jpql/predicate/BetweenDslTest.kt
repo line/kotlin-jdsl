@@ -1,361 +1,97 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.predicate
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
-class BetweenDslTest : AbstractJpqlDslTest() {
-    private val int1: Int = 1
-    private val int2: Int = 1
+class BetweenDslTest : WithAssertions {
+    private val expression1 = Paths.path(Book::price)
+
+    private val bigDecimal1 = BigDecimal.valueOf(100)
+    private val bigDecimal2 = BigDecimal.valueOf(100)
+
+    private val bigDecimalExpression1 = Expressions.value(BigDecimal.valueOf(100))
+    private val bigDecimalExpression2 = Expressions.value(BigDecimal.valueOf(100))
 
     @Test
-    fun `expression between value and value`() {
+    fun `between() with bigDecimals`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).between(int1, int2)
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.between(bigDecimal1, bigDecimal2)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
-            Expressions.value(int2),
+        val excepted = Predicates.between(
+            value = expression1,
+            min = Expressions.value(bigDecimal1),
+            max = Expressions.value(bigDecimal2),
         )
 
-        assertThat(actual).isEqualTo(expected)
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression between expression and expression`() {
+    fun `between() with bigDecimal expressions`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).between(path(TestTable::int2), path(TestTable::int3))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.between(bigDecimalExpression1, bigDecimalExpression2)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
-            Paths.path(TestTable::int3),
+        val excepted = Predicates.between(
+            value = expression1,
+            min = bigDecimalExpression1,
+            max = bigDecimalExpression2,
         )
 
-        assertThat(actual).isEqualTo(expected)
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression between nullable expression and expression`() {
+    fun `notBetween() with bigDecimals`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).between(path(TestTable::nullableInt2), path(TestTable::int3))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.notBetween(bigDecimal1, bigDecimal2)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt2),
-            Paths.path(TestTable::int3),
+        val excepted = Predicates.notBetween(
+            value = expression1,
+            min = Expressions.value(bigDecimal1),
+            max = Expressions.value(bigDecimal2),
         )
 
-        assertThat(actual).isEqualTo(expected)
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression between expression and nullable expression`() {
+    fun `notBetween() with bigDecimal expressions`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).between(path(TestTable::int2), path(TestTable::nullableInt3))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.notBetween(bigDecimalExpression1, bigDecimalExpression2)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
-            Paths.path(TestTable::nullableInt3),
+        val excepted = Predicates.notBetween(
+            value = expression1,
+            min = bigDecimalExpression1,
+            max = bigDecimalExpression2,
         )
 
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression between nullable expression and nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).between(path(TestTable::nullableInt2), path(TestTable::nullableInt3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt2),
-            Paths.path(TestTable::nullableInt3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression between value and value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).between(int1, int2)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int1),
-            Expressions.value(int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression between expression and expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).between(path(TestTable::int2), path(TestTable::int3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-            Paths.path(TestTable::int3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression between nullable expression and expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).between(path(TestTable::nullableInt2), path(TestTable::int3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-            Paths.path(TestTable::int3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression between expression and nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).between(path(TestTable::int2), path(TestTable::nullableInt3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-            Paths.path(TestTable::nullableInt3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression between nullable expression and nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).between(path(TestTable::nullableInt2), path(TestTable::nullableInt3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.between(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-            Paths.path(TestTable::nullableInt3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression notBetween value and value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).notBetween(int1, int2)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
-            Expressions.value(int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression notBetween expression and expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).notBetween(path(TestTable::int2), path(TestTable::int3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
-            Paths.path(TestTable::int3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression notBetween nullable expression and expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).notBetween(path(TestTable::nullableInt2), path(TestTable::int3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt2),
-            Paths.path(TestTable::int3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression notBetween expression and nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).notBetween(path(TestTable::int2), path(TestTable::nullableInt3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
-            Paths.path(TestTable::nullableInt3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression notBetween nullable expression and nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).notBetween(path(TestTable::nullableInt2), path(TestTable::nullableInt3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt2),
-            Paths.path(TestTable::nullableInt3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression notBetween value and value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).notBetween(int1, int2)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int1),
-            Expressions.value(int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression notBetween expression and expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).notBetween(path(TestTable::int2), path(TestTable::int3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-            Paths.path(TestTable::int3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression notBetween nullable expression and expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).notBetween(path(TestTable::nullableInt2), path(TestTable::int3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-            Paths.path(TestTable::int3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression notBetween expression and nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).notBetween(path(TestTable::int2), path(TestTable::nullableInt3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-            Paths.path(TestTable::nullableInt3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression notBetween nullable expression and nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).notBetween(path(TestTable::nullableInt2), path(TestTable::nullableInt3))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.notBetween(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-            Paths.path(TestTable::nullableInt3),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    private class TestTable {
-        val int1: Int = 1
-        val int2: Int = 2
-        val int3: Int = 3
-        val nullableInt1: Int? = null
-        val nullableInt2: Int? = null
-        val nullableInt3: Int? = null
+        assertThat(actual).isEqualTo(excepted)
     }
 }

@@ -1,19 +1,20 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.path
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
 import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.BookPublisher
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class PathDslTest : AbstractJpqlDslTest() {
+class PathDslTest : WithAssertions {
     private val path1 = Paths.path(Book::publisher)
 
     @Test
     fun `path() with a property`() {
         // when
-        val path = testJpql {
+        val path = queryPart {
             path(Book::publisher)
         }
 
@@ -30,7 +31,7 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `path() with a path and a property`() {
         // when
-        val path = testJpql {
+        val path = queryPart {
             path1.path(BookPublisher::publisherId)
         }
 
@@ -48,7 +49,7 @@ class PathDslTest : AbstractJpqlDslTest() {
     @Test
     fun `invoke() with a path and a property`() {
         // when
-        val path = testJpql {
+        val path = queryPart {
             path1(BookPublisher::publisherId)
         }
 

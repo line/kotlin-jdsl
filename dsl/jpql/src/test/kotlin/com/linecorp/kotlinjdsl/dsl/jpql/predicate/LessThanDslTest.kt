@@ -1,787 +1,285 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.predicate
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
-class LessThanDslTest : AbstractJpqlDslTest() {
-    private val int1: Int = 1
-    private val int2: Int = 1
+class LessThanDslTest : WithAssertions {
+    private val expression1 = Paths.path(Book::price)
+
+    private val bigDecimal1 = BigDecimal.valueOf(100)
+
+    private val bigDecimalExpression1 = Expressions.value(bigDecimal1)
+
+    private val subquery1 = Expressions.subquery(
+        Selects.select(
+            returnType = BigDecimal::class,
+            distinct = false,
+            select = listOf(Paths.path(Book::price)),
+            from = listOf(Entities.entity(Book::class)),
+        ),
+    )
 
     @Test
-    fun `expression lessThan value`() {
+    fun `lessThan() with a bigDecimal`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThan(int1)
+        val actual = queryPart {
+            expression1.lessThan(bigDecimal1)
         }.toPredicate()
 
         // then
         val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
+            expression1,
+            Expressions.value(bigDecimal1),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `expression lessThan value inclusive false`() {
+    fun `lessThan() with a bigDecimal expression`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThan(int1, inclusive = false)
+        val actual = queryPart {
+            expression1.lessThan(bigDecimalExpression1)
         }.toPredicate()
 
         // then
         val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
+            expression1,
+            bigDecimalExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `expression lessThan value inclusive true`() {
+    fun `lessThan() with a bigDecimal and the inclusive`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThan(int1, inclusive = true)
+        val actual = queryPart {
+            expression1.lessThan(bigDecimal1, inclusive = true)
         }.toPredicate()
 
         // then
         val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
+            expression1,
+            Expressions.value(bigDecimal1),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `expression lessThan expression`() {
+    fun `lessThan() with a bigDecimal expression and the inclusive`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThan(path(TestTable::int2))
+        val actual = queryPart {
+            expression1.lessThan(bigDecimalExpression1, inclusive = true)
+        }.toPredicate()
+
+        // then
+        val expected = Predicates.lessThanOrEqualTo(
+            expression1,
+            bigDecimalExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun lessThanAll() {
+        // when
+        val actual = queryPart {
+            expression1.lessThanAll(subquery1)
+        }.toPredicate()
+
+        // then
+        val expected = Predicates.lessThanAll(
+            expression1,
+            subquery1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `lessThanAll() with the inclusive`() {
+        // when
+        val actual = queryPart {
+            expression1.lessThanAll(subquery1, inclusive = true)
+        }.toPredicate()
+
+        // then
+        val expected = Predicates.lessThanOrEqualToAll(
+            expression1,
+            subquery1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun lessThanAny() {
+        // when
+        val actual = queryPart {
+            expression1.lessThanAny(subquery1)
+        }.toPredicate()
+
+        // then
+        val expected = Predicates.lessThanAny(
+            expression1,
+            subquery1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `lessThanAny() with the inclusive`() {
+        // when
+        val actual = queryPart {
+            expression1.lessThanAny(subquery1, inclusive = true)
+        }.toPredicate()
+
+        // then
+        val expected = Predicates.lessThanOrEqualToAny(
+            expression1,
+            subquery1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `lt() with a bigDecimal`() {
+        // when
+        val actual = queryPart {
+            expression1.lt(bigDecimal1)
         }.toPredicate()
 
         // then
         val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
+            expression1,
+            Expressions.value(bigDecimal1),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `expression lessThan expression inclusive false`() {
+    fun `lt() with a bigDecimal expression`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThan(path(TestTable::int2), inclusive = false)
+        val actual = queryPart {
+            expression1.lt(bigDecimalExpression1)
         }.toPredicate()
 
         // then
         val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
+            expression1,
+            bigDecimalExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `expression lessThan expression inclusive true`() {
+    fun `lt() with a bigDecimal and the inclusive`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThan(path(TestTable::int2), inclusive = true)
+        val actual = queryPart {
+            expression1.lt(bigDecimal1, inclusive = true)
         }.toPredicate()
 
         // then
         val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
+            expression1,
+            Expressions.value(bigDecimal1),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `expression lessThan nullable expression`() {
+    fun `lt() with a bigDecimal expression and the inclusive`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThan(path(TestTable::nullableInt1))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lessThan nullable expression inclusive false`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThan(path(TestTable::nullableInt1), inclusive = false)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lessThan nullable expression inclusive true`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThan(path(TestTable::nullableInt1), inclusive = true)
+        val actual = queryPart {
+            expression1.lt(bigDecimalExpression1, inclusive = true)
         }.toPredicate()
 
         // then
         val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt1),
+            expression1,
+            bigDecimalExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `nullable expression lessThan value`() {
+    fun ltAll() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThan(int1)
+        val actual = queryPart {
+            expression1.ltAll(subquery1)
         }.toPredicate()
 
         // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int1),
+        val expected = Predicates.lessThanAll(
+            expression1,
+            subquery1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `nullable expression lessThan value inclusive false`() {
+    fun `ltAll() with the inclusive`() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThan(int1, inclusive = false)
+        val actual = queryPart {
+            expression1.ltAll(subquery1, inclusive = true)
         }.toPredicate()
 
         // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int1),
+        val expected = Predicates.lessThanOrEqualToAll(
+            expression1,
+            subquery1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `nullable expression lessThan value inclusive true`() {
+    fun ltAny() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThan(int1, inclusive = true)
+        val actual = queryPart {
+            expression1.ltAny(subquery1)
         }.toPredicate()
 
         // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int2),
+        val expected = Predicates.lessThanAny(
+            expression1,
+            subquery1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `nullable expression lessThan expression`() {
+    fun `ltAny() with the inclusive`() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThan(path(TestTable::int2))
+        val actual = queryPart {
+            expression1.ltAny(subquery1, inclusive = true)
         }.toPredicate()
 
         // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
+        val expected = Predicates.lessThanOrEqualToAny(
+            expression1,
+            subquery1,
         )
 
         assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lessThan expression inclusive false`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThan(path(TestTable::int2), inclusive = false)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lessThan expression inclusive true`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThan(path(TestTable::int2), inclusive = true)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lessThan nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThan(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lessThan nullable expression inclusive false`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThan(path(TestTable::nullableInt2), inclusive = false)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lessThan nullable expression inclusive true`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThan(path(TestTable::nullableInt2), inclusive = true)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lt value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lt(int1)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lt value inclusive false`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lt(int1, inclusive = false)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lt value inclusive true`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lt(int1, inclusive = true)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lt expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lt(path(TestTable::int2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lt expression inclusive false`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lt(path(TestTable::int2), inclusive = false)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lt expression inclusive true`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lt(path(TestTable::int2), inclusive = true)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lt nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lt(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lt nullable expression inclusive false`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lt(path(TestTable::nullableInt2), inclusive = false)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lt nullable expression inclusive true`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lt(path(TestTable::nullableInt2), inclusive = true)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lt value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lt(int1)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lt value inclusive false`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lt(int1, inclusive = false)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lt value inclusive true`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lt(int1, inclusive = true)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lt expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lt(path(TestTable::int2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lt expression inclusive false`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lt(path(TestTable::int2), inclusive = false)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lt expression inclusive true`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lt(path(TestTable::int2), inclusive = true)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lt nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lt(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lt nullable expression inclusive false`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lt(path(TestTable::nullableInt2), inclusive = false)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThan(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lt nullable expression inclusive true`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lt(path(TestTable::nullableInt2), inclusive = true)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lessThanOrEqualTo value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThanOrEqualTo(int1)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lessThanOrEqualTo expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThanOrEqualTo(path(TestTable::int2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression lessThanOrEqualTo nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).lessThanOrEqualTo(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lessThanOrEqualTo value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThanOrEqualTo(int1)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lessThanOrEqualTo expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThanOrEqualTo(path(TestTable::int2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression lessThanOrEqualTo nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).lessThanOrEqualTo(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression le value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).le(int1)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression ge expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).le(path(TestTable::int2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `expression ge nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).le(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::int1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression ge value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).le(int1)
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Expressions.value(int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression ge expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).le(path(TestTable::int2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `nullable expression ge nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).le(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        val expected = Predicates.lessThanOrEqualTo(
-            Paths.path(TestTable::nullableInt1),
-            Paths.path(TestTable::nullableInt2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    private class TestTable {
-        val int1: Int = 1
-        val int2: Int = 1
-        val nullableInt1: Int? = null
-        val nullableInt2: Int? = null
     }
 }
