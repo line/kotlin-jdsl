@@ -52,7 +52,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
         // when
         val delete = queryPart {
             deleteFrom(
-                entity(Book::class),
+                entity1,
             ).whereAnd(
                 predicate1,
                 null,
@@ -64,7 +64,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = Deletes.delete(
-            entity = Entities.entity(Book::class),
+            entity = entity1,
             where = Predicates.and(
                 listOf(
                     Predicates.parentheses(predicate1),
@@ -81,7 +81,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
         // when
         val delete = queryPart {
             deleteFrom(
-                entity(Book::class),
+                entity1,
             ).whereOr(
                 predicate1,
                 null,
@@ -93,7 +93,7 @@ class WhereDslTest : AbstractJpqlDslTest() {
 
         // then
         val expected = Deletes.delete(
-            entity = Entities.entity(Book::class),
+            entity = entity1,
             where = Predicates.or(
                 listOf(
                     Predicates.parentheses(predicate1),
