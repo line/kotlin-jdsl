@@ -1,589 +1,294 @@
-//package com.linecorp.kotlinjdsl.dsl.jpql.select
-//
-//import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-//import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SelectQueryFromStepDsl
-//import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
-//import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
-//import org.junit.jupiter.api.Test
-//
-//class SelectDslTest : AbstractJpqlDslTest() {
-//    @Test
-//    fun `select expression`() {
-//        // when
-//        val select = testJpql {
-//            select(path(TestTable::int1))
-//        }
-//
-//        val actual: SelectQueryFromStep<Int> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Int::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//            ),
-//            false,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            select(path(TestTable::nullableInt1))
-//        }
-//
-//        val actual: SelectQueryFromStep<Int?> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int?>(
-//            Int::class,
-//            listOf(
-//                Paths.path(TestTable::nullableInt1),
-//            ),
-//            false,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select expression distinct true`() {
-//        // when
-//        val select = testJpql {
-//            select(path(TestTable::int1), distinct = true)
-//        }
-//
-//        val actual: SelectQueryFromStep<Int> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Int::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select nullable expression distinct true`() {
-//        // when
-//        val select = testJpql {
-//            select(path(TestTable::nullableInt1), distinct = true)
-//        }
-//
-//        val actual: SelectQueryFromStep<Int?> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int?>(
-//            Int::class,
-//            listOf(
-//                Paths.path(TestTable::nullableInt1),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type expression expression`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(path(TestTable::int1), path(TestTable::int2))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::int2),
-//            ),
-//            false,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type expression nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(path(TestTable::int1), path(TestTable::nullableInt1))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::nullableInt1),
-//            ),
-//            false,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type nullable expression nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(path(TestTable::nullableInt1), path(TestTable::nullableInt2))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::nullableInt1),
-//                Paths.path(TestTable::nullableInt2),
-//            ),
-//            false,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type collection expression expression`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(listOf(path(TestTable::int1), path(TestTable::int2)))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::int2),
-//            ),
-//            false,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type collection expression nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(listOf(path(TestTable::int1), path(TestTable::nullableInt1)))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::nullableInt1),
-//            ),
-//            false,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type collection nullable expression nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(listOf(path(TestTable::nullableInt1), path(TestTable::nullableInt2)))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::nullableInt1),
-//                Paths.path(TestTable::nullableInt2),
-//            ),
-//            false,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type expression expression distinct true`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(path(TestTable::int1), path(TestTable::int2), distinct = true)
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::int2),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type expression nullable expression distinct true`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(path(TestTable::int1), path(TestTable::nullableInt1), distinct = true)
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::nullableInt1),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type nullable expression nullable expression distinct true`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(path(TestTable::nullableInt1), path(TestTable::nullableInt2), distinct = true)
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::nullableInt1),
-//                Paths.path(TestTable::nullableInt2),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type collection expression expression distinct true`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(listOf(path(TestTable::int1), path(TestTable::int2)), distinct = true)
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::int2),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type collection expression nullable expression distinct true`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(listOf(path(TestTable::int1), path(TestTable::nullableInt1)), distinct = true)
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::nullableInt1),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `select type collection nullable expression nullable expression distinct true`() {
-//        // when
-//        val select = testJpql {
-//            select<Row>(listOf(path(TestTable::nullableInt1), path(TestTable::nullableInt2)), distinct = true)
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::nullableInt1),
-//                Paths.path(TestTable::nullableInt2),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `selectDistinct expression`() {
-//        // when
-//        val select = testJpql {
-//            selectDistinct(path(TestTable::int1))
-//        }
-//
-//        val actual: SelectQueryFromStep<Int> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Int::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `selectDistinct nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            selectDistinct(path(TestTable::nullableInt1))
-//        }
-//
-//        val actual: SelectQueryFromStep<Int?> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int?>(
-//            Int::class,
-//            listOf(
-//                Paths.path(TestTable::nullableInt1),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `selectDistinct type expression expression`() {
-//        // when
-//        val select = testJpql {
-//            selectDistinct<Row>(path(TestTable::int1), path(TestTable::int2))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::int2),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `selectDistinct type expression nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            selectDistinct<Row>(path(TestTable::int1), path(TestTable::nullableInt1))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::nullableInt1),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `selectDistinct type nullable expression nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            selectDistinct<Row>(path(TestTable::nullableInt1), path(TestTable::nullableInt2))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::nullableInt1),
-//                Paths.path(TestTable::nullableInt2),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `selectDistinct type collection expression expression`() {
-//        // when
-//        val select = testJpql {
-//            selectDistinct<Row>(listOf(path(TestTable::int1), path(TestTable::int2)))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::int2),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `selectDistinct type collection expression nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            selectDistinct<Row>(listOf(path(TestTable::int1), path(TestTable::nullableInt1)))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::int1),
-//                Paths.path(TestTable::nullableInt1),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `selectDistinct type collection nullable expression nullable expression`() {
-//        // when
-//        val select = testJpql {
-//            selectDistinct<Row>(listOf(path(TestTable::nullableInt1), path(TestTable::nullableInt2)))
-//        }
-//
-//        val actual: SelectQueryFromStep<Row> = select // for type check
-//
-//        // then
-//        val expected = SelectQueryFromStepDsl<Int>(
-//            Row::class,
-//            listOf(
-//                Paths.path(TestTable::nullableInt1),
-//                Paths.path(TestTable::nullableInt2),
-//            ),
-//            true,
-//        )
-//
-//        assertThat(actual)
-//            .isNotInstanceOf(JpqlQueryable::class.java)
-//            .isEqualTo(expected)
-//    }
-//
-//    private class TestTable {
-//        val int1: Int = 1
-//        val int2: Int = 2
-//
-//        val nullableInt1: Int? = null
-//        val nullableInt2: Int? = null
-//    }
-//
-//    private class Row
-//}
+package com.linecorp.kotlinjdsl.dsl.jpql.select
+
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
+import org.assertj.core.api.WithAssertions
+import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+
+class SelectDslTest : WithAssertions {
+    private val expression1 = Paths.path(Book::price)
+    private val expression2 = Paths.path(Book::salePrice)
+
+    private val entity1 = Entities.entity(Book::class)
+
+    private class Dto
+    private class View
+
+    @Test
+    fun `select() with an expression`() {
+        // when
+        val select = queryPart {
+            select(
+                expression1,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<BigDecimal> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = BigDecimal::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `select() with a generic type and expressions`() {
+        // when
+        val select = queryPart {
+            select<View>(
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<View> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = View::class,
+            distinct = false,
+            select = listOf(expression1, expression2),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `select() with a class and expressions`() {
+        // when
+        val select = queryPart {
+            select(
+                View::class,
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<View> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = View::class,
+            distinct = false,
+            select = listOf(expression1, expression2),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `selectDistinct() with an expression`() {
+        // when
+        val select = queryPart {
+            selectDistinct(
+                expression1,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<BigDecimal> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = BigDecimal::class,
+            distinct = true,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `selectDistinct() with a generic type and expressions`() {
+        // when
+        val select = queryPart {
+            selectDistinct<View>(
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<View> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = View::class,
+            distinct = true,
+            select = listOf(expression1, expression2),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `selectDistinct() with a class and expressions`() {
+        // when
+        val select = queryPart {
+            selectDistinct(
+                View::class,
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<View> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = View::class,
+            distinct = true,
+            select = listOf(expression1, expression2),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `selectNew() with a generic type and expressions`() {
+        // when
+        val select = queryPart {
+            selectNew<Dto>(
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<Dto> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = Dto::class,
+            distinct = false,
+            select = listOf(
+                Expressions.new(
+                    type = Dto::class,
+                    args = listOf(expression1, expression2),
+                ),
+            ),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `selectNew() with a class and expressions`() {
+        // when
+        val select = queryPart {
+            selectNew(
+                Dto::class,
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<Dto> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = Dto::class,
+            distinct = false,
+            select = listOf(
+                Expressions.new(
+                    type = Dto::class,
+                    args = listOf(expression1, expression2),
+                ),
+            ),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `selectDistinctNew() with a generic type and expressions`() {
+        // when
+        val select = queryPart {
+            selectDistinctNew<Dto>(
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<Dto> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = Dto::class,
+            distinct = true,
+            select = listOf(
+                Expressions.new(
+                    type = Dto::class,
+                    args = listOf(expression1, expression2),
+                ),
+            ),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `selectDistinctNew() with a class and expressions`() {
+        // when
+        val select = queryPart {
+            selectDistinctNew(
+                Dto::class,
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<Dto> = select // for type check
+
+        // then
+        val expected = Selects.select(
+            returnType = Dto::class,
+            distinct = true,
+            select = listOf(
+                Expressions.new(
+                    type = Dto::class,
+                    args = listOf(expression1, expression2),
+                ),
+            ),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+}
