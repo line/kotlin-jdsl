@@ -15,26 +15,12 @@ object Predicates {
 
     @SinceJdsl("3.0.0")
     fun and(predicates: Iterable<Predicate>): Predicate {
-        val unwrapped = predicates.flatMap {
-            when (it) {
-                is JpqlAnd -> it.predicates
-                else -> listOf(it)
-            }
-        }
-
-        return JpqlAnd(unwrapped)
+        return JpqlAnd(predicates)
     }
 
     @SinceJdsl("3.0.0")
     fun or(predicates: Iterable<Predicate>): Predicate {
-        val unwrapped = predicates.flatMap {
-            when (it) {
-                is JpqlOr -> it.predicates
-                else -> listOf(it)
-            }
-        }
-
-        return JpqlOr(unwrapped)
+        return JpqlOr(predicates)
     }
 
     @SinceJdsl("3.0.0")
