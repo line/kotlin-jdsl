@@ -1,197 +1,129 @@
-//package com.linecorp.kotlinjdsl.dsl.jpql.update
-//
-//import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
-//import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-//import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
-//import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
-//import com.linecorp.kotlinjdsl.querymodel.jpql.delete.Deletes
-//import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
-//import org.junit.jupiter.api.Test
-//
-//class WhereDslTest : AbstractJpqlDslTest() {
-//    private val int1: Int = 1
-//    private val int2: Int = 1
-//
-//    @Test
-//    fun `where predicate`() {
-//        // when
-//        val update = testJpql {
-//            update(
-//                entity(TestTable::class),
-//            ).set(
-//                path(TestTable::int1), int1,
-//            ).where(
-//                path(TestTable::int1).equal(int1),
-//            )
-//        }.toQuery()
-//
-//        val actual: UpdateQuery<TestTable> = update // for type check
-//
-//        // then
-//        val expected = Deletes.update(
-//            entity = Paths.entity(TestTable::class),
-//            set = listOf(
-//                Paths.pair(
-//                    Paths.path(TestTable::int1),
-//                    Expressions.value(int1),
-//                ),
-//            ),
-//            where = Predicates.equal(
-//                Paths.path(TestTable::int1),
-//                Expressions.value(int1),
-//            ),
-//        )
-//
-//        assertThat(actual).isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `where and predicate`() {
-//        // when
-//        val update1 = testJpql {
-//            update(
-//                entity(TestTable::class),
-//            ).set(
-//                path(TestTable::int1) to int1,
-//            ).whereAnd(
-//                path(TestTable::int1).equal(int1),
-//                path(TestTable::int1).equal(int2),
-//            )
-//        }.toQuery()
-//
-//        val update2 = testJpql {
-//            update(
-//                entity(TestTable::class),
-//            ).set(
-//                path(TestTable::int1) to int1,
-//            ).whereAnd(
-//                listOf(
-//                    path(TestTable::int1).equal(int1),
-//                    path(TestTable::int1).equal(int2),
-//                ),
-//            )
-//        }.toQuery()
-//
-//        val update3 = testJpql {
-//            update(
-//                entity(TestTable::class),
-//            ).set(
-//                path(TestTable::int1) to int1,
-//            ).where(
-//                and(
-//                    path(TestTable::int1).equal(int1),
-//                    path(TestTable::int1).equal(int2),
-//                ),
-//            )
-//        }.toQuery()
-//
-//        val actual1: UpdateQuery<TestTable> = update1 // for type check
-//        val actual2: UpdateQuery<TestTable> = update2 // for type check
-//        val actual3: UpdateQuery<TestTable> = update3 // for type check
-//
-//        // then
-//        val expected = Deletes.update(
-//            entity = Paths.entity(TestTable::class),
-//            set = listOf(
-//                Paths.pair(
-//                    Paths.path(TestTable::int1),
-//                    Expressions.value(int1),
-//                ),
-//            ),
-//            where = Predicates.and(
-//                listOf(
-//                    Predicates.equal(
-//                        Paths.path(TestTable::int1),
-//                        Expressions.value(int1),
-//                    ),
-//                    Predicates.equal(
-//                        Paths.path(TestTable::int1),
-//                        Expressions.value(int2),
-//                    ),
-//                ),
-//            ),
-//        )
-//
-//        assertThat(actual1).isEqualTo(expected)
-//        assertThat(actual2).isEqualTo(expected)
-//        assertThat(actual3).isEqualTo(expected)
-//    }
-//
-//    @Test
-//    fun `where or predicate`() {
-//        // when
-//        val update1 = testJpql {
-//            update(
-//                entity(TestTable::class),
-//            ).set(
-//                path(TestTable::int1) to int1,
-//            ).whereOr(
-//                path(TestTable::int1).equal(int1),
-//                path(TestTable::int1).equal(int2),
-//            )
-//        }.toQuery()
-//
-//        val actual1: UpdateQuery<TestTable> = update1 // for type check
-//
-//        val update2 = testJpql {
-//            update(
-//                entity(TestTable::class),
-//            ).set(
-//                path(TestTable::int1) to int1,
-//            ).whereOr(
-//                listOf(
-//                    path(TestTable::int1).equal(int1),
-//                    path(TestTable::int1).equal(int2),
-//                ),
-//            )
-//        }.toQuery()
-//
-//        val actual2: UpdateQuery<TestTable> = update2 // for type check
-//
-//        val update3 = testJpql {
-//            update(
-//                entity(TestTable::class),
-//            ).set(
-//                path(TestTable::int1) to int1,
-//            ).where(
-//                or(
-//                    path(TestTable::int1).equal(int1),
-//                    path(TestTable::int1).equal(int2),
-//                ),
-//            )
-//        }.toQuery()
-//
-//        val actual3: UpdateQuery<TestTable> = update3 // for type check
-//
-//        // then
-//        val expected = Deletes.update(
-//            entity = Paths.entity(TestTable::class),
-//            set = listOf(
-//                Paths.pair(
-//                    Paths.path(TestTable::int1),
-//                    Expressions.value(int1),
-//                ),
-//            ),
-//            where = Predicates.or(
-//                listOf(
-//                    Predicates.equal(
-//                        Paths.path(TestTable::int1),
-//                        Expressions.value(int1),
-//                    ),
-//                    Predicates.equal(
-//                        Paths.path(TestTable::int1),
-//                        Expressions.value(int2),
-//                    ),
-//                ),
-//            ),
-//        )
-//
-//        assertThat(actual1).isEqualTo(expected)
-//        assertThat(actual2).isEqualTo(expected)
-//        assertThat(actual3).isEqualTo(expected)
-//    }
-//
-//    private class TestTable {
-//        val int1: Int = 1
-//    }
-//}
+package com.linecorp.kotlinjdsl.dsl.jpql.update
+
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.Updates
+import org.assertj.core.api.WithAssertions
+import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+
+class WhereDslTest : WithAssertions {
+    private val entity1 = Entities.entity(Book::class)
+
+    private val path1 = Paths.path(Book::price)
+
+    private val predicate1 = Predicates.equal(
+        Paths.path(Book::price),
+        Expressions.value(BigDecimal.valueOf(100)),
+    )
+
+    private val predicate2 = Predicates.equal(
+        Paths.path(Book::salePrice),
+        Expressions.value(BigDecimal.valueOf(200)),
+    )
+
+    private val bigDecimal1 = BigDecimal.valueOf(100)
+
+    @Test
+    fun `where() with a predicate`() {
+        // when
+        val update = queryPart {
+            update(
+                entity1,
+            ).set(
+                path1,
+                bigDecimal1,
+            ).where(
+                predicate1,
+            )
+        }.toQuery()
+
+        val actual: UpdateQuery<Book> = update // for type check
+
+        // then
+        val expected = Updates.update(
+            entity = entity1,
+            set = mapOf(
+                path1 to Expressions.value(bigDecimal1),
+            ),
+            where = predicate1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `whereAnd() with predicates`() {
+        // when
+        val update = queryPart {
+            update(
+                entity1,
+            ).set(
+                path1,
+                bigDecimal1,
+            ).whereAnd(
+                predicate1,
+                null,
+                predicate2,
+            )
+        }.toQuery()
+
+        val actual: UpdateQuery<Book> = update // for type check
+
+        // then
+        val expected = Updates.update(
+            entity = entity1,
+            set = mapOf(
+                path1 to Expressions.value(bigDecimal1),
+            ),
+            where = Predicates.and(
+                listOf(
+                    Predicates.parentheses(predicate1),
+                    Predicates.parentheses(predicate2),
+                ),
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `whereOr() with predicates`() {
+        // when
+        val update = queryPart {
+            update(
+                entity1,
+            ).set(
+                path1,
+                bigDecimal1,
+            ).whereOr(
+                predicate1,
+                null,
+                predicate2,
+            )
+        }.toQuery()
+
+        val actual: UpdateQuery<Book> = update // for type check
+
+        // then
+        val expected = Updates.update(
+            entity = entity1,
+            set = mapOf(
+                path1 to Expressions.value(bigDecimal1),
+            ),
+            where = Predicates.or(
+                listOf(
+                    Predicates.parentheses(predicate1),
+                    Predicates.parentheses(predicate2),
+                ),
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+}
