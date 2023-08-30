@@ -1699,14 +1699,14 @@ open class Jpql : JpqlDsl {
         return Predicates.`in`(this.toExpression(), compareValues.map { Expressions.value(it) })
     }
 
-    @JvmName("inExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<@Exact T>.`in`(compareValues: Iterable<Expressionable<T>?>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.`in`(vararg compareValues: Expressionable<T>?): Predicate {
         return Predicates.`in`(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
+    @JvmName("inExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<@Exact T>.`in`(vararg compareValues: Expressionable<T>?): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.`in`(compareValues: Iterable<Expressionable<T>?>): Predicate {
         return Predicates.`in`(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
@@ -1725,14 +1725,14 @@ open class Jpql : JpqlDsl {
         return Predicates.notIn(this.toExpression(), compareValues.map { Expressions.value(it) })
     }
 
-    @JvmName("notInExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<@Exact T>.notIn(compareValues: Iterable<Expressionable<T>?>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notIn(vararg compareValues: Expressionable<T>?): Predicate {
         return Predicates.notIn(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
+    @JvmName("notInExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<@Exact T>.notIn(vararg compareValues: Expressionable<T>?): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notIn(compareValues: Iterable<Expressionable<T>?>): Predicate {
         return Predicates.notIn(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
@@ -1742,23 +1742,52 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun Expressionable<String>.like(pattern: String): Predicate {
-        return Predicates.like(this.toExpression(), Expressions.value(pattern))
+    fun Expressionable<String>.like(
+        pattern: String,
+        escape:
+        Char? = null,
+    ): Predicate {
+        return Predicates.like(
+            this.toExpression(),
+            Expressions.value(pattern),
+            escape?.let { Expressions.value(it) },
+        )
     }
 
     @SinceJdsl("3.0.0")
-    fun Expressionable<String>.like(pattern: Expressionable<String>): Predicate {
-        return Predicates.like(this.toExpression(), pattern.toExpression())
+    fun Expressionable<String>.like(
+        pattern: Expressionable<String>,
+        escape: Expressionable<Char>? = null,
+    ): Predicate {
+        return Predicates.like(
+            this.toExpression(),
+            pattern.toExpression(),
+            escape?.toExpression(),
+        )
     }
 
     @SinceJdsl("3.0.0")
-    fun Expressionable<String>.notLike(pattern: String): Predicate {
-        return Predicates.notLike(this.toExpression(), Expressions.value(pattern))
+    fun Expressionable<String>.notLike(
+        pattern: String,
+        escape: Char? = null,
+    ): Predicate {
+        return Predicates.notLike(
+            this.toExpression(),
+            Expressions.value(pattern),
+            escape?.let { Expressions.value(it) },
+        )
     }
 
     @SinceJdsl("3.0.0")
-    fun Expressionable<String>.notLike(pattern: Expressionable<String>): Predicate {
-        return Predicates.notLike(this.toExpression(), pattern.toExpression())
+    fun Expressionable<String>.notLike(
+        pattern: Expressionable<String>,
+        escape: Expressionable<Char>? = null,
+    ): Predicate {
+        return Predicates.notLike(
+            this.toExpression(),
+            pattern.toExpression(),
+            escape?.toExpression(),
+        )
     }
 
     @SinceJdsl("3.0.0")
