@@ -1,6 +1,5 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.predicate
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
 import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
@@ -8,18 +7,19 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
-class EqualDslTest : AbstractJpqlDslTest() {
+class EqualDslTest : WithAssertions {
     private val expression1 = Paths.path(Book::price)
     private val expression2 = Paths.path(Book::salePrice)
 
     private val bigDecimal1 = BigDecimal.valueOf(100)
 
     private val subquery1 = Expressions.subquery(
-        Selects.select(
+        SelectQueries.select(
             returnType = BigDecimal::class,
             distinct = false,
             select = listOf(Paths.path(Book::price)),

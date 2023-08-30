@@ -1,19 +1,18 @@
-@file:Suppress("RedundantNullableReturnType")
-
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class ValueDslTest : AbstractJpqlDslTest() {
+class ValueDslTest : WithAssertions {
     private val int1: Int = 100
 
     @Test
     fun `value int`() {
         // when
-        val expression = testJpql {
+        val expression = queryPart {
             value(int1)
         }.toExpression()
 
@@ -30,7 +29,7 @@ class ValueDslTest : AbstractJpqlDslTest() {
     @Test
     fun nullValue() {
         // when
-        val expression = testJpql {
+        val expression = queryPart {
             nullValue<Int>()
         }.toExpression()
 

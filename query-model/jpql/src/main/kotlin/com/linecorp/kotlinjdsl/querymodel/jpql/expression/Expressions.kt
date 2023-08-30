@@ -170,7 +170,7 @@ object Expressions {
         whens: Map<Predicate, Expression<T>>,
         `else`: Expression<T>? = null,
     ): Expression<T> {
-        return JpqlCase(
+        return JpqlCaseWhen(
             whens = whens,
             `else` = `else`,
         )

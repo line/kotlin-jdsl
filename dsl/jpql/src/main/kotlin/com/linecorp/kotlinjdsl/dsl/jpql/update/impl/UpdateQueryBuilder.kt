@@ -4,8 +4,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.update.Updates
 
 internal data class UpdateQueryBuilder<T : Any>(
     private val entity: Entity<T>,
@@ -48,7 +48,7 @@ internal data class UpdateQueryBuilder<T : Any>(
     }
 
     fun build(): UpdateQuery<T> {
-        return Updates.update(
+        return UpdateQueries.update(
             entity = entity,
             set = set,
             where = where,

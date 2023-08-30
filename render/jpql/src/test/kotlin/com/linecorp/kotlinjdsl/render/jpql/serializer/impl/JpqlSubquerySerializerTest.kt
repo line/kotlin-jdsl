@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -25,7 +25,7 @@ class JpqlSubquerySerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
-    private val selectQuery1 = Selects.select(
+    private val selectQuery1 = SelectQueries.select(
         returnType = String::class,
         distinct = false,
         select = listOf(Paths.path(Book::title)),

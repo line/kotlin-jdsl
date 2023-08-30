@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.delete.Deletes
+import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.impl.JpqlDeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
@@ -44,7 +44,7 @@ class JpqlDeleteQuerySerializerTest : WithAssertions {
     @Test
     fun serialize() {
         // given
-        val part = Deletes.delete(
+        val part = DeleteQueries.delete(
             entity = entity1,
         )
         val context = TestRenderContext(serializer)
@@ -67,7 +67,7 @@ class JpqlDeleteQuerySerializerTest : WithAssertions {
     @Test
     fun `serialize() draws the WHERE, when the where is not null`() {
         // given
-        val part = Deletes.delete(
+        val part = DeleteQueries.delete(
             entity = entity1,
             where = predicate1,
         )

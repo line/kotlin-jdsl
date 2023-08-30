@@ -8,13 +8,13 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 class ExistsDslTest : WithAssertions {
     private val subquery1 = Expressions.subquery(
-        Selects.select(
+        SelectQueries.select(
             returnType = Isbn::class,
             distinct = false,
             select = listOf(Paths.path(Book::isbn)),

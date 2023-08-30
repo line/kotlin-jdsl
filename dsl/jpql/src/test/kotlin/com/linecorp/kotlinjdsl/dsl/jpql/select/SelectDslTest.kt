@@ -5,8 +5,8 @@ import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
@@ -34,7 +34,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<BigDecimal> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = BigDecimal::class,
             distinct = false,
             select = listOf(expression1),
@@ -59,7 +59,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<View> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = View::class,
             distinct = false,
             select = listOf(expression1, expression2),
@@ -85,7 +85,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<View> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = View::class,
             distinct = false,
             select = listOf(expression1, expression2),
@@ -109,7 +109,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<BigDecimal> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = BigDecimal::class,
             distinct = true,
             select = listOf(expression1),
@@ -134,7 +134,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<View> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = View::class,
             distinct = true,
             select = listOf(expression1, expression2),
@@ -160,7 +160,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<View> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = View::class,
             distinct = true,
             select = listOf(expression1, expression2),
@@ -185,7 +185,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<Dto> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = Dto::class,
             distinct = false,
             select = listOf(
@@ -216,7 +216,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<Dto> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = Dto::class,
             distinct = false,
             select = listOf(
@@ -246,7 +246,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<Dto> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = Dto::class,
             distinct = true,
             select = listOf(
@@ -277,7 +277,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<Dto> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = Dto::class,
             distinct = true,
             select = listOf(

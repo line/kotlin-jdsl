@@ -5,12 +5,12 @@ import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 class DerivedEntityDslTest : WithAssertions {
-    private val selectQuery1 = Selects.select(
+    private val selectQuery1 = SelectQueries.select(
         returnType = String::class,
         distinct = false,
         select = listOf(Paths.path(Book::title)),

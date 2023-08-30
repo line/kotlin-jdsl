@@ -5,8 +5,8 @@ import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.update.Updates
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
@@ -41,7 +41,7 @@ class UpdateSetDslTest : WithAssertions {
         val actual: UpdateQuery<Book> = update // for type check
 
         // then
-        val expected = Updates.update(
+        val expected = UpdateQueries.update(
             entity = entity1,
             set = mapOf(
                 path1 to Expressions.value(bigDecimal1),
@@ -70,7 +70,7 @@ class UpdateSetDslTest : WithAssertions {
         val actual: UpdateQuery<Book> = update // for type check
 
         // then
-        val expected = Updates.update(
+        val expected = UpdateQueries.update(
             entity = entity1,
             set = mapOf(
                 path1 to bigDecimalExpression1,

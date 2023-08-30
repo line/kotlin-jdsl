@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.delete.impl
 
+import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.delete.Deletes
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
@@ -16,7 +16,7 @@ internal data class DeleteQueryBuilder<T : Any>(
     }
 
     fun build(): DeleteQuery<T> {
-        return Deletes.delete(
+        return DeleteQueries.delete(
             entity = entity,
             where = where,
         )

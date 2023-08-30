@@ -9,8 +9,8 @@ import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.join.Joins
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
@@ -44,7 +44,7 @@ class FromDslTest : WithAssertions {
         val actual: SelectQuery<Isbn> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = Isbn::class,
             distinct = false,
             select = listOf(expression1),
@@ -74,7 +74,7 @@ class FromDslTest : WithAssertions {
         val actual: SelectQuery<Isbn> = select // for type check
 
         // then
-        val expected = Selects.select(
+        val expected = SelectQueries.select(
             returnType = Isbn::class,
             distinct = false,
             select = listOf(expression1),

@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.delete.impl.JpqlDeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
-object Deletes {
+object DeleteQueries {
     @SinceJdsl("3.0.0")
     fun <T : Any> delete(
         entity: Entity<T>,

@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCase
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.render.TestRenderContext
@@ -15,8 +15,8 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
-class JpqlCaseSerializerTest : WithAssertions {
-    private val sut = JpqlCaseSerializer()
+class JpqlCaseWhenSerializerTest : WithAssertions {
+    private val sut = JpqlCaseWhenSerializer()
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -37,7 +37,7 @@ class JpqlCaseSerializerTest : WithAssertions {
         val actual = sut.handledType()
 
         // then
-        assertThat(actual).isEqualTo(JpqlCase::class)
+        assertThat(actual).isEqualTo(JpqlCaseWhen::class)
     }
 
     @Test
@@ -54,7 +54,7 @@ class JpqlCaseSerializerTest : WithAssertions {
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlCase<*>, writer, context)
+        sut.serialize(part as JpqlCaseWhen<*>, writer, context)
 
         // then
         verifySequence {
@@ -95,7 +95,7 @@ class JpqlCaseSerializerTest : WithAssertions {
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlCase<*>, writer, context)
+        sut.serialize(part as JpqlCaseWhen<*>, writer, context)
 
         // then
         verifySequence {

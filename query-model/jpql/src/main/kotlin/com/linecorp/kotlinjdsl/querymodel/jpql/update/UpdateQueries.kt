@@ -7,7 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.impl.JpqlUpdateQuery
 
-object Updates {
+object UpdateQueries {
     @SinceJdsl("3.0.0")
     fun <T : Any> update(
         entity: Entity<T>,
