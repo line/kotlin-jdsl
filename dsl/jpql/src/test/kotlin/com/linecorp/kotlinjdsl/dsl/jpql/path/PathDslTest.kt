@@ -1,168 +1,65 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.path
 
 import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.BookPublisher
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import org.junit.jupiter.api.Test
 
 class PathDslTest : AbstractJpqlDslTest() {
-    @Test
-    fun `path property`() {
-        // when
-        val path = testJpql {
-            path(TestTable1::field1)
-        }
-
-        val actual: Path<TestField1> = path // for type check
-
-        // then
-        assertThat(actual).isEqualTo(
-            Paths.path(TestTable1::field1),
-        )
-    }
+    private val path1 = Paths.path(Book::publisher)
 
     @Test
-    fun `path nullable property`() {
+    fun `path() with a property`() {
         // when
         val path = testJpql {
-            path(TestTable1::nullableField1)
+            path(Book::publisher)
         }
 
-        val actual: Path<TestField1> = path // for type check
+        val actual: Path<BookPublisher> = path // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Paths.path(TestTable1::nullableField1),
+        val excepted = Paths.path(
+            Book::publisher,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `path property path property`() {
+    fun `path() with a path and a property`() {
         // when
         val path = testJpql {
-            path(TestTable1::field1).path(TestField1::int1)
+            path1.path(BookPublisher::publisherId)
         }
 
-        val actual: Path<Int> = path // for type check
+        val actual: Path<Long> = path // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Paths.path(Paths.path(TestTable1::field1), TestField1::int1),
+        val excepted = Paths.path(
+            path1,
+            BookPublisher::publisherId,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `path property path nullable property`() {
+    fun `invoke() with a path and a property`() {
         // when
         val path = testJpql {
-            path(TestTable1::field1).path(TestField1::nullableInt1)
+            path1(BookPublisher::publisherId)
         }
 
-        val actual: Path<Int> = path // for type check
+        val actual: Path<Long> = path // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Paths.path(Paths.path(TestTable1::field1), TestField1::nullableInt1),
+        val excepted = Paths.path(
+            path1,
+            BookPublisher::publisherId,
         )
-    }
 
-    @Test
-    fun `path nullable property path property`() {
-        // when
-        val path = testJpql {
-            path(TestTable1::nullableField1).path(TestField1::int1)
-        }
-
-        val actual: Path<Int> = path // for type check
-
-        // then
-        assertThat(actual).isEqualTo(
-            Paths.path(Paths.path(TestTable1::nullableField1), TestField1::int1),
-        )
-    }
-
-    @Test
-    fun `path nullable property path nullable property`() {
-        // when
-        val path = testJpql {
-            path(TestTable1::nullableField1).path(TestField1::nullableInt1)
-        }
-
-        val actual: Path<Int> = path // for type check
-
-        // then
-        assertThat(actual).isEqualTo(
-            Paths.path(Paths.path(TestTable1::nullableField1), TestField1::nullableInt1),
-        )
-    }
-
-    @Test
-    fun `path property invoke property`() {
-        // when
-        val path = testJpql {
-            path(TestTable1::field1)(TestField1::int1)
-        }
-
-        val actual: Path<Int> = path // for type check
-
-        // then
-        assertThat(actual).isEqualTo(
-            Paths.path(Paths.path(TestTable1::field1), TestField1::int1),
-        )
-    }
-
-    @Test
-    fun `path property invoke nullable property`() {
-        // when
-        val path = testJpql {
-            path(TestTable1::field1)(TestField1::nullableInt1)
-        }
-
-        val actual: Path<Int> = path // for type check
-
-        // then
-        assertThat(actual).isEqualTo(
-            Paths.path(Paths.path(TestTable1::field1), TestField1::nullableInt1),
-        )
-    }
-
-    @Test
-    fun `path nullable property invoke property`() {
-        // when
-        val path = testJpql {
-            path(TestTable1::nullableField1)(TestField1::int1)
-        }
-
-        val actual: Path<Int> = path // for type check
-
-        // then
-        assertThat(actual).isEqualTo(
-            Paths.path(Paths.path(TestTable1::nullableField1), TestField1::int1),
-        )
-    }
-
-    @Test
-    fun `path nullable property invoke nullable property`() {
-        // when
-        val path = testJpql {
-            path(TestTable1::nullableField1)(TestField1::nullableInt1)
-        }
-
-        val actual: Path<Int> = path // for type check
-
-        // then
-        assertThat(actual).isEqualTo(
-            Paths.path(Paths.path(TestTable1::nullableField1), TestField1::nullableInt1),
-        )
-    }
-
-    private class TestTable1 {
-        val field1: TestField1 = TestField1()
-        val nullableField1: TestField1? = null
-    }
-
-    private class TestField1 {
-        val int1: Int = 1
-        val nullableInt1: Int? = null
+        assertThat(actual).isEqualTo(excepted)
     }
 }

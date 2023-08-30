@@ -1,30 +1,31 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.path
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.employee.EmployeeDepartment
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.employee.FullTimeEmployee
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class TreatDslTest : AbstractJpqlDslTest() {
+class TreatDslTest : WithAssertions {
+    private val path1 = Paths.path(EmployeeDepartment::employee)
+
     @Test
-    fun `path treat subclass`() {
+    fun treat() {
         // when
-        val path = testJpql {
-            path(TestTable1::field1).treat(TestSubField1::class)
+        val path = queryPart {
+            path1.treat(FullTimeEmployee::class)
         }
 
-        val actual: Path<TestSubField1> = path // for type check
+        val actual: Path<FullTimeEmployee> = path // for type check
 
         // then
-        val expected = Paths.treat(Paths.path(TestTable1::field1), TestSubField1::class)
+        val expected = Paths.treat(
+            path1,
+            FullTimeEmployee::class,
+        )
 
         assertThat(actual).isEqualTo(expected)
     }
-
-    private open class TestTable1 {
-        val field1: TestField1 = TestSubField1()
-    }
-
-    private open class TestField1
-    private open class TestSubField1 : TestField1()
 }

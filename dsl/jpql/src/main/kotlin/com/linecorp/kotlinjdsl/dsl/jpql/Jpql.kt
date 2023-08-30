@@ -135,13 +135,13 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> Path<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
-        return Paths.path(this, property)
+    fun <T : Any, V> Pathable<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toPath(), property)
     }
 
     @SinceJdsl("3.0.0")
-    operator fun <T : Any, V> Path<T>.invoke(property: KProperty1<T, @Exact V>): Path<V & Any> {
-        return Paths.path(this, property)
+    operator fun <T : Any, V> Pathable<T>.invoke(property: KProperty1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toPath(), property)
     }
 
     @SinceJdsl("3.0.0")
@@ -170,8 +170,8 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T> Path<T>.treat(type: KClass<S>): Path<S> {
-        return Paths.treat(this, type)
+    fun <T : Any, S : T> Pathable<T>.treat(type: KClass<S>): Path<S> {
+        return Paths.treat(this.toPath(), type)
     }
 
     /**
@@ -1016,13 +1016,13 @@ open class Jpql : JpqlDsl {
         return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
     }
 
-    inline fun <reified T : Any> join(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    inline fun <reified T : Any> join(path: Pathable<T>): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
     }
 
     @JvmName("joinCollection")
-    inline fun <reified T : Any, S : Collection<T>> join(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    inline fun <reified T : Any, S : Collection<T>> join(path: Pathable<S>): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
     }
 
     fun <T : Any> innerJoin(entity: KClass<T>): JoinOnStep<T> {
@@ -1048,13 +1048,13 @@ open class Jpql : JpqlDsl {
         return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
     }
 
-    inline fun <reified T : Any> innerJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    inline fun <reified T : Any> innerJoin(path: Pathable<T>): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
     }
 
     @JvmName("innerJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> innerJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    inline fun <reified T : Any, S : Collection<T>> innerJoin(path: Pathable<S>): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
     }
 
     fun <T : Any> leftJoin(entity: KClass<T>): JoinOnStep<T> {
@@ -1080,13 +1080,13 @@ open class Jpql : JpqlDsl {
         return AssociationJoinDsl(entity, Paths.path(property), JoinType.LEFT)
     }
 
-    inline fun <reified T : Any> leftJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
+    inline fun <reified T : Any> leftJoin(path: Pathable<T>): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.LEFT)
     }
 
     @JvmName("leftJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> leftJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
+    inline fun <reified T : Any, S : Collection<T>> leftJoin(path: Pathable<S>): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.LEFT)
     }
 
     fun <T : Any> fetchJoin(entity: KClass<T>): JoinOnStep<T> {
@@ -1112,13 +1112,13 @@ open class Jpql : JpqlDsl {
         return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
     }
 
-    inline fun <reified T : Any> fetchJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    inline fun <reified T : Any> fetchJoin(path: Pathable<T>): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
     }
 
     @JvmName("fetchJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> fetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    inline fun <reified T : Any, S : Collection<T>> fetchJoin(path: Pathable<S>): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
     }
 
     fun <T : Any> innerFetchJoin(entity: KClass<T>): JoinOnStep<T> {
@@ -1144,13 +1144,13 @@ open class Jpql : JpqlDsl {
         return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
     }
 
-    inline fun <reified T : Any> innerFetchJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    inline fun <reified T : Any> innerFetchJoin(path: Pathable<T>): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
     }
 
     @JvmName("innerFetchJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> innerFetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
+    inline fun <reified T : Any, S : Collection<T>> innerFetchJoin(path: Pathable<S>): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
     }
 
     fun <T : Any> leftFetchJoin(entity: KClass<T>): JoinOnStep<T> {
@@ -1176,13 +1176,13 @@ open class Jpql : JpqlDsl {
         return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.LEFT)
     }
 
-    inline fun <reified T : Any> leftFetchJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
+    inline fun <reified T : Any> leftFetchJoin(path: Pathable<T>): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.LEFT)
     }
 
     @JvmName("leftFetchJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> leftFetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
+    inline fun <reified T : Any, S : Collection<T>> leftFetchJoin(path: Pathable<S>): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.LEFT)
     }
 
     @SinceJdsl("3.0.0")
@@ -1762,13 +1762,13 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T, S : Collection<T>> Path<S>.isEmpty(): Predicate {
-        return Predicates.isEmpty(this)
+    fun <T, S : Collection<T>> Pathable<S>.isEmpty(): Predicate {
+        return Predicates.isEmpty(this.toPath())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T, S : Collection<T>> Path<S>.isNotEmpty(): Predicate {
-        return Predicates.isNotEmpty(this)
+    fun <T, S : Collection<T>> Pathable<S>.isNotEmpty(): Predicate {
+        return Predicates.isNotEmpty(this.toPath())
     }
 
     @SinceJdsl("3.0.0")
