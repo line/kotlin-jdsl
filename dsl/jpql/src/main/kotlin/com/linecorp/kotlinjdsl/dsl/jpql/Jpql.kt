@@ -988,6 +988,11 @@ open class Jpql : JpqlDsl {
         return Entities.derivedEntity(this.toQuery())
     }
 
+    @SinceJdsl("3.0.0")
+    fun <T : Any> JpqlQueryable<SelectQuery<T>>.asEntity(alias: String): Entity<T> {
+        return Entities.derivedEntity(this.toQuery(), alias)
+    }
+
     fun <T : Any> join(entity: KClass<T>): JoinOnStep<T> {
         return JoinDsl(Entities.entity(entity), JoinType.INNER)
     }
@@ -1178,11 +1183,6 @@ open class Jpql : JpqlDsl {
     @JvmName("leftFetchJoinCollection")
     inline fun <reified T : Any, S : Collection<T>> leftFetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
         return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
-    }
-
-    @SinceJdsl("3.0.0")
-    fun <T : Any> JpqlQueryable<SelectQuery<T>>.asEntity(alias: String): Entity<T> {
-        return Entities.derivedEntity(this.toQuery(), alias)
     }
 
     @SinceJdsl("3.0.0")

@@ -29,7 +29,7 @@ internal data class AssociationJoinDsl<T : Any>(
         ),
     )
 
-    override fun on(predicate: Predicatable): Joinable {
+    override fun on(predicate: Predicatable): AssociationJoinAsStep<T> {
         builder.on(predicate.toPredicate())
 
         return this
