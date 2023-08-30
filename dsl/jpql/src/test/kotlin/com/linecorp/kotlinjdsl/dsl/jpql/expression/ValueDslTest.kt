@@ -8,8 +8,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import org.junit.jupiter.api.Test
 
 class ValueDslTest : AbstractJpqlDslTest() {
-    private val int1: Int = 1
-    private val nullableInt1: Int? = 2
+    private val int1: Int = 100
 
     @Test
     fun `value int`() {
@@ -21,22 +20,9 @@ class ValueDslTest : AbstractJpqlDslTest() {
         val actual: Expression<Int> = expression // for type check
 
         // then
-        val expected = Expressions.value(int1)
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `value nullable int`() {
-        // when
-        val expression = testJpql {
-            value(nullableInt1)
-        }.toExpression()
-
-        val actual: Expression<Int> = expression // for type check
-
-        // then
-        val expected = Expressions.value(nullableInt1)
+        val expected = Expressions.value(
+            int1,
+        )
 
         assertThat(actual).isEqualTo(expected)
     }

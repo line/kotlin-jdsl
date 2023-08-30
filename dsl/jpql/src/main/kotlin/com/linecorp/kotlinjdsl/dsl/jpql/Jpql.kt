@@ -420,38 +420,8 @@ open class Jpql : JpqlDsl {
      * If there are no matching rows, or if all expressions are null, it returns null.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any, V : Comparable<*>?> max(distinct: Boolean, expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return Expressions.max(distinct, Paths.path(expr))
-    }
-
-    /**
-     * Expression that returns the maximum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
     fun <T : Any, V : Comparable<*>?> max(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return max(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the maximum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Comparable<*>?> maxDistinct(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return max(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the maximum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> max(distinct: Boolean, expr: Expressionable<@Exact T>): Expression<T> {
-        return Expressions.max(distinct, expr.toExpression())
+        return Expressions.max(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -461,7 +431,17 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Comparable<*>> max(expr: Expressionable<@Exact T>): Expression<T> {
-        return max(distinct = false, expr)
+        return Expressions.max(distinct = false, expr.toExpression())
+    }
+
+    /**
+     * Expression that returns the maximum value of [expr].
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, V : Comparable<*>?> maxDistinct(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
+        return Expressions.max(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -471,17 +451,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Comparable<*>> maxDistinct(expr: Expressionable<@Exact T>): Expression<T> {
-        return max(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the minimum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Comparable<*>?> min(distinct: Boolean, expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return Expressions.min(distinct, Paths.path(expr))
+        return Expressions.max(distinct = true, expr.toExpression())
     }
 
     /**
@@ -491,27 +461,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, V : Comparable<*>?> min(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return min(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the minimum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Comparable<*>?> minDistinct(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return min(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the minimum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> min(distinct: Boolean, expr: Expressionable<@Exact T>): Expression<T> {
-        return Expressions.min(distinct, expr.toExpression())
+        return Expressions.min(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -521,7 +471,17 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Comparable<*>> min(expr: Expressionable<@Exact T>): Expression<T> {
-        return min(distinct = false, expr)
+        return Expressions.min(distinct = false, expr.toExpression())
+    }
+
+    /**
+     * Expression that returns the minimum value of [expr].
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, V : Comparable<*>?> minDistinct(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
+        return Expressions.min(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -531,7 +491,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Comparable<*>> minDistinct(expr: Expressionable<@Exact T>): Expression<T> {
-        return min(distinct = true, expr)
+        return Expressions.min(distinct = true, expr.toExpression())
     }
 
     /**
@@ -581,30 +541,8 @@ open class Jpql : JpqlDsl {
      */
     @JvmName("sumInt")
     @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, Int?>): Expression<Long> {
-        return Expressions.sum(distinct, Paths.path(expr))
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumInt")
-    @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, Int?>): Expression<Long> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumLong")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, Long?>): Expression<Long> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -615,18 +553,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumLong")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, Long?>): Expression<Long> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumFloat")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, Float?>): Expression<Double> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -637,18 +564,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumFloat")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, Float?>): Expression<Double> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumDouble")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, Double?>): Expression<Double> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -659,18 +575,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDouble")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, Double?>): Expression<Double> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumBigInteger")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, BigInteger?>): Expression<BigInteger> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -681,18 +586,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumBigInteger")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, BigInteger?>): Expression<BigInteger> {
-        return sum(distinct = false, Paths.path(expr))
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumBigDecimal")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, BigDecimal?>): Expression<BigDecimal> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -703,18 +597,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumBigDecimal")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, BigDecimal?>): Expression<BigDecimal> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumInt")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Int>): Expression<Long> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -725,18 +608,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumInt")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<Int>): Expression<Long> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumLong")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Long>): Expression<Long> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -747,18 +619,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumLong")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<Long>): Expression<Long> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumFloat")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Float>): Expression<Double> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -769,18 +630,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumFloat")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<Float>): Expression<Double> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumDouble")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Double>): Expression<Double> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -791,18 +641,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDouble")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<Double>): Expression<Double> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumBigInteger")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<BigInteger>): Expression<BigInteger> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -813,18 +652,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumBigInteger")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<BigInteger>): Expression<BigInteger> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumBigDecimal")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<BigDecimal>): Expression<BigDecimal> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -835,7 +663,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumBigDecimal")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<BigDecimal>): Expression<BigDecimal> {
-        return sum(distinct = false, expr)
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -846,7 +674,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctInt")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, Int?>): Expression<Long> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -857,7 +685,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctLong")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, Long?>): Expression<Long> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -868,7 +696,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctFloat")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, Float?>): Expression<Double> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -879,7 +707,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctDouble")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, Double?>): Expression<Double> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -890,7 +718,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctBigInteger")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, BigInteger?>): Expression<BigInteger> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -901,7 +729,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctBigDecimal")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, BigDecimal?>): Expression<BigDecimal> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -912,7 +740,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctInt")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<Int>): Expression<Long> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -923,7 +751,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctLong")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<Long>): Expression<Long> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -934,7 +762,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctFloat")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<Float>): Expression<Double> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -945,7 +773,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctDouble")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<Double>): Expression<Double> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -956,7 +784,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctBigInteger")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<BigInteger>): Expression<BigInteger> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -967,7 +795,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctBigDecimal")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<BigDecimal>): Expression<BigDecimal> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
