@@ -116,13 +116,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.innerJoin(
             entity = Entities.entity(BookAuthor::class),
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         val expected2 = Joins.innerJoin(
             entity = Entities.entity(BookPublisher::class),
             association = Paths.path(Book::publisher),
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -161,7 +159,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.innerJoin(
             entity = alias1,
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -204,13 +201,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.innerJoin(
             entity = entity1,
             association = path1,
-            predicate = null,
         )
 
         val expected2 = Joins.innerJoin(
             entity = entity2,
             association = path2,
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -249,7 +244,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.innerJoin(
             entity = alias1,
             association = path1,
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -364,13 +358,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.innerJoin(
             entity = Entities.entity(BookAuthor::class),
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         val expected2 = Joins.innerJoin(
             entity = Entities.entity(BookPublisher::class),
             association = Paths.path(Book::publisher),
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -409,7 +401,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.innerJoin(
             entity = alias1,
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -452,13 +443,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.innerJoin(
             entity = entity1,
             association = path1,
-            predicate = null,
         )
 
         val expected2 = Joins.innerJoin(
             entity = entity2,
             association = path2,
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -497,7 +486,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.innerJoin(
             entity = alias1,
             association = path1,
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -612,13 +600,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.leftJoin(
             entity = Entities.entity(BookAuthor::class),
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         val expected2 = Joins.leftJoin(
             entity = Entities.entity(BookPublisher::class),
             association = Paths.path(Book::publisher),
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -657,7 +643,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.leftJoin(
             entity = alias1,
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -700,13 +685,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.leftJoin(
             entity = entity1,
             association = path1,
-            predicate = null,
         )
 
         val expected2 = Joins.leftJoin(
             entity = entity2,
             association = path2,
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -745,7 +728,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.leftJoin(
             entity = alias1,
             association = path1,
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -860,13 +842,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.innerFetchJoin(
             entity = Entities.entity(BookAuthor::class),
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         val expected2 = Joins.innerFetchJoin(
             entity = Entities.entity(BookPublisher::class),
             association = Paths.path(Book::publisher),
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -905,7 +885,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.innerFetchJoin(
             entity = alias1,
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -948,13 +927,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.innerFetchJoin(
             entity = entity1,
             association = path1,
-            predicate = null,
         )
 
         val expected2 = Joins.innerFetchJoin(
             entity = entity2,
             association = path2,
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -993,7 +970,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.innerFetchJoin(
             entity = alias1,
             association = path1,
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -1108,13 +1084,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.innerFetchJoin(
             entity = Entities.entity(BookAuthor::class),
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         val expected2 = Joins.innerFetchJoin(
             entity = Entities.entity(BookPublisher::class),
             association = Paths.path(Book::publisher),
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -1153,7 +1127,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.innerFetchJoin(
             entity = alias1,
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -1196,13 +1169,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.innerFetchJoin(
             entity = entity1,
             association = path1,
-            predicate = null,
         )
 
         val expected2 = Joins.innerFetchJoin(
             entity = entity2,
             association = path2,
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -1241,7 +1212,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.innerFetchJoin(
             entity = alias1,
             association = path1,
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -1356,13 +1326,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.leftFetchJoin(
             entity = Entities.entity(BookAuthor::class),
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         val expected2 = Joins.leftFetchJoin(
             entity = Entities.entity(BookPublisher::class),
             association = Paths.path(Book::publisher),
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -1401,7 +1369,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.leftFetchJoin(
             entity = alias1,
             association = Paths.path(Book::authors),
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -1444,13 +1411,11 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected1 = Joins.leftFetchJoin(
             entity = entity1,
             association = path1,
-            predicate = null,
         )
 
         val expected2 = Joins.leftFetchJoin(
             entity = entity2,
             association = path2,
-            predicate = null,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -1489,7 +1454,6 @@ class JoinDslTest : AbstractJpqlDslTest() {
         val expected = Joins.leftFetchJoin(
             entity = alias1,
             association = path1,
-            predicate = null,
         )
 
         assertThat(actual).isEqualTo(expected)
