@@ -31,6 +31,12 @@ spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch
 spring-data-jpa3 = { module = "org.springframework.data:spring-data-jpa", version = "3.0.3" }
 spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", version = "2.7.9" }
 
+# Eclipselink
+#eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.13" }
+#eclipselink-v4 = { module = "org.eclipse.persistence:eclipse", version = "4.0.2" }
+eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.13" }
+eclipselink-v4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.2" }
+
 # Test
 test-spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "test-spring-boot3" }
 test-spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.9.0" }

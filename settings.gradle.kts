@@ -25,9 +25,15 @@ module(name = ":support", path = "support")
 module(name = ":spring-data-jpa-support", path = "support/spring-data-jpa")
 module(name = ":spring-data-jpa-javax-support", path = "support/spring-data-jpa-javax")
 
+module(name = ":eclipselink-support", path = "support/eclipselink")
+module(name = ":eclipselink-javax-support", path = "support/eclipselink-javax")
+
 module(name = ":example", path = "example")
 module(name = ":spring-data-jpa-example", path = "example/spring-data-jpa")
 module(name = ":spring-data-jpa-javax-example", path = "example/spring-data-jpa-javax")
+
+module(name = ":eclipselink-example", path = "example/eclipselink")
+module(name = ":eclipselink-javax-example", path = "example/eclipselink-javax")
 
 module(name = ":benchmark", path = "benchmark")
 
