@@ -1861,8 +1861,7 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun Expressionable<String>.like(
         pattern: String,
-        escape:
-        Char? = null,
+        escape: Char? = null,
     ): Predicate {
         return Predicates.like(
             this.toExpression(),
