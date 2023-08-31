@@ -2,7 +2,6 @@ package com.linecorp.kotlinjdsl.example.eclipselink
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.publisher.Publisher
-//import com.linecorp.kotlinjdsl.example.eclipselink.entity.TestEntity
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import jakarta.persistence.Persistence
 import org.eclipse.persistence.jpa.JpaEntityManager
@@ -13,7 +12,7 @@ class SelectExample {
     private val entityManagerFactory = Persistence.createEntityManagerFactory("example")
     @Test
     fun test() {
-        val entityManger = entityManagerFactory.createEntityManager() as JpaEntityManager
+        val entityManger = entityManagerFactory.createEntityManager().unwrap(JpaEntityManager::class.java)
         val transaction = entityManger.transaction
 
         transaction.begin()

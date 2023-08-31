@@ -23,6 +23,8 @@
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
             <!-- TODO schema-generation 설정 수정 -->
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
         </properties>
     </persistence-unit>
 
