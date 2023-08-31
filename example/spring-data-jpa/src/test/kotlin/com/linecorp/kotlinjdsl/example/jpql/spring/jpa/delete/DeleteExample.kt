@@ -7,12 +7,12 @@ import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.repository.book.BookRepository
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.repository.employee.EmployeeRepository
+import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
-import java.time.OffsetDateTime
 
 @Transactional
 @SpringBootTest
@@ -63,7 +63,7 @@ class DeleteExample : WithAssertions {
             ).asSubquery()
 
             deleteFrom(
-                Employee::class,
+                entity(Employee::class),
             ).where(
                 path(Employee::employeeId).`in`(employeeIds),
             )

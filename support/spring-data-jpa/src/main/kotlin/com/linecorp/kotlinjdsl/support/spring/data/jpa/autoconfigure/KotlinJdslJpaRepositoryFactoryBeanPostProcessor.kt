@@ -1,10 +1,12 @@
 package com.linecorp.kotlinjdsl.support.spring.data.jpa.autoconfigure
 
+import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean
 import org.springframework.data.repository.core.support.RepositoryComposition.RepositoryFragments
 
+@SinceJdsl("3.0.0")
 open class KotlinJdslJpaRepositoryFactoryBeanPostProcessor(
     private val kotlinJdslJpqlExecutor: KotlinJdslJpqlExecutor,
 ) : BeanPostProcessor {

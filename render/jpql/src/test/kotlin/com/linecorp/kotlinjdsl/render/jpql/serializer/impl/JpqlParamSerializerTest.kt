@@ -5,8 +5,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
@@ -16,6 +16,10 @@ class JpqlParamSerializerTest : WithAssertions {
 
     @MockK
     private lateinit var writer: JpqlWriter
+
+    private val paramName1 = "paramName1"
+
+    private val paramValue1 = "paramValue1"
 
     @Test
     fun handledType() {
@@ -27,11 +31,12 @@ class JpqlParamSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN param is given, THEN draw full syntax`() {
+    fun serialize() {
         // given
-        every { writer.writeParam(any(), any()) } just runs
-
-        val part = Expressions.param("name", "value")
+        val part = Expressions.param(
+            paramName1,
+            paramValue1,
+        )
         val context = TestRenderContext()
 
         // when
@@ -39,7 +44,7 @@ class JpqlParamSerializerTest : WithAssertions {
 
         // then
         verifySequence {
-            writer.writeParam(part.name, part.value)
+            writer.writeParam(paramName1, paramValue1)
         }
     }
 }

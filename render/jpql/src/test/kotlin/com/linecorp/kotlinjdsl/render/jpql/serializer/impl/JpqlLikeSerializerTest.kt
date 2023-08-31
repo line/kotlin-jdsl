@@ -1,14 +1,16 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlLike
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
@@ -22,6 +24,11 @@ class JpqlLikeSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val stringExpression1 = Paths.path(Book::title)
+    private val stringExpression2 = Expressions.value("pattern")
+
+    private val charExpression1 = Expressions.value('_')
+
     @Test
     fun handledType() {
         // when
@@ -32,14 +39,11 @@ class JpqlLikeSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN escape is not given, THEN draw only LIKE`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
         val part = Predicates.like(
-            Expressions.stringLiteral("value"),
-            Expressions.stringLiteral("pattern"),
+            stringExpression1,
+            stringExpression2,
         )
         val context = TestRenderContext(serializer)
 
@@ -48,26 +52,21 @@ class JpqlLikeSerializerTest : WithAssertions {
 
         // then
         verifySequence {
-            serializer.serialize(part.value, writer, context)
-
+            serializer.serialize(stringExpression1, writer, context)
             writer.write(" ")
             writer.write("LIKE")
             writer.write(" ")
-
-            serializer.serialize(part.pattern, writer, context)
+            serializer.serialize(stringExpression2, writer, context)
         }
     }
 
     @Test
-    fun `serialize - WHEN escape is given, THEN draw LIKE with escape`() {
+    fun `serialize() draws the ESCAPE, when the escape is not null`() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
         val part = Predicates.like(
-            Expressions.stringLiteral("value"),
-            Expressions.stringLiteral("pattern"),
-            Expressions.charLiteral('/'),
+            stringExpression1,
+            stringExpression2,
+            charExpression1,
         )
         val context = TestRenderContext(serializer)
 
@@ -77,17 +76,13 @@ class JpqlLikeSerializerTest : WithAssertions {
         // then
         verifySequence {
             serializer.serialize(part.value, writer, context)
-
             writer.write(" ")
             writer.write("LIKE")
             writer.write(" ")
-
             serializer.serialize(part.pattern, writer, context)
-
             writer.write(" ")
             writer.write("ESCAPE")
             writer.write(" ")
-
             serializer.serialize(part.escape!!, writer, context)
         }
     }

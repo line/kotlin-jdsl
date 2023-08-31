@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.benchmark.sample.query.update
 
-import com.linecorp.kotlinjdsl.benchmark.entity.department.Department
-import com.linecorp.kotlinjdsl.benchmark.entity.employee.Employee
-import com.linecorp.kotlinjdsl.benchmark.entity.employee.EmployeeDepartment
+import com.linecorp.kotlinjdsl.benchmark.sample.entity.department.Department
+import com.linecorp.kotlinjdsl.benchmark.sample.entity.employee.Employee
+import com.linecorp.kotlinjdsl.benchmark.sample.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 
@@ -20,7 +20,7 @@ object UpdateQuery1 : () -> UpdateQuery<*> {
             ).asSubquery()
 
             update(
-                Employee::class,
+                entity(Employee::class),
             ).set(
                 path(Employee::nickname),
                 path(Employee::name),

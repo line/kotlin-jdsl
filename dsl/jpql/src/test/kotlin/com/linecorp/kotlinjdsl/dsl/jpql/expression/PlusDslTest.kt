@@ -1,127 +1,74 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import java.math.BigDecimal
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class PlusDslTest : AbstractJpqlDslTest() {
-    private val int1: Int = 1
-    private val nullableInt1: Int? = null
+class PlusDslTest : WithAssertions {
+    private val bigDecimal1 = BigDecimal.valueOf(100)
+
+    private val bigDecimalExpression1 = Expressions.value(bigDecimal1)
 
     @Test
-    fun `int expression plus int value`() {
+    fun `plus() with a property and a bigDecimal`() {
         // when
-        val expression = testJpql {
-            path(TestTable1::int1).plus(int1)
+        val expression1 = queryPart {
+            path(Book::price).plus(bigDecimal1)
         }
 
-        val actual: Expression<Int> = expression // for type check
+        val expression2 = queryPart {
+            plus(path(Book::price), bigDecimal1)
+        }
+
+        val actual1: Expression<BigDecimal> = expression1 // for type check
+        val actual2: Expression<BigDecimal> = expression2 // for type check
 
         // then
-        val expected = Expressions.plus(
-            Paths.path(TestTable1::int1),
-            Expressions.value(int1),
+        val expected1 = Expressions.plus(
+            value1 = Paths.path(Book::price),
+            value2 = Expressions.value(bigDecimal1),
         )
 
-        assertThat(actual).isEqualTo(expected)
+        val expected2 = Expressions.plus(
+            value1 = Expressions.parentheses(Paths.path(Book::price)),
+            value2 = Expressions.parentheses(Expressions.value(bigDecimal1)),
+        )
+
+        assertThat(actual1).isEqualTo(expected1)
+        assertThat(actual2).isEqualTo(expected2)
     }
 
     @Test
-    fun `int expression plus nullable int value`() {
+    fun `plus() with a property and a bigDecimal expression`() {
         // when
-        val expression = testJpql {
-            path(TestTable1::int1).plus(nullableInt1)
+        val expression1 = queryPart {
+            path(Book::price).plus(bigDecimalExpression1)
         }
 
-        val actual: Expression<Int> = expression // for type check
-
-        // then
-        val expected = Expressions.plus(
-            Paths.path(TestTable1::int1),
-            Expressions.value(nullableInt1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `int expression plus int expression`() {
-        // when
-        val expression = testJpql {
-            path(TestTable1::int1).plus(path(TestTable1::int2))
+        val expression2 = queryPart {
+            plus(path(Book::price), bigDecimalExpression1)
         }
 
-        val actual: Expression<Int> = expression // for type check
+        val actual1: Expression<BigDecimal> = expression1 // for type check
+        val actual2: Expression<BigDecimal> = expression2 // for type check
 
         // then
-        val expected = Expressions.plus(
-            Paths.path(TestTable1::int1),
-            Paths.path(TestTable1::int2),
+        val expected1 = Expressions.plus(
+            value1 = Paths.path(Book::price),
+            value2 = bigDecimalExpression1,
         )
 
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `number expression plus int value`() {
-        // when
-        val expression = testJpql {
-            path(TestTable1::number1).plus(int1)
-        }
-
-        val actual: Expression<Number> = expression // for type check
-
-        // then
-        val expected = Expressions.plus(
-            Paths.path(TestTable1::number1),
-            Expressions.value(int1),
+        val expected2 = Expressions.plus(
+            value1 = Expressions.parentheses(Paths.path(Book::price)),
+            value2 = Expressions.parentheses(bigDecimalExpression1),
         )
 
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `number expression plus nullable int value`() {
-        // when
-        val expression = testJpql {
-            path(TestTable1::number1).plus(nullableInt1)
-        }
-
-        val actual: Expression<Number> = expression // for type check
-
-        // then
-        val expected = Expressions.plus(
-            Paths.path(TestTable1::number1),
-            Expressions.value(nullableInt1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `number expression plus int expression`() {
-        // when
-        val expression = testJpql {
-            path(TestTable1::number1).plus(path(TestTable1::int2))
-        }
-
-        val actual: Expression<Number> = expression // for type check
-
-        // then
-        val expected = Expressions.plus(
-            Paths.path(TestTable1::number1),
-            Paths.path(TestTable1::int2),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    private class TestTable1 {
-        val number1: Number = 1
-
-        val int1: Int = 1
-        val int2: Int = 2
+        assertThat(actual1).isEqualTo(expected1)
+        assertThat(actual2).isEqualTo(expected2)
     }
 }

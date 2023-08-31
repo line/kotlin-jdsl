@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.benchmark.sample.query.select
 
-import com.linecorp.kotlinjdsl.benchmark.entity.employee.Employee
+import com.linecorp.kotlinjdsl.benchmark.sample.entity.employee.Employee
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 

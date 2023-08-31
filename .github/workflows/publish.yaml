@@ -7,8 +7,13 @@ on:
   release:
     types: [ created ]
 
+concurrency:
+  group: publish-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
 jobs:
   publish:
+    name: Publish to the Maven Central Repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

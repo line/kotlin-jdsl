@@ -1,17 +1,17 @@
 # Sorts
 
-Sort represents an orderby item in JPQL.
-
-Sort can be represented by the asc and desc extension functions in [expression](expressions.md).
+Kotlin JDSL has `Sort` interface to represent an order-by item in JPQL.
+To build `Sort`, you can use `asc()` and `desc()` after [`Expression`](expressions.md).
 
 ```kotlin
 path(Book::isbn).asc()
+
 path(Book::isbn).desc()
 ```
 
 ## Null order
 
-You can use null order, depending on your JPA implementation. NULL ORDER determines whether null values are sorted before or after a column containing null values.
+Calling `nullsFirst()` or `nullsLast()` on `Sort` allows to specify where null values appear in an ordered result.
 
 ```kotlin
 path(Employee::nickname).asc().nullsFirst()

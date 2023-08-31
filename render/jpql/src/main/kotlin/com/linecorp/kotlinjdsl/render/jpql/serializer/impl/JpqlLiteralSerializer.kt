@@ -1,11 +1,13 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
+@Internal
 class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
     override fun handledType(): KClass<JpqlLiteral<*>> {
         return JpqlLiteral::class
@@ -26,23 +28,29 @@ class JpqlLiteralSerializer : JpqlSerializer<JpqlLiteral<*>> {
     }
 
     private fun serialize(part: JpqlLiteral.IntLiteral, writer: JpqlWriter) {
-        writer.write(part.int)
+        writer.write(part.int.toString())
     }
 
     private fun serialize(part: JpqlLiteral.LongLiteral, writer: JpqlWriter) {
-        writer.write(part.long)
+        writer.write(part.long.toString())
+        writer.write("L")
     }
 
     private fun serialize(part: JpqlLiteral.FloatLiteral, writer: JpqlWriter) {
-        writer.write(part.float)
+        writer.write(part.float.toString())
+        writer.write("F")
     }
 
     private fun serialize(part: JpqlLiteral.DoubleLiteral, writer: JpqlWriter) {
-        writer.write(part.double)
+        writer.write(part.double.toString())
     }
 
     private fun serialize(part: JpqlLiteral.BooleanLiteral, writer: JpqlWriter) {
-        writer.write(part.boolean)
+        if (part.boolean) {
+            writer.write("TRUE")
+        } else {
+            writer.write("FALSE")
+        }
     }
 
     private fun serialize(part: JpqlLiteral.CharLiteral, writer: JpqlWriter) {

@@ -22,13 +22,13 @@ internal data class DeleteQueryDsl<T : Any>(
     }
 
     override fun whereAnd(vararg predicates: Predicatable?): JpqlQueryable<DeleteQuery<T>> {
-        builder.where(Predicates.and(predicates.mapNotNull { it?.toPredicate() }))
+        builder.where(Predicates.and(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) }))
 
         return this
     }
 
     override fun whereOr(vararg predicates: Predicatable?): JpqlQueryable<DeleteQuery<T>> {
-        builder.where(Predicates.or(predicates.mapNotNull { it?.toPredicate() }))
+        builder.where(Predicates.or(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) }))
 
         return this
     }

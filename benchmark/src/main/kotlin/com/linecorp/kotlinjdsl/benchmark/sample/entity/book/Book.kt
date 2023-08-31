@@ -1,8 +1,17 @@
 @file:Suppress("LeakingThis")
 
-package com.linecorp.kotlinjdsl.benchmark.entity.book
+package com.linecorp.kotlinjdsl.benchmark.sample.entity.book
 
-import jakarta.persistence.*
+import jakarta.persistence.AttributeOverride
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Embedded
+import jakarta.persistence.EmbeddedId
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
+import jakarta.persistence.Table
 import java.time.OffsetDateTime
 import java.util.*
 

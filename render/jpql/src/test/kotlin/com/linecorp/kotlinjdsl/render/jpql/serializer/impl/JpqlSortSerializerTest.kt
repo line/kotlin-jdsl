@@ -1,20 +1,18 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sorts
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.impl.JpqlSort
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
 
 @JpqlSerializerTest
 class JpqlSortSerializerTest : WithAssertions {
@@ -26,6 +24,8 @@ class JpqlSortSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val expression1 = Paths.path(Book::isbn)
+
     @Test
     fun handledType() {
         // when
@@ -35,66 +35,129 @@ class JpqlSortSerializerTest : WithAssertions {
         assertThat(actual).isEqualTo(JpqlSort::class)
     }
 
-    @ParameterizedTest
-    @MethodSource("withoutNullOrder")
-    fun `serialize - WHEN null order is not given, THEN draw only direction`(
-        part: JpqlSort
-    ) {
+    @Test
+    fun `serialize() can draw the asc`() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
+        val part = Sorts.asc(
+            expression1,
+        )
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part, writer, context)
+        sut.serialize(part as JpqlSort, writer, context)
 
         // then
         verifySequence {
-            serializer.serialize(part.expr, writer, context)
-
+            serializer.serialize(expression1, writer, context)
             writer.write(" ")
-            writer.write(part.order.name)
+            writer.write("ASC")
         }
     }
 
-    @ParameterizedTest
-    @MethodSource("withNullOrder")
-    fun `serialize - WHEN null order is given, THEN draw direction with null order`(
-        part: JpqlSort
-    ) {
+    @Test
+    fun `serialize() can draw the desc`() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
+        val part = Sorts.desc(
+            expression1,
+        )
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part, writer, context)
+        sut.serialize(part as JpqlSort, writer, context)
 
         // then
         verifySequence {
-            serializer.serialize(part.expr, writer, context)
-
+            serializer.serialize(expression1, writer, context)
             writer.write(" ")
-            writer.write(part.order.name)
-            writer.write(" ")
-
-            writer.write("NULLS ${part.nullOrder!!.name}")
+            writer.write("DESC")
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun withoutNullOrder() = listOf(
-            Arguments.of(Sorts.asc(Expressions.stringLiteral("expr"), null)),
-            Arguments.of(Sorts.desc(Expressions.stringLiteral("expr"), null)),
+    @Test
+    fun `serialize() can draw the asc and nullsFirst`() {
+        // given
+        val part = Sorts.asc(
+            expression1,
+            Sort.NullOrder.FIRST,
         )
+        val context = TestRenderContext(serializer)
 
-        @JvmStatic
-        fun withNullOrder() = listOf(
-            Arguments.of(Sorts.asc(Expressions.stringLiteral("expr"), Sort.NullOrder.FIRST)),
-            Arguments.of(Sorts.desc(Expressions.stringLiteral("expr"), Sort.NullOrder.LAST)),
+        // when
+        sut.serialize(part as JpqlSort, writer, context)
+
+        // then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("ASC")
+            writer.write(" ")
+            writer.write("NULLS FIRST")
+        }
+    }
+
+    @Test
+    fun `serialize() can draw the asc and nullsLast`() {
+        // given
+        val part = Sorts.asc(
+            expression1,
+            Sort.NullOrder.LAST,
         )
+        val context = TestRenderContext(serializer)
+
+        // when
+        sut.serialize(part as JpqlSort, writer, context)
+
+        // then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("ASC")
+            writer.write(" ")
+            writer.write("NULLS LAST")
+        }
+    }
+
+    @Test
+    fun `serialize() can draw the desc and nullsFirst`() {
+        // given
+        val part = Sorts.desc(
+            expression1,
+            Sort.NullOrder.FIRST,
+        )
+        val context = TestRenderContext(serializer)
+
+        // when
+        sut.serialize(part as JpqlSort, writer, context)
+
+        // then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("DESC")
+            writer.write(" ")
+            writer.write("NULLS FIRST")
+        }
+    }
+
+    @Test
+    fun `serialize() can draw the desc and nullsLast`() {
+        // given
+        val part = Sorts.desc(
+            expression1,
+            Sort.NullOrder.LAST,
+        )
+        val context = TestRenderContext(serializer)
+
+        // when
+        sut.serialize(part as JpqlSort, writer, context)
+
+        // then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("DESC")
+            writer.write(" ")
+            writer.write("NULLS LAST")
+        }
     }
 }

@@ -1,26 +1,29 @@
-package com.linecorp.kotlinjdsl.benchmark.entity.employee
+package com.linecorp.kotlinjdsl.benchmark.sample.entity.employee
 
-import jakarta.persistence.*
+import jakarta.persistence.AttributeOverride
+import jakarta.persistence.Column
+import jakarta.persistence.DiscriminatorValue
+import jakarta.persistence.Embedded
+import jakarta.persistence.Entity
 
 @DiscriminatorValue("FULL_TIME")
 @Entity
 class FullTimeEmployee(
-    override val employeeId: Long,
+    employeeId: Long,
 
-    override var name: String,
+    name: String,
 
-    override var nickname: String?,
+    nickname: String?,
 
-    override var phone: String,
+    phone: String,
 
-    override var address: EmployeeAddress,
+    address: EmployeeAddress,
+
+    departments: MutableSet<EmployeeDepartment>,
 
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "annual_salary"))
     var annualSalary: EmployeeSalary,
-
-    @OneToMany(mappedBy = "employee")
-    override val departments: MutableSet<EmployeeDepartment>,
 ) : Employee(
     employeeId = employeeId,
     name = name,
@@ -28,4 +31,6 @@ class FullTimeEmployee(
     phone = phone,
     address = address,
     departments = departments,
-)
+) {
+    override fun toString(): String = "FullTimeEmployee(employeeId=$employeeId)"
+}

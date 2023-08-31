@@ -1,6 +1,7 @@
 # Paths
 
-Path represents an path expression in JPQL. It can be represented by path or invoke function.
+Kotlin JDSL has `Path` interface to represent a path expression in JPQL.
+To build `Path`, you can use `path()` and `invoke()`.
 
 ```kotlin
 // Book.isbn.value
@@ -14,7 +15,7 @@ entity(Book::class, "b")(Book::isbn)(Isbn::value)
 
 ## Expression
 
-Path can be used as an expression where an expression is required, such as in a [select clause](statements.md#select-clause) or [predicate](predicates.md).
+`Path` can be used as [`Expression`](expressions.md), such as in a [select clause](statements.md#select-clause) or [predicate](predicates.md).
 
 ```kotlin
 // SELECT Book.isbn FROM Book AS Book WHERE Book.isbn.value = :param1
@@ -31,7 +32,7 @@ jpql {
 
 ## Treat
 
-Path can be cast to sub-class using treat function.
+To cast type of `Path` to subclass, you can use `treat()`.
 
 ```kotlin
 path(EmployeeDepartment::employee).treat(FullTimeEmployee::class)

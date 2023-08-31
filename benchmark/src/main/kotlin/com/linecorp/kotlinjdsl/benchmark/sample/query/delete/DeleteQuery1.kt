@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.benchmark.sample.query.delete
 
-import com.linecorp.kotlinjdsl.benchmark.entity.department.Department
-import com.linecorp.kotlinjdsl.benchmark.entity.employee.Employee
-import com.linecorp.kotlinjdsl.benchmark.entity.employee.EmployeeDepartment
+import com.linecorp.kotlinjdsl.benchmark.sample.entity.department.Department
+import com.linecorp.kotlinjdsl.benchmark.sample.entity.employee.Employee
+import com.linecorp.kotlinjdsl.benchmark.sample.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 
@@ -20,7 +20,7 @@ object DeleteQuery1 : () -> DeleteQuery<*> {
             ).asSubquery()
 
             deleteFrom(
-                Employee::class,
+                entity(Employee::class),
             ).where(
                 path(Employee::employeeId).`in`(employeeIds),
             )

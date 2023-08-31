@@ -2,13 +2,14 @@
 
 ## Spring Boot AutoConfigure
 
-Kotlin JDSL supports Spring Boot AutoConfigure. If you have Spring Boot and `com.linecorp.kotlinjdsl:spring-data-jpa-support` dependency together, the `JpqlRenderContext` bean is automatically created by `KotlinJdslAutoConfiguration`.
+Kotlin JDSL은 Spring Boot AutoConfigure를 지원합니다.
+만약 프로젝트가 Spring Boot와 `com.linecorp.kotlinjdsl:spring-data-jpa-support` dependency를 같이 포함하고 있다면, `JpqlRenderContext` bean이 `KotlinJdslAutoConfiguration`를 통해 자동 생성 됩니다.
 
-If you register your `JpqlSerializer` as a bean, it will be included with the `JpqlRenderContext` bean.
+만약 `JpqlSerializer`를 bean으로 선언했다면, 자동으로 `JpqlRenderContext`에 해당 bean이 포함됩니다.
 
 ## Spring Data Repository
 
-Kotlin JDSL supports extensions from the Spring Data Jpa Repository. If you inherit `KotlinJdslJpqlExecutor` for your repository interface, `KotlinJdslAutoConfiguration` allows you to use the Spring Data Repository extensions provided by Kotlin JDSL.
+만약 사용하고 있는 `JpaRepository`가 `KotlinJdslJpqlExecutor`를 상속하면, Kotlin JDSL이 제공하는 확장 기능을 사용할 수 있습니다.
 
 ```kotlin
 interface AuthorRepository : JpaRepository<Author, Long>, KotlinJdslJpqlExecutor

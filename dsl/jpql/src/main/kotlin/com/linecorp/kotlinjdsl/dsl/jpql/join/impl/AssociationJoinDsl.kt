@@ -3,16 +3,17 @@ package com.linecorp.kotlinjdsl.dsl.jpql.join.impl
 import com.linecorp.kotlinjdsl.dsl.jpql.join.AssociationJoinAsStep
 import com.linecorp.kotlinjdsl.dsl.jpql.join.AssociationJoinOnStep
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entityable
 import com.linecorp.kotlinjdsl.querymodel.jpql.from.From
 import com.linecorp.kotlinjdsl.querymodel.jpql.join.Join
 import com.linecorp.kotlinjdsl.querymodel.jpql.join.JoinType
 import com.linecorp.kotlinjdsl.querymodel.jpql.join.Joinable
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 
 @PublishedApi
 internal data class AssociationJoinDsl<T : Any>(
-    private val builder: AssociationJoinBuilder<T>
+    private val builder: AssociationJoinBuilder<T>,
 ) : AssociationJoinOnStep<T>,
     AssociationJoinAsStep<T> {
 
@@ -28,20 +29,20 @@ internal data class AssociationJoinDsl<T : Any>(
         ),
     )
 
-    override fun on(predicate: Predicate): Joinable {
-        builder.on(predicate)
+    override fun on(predicate: Predicatable): AssociationJoinAsStep<T> {
+        builder.on(predicate.toPredicate())
 
         return this
     }
 
-    override fun `as`(entity: Entity<T>): Joinable {
-        builder.alias(entity)
+    override fun `as`(entity: Entityable<T>): Joinable {
+        builder.alias(entity.toEntity())
 
         return this
     }
 
-    override fun alias(entity: Entity<T>): Joinable {
-        builder.alias(entity)
+    override fun alias(entity: Entityable<T>): Joinable {
+        builder.alias(entity.toEntity())
 
         return this
     }

@@ -1,19 +1,23 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
-import com.linecorp.kotlinjdsl.querymodel.jpql.update.Updates
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.impl.JpqlUpdateQuery
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderClause
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderStatement
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
@@ -27,6 +31,16 @@ class JpqlUpdateQuerySerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val entity1 = Entities.entity(Book::class, "book01")
+
+    private val path1 = Paths.path(Book::price)
+    private val path2 = Paths.path(Book::salePrice)
+
+    private val expression1 = Expressions.value(BigDecimal.valueOf(100))
+    private val expression2 = Expressions.value(BigDecimal.valueOf(50))
+
+    private val predicate1 = Predicates.equal(Paths.path(Book::title), Expressions.value("Book01"))
+
     @Test
     fun handledType() {
         // when
@@ -37,21 +51,16 @@ class JpqlUpdateQuerySerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN where is null, THEN draw only update and set`() {
+    fun serialize() {
         // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: Iterable<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
+        val pathAndExpressions: Map<Path<*>, Expression<*>> = mapOf(
+            path1 to expression1,
+            path2 to expression2,
+        )
 
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Updates.update(
-            entity = mockkClass(Entity::class),
-            set = emptyMap(),
-            where = null,
+        val part = UpdateQueries.updateQuery(
+            entity = entity1,
+            set = pathAndExpressions,
         )
         val context = TestRenderContext(serializer)
 
@@ -62,36 +71,36 @@ class JpqlUpdateQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("UPDATE")
             writer.write(" ")
-
-            serializer.serialize(part.entity, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Update)
-
+            serializer.serialize(entity1, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Update)
             writer.write(" ")
             writer.write("SET")
             writer.write(" ")
-
-            writer.writeEach(part.set.entries, ", ", "", "", any())
+            writer.writeEach(pathAndExpressions.entries, ", ", "", "", any())
+            serializer.serialize(path1, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Set)
+            writer.write(" ")
+            writer.write("=")
+            writer.write(" ")
+            serializer.serialize(expression1, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Set)
+            serializer.serialize(path2, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Set)
+            writer.write(" ")
+            writer.write("=")
+            writer.write(" ")
+            serializer.serialize(expression2, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Set)
         }
     }
 
     @Test
-    fun `serialize - WHEN set is not empty, THEN draw set elements`() {
+    fun `serialize() draws the WHERE, when the where is not null`() {
         // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: Iterable<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
+        val pathAndExpressions: Map<Path<*>, Expression<*>> = mapOf(
+            path1 to expression1,
+            path2 to expression2,
+        )
 
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Updates.update(
-            entity = mockkClass(Entity::class),
-            set = mapOf(
-                Paths.path(TestTable1::int1) to Expressions.value("value1"),
-                Paths.path(TestTable1::int1) to Expressions.value("value2"),
-            ),
-            where = null,
+        val part = UpdateQueries.updateQuery(
+            entity = entity1,
+            set = pathAndExpressions,
+            where = predicate1,
         )
         val context = TestRenderContext(serializer)
 
@@ -102,72 +111,25 @@ class JpqlUpdateQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("UPDATE")
             writer.write(" ")
-
-            serializer.serialize(part.entity, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Update)
-
+            serializer.serialize(entity1, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Update)
             writer.write(" ")
             writer.write("SET")
             writer.write(" ")
-
-            writer.writeEach(part.set.entries, ", ", "", "", any())
-
-            val fromContext = context + JpqlRenderStatement.Update + JpqlRenderClause.Set
-            part.set.entries.forEach { (path, expr) ->
-                serializer.serialize(path, writer, fromContext)
-
-                writer.write(" ")
-                writer.write("=")
-                writer.write(" ")
-
-                serializer.serialize(expr, writer, fromContext)
-            }
-        }
-    }
-
-    @Test
-    fun `serialize - WHEN where is not null, THEN draw where clause`() {
-        // given
-        every { writer.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-            val predicates: Iterable<Any> = arg(0)
-            val write: (Any) -> Unit = arg(4)
-
-            predicates.forEach { predicate -> write(predicate) }
-        }
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Updates.update(
-            entity = mockkClass(Entity::class),
-            set = emptyMap(),
-            where = Predicates.isNull(Expressions.stringLiteral("field1")),
-        )
-        val context = TestRenderContext(serializer)
-
-        // when
-        sut.serialize(part as JpqlUpdateQuery<*>, writer, context)
-
-        // then
-        verifySequence {
-            writer.write("UPDATE")
+            writer.writeEach(pathAndExpressions.entries, ", ", "", "", any())
+            serializer.serialize(path1, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Set)
             writer.write(" ")
-
-            serializer.serialize(part.entity, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Update)
-
+            writer.write("=")
             writer.write(" ")
-            writer.write("SET")
+            serializer.serialize(expression1, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Set)
+            serializer.serialize(path2, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Set)
             writer.write(" ")
-
-            writer.writeEach(part.set.entries, ", ", "", "", any())
-
+            writer.write("=")
+            writer.write(" ")
+            serializer.serialize(expression2, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Set)
             writer.write(" ")
             writer.write("WHERE")
             writer.write(" ")
-
-            serializer.serialize(part.where!!, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Where)
+            serializer.serialize(predicate1, writer, context + JpqlRenderStatement.Update + JpqlRenderClause.Where)
         }
-    }
-
-    private class TestTable1 {
-        val int1 = 1
     }
 }

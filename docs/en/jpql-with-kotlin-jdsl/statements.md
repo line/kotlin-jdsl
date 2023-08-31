@@ -1,37 +1,36 @@
 # Statements
 
-With Kotlin JDSL, you can create select, update, and delete statements.
+The JPQL supports select, update, and delete statements. Kotlin JDSL provides a DSL to build them.
 
 ## Select statement
 
-By using select function within a block of jpql function, you can create a select statement. Each clause in the select statement can be represented by a function corresponding to the name of the clause.
+Calling `select()` in `jpql()` allows you to build a select statement.
 
 ```kotlin
 val query = jpql {
-    select<Row>(
-        path(Employee::employeeId).`as`(expression("employeeId")),
-        count(Employee::employeeId).`as`(expression("count")),
+    select(
+        path(Employee::employeeId),
     ).from(
         entity(Employee::class),
         join(Employee::departments),
     ).where(
-        path(EmployeeDepartment::departmentId).eq(3L)
+        type(entity(Employee::class)).eq(FullTimeEmployee::class)
     ).groupBy(
         path(Employee::employeeId),
     ).having(
         count(Employee::employeeId).greaterThan(1L),
     ).orderBy(
-        expression<Long>("employeeId").asc()
+        count(Employee::employeeId).desc(),
+        path(Employee::employeeId).asc(),
     )
 }
 ```
 
 ### Select clause
 
-A select clause can be represented by select function. Select function takes [Expressions](expressions.md) as
-parameters. If you pass only one Expression to select function, Kotlin JDSL will infer the type from the Expression.
-However, if you pass multiple Expressions, Kotlin JDSL cannot infer the type, so you need to specify the result type for
-select.
+To build a select clause in the select statement, you can use `select()` and pass [`Expression`](expressions.md) to project.
+If you pass only one `Expression` to `select()`, it will infer a return type from `Expression`.
+However, if you pass more than one `Expression`, it cannot infer the type, so you need to specify the type.
 
 ```kotlin
 // It can infer the result type.
@@ -44,23 +43,25 @@ select(path(Author::authorId), path(Author::name))
 select<CustomEntity>(path(Author::authorId), path(Author::name))
 ```
 
-DTO projection can be represented by selectNew function. By specifying the DTO class you want to project in selectNew function and passing the parameters of the class as parameters, you can represent the DTO projection.
+#### DTO projection
 
-<pre class="language-kotlin"><code class="lang-kotlin"><strong>data class Row(
-</strong>    val departmentId: Long,
+Specifying a DTO class and passing parameters of the constructor to `selectNew()` allows you to build a DTO projection.
+
+```kotlin
+data class Row(
+    val departmentId: Long,
     val count: Long,
 )
 
-selectNew&#x3C;Row>(
+selectNew<Row>(
     path(EmployeeDepartment::departmentId),
     count(Employee::employeeId),
 )
-</code></pre>
+```
 
 ### From clause
 
-A from clause can be represented by from function. From function takes [Entities](entities.md)
-and [Joins](statements.md#join) as parameters. The first parameter of the from function can take only Entity.
+To build a from clause in the select statement, you can use `from()` and pass [Entity](entities.md) and [Join](statements.md#join) to specify the entities to select from.
 
 ```kotlin
 from(
@@ -69,19 +70,54 @@ from(
 )
 ```
 
-### Join
+#### Join
 
-A join clause can be represented by join or fetchJoin functions. There are two types of joins: Join and Association join. Join represents a join between two unrelated entities, and the on condition is always required. Association join represents a join between two related entities, and the on condition is optional.
+To combining the entities to select from, you can use `join()` and `fetchJoin()`.
+There are two types of `join()`: Join and Association Join.
+This is distinguished by whether `join()` is used between two unrelated entities or between two related entities.
 
 ```kotlin
+@Entity
+// ...
+class Book(
+    // ...
+
+    @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val authors: MutableSet<BookAuthor>,
+)
+
+@Entity
+// ...
+class BookAuthor(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+) {
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "isbn")
+    lateinit var book: Book
+}
+
+@Entity
+// ...
+class Author(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+
+    // ...
+)
+
 from(
     entity(Book::class),
-    join(Book::authors),
-    join(Author::class).on(path(BookAuthor::authorId).eq(path(Author::authorId))),
+    join(Book::authors), // Association Join
+    join(Author::class).on(path(BookAuthor::authorId).eq(path(Author::authorId))), // Join
 )
 ```
 
-By using as function after join function, you can use the aliased entity in other clauses of the select statement. If you want to include more than one entity of the same type in the from clause, you can use this.
+Calling `as()` after `join()` allows you to alias the entity being joined.
+This can be useful if you use multiple entities with the same type in a from clause.
 
 ```kotlin
 from(
@@ -92,13 +128,9 @@ from(
 
 ### Where clause
 
-A where clause can be represented by where function. Where function takes [Predicates](predicates.md) as parameters. You
-can use the whereAnd and whereOr functions to combine Predicates into AND or OR.
-
-{% hint style="info" %}
-If the all Predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this
-will print 1 = 0.
-{% endhint %}
+To build a where clause in the select statement, you can use `where()` and pass [Predicate](predicates.md) to restrict the data.
+You can use `whereAnd()` as a shortened form of `where()` and `and()`.
+You can also use `whereOr()` as a shortened form of `where()` and `or()`.
 
 ```kotlin
 where(
@@ -109,34 +141,9 @@ where(
 )
 ```
 
-WhereAnd and whereOr functions ignore the passed parameter if it is null. You can use this feature to create readable dynamic queries.
-
-```kotlin
-data class BookSpec(
-    val isbn: Isbn?,
-    val publisherId: Long?,
-    val authorId: Long?,
-)
-
-val query = jpql {
-    select(
-        path(Book::isbn),
-    ).from(
-        entity(Book::class),
-        join(Book::publisher),
-        join(Book::authors),
-    ).whereAnd(
-        spec.isbn?.let { path(Book::isbn).eq(it) },
-        spec.publisherId?.let { path(BookPublisher::publisherId).eq(it) },
-        spec.authorId?.let { path(BookAuthor::authorId).eq(it) },
-    )
-}
-```
-
 ### Group by clause
 
-A group by clause can be represented by groupBy function. GroupBy function takes [Expressions](expressions.md) as
-parameters.
+To build a group by clause in the select statement, you can use `groupBy()` and pass [Expression](expressions.md) to create unique groups of data.
 
 ```kotlin
 groupBy(
@@ -146,13 +153,9 @@ groupBy(
 
 ### Having clause
 
-A having clause can be represented by having function. Having function takes [Predicates](predicates.md) as parameters.
-You can use the havingAnd and havingOr functions to combine Predicates into AND or OR.
-
-{% hint style="info" %}
-If the all Predicates in havingAnd function are all null or empty, this will print 1 = 1. For the havingOr function,
-this will print 1 = 0.
-{% endhint %}
+To build a having clause in the select statement, you can use `having()` and pass [Expression](expressions.md) to further restrict the data.
+You can use `havingAnd()` as a shortened form of `having()` and `and()`.
+You can also use `havingOr()` as a shortened form of `having()` and `or()`.
 
 ```kotlin
 having(
@@ -162,7 +165,7 @@ having(
 
 ### Order by clause
 
-A order by clause can be represented by orderBy function. OrderBy function takes [sorts](sorts.md) as parameters.
+To build an order by clause in the select statement, you can use `orderBy()` and pass [Sort](sorts.md) to return data in the declared order.
 
 ```kotlin
 orderBy(
@@ -172,8 +175,7 @@ orderBy(
 
 ## Update statement
 
-By using update function within a block of jpql function, you can create an update statement. Each clause in the update
-statement can be represented by a function corresponding to the name of the clause.
+Calling `update()` in `jpql()` allows you to build an update statement.
 
 ```kotlin
 val query = jpql {
@@ -193,7 +195,7 @@ val query = jpql {
 
 ### Update clause
 
-An update clause can be represented by update function. Update function takes an [entity](entities.md) as a parameter.
+To build an update clause in the update statement, you can use `update()` and pass [Entity](entities.md) to specify the entity to modify.
 
 ```kotlin
 update(
@@ -203,9 +205,8 @@ update(
 
 ### Set clause
 
-A set clause can be represented by set function. Set function takes [Expressions](expressions.md) as parameters. The
-first parameter of set function is the target to be assigned, and the second parameter is the value to assign. You can
-represent assignments to multiple columns by using set function after set function.
+To build a set clause in the update statement, you can use `set()` and pass [Expression](expressions.md) to assign values.
+You can use multiple assignments by adding `set()` after `set()`.
 
 ```kotlin
 set(
@@ -219,13 +220,9 @@ set(
 
 ### Where clause
 
-A where clause can be represented by where function. Where function takes [Predicates](predicates.md) as parameters. You
-can use the whereAnd and whereOr functions to combine Predicates into AND or OR.
-
-{% hint style="info" %}
-If the all Predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this
-will print 1 = 0.
-{% endhint %}
+To build a where clause in the update statement, you can use `where()` and pass [Predicate](predicates.md) to restrict the data.
+You can use `whereAnd()` as a shortened form of `where()` and `and()`.
+You can also use `whereOr()` as a shortened form of `where()` and `or()`.
 
 ```kotlin
 where(
@@ -236,28 +233,9 @@ where(
 )
 ```
 
-WhereAnd and whereOr functions ignore the passed parameter if it is null. You can use this feature to create readable dynamic queries.
-
-```kotlin
-val query = jpql {
-    update(
-        entity(Book::class)
-    ).set(
-        path(Book::price)(BookPrice::value),
-        BigDecimal.valueOf(100)
-    ).set(
-        path(Book::salePrice)(BookPrice::value),
-        BigDecimal.valueOf(80)
-    ).whereAnd(
-        spec.isbn?.let { path(Book::isbn).eq(it) },
-        spec.publishDate?.let { path(Book::publishDate).eq(it) },
-    )
-}
-```
-
 ## Delete statement
 
-By using deleteFrom function within a block of jpql function, you can create a delete statement. Each clause in the delete statement can be represented by a function corresponding to the name of the clause.
+Calling `deleteFrom()` in `jpql()` allows you to build a delete statement.
 
 ```kotlin
 val query = jpql {
@@ -271,7 +249,7 @@ val query = jpql {
 
 ### Delete from clause
 
-An delete from clause can be represented by deleteFrom function. DeleteFrom function takes an [entity](entities.md) as a parameter.
+To build a delete from clause in the delete statement, you can use `deleteFrom()` and pass [Entity](entities.md) to specify the entity to delete.
 
 ```kotlin
 deleteFrom(
@@ -281,13 +259,9 @@ deleteFrom(
 
 ### Where clause
 
-A where clause can be represented by where function. Where function takes [Predicates](predicates.md) as parameters. You
-can use the whereAnd and whereOr functions to combine Predicates into AND or OR.
-
-{% hint style="info" %}
-If the all Predicates in whereAnd function are all null or empty, this will print 1 = 1. For the whereOr function, this
-will print 1 = 0.
-{% endhint %}
+To build a where clause in the delete statement, you can use `where()` and pass [Predicate](predicates.md) to restrict the data.
+You can use `whereAnd()` as a shortened form of `where()` and `and()`.
+You can also use `whereOr()` as a shortened form of `where()` and `or()`.
 
 ```kotlin
 where(
@@ -296,22 +270,4 @@ where(
         OffsetDateTime.parse("2023-06-30T23:59:59+09:00"),
     ),
 )
-```
-
-WhereAnd and whereOr functions ignore the passed parameter if it is null. You can use this feature to create readable dynamic queries.
-
-```kotlin
-data class BookSpec(
-    val isbn: Isbn?,
-    val publishDate: OffsetDateTime?,
-)
-
-val query = jpql {
-    deleteFrom(
-        entity(Book::class),
-    ).whereAnd(
-        spec.isbn?.let { path(Book::isbn).eq(it) },
-        spec.publishDate?.let { path(Book::publishDate).eq(it) },
-    )
-}
 ```

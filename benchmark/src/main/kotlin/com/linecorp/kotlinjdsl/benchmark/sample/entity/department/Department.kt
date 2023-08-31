@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.benchmark.entity.department
+package com.linecorp.kotlinjdsl.benchmark.sample.entity.department
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -18,4 +18,6 @@ class Department(
 ) {
     override fun equals(other: Any?): Boolean = Objects.equals(departmentId, (other as? Department)?.departmentId)
     override fun hashCode(): Int = Objects.hashCode(departmentId)
+
+    override fun toString(): String = "Department(departmentId=$departmentId)"
 }

@@ -16,4 +16,3 @@ data class JpqlLeftAssociationFetchJoin<T : Any> internal constructor(
     override val joinType: JoinType = JoinType.LEFT
     override val fetch: Boolean = true
 }
-

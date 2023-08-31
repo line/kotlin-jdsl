@@ -1,14 +1,16 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNot
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
@@ -22,6 +24,8 @@ class JpqlNotSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val predicate1 = Predicates.equal(Paths.path(Book::title), Expressions.value("Book01"))
+
     @Test
     fun handledType() {
         // when
@@ -32,16 +36,10 @@ class JpqlNotSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN not is given, THEN draw full syntax`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
         val part = Predicates.not(
-            Predicates.equal(
-                Expressions.intLiteral(123),
-                Expressions.intLiteral(456),
-            ),
+            predicate1,
         )
         val context = TestRenderContext(serializer)
 
@@ -51,11 +49,8 @@ class JpqlNotSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("NOT")
-            writer.write("(")
-
-            serializer.serialize(part.predicate, writer, context)
-
-            writer.write(")")
+            writer.writeParentheses(any())
+            serializer.serialize(predicate1, writer, context)
         }
     }
 }

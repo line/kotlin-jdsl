@@ -1,10 +1,10 @@
 # Subqueries
 
-A subquery is a [select statement](statements.md#select-statement) within another statement.
+Calling `asEntity()` and `asSubquery()` after a [select statement](statements.md#select-statement) allows you to build a subquery.
 
 ## Derived entity
 
-A select statement can be used as [entity](entities.md) using asEntity extension function. So you can pass it to a [from clause](statements.md#from-clause) to reference it in other clauses of a select statement.
+A select statement can be used as [Entity](entities.md) using `asEntity()`.
 
 ```kotlin
 data class DerivedEntity(
@@ -35,9 +35,7 @@ val query = jpql {
 
 ## Subquery
 
-A [select statement](statements.md#select-statement) can be used as [expression](expressions.md) using asSubquery
-extension function. So you can pass it to [expression](expressions.md) or [predicate](predicates.md). You can also pass
-it to a [select clause](statements.md#select-clause), depending on your JPA implementation.
+A select statement can be used as [Expression](expressions.md) using `asSubquery()`
 
 ```kotlin
 val query = jpql {

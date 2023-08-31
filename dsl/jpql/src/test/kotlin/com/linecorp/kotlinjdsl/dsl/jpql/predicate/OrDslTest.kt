@@ -1,96 +1,67 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.predicate
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import java.math.BigDecimal
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class OrDslTest : AbstractJpqlDslTest() {
-    private val int1: Int = 1
-    private val int2: Int = 1
+class OrDslTest : WithAssertions {
+    private val predicate1 = Predicates.equal(
+        Paths.path(Book::price),
+        Expressions.value(BigDecimal.valueOf(100)),
+    )
+
+    private val predicate2 = Predicates.equal(
+        Paths.path(Book::salePrice),
+        Expressions.value(BigDecimal.valueOf(200)),
+    )
 
     @Test
-    fun `or predicate predicate`() {
+    fun `or() with predicates`() {
         // when
-        val actual = testJpql {
+        val predicate = queryPart {
             or(
-                path(TestTable::int1).equal(int1),
-                path(TestTable::int1).equal(int2),
+                predicate1,
+                null,
+                predicate2,
             )
         }.toPredicate()
 
+        val actual: Predicate = predicate // for type check
+
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.or(
-                listOf(
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int1),
-                    ),
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int2),
-                    ),
-                ),
+        val expected = Predicates.or(
+            listOf(
+                Predicates.parentheses(predicate1),
+                Predicates.parentheses(predicate2),
             ),
         )
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `or collection predicate predicate`() {
+    fun `or() with a predicate and a predicate`() {
         // when
-        val actual = testJpql {
-            or(
-                listOf(
-                    path(TestTable::int1).equal(int1),
-                    path(TestTable::int1).equal(int2),
-                ),
-            )
+        val predicate = queryPart {
+            predicate1.or(predicate2)
         }.toPredicate()
 
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.or(
-                listOf(
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int1),
-                    ),
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int2),
-                    ),
-                ),
-            ),
-        )
-    }
-
-    @Test
-    fun `predicate or predicate`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).equal(int1).or(path(TestTable::int1).equal(int2))
-        }.toPredicate()
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.or(
-                listOf(
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int1),
-                    ),
-                    Predicates.equal(
-                        Paths.path(TestTable::int1),
-                        Expressions.value(int2),
-                    ),
-                ),
+        val expected = Predicates.or(
+            listOf(
+                predicate1,
+                predicate2,
             ),
         )
-    }
 
-    private class TestTable {
-        val int1: Int = 1
+        assertThat(actual).isEqualTo(expected)
     }
 }

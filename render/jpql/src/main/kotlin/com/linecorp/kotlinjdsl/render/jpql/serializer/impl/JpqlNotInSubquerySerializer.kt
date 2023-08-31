@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotInSubquery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -7,6 +8,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
+@Internal
 class JpqlNotInSubquerySerializer : JpqlSerializer<JpqlNotInSubquery<*>> {
     override fun handledType(): KClass<JpqlNotInSubquery<*>> {
         return JpqlNotInSubquery::class
@@ -21,6 +23,8 @@ class JpqlNotInSubquerySerializer : JpqlSerializer<JpqlNotInSubquery<*>> {
         writer.write("NOT IN")
         writer.write(" ")
 
-        delegate.serialize(part.subquery, writer, context)
+        writer.writeParentheses {
+            delegate.serialize(part.subquery, writer, context)
+        }
     }
 }

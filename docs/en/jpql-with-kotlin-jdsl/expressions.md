@@ -1,42 +1,43 @@
 # Expressions
 
-Expression represents an expression in JPQL.
+Kotlin JDSL has `Expression` interface to represent an expression in JPQL.
 
 ## Alias
 
-By using as function, you can use the aliased expression in other clauses of the [select statement](statements.md#select-statement). As function takes an expression object to refer to the source of as function. The expression for reference can be created using expression function.
+Calling `as()` on `Expression` allows you to alias `Expression`.
+You can create a reference of `Expression` using expression().
+The reference is identified by an alias and references `Expression` with the same alias.
+This allows you to alias `Expression` or reference the aliased `Expression` in other clauses.
 
 ```kotlin
 val bookPrice = expression(BigDecimal::class, "price")
-// or val bookPrice = expression<BigDecimal>("price")
 
 select(
-    path(BookPrice::class).`as`(bookPrice)
+    path(Book::price)(BookPrice::value).`as`(bookPrice)
 ).from(
     entity(Book::class)
 ).where(
     bookPrice.eq(BigDecimal.valueOf(100))
 )
-```
 
-You don't have to use an object with the same identity to reference an aliased expression. Because an expression is referenced by an alias, even if you create multiple expression objects, if they have the same alias, they will refer to the same aliased expression.
+// OR
 
-```kotlin
 select(
-    path(BookPrice::class).`as`(expression("price"))
+    path(Book::price)(BookPrice::value).`as`(expression("price"))
 ).from(
     entity(Book::class)
 ).where(
-    expression("price").eq(BigDecimal.valueOf(100))
+    expression(BigDecimal::class, "price").eq(BigDecimal.valueOf(100))
 )
 ```
 
 ### Type Cast
 
-In some cases, you may want to specify the return type of the expression you want to use, rather than the type inferred by Kotlin JDSL. For example, AVG returns Double, but in JPQL Double can be converted to BigDecimal, so you want AVG to return BigDecimal. For this Kotlin JDSL provides unsafe type casting by specifying the type you want with KClass in as function.
+In some cases, you may want to change the type of `Expression` you want to use.
+For this, Kotlin JDSL provides unsafe type casting through `as()`.
 
 {% hint style="info" %}
-This is just a shorthand for `as Expression<T>`, so it may not work for all JPA implementations.
+This is a shortened form of `as Expression<T>`, so it may not work as expected.
 {% endhint %}
 
 ```kotlin
@@ -45,7 +46,7 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 
 ## Arithmetic operations
 
-Arithmetic operations can be represented by plus, minus, times and div functions.
+To build arithmetic operations, you can use following functions:
 
 * \+ (plus)
 * \- (minus)
@@ -66,27 +67,30 @@ path(Book::price).div(path(Book::salePrice))
 div(path(Book::price), path(Book::salePrice))
 ```
 
-### Parenthesis
+### Parentheses
 
-When using arithmetic operators, if you want to order the operators using parentheses, call the arithmetic operators using a normal function instead of an extension function. With extension functions, Kotlin JDSL can't identify the order in which you want to call the operators. However, with normal functions, Kotlin JDSL can identify it from the parameters.
+Calling arithmetic operators using a normal function instead of an extension function allows you to order the operators using parentheses.
+In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
-// (Book.price - Book.salePrice) * (100)
+// normal function: (Book.price - Book.salePrice) * (100)
 times(
     path(Book::price).minus(path(Book::salePrice)),
     BigDecimal.valueOf(100),
 )
 
-// Book.price - Book.salePrice * 100
+// extension function: Book.price - Book.salePrice * 100
 path(Book::price).minus(path(Book::salePrice)).times(BigDecimal.valueOf(100))
 ```
 
 ## Values
 
-The value used in a query can be represented by value function. All values created by the value function are printed in the query as query parameters. These query parameters cannot be overridden.
+To build value, you can use `value()`.
+All values built by `value()` are interpreted as query parameters.
+These query parameters cannot be overridden.
 
 {% hint style="info" %}
-If KClass or Class object is passed in the value function, [entity](entities.md) is printed.
+If KClass is passed to `value()`, it is considered [Entity](entities.md).
 {% endhint %}
 
 ```kotlin
@@ -102,9 +106,7 @@ select(
 
 ### Params
 
-You may want to create a query in advance without values, and then execute it later with calculated values. In this
-case, you can use param function, which represents a query parameter. Param function represents the query parameter the
-same as the value function, but unlike the value function, it can override the query parameter.
+Calling `param()` instead of `value()` allows you to build a query parameter that can be overridden.
 
 ```kotlin
 val context = JpqlRenderContext()
@@ -128,17 +130,27 @@ entityManager.createQuery(query, queryParams, context)
 
 ### Literals
 
-Instead of printing a value as a query parameter, you can use literal to print a value directly into the query. A select clause can be represented by select function.
+Calling `xxxLiteral()` instead of `value()` allows you to build a literal in query.
 
 {% hint style="info" %}
-When printing a string literal, if the string includes '(single quote), the '(single quote) is changed to ''(two single quotes). For example: 'literal''s'.
+When printing a string literal, if the string includes '(single quote), the '(single quote) is changed to ''(two single quotes).
+For example: 'literal''s'.
 {% endhint %}
 
-<table><thead><tr><th width="155.33333333333331">Type</th><th>Function</th><th>Rendered</th></tr></thead><tbody><tr><td>Int</td><td>intLiteral</td><td>{value}</td></tr><tr><td>Long</td><td>longLiteral</td><td>{value}L</td></tr><tr><td>Float</td><td>floatLiteral</td><td>{value}F</td></tr><tr><td>Double</td><td>doubleLiteral</td><td>{value}</td></tr><tr><td>Boolean</td><td>booleanLiteral</td><td>TRUE or FALSE</td></tr><tr><td>Char</td><td>charLiteral</td><td>'{value}'</td></tr><tr><td>String</td><td>stringLiteral</td><td>'{value}'</td></tr><tr><td>Enum</td><td>enumLiteral</td><td>{qualified name}.{enum name}</td></tr></tbody></table>
+| Type    | Function       | Rendered                     |
+|---------|----------------|------------------------------|
+| Int     | intLiteral     | {value}                      |
+| Long    | longLiteral    | {value}L                     |
+| Float   | floatLiteral   | {value}F                     |
+| Double  | doubleLiteral  | {value}                      |
+| Boolean | booleanLiteral | TRUE or FALSE                |
+| Char    | charLiteral    | '{value}'                    |
+| String  | stringLiteral  | '{value}'                    |
+| Enum    | enumLiteral    | {qualified name}.{enum name} |
 
 ## Aggregation functions
 
-Aggregation functions can be represented by a function corresponding to its name.
+To build aggregation functions operations, you can use following functions:
 
 * COUNT (count)
 * MIN (min)
@@ -162,10 +174,10 @@ sumDistinct(path(Book::price))
 
 ### Sum
 
-Sum function takes a different return type depending on the type of a parameter.
+Depending on the type of the parameter, `sum()` returns a different type.
 
 | Type       | Return Type |
-| ---------- | ----------- |
+|------------|-------------|
 | Int        | Long        |
 | Long       | Long        |
 | Float      | Double      |
@@ -175,12 +187,12 @@ Sum function takes a different return type depending on the type of a parameter.
 
 ## Functions
 
-Kotlin JDSL provides several functions to support built-in functions in JPA.
+Kotlin JDSL provides functions to support built-in functions in JPA.
 
 ### String functions
 
 | Function  | DSL function |
-| --------- | ------------ |
+|-----------|--------------|
 | CONCAT    | not yet      |
 | SUBSTRING | not yet      |
 | TRIM      | not yet      |
@@ -192,7 +204,7 @@ Kotlin JDSL provides several functions to support built-in functions in JPA.
 ### Arithmetic functions
 
 | Function | DSL function |
-| -------- | ------------ |
+|----------|--------------|
 | ABS      | not yet      |
 | CEILING  | not yet      |
 | EXP      | not yet      |
@@ -209,7 +221,7 @@ Kotlin JDSL provides several functions to support built-in functions in JPA.
 ### Datetime functions
 
 | Function           | DSL function |
-| ------------------ | ------------ |
+|--------------------|--------------|
 | CURRENT\_DATE      | not yet      |
 | CURRENT\_TIME      | not yet      |
 | CURRENT\_TIMESTAMP | not yet      |
@@ -220,7 +232,7 @@ Kotlin JDSL provides several functions to support built-in functions in JPA.
 
 ### Database function
 
-The invocation of functions that can represent predefined database functions or user-defined database functions, can be represented by function function. By specifying the return type of the function and passing the parameters of the function as parameters, you can represent the predefined database functions or user-defined database functions.
+Calling `function()` allows you to build predefined database functions and user-defined database functions.
 
 ```kotlin
 function(String::class, "myFunction", path(Book::isbn))
@@ -228,20 +240,14 @@ function(String::class, "myFunction", path(Book::isbn))
 
 ## Cases
 
-A case when clause can be represented by caseWhen or caseValue function.
-
-CaseWhen function allows you to represent a case when clause based on [predicates](predicates.md).
+To build a case, you can use `caseWhen()` and `caseValue()`.
 
 ```kotlin
 caseWhen(path(Book::price).lt(BigDecimal.valueOf(100))).then("0")
     .`when`(path(Book::price).lt(BigDecimal.valueOf(200))).then("100")
     .`when`(path(Book::price).lt(BigDecimal.valueOf(300))).then("200")
     .`else`("300")
-```
 
-CaseWhen function allows you to represent a case when clause based on [expressions](expressions.md).
-
-```kotlin
 caseValue(path(Book::price))
     .`when`(BigDecimal.valueOf("100")).then("10")
     .`when`(BigDecimal.valueOf("200")).then("20")
@@ -251,7 +257,8 @@ caseValue(path(Book::price))
 
 ### Coalesce
 
-Coalesce that returns the first non-null value in the parameters, or null if there are no non-null values in the parameters, can be represented by coalesce function.
+To build coalesce, you can use `coalesce()`.
+`coalesce()` returns the first non-null value in the parameters, or null if there are no non-null values in the parameters.
 
 ```kotlin
 coalesce(path(Employee::nickname), path(Employee::name))
@@ -259,7 +266,7 @@ coalesce(path(Employee::nickname), path(Employee::name))
 
 ### NullIf
 
-NullIf that returns null if value1 = value2 is true, otherwise returns value1, can be represented by nullIf function.
+To build nullIf, you can use `nullIf()`. `nullIf()` returns null if value1 = value2 is true, otherwise returns value1.
 
 ```kotlin
 nullIf(path(Book::price), BigDecimal.ZERO)
@@ -267,7 +274,7 @@ nullIf(path(Book::price), BigDecimal.ZERO)
 
 ## New
 
-DTO projection can be represented by new function. By specifying the DTO class you want to project in new function and passing the parameters of the class as parameters, you can represent the DTO projection.
+To build DTO projection, you can use `new()`.
 
 ```kotlin
 data class Row(
@@ -284,7 +291,7 @@ new(
 
 ## Type
 
-Type operator that can restrict query polymorphism, can be represented by type function.
+To build type operator, you can use `type()`.
 
 ```kotlin
 select(
@@ -298,12 +305,10 @@ select(
 
 ## Custom expression
 
-Expressions that are not provided by the Kotlin JDSL, can be represented by customExpression function. By specifying the
-return type of the expression and passing the parameters of the expression as parameters, you can represent the your
-expression.
+Calling `customExpression()` allows you to build a custom expression.
 
 ```kotlin
 customExpression(String::class, "CAST({0} AS VARCHAR)", path(Book::price))
 ```
 
-If you find that you are using the same customExpression a lot, you may want to create your own DSL, see [Customizing](customizing.md).
+If you use a lot of `customExpression()`, you can create [your own DSL](custom-dsl.md).

@@ -7,8 +7,13 @@ on:
       - develop/*
   pull_request:
 
+concurrency:
+  group: test-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
 jobs:
   test-report:
+    name: Test Report
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

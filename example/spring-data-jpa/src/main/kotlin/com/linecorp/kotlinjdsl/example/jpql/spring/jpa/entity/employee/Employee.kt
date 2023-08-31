@@ -1,6 +1,14 @@
 package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.DiscriminatorColumn
+import jakarta.persistence.Embedded
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Inheritance
+import jakarta.persistence.InheritanceType
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
 import java.util.*
 
 @Entity
@@ -30,7 +38,5 @@ class Employee(
     override fun equals(other: Any?): Boolean = Objects.equals(employeeId, (other as? Employee)?.employeeId)
     override fun hashCode(): Int = Objects.hashCode(employeeId)
 
-    override fun toString(): String {
-        return "Employee(employeeId=$employeeId, name='$name')"
-    }
+    override fun toString(): String = "Employee(employeeId=$employeeId)"
 }

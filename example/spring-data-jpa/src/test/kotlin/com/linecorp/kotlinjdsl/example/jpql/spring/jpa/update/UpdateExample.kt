@@ -6,12 +6,12 @@ import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.EmployeeD
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.EmployeeSalary
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.employee.FullTimeEmployee
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.repository.employee.EmployeeRepository
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
-import java.math.BigDecimal
 
 @Transactional
 @SpringBootTest
@@ -40,7 +40,7 @@ class UpdateExample : WithAssertions {
             ).asSubquery()
 
             update(
-                FullTimeEmployee::class,
+                entity(FullTimeEmployee::class),
             ).set(
                 path(FullTimeEmployee::annualSalary)(EmployeeSalary::value),
                 path(FullTimeEmployee::annualSalary)(EmployeeSalary::value).times(BigDecimal.valueOf(1.1)),
@@ -103,7 +103,7 @@ class UpdateExample : WithAssertions {
             ).asSubquery()
 
             update(
-                Employee::class,
+                entity(Employee::class),
             ).set(
                 path(Employee::nickname),
                 path(Employee::name),

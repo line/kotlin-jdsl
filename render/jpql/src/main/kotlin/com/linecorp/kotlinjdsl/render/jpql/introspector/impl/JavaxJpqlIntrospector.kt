@@ -1,10 +1,12 @@
 package com.linecorp.kotlinjdsl.render.jpql.introspector.impl
 
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlEntityDescription
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotations
 
+@Internal
 class JavaxJpqlIntrospector : JpqlIntrospector {
     override fun introspect(type: KClass<*>): JpqlEntityDescription? {
         val entity = type.findAnnotations(javax.persistence.Entity::class).firstOrNull()

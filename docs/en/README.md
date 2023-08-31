@@ -6,14 +6,13 @@ description: 'Latest stable version: 3.0.0'
 
 ## What is Kotlin JDSL?
 
-Kotlin JDSL is a Kotlin library that makes it easy to build and execute a query without a generated metamodel.
+Kotlin JDSL is a Kotlin library that makes it easy to build a query without a generated metamodel.
+There are libraries that make it easy to build the query using the Annotation Processor Tool (APT).
+However, with the APT, you have to recompile if the name or type of a field in an entity or table class changes.
+Kotlin JDSL provides the Domain-Specific Language (DSL) based on KClass and KProperty to help you easily build the query without the APT.
 
-Kotlin JDSL does not provide an executor or wrapper class, because it is designed to help you build and execute the
-query with the library you are using, not to replace it.
-
-Kotlin JDSL provides two things: DSL and extension functions. The DSL is based on KClass and KProperty, so it allows you
-to build the query using your entity and table classes. The extension functions allow you to use the library to execute
-the query created by the DSL.
+Kotlin JDSL does not provide an executor or wrapper class.
+Because it is designed to help you build and execute the query with the library you are using, not to replace it.
 
 ## Supports
 

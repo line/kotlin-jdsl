@@ -2,14 +2,13 @@ package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
+import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.render.TestRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.runs
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
@@ -24,6 +23,8 @@ class JpqlMinSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
+    private val expression1 = Paths.path(Book::price)
+
     @Test
     fun handledType() {
         // when
@@ -34,12 +35,12 @@ class JpqlMinSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize - WHEN distinct is disabled, THEN draw min function only`() {
+    fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
-        val part = Expressions.min(false, Expressions.stringLiteral("name"))
+        val part = Expressions.min(
+            distinct = false,
+            expression1,
+        )
         val context = TestRenderContext(serializer)
 
         // when
@@ -48,18 +49,14 @@ class JpqlMinSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("MIN")
-            writer.write("(")
+            writer.writeParentheses(any())
             serializer.serialize(part.expr, writer, context)
-            writer.write(")")
         }
     }
 
     @Test
-    fun `serialize - WHEN distinct is enabled, THEN draw min function with distinct`() {
+    fun `serialize() draws the DISTINCT, when the distinct is enabled`() {
         // given
-        every { writer.write(any<String>()) } just runs
-        every { serializer.serialize(any(), any(), any()) } just runs
-
         val part = Expressions.min(true, Expressions.stringLiteral("name"))
         val context = TestRenderContext(serializer)
 
@@ -69,11 +66,10 @@ class JpqlMinSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("MIN")
-            writer.write("(")
+            writer.writeParentheses(any())
             writer.write("DISTINCT")
             writer.write(" ")
             serializer.serialize(part.expr, writer, context)
-            writer.write(")")
         }
     }
 }

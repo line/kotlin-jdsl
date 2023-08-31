@@ -1,6 +1,10 @@
 package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee
 
-import javax.persistence.*
+import javax.persistence.AttributeOverride
+import javax.persistence.Column
+import javax.persistence.DiscriminatorValue
+import javax.persistence.Embedded
+import javax.persistence.Entity
 
 @Entity
 @DiscriminatorValue("FULL_TIME")
@@ -27,4 +31,6 @@ class FullTimeEmployee(
     phone = phone,
     address = address,
     departments = departments,
-)
+) {
+    override fun toString(): String = "FullTimeEmployee(employeeId=$employeeId)"
+}

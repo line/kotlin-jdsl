@@ -1,13 +1,21 @@
 # Kotlin JDSL Roadmap
 
-## Mysql
+## DSL
 
-Kotlin JDSL provides a Mysql-specific DSL and Query Model that makes it easy to build and execute Mysql queries.
+### MySQL
 
-## Oracle
+Kotlin JDSL provides a Mysql-specific DSL that makes it easy to build MySQL queries.
 
-Kotlin JDSL provides a Oracle-specific DSL and Query Model that makes it easy to build and execute Oracle queries.
+### Oracle
 
-## OpenSearch
+Kotlin JDSL provides an Oracle-specific DSL that makes it easy to build Oracle queries.
 
-Kotlin JDSL provides a OpenSearch-specific DSL and Query Model that makes it easy to build and execute OpenSearch queries.
+### OpenSearch
+
+Kotlin JDSL provides a OpenSearch-specific DSL that makes it easy to build OpenSearch queries.
+
+## Support
+
+### Jasync
+
+Kotlin JDSL supports [jasync](https://github.com/jasync-sql/jasync-sql) to execute native queries for coroutine.

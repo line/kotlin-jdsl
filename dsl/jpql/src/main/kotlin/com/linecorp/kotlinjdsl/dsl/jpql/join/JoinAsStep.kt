@@ -1,10 +1,14 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.join
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.SinceJdsl
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entityable
 import com.linecorp.kotlinjdsl.querymodel.jpql.join.Joinable
 
+@SinceJdsl("3.0.0")
 interface JoinAsStep<T : Any> : Joinable {
-    fun `as`(entity: Entity<T>): Joinable
+    @SinceJdsl("3.0.0")
+    fun `as`(entity: Entityable<T>): Joinable
 
-    fun alias(entity: Entity<T>): Joinable
+    @SinceJdsl("3.0.0")
+    fun alias(entity: Entityable<T>): Joinable
 }

@@ -1,9 +1,7 @@
 plugins {
-
 }
 
 dependencies {
-
 }
 
 tasks.withType<PublishToMavenRepository>().configureEach { enabled = false }

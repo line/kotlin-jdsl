@@ -1,19 +1,25 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class FunctionDslTest : AbstractJpqlDslTest() {
-    private val functionName1: String = "functionName1"
+class FunctionDslTest : WithAssertions {
+    private val name1: String = "name1"
+
+    private val stringExpression1 = Expressions.value("string1")
+    private val stringExpression2 = Expressions.value("string2")
+
+    private val string1 = "string1"
+    private val string2 = "string2"
 
     @Test
-    fun `function type template`() {
+    fun `function() with strings`() {
         // when
-        val expression = testJpql {
-            function(Int::class, functionName1, listOf(path(TestTable1::int1)))
+        val expression = queryPart {
+            function(Int::class, name1, string1, string2)
         }.toExpression()
 
         val actual: Expression<Int> = expression // for type check
@@ -21,16 +27,35 @@ class FunctionDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.function(
             Int::class,
-            functionName1,
+            name1,
             listOf(
-                Paths.path(TestTable1::int1),
+                Expressions.value(string1),
+                Expressions.value(string2),
             ),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
-    private class TestTable1 {
-        val int1: Int = 1
+    @Test
+    fun `function() with string expressions`() {
+        // when
+        val expression = queryPart {
+            function(Int::class, name1, stringExpression1, stringExpression2)
+        }.toExpression()
+
+        val actual: Expression<Int> = expression // for type check
+
+        // then
+        val expected = Expressions.function(
+            Int::class,
+            name1,
+            listOf(
+                stringExpression1,
+                stringExpression2,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
     }
 }

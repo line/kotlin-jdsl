@@ -1,7 +1,33 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql.expression
 
 import com.linecorp.kotlinjdsl.SinceJdsl
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMinus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNew
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTimes
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
@@ -11,6 +37,7 @@ import java.math.BigInteger
 import kotlin.internal.Exact
 import kotlin.reflect.KClass
 
+@SinceJdsl("3.0.0")
 object Expressions {
     @SinceJdsl("3.0.0")
     fun <T> value(value: @Exact T): Expression<T & Any> {
@@ -165,13 +192,13 @@ object Expressions {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> case(
+    fun <T : Any> caseWhen(
         whens: Map<Predicate, Expression<T>>,
         `else`: Expression<T>? = null,
     ): Expression<T> {
-        return JpqlCase(
-            whens = whens.map { it.key to it.value }.toMap(),
-            `else` = `else`?.toExpression(),
+        return JpqlCaseWhen(
+            whens = whens,
+            `else` = `else`,
         )
     }
 
@@ -208,20 +235,25 @@ object Expressions {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> type(path: Path<T>): Expression<KClass<T>> {
-        return JpqlType(path)
+    fun type(entity: Entity<*>): Expression<KClass<*>> {
+        return JpqlEntityType(entity)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun type(path: Path<*>): Expression<KClass<*>> {
+        return JpqlPathType(path)
     }
 
     @SinceJdsl("3.0.0")
     fun <T : Any> function(type: KClass<T>, name: String, args: Iterable<Expression<*>>): Expression<T> {
-        return JpqlFunction(type, name, args.map { it.toExpression() })
+        return JpqlFunction(type, name, args)
     }
 
     @SinceJdsl("3.0.0")
     fun <T : Any> customExpression(
         type: KClass<T>,
         template: String,
-        args: Iterable<Expression<*>>
+        args: Iterable<Expression<*>>,
     ): Expression<T> {
         return JpqlCustomExpression(type, template, args)
     }
@@ -263,7 +295,7 @@ object Expressions {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> parenthesis(expr: Expression<T>): Expression<T> {
-        return JpqlExpressionParenthesis(expr)
+    fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
+        return JpqlExpressionParentheses(expr)
     }
 }

@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlExists
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -7,6 +8,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
+@Internal
 class JpqlExistsSerializer : JpqlSerializer<JpqlExists> {
     override fun handledType(): KClass<JpqlExists> {
         return JpqlExists::class
@@ -17,10 +19,9 @@ class JpqlExistsSerializer : JpqlSerializer<JpqlExists> {
 
         writer.write("EXISTS")
         writer.write(" ")
-        writer.write("(")
 
-        delegate.serialize(part.subquery, writer, context)
-
-        writer.write(")")
+        writer.writeParentheses {
+            delegate.serialize(part.subquery, writer, context)
+        }
     }
 }

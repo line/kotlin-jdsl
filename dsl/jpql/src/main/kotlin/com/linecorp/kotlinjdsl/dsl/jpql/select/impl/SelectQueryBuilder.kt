@@ -3,8 +3,8 @@ package com.linecorp.kotlinjdsl.dsl.jpql.select.impl
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.from.From
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import kotlin.reflect.KClass
 
@@ -43,7 +43,7 @@ internal data class SelectQueryBuilder<T : Any>(
     }
 
     fun build(): SelectQuery<T> {
-        return Selects.select(
+        return SelectQueries.selectQuery(
             returnType = returnType,
             select = select,
             distinct = distinct,

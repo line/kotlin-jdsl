@@ -5,7 +5,7 @@ spring6 = "6.0.11"
 spring5 = "5.3.29"
 
 test-spring-boot3 = "3.1.2"
-test-spring-boot2 = "2.7.14"
+test-spring-boot2 = "2.7.15"
 
 [libraries]
 # kotlin
@@ -17,6 +17,7 @@ kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime",
 javax-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
 jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.0.0" }
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.7" }
+logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 
 # SpringBoot
 spring-boot3-starter = { module = "org.springframework.boot:spring-boot-starter", version = "3.0.3" }
@@ -60,3 +61,4 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version = "0.7.1" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.5.1" }
