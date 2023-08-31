@@ -12,14 +12,13 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import io.mockk.called
 import io.mockk.impl.annotations.MockK
 import io.mockk.verifySequence
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 @JpqlSerializerTest
 class JpqlNotInSerializerTest : WithAssertions {
     private val sut = JpqlNotInSerializer()
-    data class TestEntity(val id: Long, val name: String)
 
     @MockK
     private lateinit var writer: JpqlWriter

@@ -7,9 +7,9 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 class UpdateSetDslTest : WithAssertions {
     private val entity1 = Entities.entity(Book::class)

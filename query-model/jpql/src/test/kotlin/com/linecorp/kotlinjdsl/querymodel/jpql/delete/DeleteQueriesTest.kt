@@ -6,9 +6,9 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 class DeleteQueriesTest : WithAssertions {
     private val entity1 = Entities.entity(Book::class)

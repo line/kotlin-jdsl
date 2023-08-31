@@ -15,6 +15,10 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.verifySequence
+import java.util.function.LongSupplier
+import javax.persistence.EntityManager
+import javax.persistence.Query
+import javax.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -23,10 +27,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.jpa.repository.query.QueryUtilsAdaptor
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
-import java.util.function.LongSupplier
-import javax.persistence.EntityManager
-import javax.persistence.Query
-import javax.persistence.TypedQuery
 
 @ExtendWith(MockKExtension::class)
 class JpqlEntityManagerUtilsTest : WithAssertions {

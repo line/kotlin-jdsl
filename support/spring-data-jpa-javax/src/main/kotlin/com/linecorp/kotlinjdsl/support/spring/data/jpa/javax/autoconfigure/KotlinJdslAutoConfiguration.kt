@@ -7,11 +7,11 @@ import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderModule
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.javax.repository.KotlinJdslJpqlExecutor
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.javax.repository.KotlinJdslJpqlExecutorImpl
+import javax.persistence.EntityManager
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import javax.persistence.EntityManager
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EntityManager::class, JpqlRenderContext::class)

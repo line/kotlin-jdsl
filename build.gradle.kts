@@ -1,9 +1,9 @@
+import java.nio.file.Files
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.nio.file.Files
 
 plugins {
     alias(libs.plugins.kotlin.jvm)

@@ -6,12 +6,12 @@ import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee.Emp
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee.EmployeeSalary
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee.FullTimeEmployee
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.repository.employee.EmployeeRepository
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
-import java.math.BigDecimal
 
 @Transactional
 @SpringBootTest

@@ -42,9 +42,9 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotLike
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlOr
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlPredicateParentheses
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 class PredicatesTest : WithAssertions {
     private val stringExpression1 = Expressions.value("string1")

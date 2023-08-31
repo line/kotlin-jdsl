@@ -6,13 +6,11 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 class CaseWhenDslTest : WithAssertions {
-    private val path1 = Paths.path(Book::price)
-
     private val predicate1 = Predicates.equal(
         Paths.path(Book::price),
         Expressions.value(BigDecimal.valueOf(100)),

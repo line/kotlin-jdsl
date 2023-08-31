@@ -2,7 +2,7 @@
 
 echo "Running git pre-commit hook"
 
-./gradlew ktlintFormat
+./gradlew ktlintFormat ktlintCheck
 
 status=$?
 
