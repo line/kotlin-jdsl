@@ -49,7 +49,7 @@ class CombinedJpqlIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun `introspect() return the description of the secondary, when the primary returns null and the secondary returns non null`() {
+    fun `introspect() return the description of the secondary, when the primary returns null`() {
         // given
         every { introspector1.introspect(any()) } returns null
         every { introspector2.introspect(any()) } returns entityDescription1

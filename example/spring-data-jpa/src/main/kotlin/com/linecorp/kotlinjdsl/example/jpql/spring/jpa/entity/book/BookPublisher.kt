@@ -1,7 +1,13 @@
 package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.entity.book
 
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.annotation.CompositeId
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.IdClass
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToOne
+import jakarta.persistence.Table
 import java.io.Serializable
 import java.util.*
 

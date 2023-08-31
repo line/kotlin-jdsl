@@ -1,7 +1,15 @@
 package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee
 
 import java.util.*
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.DiscriminatorColumn
+import javax.persistence.Embedded
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Inheritance
+import javax.persistence.InheritanceType
+import javax.persistence.OneToMany
+import javax.persistence.Table
 
 @Entity
 @Table(name = "employee")
