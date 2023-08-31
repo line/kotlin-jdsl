@@ -1,4 +1,4 @@
-name: Lint Commit Messages
+name: Lint
 on:
   pull_request:
     branches:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   commit-lint:
-    name: Lint Commit Messages
+    name: Commit Message
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
