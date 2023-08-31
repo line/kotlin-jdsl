@@ -22,10 +22,12 @@ module(name = ":render", path = "render")
 module(name = ":jpql-render", path = "render/jpql")
 
 module(name = ":support", path = "support")
+module(name = ":spring-batch-support", path = "support/spring-batch")
 module(name = ":spring-data-jpa-support", path = "support/spring-data-jpa")
 module(name = ":spring-data-jpa-javax-support", path = "support/spring-data-jpa-javax")
 
 module(name = ":example", path = "example")
+module(name = ":spring-batch-example", path = "example/spring-batch")
 module(name = ":spring-data-jpa-example", path = "example/spring-data-jpa")
 module(name = ":spring-data-jpa-javax-example", path = "example/spring-data-jpa-javax")
 
