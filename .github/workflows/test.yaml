@@ -8,7 +8,7 @@ on:
   pull_request:
 
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.sha }}
+  group: test-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 jobs:

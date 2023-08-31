@@ -6,7 +6,7 @@ on:
       - develop/*
 
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.sha }}
+  group: lint-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 jobs:

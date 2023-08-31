@@ -8,7 +8,7 @@ on:
     types: [ created ]
 
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.sha }}
+  group: publish-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 jobs:
