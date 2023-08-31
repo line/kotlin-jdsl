@@ -1,0 +1,21 @@
+name: Lint Commit Messages
+on:
+  pull_request:
+    branches:
+      - main
+      - develop/*
+
+jobs:
+  ktlint:
+    name: Lint Kotlin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - name: ktlint
+        uses: ScaCap/action-ktlint@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-check
