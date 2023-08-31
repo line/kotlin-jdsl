@@ -4,7 +4,14 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.author.Author
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.BookAuthor
-import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlInnerAssociationFetchJoin
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlInnerAssociationJoin
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlInnerFetchJoin
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlInnerJoin
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlLeftAssociationFetchJoin
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlLeftAssociationJoin
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlLeftFetchJoin
+import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlLeftJoin
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import org.assertj.core.api.WithAssertions

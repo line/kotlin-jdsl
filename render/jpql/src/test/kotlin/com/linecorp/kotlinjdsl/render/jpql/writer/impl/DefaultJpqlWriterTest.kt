@@ -188,7 +188,7 @@ class DefaultJpqlWriterTest : WithAssertions {
     }
 
     @Test
-    fun `writeParam() prints the param with an auto increment from initial param, when there are an initial param with a number suffix`() {
+    fun `writeParam() prints the param with an auto increment from initial param, when there are an initial param`() {
         // given
         val sut = DefaultJpqlWriter(
             mapOf(
