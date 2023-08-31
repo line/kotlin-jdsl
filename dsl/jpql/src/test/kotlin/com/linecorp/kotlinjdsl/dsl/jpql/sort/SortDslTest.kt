@@ -8,21 +8,21 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sorts
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class OrderDslTest : WithAssertions {
-    private val path1 = Paths.path(Book::isbn)
+class SortDslTest : WithAssertions {
+    private val expression1 = Paths.path(Book::isbn)
 
     @Test
     fun asc() {
         // when
         val sort = queryPart {
-            path1.asc()
+            expression1.asc()
         }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.asc(
-            expr = path1,
+            expr = expression1,
             nullOrder = null,
         )
 
@@ -33,14 +33,14 @@ class OrderDslTest : WithAssertions {
     fun `asc() and nullsFirst()`() {
         // when
         val sort = queryPart {
-            path1.asc().nullsFirst()
+            expression1.asc().nullsFirst()
         }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.asc(
-            expr = path1,
+            expr = expression1,
             nullOrder = Sort.NullOrder.FIRST,
         )
 
@@ -51,14 +51,14 @@ class OrderDslTest : WithAssertions {
     fun `asc() and nullsLast()`() {
         // when
         val sort = queryPart {
-            path1.asc().nullsLast()
+            expression1.asc().nullsLast()
         }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.asc(
-            expr = path1,
+            expr = expression1,
             nullOrder = Sort.NullOrder.LAST,
         )
 
@@ -69,14 +69,14 @@ class OrderDslTest : WithAssertions {
     fun desc() {
         // when
         val sort = queryPart {
-            path1.desc()
+            expression1.desc()
         }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.desc(
-            expr = path1,
+            expr = expression1,
             nullOrder = null,
         )
 
@@ -87,14 +87,14 @@ class OrderDslTest : WithAssertions {
     fun `desc() and nullsFirst()`() {
         // when
         val sort = queryPart {
-            path1.desc().nullsFirst()
+            expression1.desc().nullsFirst()
         }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.desc(
-            expr = path1,
+            expr = expression1,
             nullOrder = Sort.NullOrder.FIRST,
         )
 
@@ -105,14 +105,14 @@ class OrderDslTest : WithAssertions {
     fun `desc() and nullsLast()`() {
         // when
         val sort = queryPart {
-            path1.desc().nullsLast()
+            expression1.desc().nullsLast()
         }.toSort()
 
         val actual: Sort = sort // for type check
 
         // then
         val expected = Sorts.desc(
-            expr = path1,
+            expr = expression1,
             nullOrder = Sort.NullOrder.LAST,
         )
 

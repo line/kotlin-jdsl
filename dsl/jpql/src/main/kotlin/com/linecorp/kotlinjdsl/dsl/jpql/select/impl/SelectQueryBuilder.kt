@@ -43,7 +43,7 @@ internal data class SelectQueryBuilder<T : Any>(
     }
 
     fun build(): SelectQuery<T> {
-        return SelectQueries.select(
+        return SelectQueries.selectQuery(
             returnType = returnType,
             select = select,
             distinct = distinct,

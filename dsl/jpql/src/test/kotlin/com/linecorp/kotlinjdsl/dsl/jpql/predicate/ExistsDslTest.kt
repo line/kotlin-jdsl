@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 class ExistsDslTest : WithAssertions {
     private val subquery1 = Expressions.subquery(
-        SelectQueries.select(
+        SelectQueries.selectQuery(
             returnType = Isbn::class,
             distinct = false,
             select = listOf(Paths.path(Book::isbn)),

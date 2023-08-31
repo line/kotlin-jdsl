@@ -9,7 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.impl.JpqlUpdateQuery
 
 object UpdateQueries {
     @SinceJdsl("3.0.0")
-    fun <T : Any> update(
+    fun <T : Any> updateQuery(
         entity: Entity<T>,
         set: Map<Path<*>, Expression<*>>,
         where: Predicate? = null,

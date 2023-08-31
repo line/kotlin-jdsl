@@ -19,7 +19,7 @@ class EqualDslTest : WithAssertions {
     private val bigDecimal1 = BigDecimal.valueOf(100)
 
     private val subquery1 = Expressions.subquery(
-        SelectQueries.select(
+        SelectQueries.selectQuery(
             returnType = BigDecimal::class,
             distinct = false,
             select = listOf(Paths.path(Book::price)),

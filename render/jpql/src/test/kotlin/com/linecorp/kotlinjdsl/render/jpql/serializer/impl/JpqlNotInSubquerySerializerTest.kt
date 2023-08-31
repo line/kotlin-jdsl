@@ -29,7 +29,7 @@ class JpqlNotInSubquerySerializerTest : WithAssertions {
     private val expression1 = Paths.path(Book::title)
 
     private val subquery1 = Expressions.subquery(
-        SelectQueries.select(
+        SelectQueries.selectQuery(
             returnType = String::class,
             distinct = false,
             select = listOf(Paths.path(Book::title)),

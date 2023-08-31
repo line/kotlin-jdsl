@@ -34,7 +34,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<BigDecimal> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = BigDecimal::class,
             distinct = false,
             select = listOf(expression1),
@@ -59,7 +59,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<View> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = View::class,
             distinct = false,
             select = listOf(expression1, expression2),
@@ -85,7 +85,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<View> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = View::class,
             distinct = false,
             select = listOf(expression1, expression2),
@@ -109,7 +109,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<BigDecimal> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = BigDecimal::class,
             distinct = true,
             select = listOf(expression1),
@@ -134,7 +134,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<View> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = View::class,
             distinct = true,
             select = listOf(expression1, expression2),
@@ -160,7 +160,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<View> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = View::class,
             distinct = true,
             select = listOf(expression1, expression2),
@@ -185,7 +185,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<Dto> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = Dto::class,
             distinct = false,
             select = listOf(
@@ -216,7 +216,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<Dto> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = Dto::class,
             distinct = false,
             select = listOf(
@@ -246,7 +246,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<Dto> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = Dto::class,
             distinct = true,
             select = listOf(
@@ -277,7 +277,7 @@ class SelectDslTest : WithAssertions {
         val actual: SelectQuery<Dto> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = Dto::class,
             distinct = true,
             select = listOf(

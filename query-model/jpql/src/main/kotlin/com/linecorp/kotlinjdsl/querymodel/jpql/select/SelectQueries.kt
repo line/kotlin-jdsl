@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 
 object SelectQueries {
     @SinceJdsl("3.0.0")
-    fun <T : Any> select(
+    fun <T : Any> selectQuery(
         returnType: KClass<T>,
         distinct: Boolean,
         select: Iterable<Expression<*>>,

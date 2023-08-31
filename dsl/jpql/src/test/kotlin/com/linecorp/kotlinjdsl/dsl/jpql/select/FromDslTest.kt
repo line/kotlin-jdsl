@@ -44,7 +44,7 @@ class FromDslTest : WithAssertions {
         val actual: SelectQuery<Isbn> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = Isbn::class,
             distinct = false,
             select = listOf(expression1),
@@ -74,7 +74,7 @@ class FromDslTest : WithAssertions {
         val actual: SelectQuery<Isbn> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = Isbn::class,
             distinct = false,
             select = listOf(expression1),

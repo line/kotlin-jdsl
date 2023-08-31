@@ -23,7 +23,7 @@ class DeleteFromDslTest : WithAssertions {
         val actual: DeleteQuery<Book> = delete // for type check
 
         // then
-        val expected = DeleteQueries.delete(
+        val expected = DeleteQueries.deleteQuery(
             entity = Entities.entity(Book::class),
             where = null,
         )

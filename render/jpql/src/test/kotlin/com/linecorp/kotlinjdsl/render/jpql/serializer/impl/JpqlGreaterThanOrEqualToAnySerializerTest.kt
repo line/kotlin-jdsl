@@ -29,7 +29,7 @@ class JpqlGreaterThanOrEqualToAnySerializerTest : WithAssertions {
     private val expression1 = Expressions.value("value1")
 
     private val subquery1 = Expressions.subquery(
-        SelectQueries.select(
+        SelectQueries.selectQuery(
             returnType = String::class,
             distinct = false,
             select = listOf(Paths.path(Book::title)),

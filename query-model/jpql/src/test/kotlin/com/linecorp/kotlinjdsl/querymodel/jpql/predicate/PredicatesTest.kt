@@ -12,9 +12,16 @@ import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
 class PredicatesTest : WithAssertions {
-    private val expression1 = Paths.path(Book::price)
-    private val expression2 = Paths.path(Book::salePrice)
-    private val expression3 = Expressions.value(BigDecimal.valueOf(100))
+    private val stringExpression1 = Expressions.value("string1")
+    private val stringExpression2 = Expressions.value("string2")
+
+    private val charExpression1 = Expressions.value('_')
+
+    private val bigDecimalExpression1 = Paths.path(Book::price)
+    private val bigDecimalExpression2 = Paths.path(Book::salePrice)
+    private val bigDecimalExpression3 = Expressions.value(BigDecimal.valueOf(100))
+
+    private val path1 = Paths.path(Book::authors)
 
     private val predicate1 = Predicates.equal(
         Paths.path(Book::price),
@@ -27,7 +34,7 @@ class PredicatesTest : WithAssertions {
     )
 
     private val subquery1 = Expressions.subquery(
-        SelectQueries.select(
+        SelectQueries.selectQuery(
             returnType = BigDecimal::class,
             distinct = false,
             select = listOf(Paths.path(Book::price)),
@@ -96,12 +103,12 @@ class PredicatesTest : WithAssertions {
     fun isNull() {
         // when
         val actual = Predicates.isNull(
-            expression1,
+            bigDecimalExpression1,
         )
 
         // then
         val expected = JpqlIsNull(
-            expression1,
+            bigDecimalExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -111,12 +118,12 @@ class PredicatesTest : WithAssertions {
     fun isNotNull() {
         // when
         val actual = Predicates.isNotNull(
-            expression1,
+            bigDecimalExpression1,
         )
 
         // then
         val expected = JpqlIsNotNull(
-            expression1,
+            bigDecimalExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -126,14 +133,14 @@ class PredicatesTest : WithAssertions {
     fun equal() {
         // when
         val actual = Predicates.equal(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         // then
         val expected = JpqlEqual(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -143,13 +150,13 @@ class PredicatesTest : WithAssertions {
     fun `equal() with the JpqlNull`() {
         // when
         val actual = Predicates.equal(
-            expression1,
+            bigDecimalExpression1,
             JpqlNull,
         )
 
         // then
         val expected = JpqlIsNull(
-            expression1,
+            bigDecimalExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -159,13 +166,13 @@ class PredicatesTest : WithAssertions {
     fun equalAll() {
         // when
         val actual = Predicates.equalAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlEqualAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -176,13 +183,13 @@ class PredicatesTest : WithAssertions {
     fun equalAny() {
         // when
         val actual = Predicates.equalAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlEqualAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -193,14 +200,14 @@ class PredicatesTest : WithAssertions {
     fun notEqual() {
         // when
         val actual = Predicates.notEqual(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         // then
         val expected = JpqlNotEqual(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -210,13 +217,13 @@ class PredicatesTest : WithAssertions {
     fun `notEqual() with the JpqlNull`() {
         // when
         val actual = Predicates.notEqual(
-            expression1,
+            bigDecimalExpression1,
             JpqlNull,
         )
 
         // then
         val expected = JpqlIsNotNull(
-            expression1,
+            bigDecimalExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -226,13 +233,13 @@ class PredicatesTest : WithAssertions {
     fun notEqualAll() {
         // when
         val actual = Predicates.notEqualAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlNotEqualAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -243,13 +250,13 @@ class PredicatesTest : WithAssertions {
     fun notEqualAny() {
         // when
         val actual = Predicates.notEqualAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlNotEqualAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -260,14 +267,14 @@ class PredicatesTest : WithAssertions {
     fun lessThan() {
         // when
         val actual = Predicates.lessThan(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         // then
         val expected = JpqlLessThan(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -277,13 +284,13 @@ class PredicatesTest : WithAssertions {
     fun lessThanAll() {
         // when
         val actual = Predicates.lessThanAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlLessThanAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -294,13 +301,13 @@ class PredicatesTest : WithAssertions {
     fun lessThanAny() {
         // when
         val actual = Predicates.lessThanAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlLessThanAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -311,14 +318,14 @@ class PredicatesTest : WithAssertions {
     fun lessThanOrEqualTo() {
         // when
         val actual = Predicates.lessThanOrEqualTo(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         // then
         val expected = JpqlLessThanOrEqualTo(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -328,13 +335,13 @@ class PredicatesTest : WithAssertions {
     fun lessThanOrEqualToAll() {
         // when
         val actual = Predicates.lessThanOrEqualToAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlLessThanOrEqualToAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -345,13 +352,13 @@ class PredicatesTest : WithAssertions {
     fun lessThanOrEqualToAny() {
         // when
         val actual = Predicates.lessThanOrEqualToAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlLessThanOrEqualToAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -362,14 +369,14 @@ class PredicatesTest : WithAssertions {
     fun greaterThan() {
         // when
         val actual = Predicates.greaterThan(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         // then
         val expected = JpqlGreaterThan(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -379,13 +386,13 @@ class PredicatesTest : WithAssertions {
     fun greaterThanAll() {
         // when
         val actual = Predicates.greaterThanAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlGreaterThanAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -396,13 +403,13 @@ class PredicatesTest : WithAssertions {
     fun greaterThanAny() {
         // when
         val actual = Predicates.greaterThanAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlGreaterThanAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -413,14 +420,14 @@ class PredicatesTest : WithAssertions {
     fun greaterThanOrEqualTo() {
         // when
         val actual = Predicates.greaterThanOrEqualTo(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         // then
         val expected = JpqlGreaterThanOrEqualTo(
-            expression1,
-            expression2,
+            bigDecimalExpression1,
+            bigDecimalExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -430,13 +437,13 @@ class PredicatesTest : WithAssertions {
     fun greaterThanOrEqualToAll() {
         // when
         val actual = Predicates.greaterThanOrEqualToAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlGreaterThanOrEqualToAll(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -447,13 +454,13 @@ class PredicatesTest : WithAssertions {
     fun greaterThanOrEqualToAny() {
         // when
         val actual = Predicates.greaterThanOrEqualToAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
         // then
         val expected = JpqlGreaterThanOrEqualToAny(
-            expression1,
+            bigDecimalExpression1,
             subquery1,
         )
 
@@ -464,16 +471,16 @@ class PredicatesTest : WithAssertions {
     fun between() {
         // when
         val actual = Predicates.between(
-            value = expression1,
-            min = expression2,
-            max = expression3,
+            value = bigDecimalExpression1,
+            min = bigDecimalExpression2,
+            max = bigDecimalExpression3,
         )
 
         // then
         val expected = JpqlBetween(
-            value = expression1,
-            min = expression2,
-            max = expression3,
+            value = bigDecimalExpression1,
+            min = bigDecimalExpression2,
+            max = bigDecimalExpression3,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -483,16 +490,209 @@ class PredicatesTest : WithAssertions {
     fun notBetween() {
         // when
         val actual = Predicates.notBetween(
-            value = expression1,
-            min = expression2,
-            max = expression3,
+            value = bigDecimalExpression1,
+            min = bigDecimalExpression2,
+            max = bigDecimalExpression3,
         )
 
         // then
         val expected = JpqlNotBetween(
-            value = expression1,
-            min = expression2,
-            max = expression3,
+            value = bigDecimalExpression1,
+            min = bigDecimalExpression2,
+            max = bigDecimalExpression3,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `in`() {
+        // when
+        val actual = Predicates.`in`(
+            value = bigDecimalExpression1,
+            compareValues = listOf(
+                bigDecimalExpression2,
+                bigDecimalExpression3,
+            ),
+        )
+
+        // then
+        val expected = JpqlIn(
+            value = bigDecimalExpression1,
+            compareValues = listOf(
+                bigDecimalExpression2,
+                bigDecimalExpression3,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `in() with a subquery`() {
+        // when
+        val actual = Predicates.`in`(
+            value = bigDecimalExpression1,
+            subquery = subquery1,
+        )
+
+        // then
+        val expected = JpqlInSubquery(
+            value = bigDecimalExpression1,
+            subquery = subquery1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun notIn() {
+        // when
+        val actual = Predicates.notIn(
+            value = bigDecimalExpression1,
+            compareValues = listOf(
+                bigDecimalExpression2,
+                bigDecimalExpression3,
+            ),
+        )
+
+        // then
+        val expected = JpqlNotIn(
+            value = bigDecimalExpression1,
+            compareValues = listOf(
+                bigDecimalExpression2,
+                bigDecimalExpression3,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `notIn() with a subquery`() {
+        // when
+        val actual = Predicates.notIn(
+            value = bigDecimalExpression1,
+            subquery = subquery1,
+        )
+
+        // then
+        val expected = JpqlNotInSubquery(
+            value = bigDecimalExpression1,
+            subquery = subquery1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun like() {
+        // when
+        val actual = Predicates.like(
+            value = stringExpression1,
+            pattern = stringExpression2,
+            escape = charExpression1,
+        )
+
+        // then
+        val expected = JpqlLike(
+            value = stringExpression1,
+            pattern = stringExpression2,
+            escape = charExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun notLike() {
+        // when
+        val actual = Predicates.notLike(
+            value = stringExpression1,
+            pattern = stringExpression2,
+            escape = charExpression1,
+        )
+
+        // then
+        val expected = JpqlNotLike(
+            value = stringExpression1,
+            pattern = stringExpression2,
+            escape = charExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun isEmpty() {
+        // when
+        val actual = Predicates.isEmpty(
+            path = path1,
+        )
+
+        // then
+        val expected = JpqlIsEmpty(
+            path = path1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun isNotEmpty() {
+        // when
+        val actual = Predicates.isNotEmpty(
+            path = path1,
+        )
+
+        // then
+        val expected = JpqlIsNotEmpty(
+            path = path1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun exists() {
+        // when
+        val actual = Predicates.exists(
+            subquery = subquery1,
+        )
+
+        // then
+        val expected = JpqlExists(
+            subquery = subquery1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun notExists() {
+        // when
+        val actual = Predicates.notExists(
+            subquery = subquery1,
+        )
+
+        // then
+        val expected = JpqlNotExists(
+            subquery = subquery1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun parentheses() {
+        // when
+        val actual = Predicates.parentheses(
+            predicate = predicate1,
+        )
+
+        // then
+        val expected = JpqlPredicateParentheses(
+            predicate = predicate1,
         )
 
         assertThat(actual).isEqualTo(expected)

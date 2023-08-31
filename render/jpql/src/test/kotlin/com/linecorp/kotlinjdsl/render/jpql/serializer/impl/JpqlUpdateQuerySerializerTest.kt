@@ -58,7 +58,7 @@ class JpqlUpdateQuerySerializerTest : WithAssertions {
             path2 to expression2,
         )
 
-        val part = UpdateQueries.update(
+        val part = UpdateQueries.updateQuery(
             entity = entity1,
             set = pathAndExpressions,
         )
@@ -97,7 +97,7 @@ class JpqlUpdateQuerySerializerTest : WithAssertions {
             path2 to expression2,
         )
 
-        val part = UpdateQueries.update(
+        val part = UpdateQueries.updateQuery(
             entity = entity1,
             set = pathAndExpressions,
             where = predicate1,

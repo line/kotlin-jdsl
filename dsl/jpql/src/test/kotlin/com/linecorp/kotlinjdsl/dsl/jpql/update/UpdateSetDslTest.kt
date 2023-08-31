@@ -41,7 +41,7 @@ class UpdateSetDslTest : WithAssertions {
         val actual: UpdateQuery<Book> = update // for type check
 
         // then
-        val expected = UpdateQueries.update(
+        val expected = UpdateQueries.updateQuery(
             entity = entity1,
             set = mapOf(
                 path1 to Expressions.value(bigDecimal1),
@@ -70,7 +70,7 @@ class UpdateSetDslTest : WithAssertions {
         val actual: UpdateQuery<Book> = update // for type check
 
         // then
-        val expected = UpdateQueries.update(
+        val expected = UpdateQueries.updateQuery(
             entity = entity1,
             set = mapOf(
                 path1 to bigDecimalExpression1,

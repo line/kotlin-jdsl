@@ -39,7 +39,7 @@ class WhereDslTest : WithAssertions {
         val actual: DeleteQuery<Book> = delete // for type check
 
         // then
-        val expected = DeleteQueries.delete(
+        val expected = DeleteQueries.deleteQuery(
             entity = entity1,
             where = predicate1,
         )
@@ -63,7 +63,7 @@ class WhereDslTest : WithAssertions {
         val actual: DeleteQuery<Book> = delete // for type check
 
         // then
-        val expected = DeleteQueries.delete(
+        val expected = DeleteQueries.deleteQuery(
             entity = entity1,
             where = Predicates.and(
                 listOf(
@@ -92,7 +92,7 @@ class WhereDslTest : WithAssertions {
         val actual: DeleteQuery<Book> = delete // for type check
 
         // then
-        val expected = DeleteQueries.delete(
+        val expected = DeleteQueries.deleteQuery(
             entity = entity1,
             where = Predicates.or(
                 listOf(

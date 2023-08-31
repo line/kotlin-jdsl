@@ -11,7 +11,7 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 class SubqueryDslTest : WithAssertions {
-    private val selectQuery1 = SelectQueries.select(
+    private val selectQuery1 = SelectQueries.selectQuery(
         returnType = String::class,
         distinct = false,
         select = listOf(Paths.path(Book::title)),

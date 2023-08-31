@@ -24,7 +24,7 @@ class JpqlDerivedEntitySerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
-    private val selectQuery1 = SelectQueries.select(
+    private val selectQuery1 = SelectQueries.selectQuery(
         returnType = String::class,
         distinct = false,
         select = listOf(Paths.path(Book::title)),

@@ -19,7 +19,7 @@ class LessThanOrEqualToDslTest : WithAssertions {
     private val bigDecimalExpression1 = Expressions.value(bigDecimal1)
 
     private val subquery1 = Expressions.subquery(
-        SelectQueries.select(
+        SelectQueries.selectQuery(
             returnType = BigDecimal::class,
             distinct = false,
             select = listOf(Paths.path(Book::price)),

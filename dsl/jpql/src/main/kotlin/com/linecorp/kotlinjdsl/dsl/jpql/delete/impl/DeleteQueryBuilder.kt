@@ -16,7 +16,7 @@ internal data class DeleteQueryBuilder<T : Any>(
     }
 
     fun build(): DeleteQuery<T> {
-        return DeleteQueries.delete(
+        return DeleteQueries.deleteQuery(
             entity = entity,
             where = where,
         )

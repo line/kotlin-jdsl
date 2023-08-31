@@ -36,7 +36,7 @@ class OrderByDslTest : WithAssertions {
         val actual: SelectQuery<String> = select // for type check
 
         // then
-        val expected = SelectQueries.select(
+        val expected = SelectQueries.selectQuery(
             returnType = String::class,
             distinct = false,
             select = listOf(expression1),

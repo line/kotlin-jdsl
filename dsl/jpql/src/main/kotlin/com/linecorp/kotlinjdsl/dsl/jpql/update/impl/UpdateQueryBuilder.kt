@@ -48,7 +48,7 @@ internal data class UpdateQueryBuilder<T : Any>(
     }
 
     fun build(): UpdateQuery<T> {
-        return UpdateQueries.update(
+        return UpdateQueries.updateQuery(
             entity = entity,
             set = set,
             where = where,
