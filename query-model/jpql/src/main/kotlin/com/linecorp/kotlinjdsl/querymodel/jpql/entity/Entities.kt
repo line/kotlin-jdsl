@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import kotlin.reflect.KClass
 
+@SinceJdsl("3.0.0")
 object Entities {
     @SinceJdsl("3.0.0")
     fun <T : Any> entity(type: KClass<T>, alias: String = type.simpleName!!): Entity<T> {

@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -8,6 +9,7 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
+@Internal
 class JpqlCustomExpressionSerializer : JpqlSerializer<JpqlCustomExpression<*>> {
     private val cache: MutableMap<String, JpqlCustomExpressionTemplate> = ConcurrentHashMap()
 

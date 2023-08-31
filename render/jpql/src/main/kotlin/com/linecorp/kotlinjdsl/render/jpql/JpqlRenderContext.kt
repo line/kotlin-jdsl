@@ -1,11 +1,12 @@
 package com.linecorp.kotlinjdsl.render.jpql
 
+import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.clazz.ClassUtils
 import com.linecorp.kotlinjdsl.render.RenderContext
+import com.linecorp.kotlinjdsl.render.jpql.introspector.CombinedJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospectorModifier
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlRenderIntrospector
-import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.CombinedJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.JakartaJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.JavaxJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -13,6 +14,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerModifier
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.*
 
+@SinceJdsl("3.0.0")
 class JpqlRenderContext private constructor(
     private val modules: Iterable<JpqlRenderModule>,
 ) : RenderContext {
@@ -24,6 +26,7 @@ class JpqlRenderContext private constructor(
 
     private val delegate: RenderContext
 
+    @SinceJdsl("3.0.0")
     constructor() : this(listOf(DefaultModule()))
 
     init {
@@ -106,14 +109,17 @@ class JpqlRenderContext private constructor(
         return JpqlRenderSerializer(serializers)
     }
 
+    @SinceJdsl("3.0.0")
     fun registerModule(module: JpqlRenderModule): JpqlRenderContext {
         return JpqlRenderContext(this.modules + module)
     }
 
+    @SinceJdsl("3.0.0")
     fun registerModules(vararg modules: JpqlRenderModule): JpqlRenderContext {
         return JpqlRenderContext(this.modules.toList() + modules.toList())
     }
 
+    @SinceJdsl("3.0.0")
     fun registerModules(modules: Iterable<JpqlRenderModule>): JpqlRenderContext {
         return JpqlRenderContext(this.modules.toList() + modules.toList())
     }

@@ -1,8 +1,6 @@
-package com.linecorp.kotlinjdsl.render.jpql.introspector.impl
+package com.linecorp.kotlinjdsl.render.jpql.introspector
 
 import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
-import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlEntityDescription
-import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension

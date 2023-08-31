@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import kotlin.reflect.KClass
 
+@SinceJdsl("3.0.0")
 object SelectQueries {
     @SinceJdsl("3.0.0")
     fun <T : Any> selectQuery(

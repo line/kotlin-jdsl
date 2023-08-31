@@ -1,9 +1,13 @@
 package com.linecorp.kotlinjdsl.render
 
+import com.linecorp.kotlinjdsl.SinceJdsl
+
+@SinceJdsl("3.0.0")
 abstract class AbstractRenderContextElement(
     override val key: RenderContext.Key<*>,
 ) : RenderContext.Element
 
+@SinceJdsl("3.0.0")
 data object EmptyRenderContext : RenderContext {
     override fun <E : RenderContext.Element> get(key: RenderContext.Key<E>): E? = null
     override fun <R> fold(initial: R, operation: (R, RenderContext.Element) -> R): R = initial

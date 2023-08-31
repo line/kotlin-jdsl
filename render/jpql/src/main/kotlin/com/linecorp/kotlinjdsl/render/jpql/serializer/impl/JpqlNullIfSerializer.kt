@@ -10,7 +10,6 @@ import kotlin.reflect.KClass
 
 @Internal
 class JpqlNullIfSerializer : JpqlSerializer<JpqlNullIf<*>> {
-
     override fun handledType(): KClass<JpqlNullIf<*>> {
         return JpqlNullIf::class
     }

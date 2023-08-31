@@ -1,9 +1,9 @@
-package com.linecorp.kotlinjdsl.render.jpql.introspector.impl
+package com.linecorp.kotlinjdsl.render.jpql.introspector
 
-import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlEntityDescription
-import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
+import com.linecorp.kotlinjdsl.SinceJdsl
 import kotlin.reflect.KClass
 
+@SinceJdsl("3.0.0")
 class CombinedJpqlIntrospector(
     private val primary: JpqlIntrospector,
     private val secondary: JpqlIntrospector,

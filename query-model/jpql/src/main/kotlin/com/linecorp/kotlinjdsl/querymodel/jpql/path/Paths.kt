@@ -11,6 +11,7 @@ import kotlin.internal.Exact
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
+@SinceJdsl("3.0.0")
 object Paths {
     @SinceJdsl("3.0.0")
     fun <T : Any, V> path(property: KProperty1<T, @Exact V>): Path<V & Any> {

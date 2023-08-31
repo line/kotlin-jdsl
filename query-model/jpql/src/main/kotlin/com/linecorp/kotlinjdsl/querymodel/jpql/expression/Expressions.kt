@@ -12,6 +12,7 @@ import java.math.BigInteger
 import kotlin.internal.Exact
 import kotlin.reflect.KClass
 
+@SinceJdsl("3.0.0")
 object Expressions {
     @SinceJdsl("3.0.0")
     fun <T> value(value: @Exact T): Expression<T & Any> {

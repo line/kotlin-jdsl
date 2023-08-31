@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.*
 
+@SinceJdsl("3.0.0")
 object Predicates {
     @SinceJdsl("3.0.0")
     fun not(predicate: Predicate): Predicate {
