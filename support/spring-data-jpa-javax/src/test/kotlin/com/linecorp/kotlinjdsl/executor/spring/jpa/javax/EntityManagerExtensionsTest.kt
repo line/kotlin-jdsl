@@ -11,13 +11,13 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.verifySequence
+import javax.persistence.EntityManager
+import javax.persistence.Query
+import javax.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.EntityManager
-import javax.persistence.Query
-import javax.persistence.TypedQuery
 
 @ExtendWith(MockKExtension::class)
 class EntityManagerExtensionsTest : WithAssertions {
