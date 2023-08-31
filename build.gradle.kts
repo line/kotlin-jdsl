@@ -1,11 +1,14 @@
+import java.nio.file.Files
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kover)
+    alias(libs.plugins.ktlint)
     `java-test-fixtures`
     `maven-publish`
 }
@@ -13,6 +16,7 @@ plugins {
 allprojects {
     apply(plugin = "kotlin")
     apply(plugin = "org.jetbrains.kotlinx.kover")
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
     apply(plugin = "java-test-fixtures")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
@@ -91,7 +95,9 @@ allprojects {
 
                 pom {
                     name.set(artifactId)
-                    description.set("Kotlin library that makes it easy to build and execute queries without generated metamodel.")
+                    description.set(
+                        "Kotlin library that makes it easy to build and execute queries without generated metamodel.",
+                    )
                     url.set("https://github.com/line/kotlin-jdsl")
 
                     licenses {
@@ -120,6 +126,50 @@ subprojects {
     dependencies {
         implementation(rootProject)
     }
+
+    kover {
+        excludeSourceSets {
+            names(sourceSets.testFixtures.name)
+        }
+    }
 }
 
+koverReport {
+    filters {
+        excludes {
+            packages("com.linecorp.kotlinjdsl.example.*")
+            packages("com.linecorp.kotlinjdsl.benchmark.*")
+        }
+    }
+}
 
+// Git Hooks
+File("$projectDir/.githook").let { projectGitHookDir ->
+    val os = OperatingSystem.current()
+
+    val suffix = when {
+        os.isMacOsX -> "macos"
+        os.isWindows -> "windows"
+        else -> "default"
+    }
+
+    val gitHookDir = File("$projectDir/.git/hooks")
+
+    gitHookDir
+        .listFiles()
+        ?.forEach {
+            it.deleteRecursively()
+        }
+
+    projectGitHookDir
+        .listFiles()
+        ?.filter {
+            it.nameWithoutExtension.contains(suffix)
+        }?.forEach {
+            val gitHook = File(gitHookDir, it.nameWithoutExtension.removeSuffix("-$suffix"))
+
+            Files.copy(it.toPath(), gitHook.toPath())
+
+            gitHook.setExecutable(true)
+        }
+}

@@ -8,7 +8,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 
 @PublishedApi
 internal data class CaseValueWhenFirstStepDsl<T : Any>(
-    private val value: Path<T>
+    private val value: Path<T>,
 ) : CaseValueWhenFirstStep<T> {
     override fun <S : T?> `when`(compareValue: S): CaseValueThenFirstStep<T> {
         return CaseValueThenFirstStepDsl(value, Expressions.value(compareValue))

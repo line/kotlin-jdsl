@@ -1,7 +1,15 @@
 package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee
 
 import java.util.*
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.DiscriminatorColumn
+import javax.persistence.Embedded
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Inheritance
+import javax.persistence.InheritanceType
+import javax.persistence.OneToMany
+import javax.persistence.Table
 
 @Entity
 @Table(name = "employee")
@@ -30,7 +38,5 @@ class Employee(
     override fun equals(other: Any?): Boolean = Objects.equals(employeeId, (other as? Employee)?.employeeId)
     override fun hashCode(): Int = Objects.hashCode(employeeId)
 
-    override fun toString(): String {
-        return "Employee(employeeId=$employeeId, name='$name')"
-    }
+    override fun toString(): String = "Employee(employeeId=$employeeId)"
 }

@@ -3,7 +3,13 @@ package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee
 import com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.annotation.CompositeId
 import java.io.Serializable
 import java.util.*
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.IdClass
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 
 @Entity
 @Table(name = "employee_department")
@@ -26,10 +32,12 @@ class EmployeeDepartment(
     override fun hashCode(): Int =
         Objects.hashCode(employeeDepartmentId)
 
+    override fun toString(): String =
+        "EmployeeDepartment(employeeDepartmentId=$employeeDepartmentId)"
+
     @CompositeId
     data class EmployeeDepartmentId(
         val employee: Long,
         val departmentId: Long,
     ) : Serializable
 }
-

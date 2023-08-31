@@ -1,17 +1,21 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class AvgDslTest : AbstractJpqlDslTest() {
+class AvgDslTest : WithAssertions {
+    private val expression1 = Paths.path(Book::salePrice)
+
     @Test
-    fun `avg int property`() {
+    fun `avg() with a property`() {
         // when
-        val expression = testJpql {
-            avg(TestTable1::int1)
+        val expression = queryPart {
+            avg(Book::price)
         }.toExpression()
 
         val actual: Expression<Double> = expression // for type check
@@ -19,35 +23,17 @@ class AvgDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.avg(
             distinct = false,
-            Paths.path(TestTable1::int1),
+            expr = Paths.path(Book::price),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `avgDistinct int property`() {
+    fun `avg() with a expression`() {
         // when
-        val expression = testJpql {
-            avgDistinct(TestTable1::int1)
-        }.toExpression()
-
-        val actual: Expression<Double> = expression // for type check
-
-        // then
-        val expected = Expressions.avg(
-            distinct = true,
-            Paths.path(TestTable1::int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `avg int expression`() {
-        // when
-        val expression = testJpql {
-            avg(path(TestTable1::int1))
+        val expression = queryPart {
+            avg(expression1)
         }.toExpression()
 
         val actual: Expression<Double> = expression // for type check
@@ -55,17 +41,17 @@ class AvgDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.avg(
             distinct = false,
-            Paths.path(TestTable1::int1),
+            expr = expression1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `avgDistinct int expression`() {
+    fun `avgDistinct() with a property`() {
         // when
-        val expression = testJpql {
-            avgDistinct(path(TestTable1::int1))
+        val expression = queryPart {
+            avgDistinct(Book::price)
         }.toExpression()
 
         val actual: Expression<Double> = expression // for type check
@@ -73,13 +59,27 @@ class AvgDslTest : AbstractJpqlDslTest() {
         // then
         val expected = Expressions.avg(
             distinct = true,
-            Paths.path(TestTable1::int1),
+            expr = Paths.path(Book::price),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
-    private class TestTable1 {
-        val int1: Int = 1
+    @Test
+    fun `avgDistinct() with a expression`() {
+        // when
+        val expression = queryPart {
+            avgDistinct(expression1)
+        }.toExpression()
+
+        val actual: Expression<Double> = expression // for type check
+
+        // then
+        val expected = Expressions.avg(
+            distinct = true,
+            expr = expression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
     }
 }

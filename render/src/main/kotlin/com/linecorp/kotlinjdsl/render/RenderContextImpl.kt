@@ -1,16 +1,18 @@
 package com.linecorp.kotlinjdsl.render
 
+import com.linecorp.kotlinjdsl.SinceJdsl
+
+@SinceJdsl("3.0.0")
 abstract class AbstractRenderContextElement(
     override val key: RenderContext.Key<*>,
 ) : RenderContext.Element
 
-object EmptyRenderContext : RenderContext {
+@SinceJdsl("3.0.0")
+data object EmptyRenderContext : RenderContext {
     override fun <E : RenderContext.Element> get(key: RenderContext.Key<E>): E? = null
     override fun <R> fold(initial: R, operation: (R, RenderContext.Element) -> R): R = initial
     override fun plus(context: RenderContext): RenderContext = context
     override fun minusKey(key: RenderContext.Key<*>): RenderContext = this
-    override fun hashCode(): Int = 0
-    override fun toString(): String = "EmptyDslContext"
 }
 
 internal class CombinedRenderContext(
@@ -40,7 +42,7 @@ internal class CombinedRenderContext(
     }
 
     override fun minusKey(key: RenderContext.Key<*>): RenderContext {
-        element[key]?.let {
+        if (element[key] != null) {
             return left
         }
 

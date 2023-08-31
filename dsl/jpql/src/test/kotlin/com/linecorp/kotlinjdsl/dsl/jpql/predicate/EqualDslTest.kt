@@ -1,469 +1,317 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.predicate
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
+import java.math.BigDecimal
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class EqualDslTest : AbstractJpqlDslTest() {
-    private val int1: Int = 1
-    private val int2: Int = 1
-    private val nullableInt1: Int? = null
-    private val nullableInt2: Int? = null
+class EqualDslTest : WithAssertions {
+    private val expression1 = Paths.path(Book::price)
+    private val expression2 = Paths.path(Book::salePrice)
+
+    private val bigDecimal1 = BigDecimal.valueOf(100)
+
+    private val subquery1 = Expressions.subquery(
+        SelectQueries.selectQuery(
+            returnType = BigDecimal::class,
+            distinct = false,
+            select = listOf(Paths.path(Book::price)),
+            from = listOf(Entities.entity(Book::class)),
+        ),
+    )
 
     @Test
-    fun `expression equal value`() {
+    fun `equal() with a bigDecimal`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).equal(int1)
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.equal(bigDecimal1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::int1),
-                Expressions.value(int1),
-            ),
+        val excepted = Predicates.equal(
+            expression1,
+            Expressions.value(bigDecimal1),
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression equal expression`() {
+    fun `equal() with a expression`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).equal(path(TestTable::int2))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.equal(expression2)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::int1),
-                Paths.path(TestTable::int2),
-            ),
+        val excepted = Predicates.equal(
+            expression1,
+            expression2,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression equal nullable expression`() {
+    fun equalAll() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).equal(path(TestTable::nullableInt2))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.equalAll(subquery1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::int1),
-                Paths.path(TestTable::nullableInt2),
-            ),
+        val excepted = Predicates.equalAll(
+            expression1,
+            subquery1,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `nullable expression equal value`() {
+    fun equalAny() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).equal(int1)
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.equalAny(subquery1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::nullableInt1),
-                Expressions.value(int1),
-            ),
+        val excepted = Predicates.equalAny(
+            expression1,
+            subquery1,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `nullable expression equal nullable value`() {
+    fun `eq() with a bigDecimal`() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).equal(nullableInt1)
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.eq(bigDecimal1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::nullableInt1),
-                Expressions.value(nullableInt1),
-            ),
+        val excepted = Predicates.equal(
+            expression1,
+            Expressions.value(bigDecimal1),
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `nullable expression equal expression`() {
+    fun `eq() with a expression`() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).equal(path(TestTable::int2))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.eq(expression2)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::nullableInt1),
-                Paths.path(TestTable::int2),
-            ),
+        val excepted = Predicates.equal(
+            expression1,
+            expression2,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `nullable expression equal nullable expression`() {
+    fun eqAll() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).equal(path(TestTable::nullableInt2))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.eqAll(subquery1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::nullableInt1),
-                Paths.path(TestTable::nullableInt2),
-            ),
+        val excepted = Predicates.equalAll(
+            expression1,
+            subquery1,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression eq value`() {
+    fun eqAny() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).eq(int1)
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.eqAny(subquery1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::int1),
-                Expressions.value(int1),
-            ),
+        val excepted = Predicates.equalAny(
+            expression1,
+            subquery1,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression eq expression`() {
+    fun `notEqual() with a bigDecimal`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).eq(path(TestTable::int2))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.notEqual(bigDecimal1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::int1),
-                Paths.path(TestTable::int2),
-            ),
+        val excepted = Predicates.notEqual(
+            expression1,
+            Expressions.value(bigDecimal1),
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression eq nullable expression`() {
+    fun `notEqual() with a expression`() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).eq(path(TestTable::nullableInt2))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.notEqual(expression2)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::int1),
-                Paths.path(TestTable::nullableInt2),
-            ),
+        val excepted = Predicates.notEqual(
+            expression1,
+            expression2,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `nullable expression eq value`() {
+    fun notEqualAll() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).eq(int1)
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.notEqualAll(subquery1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::nullableInt1),
-                Expressions.value(int1),
-            ),
+        val excepted = Predicates.notEqualAll(
+            expression1,
+            subquery1,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `nullable expression eq nullable value`() {
+    fun notEqualAny() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).eq(nullableInt1)
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.notEqualAny(subquery1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::nullableInt1),
-                Expressions.value(nullableInt1),
-            ),
+        val excepted = Predicates.notEqualAny(
+            expression1,
+            subquery1,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `nullable expression eq expression`() {
+    fun `ne() with a bigDecimal`() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).eq(path(TestTable::int2))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.ne(bigDecimal1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::nullableInt1),
-                Paths.path(TestTable::int2),
-            ),
+        val excepted = Predicates.notEqual(
+            expression1,
+            Expressions.value(bigDecimal1),
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `nullable expression eq nullable expression`() {
+    fun `ne() with a expression`() {
         // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).eq(path(TestTable::nullableInt2))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.ne(expression2)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.equal(
-                Paths.path(TestTable::nullableInt1),
-                Paths.path(TestTable::nullableInt2),
-            ),
+        val excepted = Predicates.notEqual(
+            expression1,
+            expression2,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression notEqual value`() {
+    fun neAll() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).notEqual(int1)
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.neAll(subquery1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::int1),
-                Expressions.value(int1),
-            ),
+        val excepted = Predicates.notEqualAll(
+            expression1,
+            subquery1,
         )
+
+        assertThat(actual).isEqualTo(excepted)
     }
 
     @Test
-    fun `expression notEqual expression`() {
+    fun neAny() {
         // when
-        val actual = testJpql {
-            path(TestTable::int1).notEqual(path(TestTable::int2))
-        }.toPredicate()
+        val predicate = queryPart {
+            expression1.neAny(subquery1)
+        }
+
+        val actual: Predicate = predicate // for type check
 
         // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::int1),
-                Paths.path(TestTable::int2),
-            ),
+        val excepted = Predicates.notEqualAny(
+            expression1,
+            subquery1,
         )
-    }
 
-    @Test
-    fun `expression notEqual nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).notEqual(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::int1),
-                Paths.path(TestTable::nullableInt2),
-            ),
-        )
-    }
-
-    @Test
-    fun `nullable expression notEqual value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).notEqual(int2)
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::nullableInt1),
-                Expressions.value(int2),
-            ),
-        )
-    }
-
-    @Test
-    fun `nullable expression notEqual nullable value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).notEqual(nullableInt2)
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::nullableInt1),
-                Expressions.value(nullableInt2),
-            ),
-        )
-    }
-
-    @Test
-    fun `nullable expression notEqual expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).notEqual(path(TestTable::int2))
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::nullableInt1),
-                Paths.path(TestTable::int2),
-            ),
-        )
-    }
-
-    @Test
-    fun `nullable expression notEqual nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).notEqual(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::nullableInt1),
-                Paths.path(TestTable::nullableInt2),
-            ),
-        )
-    }
-
-    @Test
-    fun `expression ne value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).ne(int1)
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::int1),
-                Expressions.value(int1),
-            ),
-        )
-    }
-
-    @Test
-    fun `expression ne expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).ne(path(TestTable::int2))
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::int1),
-                Paths.path(TestTable::int2),
-            ),
-        )
-    }
-
-    @Test
-    fun `expression ne nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::int1).ne(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::int1),
-                Paths.path(TestTable::nullableInt2),
-            ),
-        )
-    }
-
-    @Test
-    fun `nullable expression ne value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).ne(int2)
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::nullableInt1),
-                Expressions.value(int2),
-            ),
-        )
-    }
-
-    @Test
-    fun `nullable expression ne nullable value`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).ne(nullableInt2)
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::nullableInt1),
-                Expressions.value(nullableInt2),
-            ),
-        )
-    }
-
-    @Test
-    fun `nullable expression ne expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).ne(path(TestTable::int2))
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::nullableInt1),
-                Paths.path(TestTable::int2),
-            ),
-        )
-    }
-
-    @Test
-    fun `nullable expression ne nullable expression`() {
-        // when
-        val actual = testJpql {
-            path(TestTable::nullableInt1).ne(path(TestTable::nullableInt2))
-        }.toPredicate()
-
-        // then
-        assertThat(actual).isEqualTo(
-            Predicates.notEqual(
-                Paths.path(TestTable::nullableInt1),
-                Paths.path(TestTable::nullableInt2),
-            ),
-        )
-    }
-
-    private class TestTable {
-        val int1: Int = 1
-        val int2: Int = 1
-        val nullableInt1: Int? = null
-        val nullableInt2: Int? = null
+        assertThat(actual).isEqualTo(excepted)
     }
 }

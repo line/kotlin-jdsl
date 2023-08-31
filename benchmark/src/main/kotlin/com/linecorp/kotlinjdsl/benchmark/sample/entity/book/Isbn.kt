@@ -12,4 +12,3 @@ data class Isbn(
     @Column(name = "isbn")
     val value: String,
 ) : Serializable
-

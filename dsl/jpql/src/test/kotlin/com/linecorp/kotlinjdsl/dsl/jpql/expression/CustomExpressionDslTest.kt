@@ -1,38 +1,25 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class CustomExpressionDslTest : AbstractJpqlDslTest() {
+class CustomExpressionDslTest : WithAssertions {
     private val template1: String = "template1"
 
-    @Test
-    fun `customExpression type template`() {
-        // when
-        val expression = testJpql {
-            customExpression(Int::class, template1)
-        }.toExpression()
+    private val stringExpression1 = Expressions.value("string1")
+    private val stringExpression2 = Expressions.value("string2")
 
-        val actual: Expression<Int> = expression // for type check
-
-        // then
-        val expected = Expressions.customExpression(
-            Int::class,
-            template1,
-            emptyList(),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
+    private val string1 = "string1"
+    private val string2 = "string2"
 
     @Test
-    fun `customExpression type template int expression`() {
+    fun `customExpression() with strings`() {
         // when
-        val expression = testJpql {
-            customExpression(Int::class, template1, path(TestTable1::int1))
+        val expression = queryPart {
+            customExpression(Int::class, template1, string1, string2)
         }.toExpression()
 
         val actual: Expression<Int> = expression // for type check
@@ -42,7 +29,8 @@ class CustomExpressionDslTest : AbstractJpqlDslTest() {
             Int::class,
             template1,
             listOf(
-                Paths.path(TestTable1::int1),
+                Expressions.value(string1),
+                Expressions.value(string2),
             ),
         )
 
@@ -50,10 +38,10 @@ class CustomExpressionDslTest : AbstractJpqlDslTest() {
     }
 
     @Test
-    fun `customExpression type template int expression int expression`() {
+    fun `customExpression() with string expressions`() {
         // when
-        val expression = testJpql {
-            customExpression(Int::class, template1, path(TestTable1::int1), path(TestTable1::int2))
+        val expression = queryPart {
+            customExpression(Int::class, template1, stringExpression1, stringExpression2)
         }.toExpression()
 
         val actual: Expression<Int> = expression // for type check
@@ -63,16 +51,11 @@ class CustomExpressionDslTest : AbstractJpqlDslTest() {
             Int::class,
             template1,
             listOf(
-                Paths.path(TestTable1::int1),
-                Paths.path(TestTable1::int2),
+                stringExpression1,
+                stringExpression2,
             ),
         )
 
         assertThat(actual).isEqualTo(expected)
-    }
-
-    private class TestTable1 {
-        val int1: Int = 1
-        val int2: Int? = null
     }
 }

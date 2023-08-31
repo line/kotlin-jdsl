@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.from.From
 
 @SinceJdsl("3.0.0")
 interface Entity<T : Any> : From, Expression<T>, Entityable<T>, QueryPart {
+    @SinceJdsl("3.0.0")
     val alias: String
 
     override fun toEntity(): Entity<T> = this

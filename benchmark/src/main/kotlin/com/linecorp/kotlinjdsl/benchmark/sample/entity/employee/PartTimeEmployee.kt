@@ -1,6 +1,10 @@
 package com.linecorp.kotlinjdsl.benchmark.sample.entity.employee
 
-import jakarta.persistence.*
+import jakarta.persistence.AttributeOverride
+import jakarta.persistence.Column
+import jakarta.persistence.DiscriminatorValue
+import jakarta.persistence.Embedded
+import jakarta.persistence.Entity
 
 @DiscriminatorValue("PART_TIME")
 @Entity
@@ -27,4 +31,6 @@ class PartTimeEmployee(
     phone = phone,
     address = address,
     departments = departments,
-)
+) {
+    override fun toString(): String = "PartTimeEmployee(weeklySalary=$weeklySalary)"
+}

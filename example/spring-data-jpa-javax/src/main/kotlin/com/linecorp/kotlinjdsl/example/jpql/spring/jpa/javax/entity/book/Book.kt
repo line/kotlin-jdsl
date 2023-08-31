@@ -4,7 +4,15 @@ package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.book
 
 import java.time.OffsetDateTime
 import java.util.*
-import javax.persistence.*
+import javax.persistence.AttributeOverride
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Embedded
+import javax.persistence.EmbeddedId
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.OneToMany
+import javax.persistence.Table
 
 @Entity
 @Table(name = "book")

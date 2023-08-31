@@ -1,18 +1,96 @@
 package com.linecorp.kotlinjdsl.render.jpql
 
+import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.clazz.ClassUtils
 import com.linecorp.kotlinjdsl.render.RenderContext
+import com.linecorp.kotlinjdsl.render.jpql.introspector.CombinedJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospectorModifier
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlRenderIntrospector
-import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.CombinedJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.JakartaJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.JavaxJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerModifier
-import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.*
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAliasedExpressionSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAndSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAvgSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlBetweenSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseValueSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseWhenSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCountSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCustomExpressionSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDeleteQuerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDerivedEntitySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDivideSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEntityPropertySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEntitySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEntityTreatSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEntityTypeSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualAllSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualAnySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExistsSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpressionParenthesesSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpressionSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlFunctionSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanAllSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanAnySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanOrEqualToAllSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanOrEqualToAnySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanOrEqualToSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInSubquerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInnerAssociationFetchJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInnerAssociationJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInnerFetchJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInnerJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlIsEmptySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlIsNotEmptySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlIsNotNullSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlIsNullSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlJoinedEntitySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftAssociationFetchJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftAssociationJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftFetchJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanAllSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanAnySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanOrEqualToAllSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanOrEqualToAnySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLikeSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLiteralSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlMaxSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlMinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlMinusSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNewSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotBetweenSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotEqualAllSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotEqualAnySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotExistsSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotInSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotInSubquerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotLikeSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNullIfSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNullSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlOrSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlParamSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPathPropertySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPathTreatSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPathTypeSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPlusSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPredicateParenthesesSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQuerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSortSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubquerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSumSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTimesSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlUpdateQuerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlValueSerializer
 
+@SinceJdsl("3.0.0")
 class JpqlRenderContext private constructor(
     private val modules: Iterable<JpqlRenderModule>,
 ) : RenderContext {
@@ -24,6 +102,7 @@ class JpqlRenderContext private constructor(
 
     private val delegate: RenderContext
 
+    @SinceJdsl("3.0.0")
     constructor() : this(listOf(DefaultModule()))
 
     init {
@@ -106,14 +185,17 @@ class JpqlRenderContext private constructor(
         return JpqlRenderSerializer(serializers)
     }
 
+    @SinceJdsl("3.0.0")
     fun registerModule(module: JpqlRenderModule): JpqlRenderContext {
         return JpqlRenderContext(this.modules + module)
     }
 
+    @SinceJdsl("3.0.0")
     fun registerModules(vararg modules: JpqlRenderModule): JpqlRenderContext {
         return JpqlRenderContext(this.modules.toList() + modules.toList())
     }
 
+    @SinceJdsl("3.0.0")
     fun registerModules(modules: Iterable<JpqlRenderModule>): JpqlRenderContext {
         return JpqlRenderContext(this.modules.toList() + modules.toList())
     }
@@ -149,32 +231,49 @@ private class DefaultModule : JpqlRenderModule {
             JpqlAndSerializer(),
             JpqlAvgSerializer(),
             JpqlBetweenSerializer(),
-            JpqlCaseSerializer(),
+            JpqlCaseWhenSerializer(),
             JpqlCaseValueSerializer(),
             JpqlCountSerializer(),
+            JpqlCustomExpressionSerializer(),
             JpqlDeleteQuerySerializer(),
             JpqlDerivedEntitySerializer(),
             JpqlDivideSerializer(),
             JpqlEntityPropertySerializer(),
             JpqlEntitySerializer(),
+            JpqlEntityTreatSerializer(),
+            JpqlEntityTypeSerializer(),
+            JpqlEqualAllSerializer(),
+            JpqlEqualAnySerializer(),
             JpqlEqualSerializer(),
             JpqlExistsSerializer(),
             JpqlExpressionParenthesesSerializer(),
             JpqlExpressionSerializer(),
             JpqlFunctionSerializer(),
+            JpqlGreaterThanAllSerializer(),
+            JpqlGreaterThanAnySerializer(),
+            JpqlGreaterThanOrEqualToAllSerializer(),
+            JpqlGreaterThanOrEqualToAnySerializer(),
             JpqlGreaterThanOrEqualToSerializer(),
             JpqlGreaterThanSerializer(),
+            JpqlInnerAssociationFetchJoinSerializer(),
             JpqlInnerAssociationJoinSerializer(),
+            JpqlInnerFetchJoinSerializer(),
             JpqlInnerJoinSerializer(),
             JpqlInSerializer(),
-            JpqlNotInSerializer(),
             JpqlInSubquerySerializer(),
-            JpqlNotInSubquerySerializer(),
-            JpqlIsNullSerializer(),
             JpqlIsEmptySerializer(),
             JpqlIsNotEmptySerializer(),
+            JpqlIsNotNullSerializer(),
+            JpqlIsNullSerializer(),
             JpqlJoinedEntitySerializer(),
+            JpqlLeftAssociationFetchJoinSerializer(),
+            JpqlLeftAssociationJoinSerializer(),
+            JpqlLeftFetchJoinSerializer(),
             JpqlLeftJoinSerializer(),
+            JpqlLessThanAllSerializer(),
+            JpqlLessThanAnySerializer(),
+            JpqlLessThanOrEqualToAllSerializer(),
+            JpqlLessThanOrEqualToAnySerializer(),
             JpqlLikeSerializer(),
             JpqlLiteralSerializer(),
             JpqlMaxSerializer(),
@@ -182,13 +281,20 @@ private class DefaultModule : JpqlRenderModule {
             JpqlMinusSerializer(),
             JpqlNewSerializer(),
             JpqlNotBetweenSerializer(),
+            JpqlNotEqualAllSerializer(),
+            JpqlNotEqualAnySerializer(),
             JpqlNotExistsSerializer(),
+            JpqlNotInSerializer(),
+            JpqlNotInSubquerySerializer(),
+            JpqlNotLikeSerializer(),
             JpqlNotSerializer(),
-            JpqlNullSerializer(),
             JpqlNullIfSerializer(),
+            JpqlNullSerializer(),
             JpqlOrSerializer(),
             JpqlParamSerializer(),
             JpqlPathPropertySerializer(),
+            JpqlPathTreatSerializer(),
+            JpqlPathTypeSerializer(),
             JpqlPlusSerializer(),
             JpqlPredicateParenthesesSerializer(),
             JpqlSelectQuerySerializer(),

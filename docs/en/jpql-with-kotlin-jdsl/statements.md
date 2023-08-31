@@ -8,20 +8,20 @@ Calling `select()` in `jpql()` allows you to build a select statement.
 
 ```kotlin
 val query = jpql {
-    select<Row>(
-        path(Employee::employeeId).`as`(expression("employeeId")),
-        count(Employee::employeeId).`as`(expression("count")),
+    select(
+        path(Employee::employeeId),
     ).from(
         entity(Employee::class),
         join(Employee::departments),
     ).where(
-        path(EmployeeDepartment::departmentId).eq(3L)
+        type(entity(Employee::class)).eq(FullTimeEmployee::class)
     ).groupBy(
         path(Employee::employeeId),
     ).having(
         count(Employee::employeeId).greaterThan(1L),
     ).orderBy(
-        expression<Long>("employeeId").asc()
+        count(Employee::employeeId).desc(),
+        path(Employee::employeeId).asc(),
     )
 }
 ```

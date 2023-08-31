@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sorts
 import com.linecorp.kotlinjdsl.render.TestRenderContext
@@ -65,7 +65,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             entity2,
         )
 
-        val part = Selects.select(
+        val part = SelectQueries.selectQuery(
             returnType = String::class,
             distinct = false,
             select = expressions,
@@ -121,7 +121,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             entity2,
         )
 
-        val part = Selects.select(
+        val part = SelectQueries.selectQuery(
             returnType = String::class,
             distinct = true,
             select = expressions,
@@ -179,7 +179,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             entity2,
         )
 
-        val part = Selects.select(
+        val part = SelectQueries.selectQuery(
             returnType = String::class,
             distinct = false,
             select = expressions,
@@ -249,7 +249,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             entity2,
         )
 
-        val part = Selects.select(
+        val part = SelectQueries.selectQuery(
             returnType = String::class,
             distinct = false,
             select = expressions1,
@@ -320,7 +320,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             entity2,
         )
 
-        val part = Selects.select(
+        val part = SelectQueries.selectQuery(
             returnType = String::class,
             distinct = false,
             select = expressions,
@@ -390,7 +390,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             entity2,
         )
 
-        val part = Selects.select(
+        val part = SelectQueries.selectQuery(
             returnType = String::class,
             distinct = false,
             select = expressions,

@@ -40,13 +40,13 @@ internal data class SelectQueryDsl<T : Any>(
     }
 
     override fun whereAnd(vararg predicates: Predicatable?): SelectQueryGroupByStep<T> {
-        builder.where(Predicates.and(predicates.mapNotNull { it?.toPredicate() }))
+        builder.where(Predicates.and(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) }))
 
         return this
     }
 
     override fun whereOr(vararg predicates: Predicatable?): SelectQueryGroupByStep<T> {
-        builder.where(Predicates.or(predicates.mapNotNull { it?.toPredicate() }))
+        builder.where(Predicates.or(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) }))
 
         return this
     }
@@ -66,13 +66,13 @@ internal data class SelectQueryDsl<T : Any>(
     }
 
     override fun havingAnd(vararg predicates: Predicatable?): SelectQueryOrderByStep<T> {
-        builder.having(Predicates.and(predicates.mapNotNull { it?.toPredicate() }))
+        builder.having(Predicates.and(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) }))
 
         return this
     }
 
     override fun havingOr(vararg predicates: Predicatable?): SelectQueryOrderByStep<T> {
-        builder.having(Predicates.or(predicates.mapNotNull { it?.toPredicate() }))
+        builder.having(Predicates.or(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) }))
 
         return this
     }

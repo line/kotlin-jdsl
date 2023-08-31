@@ -1,10 +1,14 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.select
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.SinceJdsl
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entityable
 import com.linecorp.kotlinjdsl.querymodel.jpql.from.Fromable
 
+@SinceJdsl("3.0.0")
 interface SelectQueryFromStep<T : Any> {
-    fun from(entity: Entity<*>): SelectQueryWhereStep<T>
+    @SinceJdsl("3.0.0")
+    fun from(entity: Entityable<*>): SelectQueryWhereStep<T>
 
-    fun from(entity: Entity<*>, vararg froms: Fromable?): SelectQueryWhereStep<T>
+    @SinceJdsl("3.0.0")
+    fun from(entity: Entityable<*>, vararg froms: Fromable?): SelectQueryWhereStep<T>
 }

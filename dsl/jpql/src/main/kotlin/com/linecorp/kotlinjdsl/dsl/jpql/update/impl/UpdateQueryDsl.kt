@@ -16,7 +16,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 
 @PublishedApi
 internal data class UpdateQueryDsl<T : Any>(
-    private val builder: UpdateQueryBuilder<T>
+    private val builder: UpdateQueryBuilder<T>,
 ) : UpdateQuerySetFirstStep<T>,
     UpdateQuerySetStep<T>,
     UpdateQueryWhereStep<T> {
@@ -44,13 +44,13 @@ internal data class UpdateQueryDsl<T : Any>(
     }
 
     override fun whereAnd(vararg predicates: Predicatable?): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(Predicates.and(predicates.mapNotNull { it?.toPredicate() }))
+        builder.where(Predicates.and(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) }))
 
         return this
     }
 
     override fun whereOr(vararg predicates: Predicatable?): JpqlQueryable<UpdateQuery<T>> {
-        builder.where(Predicates.or(predicates.mapNotNull { it?.toPredicate() }))
+        builder.where(Predicates.or(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) }))
 
         return this
     }

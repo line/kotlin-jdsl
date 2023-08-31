@@ -14,14 +14,14 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
-internal class JpqlIsNotNullSerializerTest: WithAssertions {
+internal class JpqlIsNotNullSerializerTest : WithAssertions {
     private val sut = JpqlIsNotNullSerializer()
 
     @MockK
     private lateinit var writer: JpqlWriter
 
     @MockK
-    private lateinit var serializer : JpqlRenderSerializer
+    private lateinit var serializer: JpqlRenderSerializer
 
     private val expression1 = Paths.path(Employee::nickname)
 

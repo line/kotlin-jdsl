@@ -118,7 +118,7 @@ private class InternalJpqlWriter(
         val prefixedName = if (name.startsWith(":")) {
             name
         } else {
-            ":${name}"
+            ":$name"
         }
 
         write(prefixedName)
@@ -152,7 +152,7 @@ private fun InternalJpqlWriter(params: Map<String, Any?>): InternalJpqlWriter {
 }
 
 private class Incrementer(
-    initial: Int
+    initial: Int,
 ) {
     private var counter: Int = initial
 

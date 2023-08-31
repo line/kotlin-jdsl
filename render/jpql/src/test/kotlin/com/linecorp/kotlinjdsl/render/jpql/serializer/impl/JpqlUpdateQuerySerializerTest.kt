@@ -6,7 +6,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
-import com.linecorp.kotlinjdsl.querymodel.jpql.update.Updates
+import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.impl.JpqlUpdateQuery
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
@@ -17,9 +17,9 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import io.mockk.impl.annotations.MockK
 import io.mockk.verifySequence
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 @JpqlSerializerTest
 class JpqlUpdateQuerySerializerTest : WithAssertions {
@@ -58,7 +58,7 @@ class JpqlUpdateQuerySerializerTest : WithAssertions {
             path2 to expression2,
         )
 
-        val part = Updates.update(
+        val part = UpdateQueries.updateQuery(
             entity = entity1,
             set = pathAndExpressions,
         )
@@ -97,7 +97,7 @@ class JpqlUpdateQuerySerializerTest : WithAssertions {
             path2 to expression2,
         )
 
-        val part = Updates.update(
+        val part = UpdateQueries.updateQuery(
             entity = entity1,
             set = pathAndExpressions,
             where = predicate1,

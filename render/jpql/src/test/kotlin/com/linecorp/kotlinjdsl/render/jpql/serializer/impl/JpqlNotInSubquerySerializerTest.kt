@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotInSubquery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.Selects
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -29,7 +29,7 @@ class JpqlNotInSubquerySerializerTest : WithAssertions {
     private val expression1 = Paths.path(Book::title)
 
     private val subquery1 = Expressions.subquery(
-        Selects.select(
+        SelectQueries.selectQuery(
             returnType = String::class,
             distinct = false,
             select = listOf(Paths.path(Book::title)),

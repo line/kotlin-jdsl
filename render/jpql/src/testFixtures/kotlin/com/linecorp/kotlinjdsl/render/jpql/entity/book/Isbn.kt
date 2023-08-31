@@ -8,4 +8,3 @@ import java.io.Serializable
 data class Isbn(
     val value: String,
 ) : Serializable
-

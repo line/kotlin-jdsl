@@ -1,85 +1,86 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import java.math.BigDecimal
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class MinDslTest : AbstractJpqlDslTest() {
+class MinDslTest : WithAssertions {
+    private val expression1 = Paths.path(Book::salePrice)
+
     @Test
-    fun `min int property`() {
+    fun `min() with a property`() {
         // when
-        val expression = testJpql {
-            min(TestTable1::int1)
+        val expression = queryPart {
+            min(Book::price)
         }.toExpression()
 
-        val actual: Expression<Int> = expression // for type check
+        val actual: Expression<BigDecimal> = expression // for type check
 
         // then
         val expected = Expressions.min(
             distinct = false,
-            Paths.path(TestTable1::int1),
+            expr = Paths.path(Book::price),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `minDistinct int property`() {
+    fun `min() with a expression`() {
         // when
-        val expression = testJpql {
-            minDistinct(TestTable1::int1)
+        val expression = queryPart {
+            min(expression1)
         }.toExpression()
 
-        val actual: Expression<Int> = expression // for type check
-
-        // then
-        val expected = Expressions.min(
-            distinct = true,
-            Paths.path(TestTable1::int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `min int expression`() {
-        // when
-        val expression = testJpql {
-            min(path(TestTable1::int1))
-        }.toExpression()
-
-        val actual: Expression<Int> = expression // for type check
+        val actual: Expression<BigDecimal> = expression // for type check
 
         // then
         val expected = Expressions.min(
             distinct = false,
-            Paths.path(TestTable1::int1),
+            expr = expression1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `minDistinct int expression`() {
+    fun `minDistinct() with a property`() {
         // when
-        val expression = testJpql {
-            minDistinct(path(TestTable1::int1))
+        val expression = queryPart {
+            minDistinct(Book::price)
         }.toExpression()
 
-        val actual: Expression<Int> = expression // for type check
+        val actual: Expression<BigDecimal> = expression // for type check
 
         // then
         val expected = Expressions.min(
             distinct = true,
-            Paths.path(TestTable1::int1),
+            expr = Paths.path(Book::price),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
-    private class TestTable1 {
-        val int1: Int = 1
+    @Test
+    fun `minDistinct() with a expression`() {
+        // when
+        val expression = queryPart {
+            minDistinct(expression1)
+        }.toExpression()
+
+        val actual: Expression<BigDecimal> = expression // for type check
+
+        // then
+        val expected = Expressions.min(
+            distinct = true,
+            expr = expression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
     }
 }

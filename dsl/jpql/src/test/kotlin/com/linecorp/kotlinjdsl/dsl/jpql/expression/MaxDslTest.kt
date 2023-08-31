@@ -1,85 +1,86 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.dsl.jpql.AbstractJpqlDslTest
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import java.math.BigDecimal
+import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class MaxDslTest : AbstractJpqlDslTest() {
+class MaxDslTest : WithAssertions {
+    private val expression1 = Paths.path(Book::salePrice)
+
     @Test
-    fun `max int property`() {
+    fun `max() with a property`() {
         // when
-        val expression = testJpql {
-            max(TestTable1::int1)
+        val expression = queryPart {
+            max(Book::price)
         }.toExpression()
 
-        val actual: Expression<Int> = expression // for type check
+        val actual: Expression<BigDecimal> = expression // for type check
 
         // then
         val expected = Expressions.max(
             distinct = false,
-            Paths.path(TestTable1::int1),
+            expr = Paths.path(Book::price),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `maxDistinct int property`() {
+    fun `max() with a expression`() {
         // when
-        val expression = testJpql {
-            maxDistinct(TestTable1::int1)
+        val expression = queryPart {
+            max(expression1)
         }.toExpression()
 
-        val actual: Expression<Int> = expression // for type check
-
-        // then
-        val expected = Expressions.max(
-            distinct = true,
-            Paths.path(TestTable1::int1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `max int expression`() {
-        // when
-        val expression = testJpql {
-            max(path(TestTable1::int1))
-        }.toExpression()
-
-        val actual: Expression<Int> = expression // for type check
+        val actual: Expression<BigDecimal> = expression // for type check
 
         // then
         val expected = Expressions.max(
             distinct = false,
-            Paths.path(TestTable1::int1),
+            expr = expression1,
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `maxDistinct int expression`() {
+    fun `maxDistinct() with a property`() {
         // when
-        val expression = testJpql {
-            maxDistinct(path(TestTable1::int1))
+        val expression = queryPart {
+            maxDistinct(Book::price)
         }.toExpression()
 
-        val actual: Expression<Int> = expression // for type check
+        val actual: Expression<BigDecimal> = expression // for type check
 
         // then
         val expected = Expressions.max(
             distinct = true,
-            Paths.path(TestTable1::int1),
+            expr = Paths.path(Book::price),
         )
 
         assertThat(actual).isEqualTo(expected)
     }
 
-    private class TestTable1 {
-        val int1: Int = 1
+    @Test
+    fun `maxDistinct() with a expression`() {
+        // when
+        val expression = queryPart {
+            maxDistinct(expression1)
+        }.toExpression()
+
+        val actual: Expression<BigDecimal> = expression // for type check
+
+        // then
+        val expected = Expressions.max(
+            distinct = true,
+            expr = expression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
     }
 }

@@ -6,7 +6,11 @@ import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlEntityDescription
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlRenderIntrospector
-import com.linecorp.kotlinjdsl.render.jpql.serializer.*
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderClause
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderStatement
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
+import com.linecorp.kotlinjdsl.render.jpql.serializer.StatementClause
+import com.linecorp.kotlinjdsl.render.jpql.serializer.StatementClauseSource
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -63,6 +67,7 @@ internal class JpqlEntitySerializerTest : WithAssertions {
 
         // then
         verifySequence {
+            introspector.introspect(Book::class)
             writer.write(entityDescription1.name)
             writer.write(" ")
             writer.write("AS")

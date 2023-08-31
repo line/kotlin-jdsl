@@ -5,8 +5,44 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Subquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
-import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlAnd
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlBetween
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqual
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqualAll
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqualAny
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlExists
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThan
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanAll
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanAny
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanOrEqualTo
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanOrEqualToAll
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanOrEqualToAny
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIn
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlInSubquery
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIsEmpty
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIsNotEmpty
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIsNotNull
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIsNull
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlLessThan
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlLessThanAll
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlLessThanAny
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlLessThanOrEqualTo
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlLessThanOrEqualToAll
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlLessThanOrEqualToAny
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlLike
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNot
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotBetween
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotEqual
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotEqualAll
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotEqualAny
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotExists
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotIn
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotInSubquery
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotLike
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlOr
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlPredicateParentheses
 
+@SinceJdsl("3.0.0")
 object Predicates {
     @SinceJdsl("3.0.0")
     fun not(predicate: Predicate): Predicate {
@@ -15,26 +51,12 @@ object Predicates {
 
     @SinceJdsl("3.0.0")
     fun and(predicates: Iterable<Predicate>): Predicate {
-        val unwrapped = predicates.flatMap {
-            when (it) {
-                is JpqlAnd -> it.predicates
-                else -> listOf(it)
-            }
-        }
-
-        return JpqlAnd(unwrapped)
+        return JpqlAnd(predicates)
     }
 
     @SinceJdsl("3.0.0")
     fun or(predicates: Iterable<Predicate>): Predicate {
-        val unwrapped = predicates.flatMap {
-            when (it) {
-                is JpqlOr -> it.predicates
-                else -> listOf(it)
-            }
-        }
-
-        return JpqlOr(unwrapped)
+        return JpqlOr(predicates)
     }
 
     @SinceJdsl("3.0.0")

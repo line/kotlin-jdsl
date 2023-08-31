@@ -1,11 +1,12 @@
 package com.linecorp.kotlinjdsl.render.jpql.introspector
 
+import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.render.AbstractRenderContextElement
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.CombinedJpqlIntrospector
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
+@SinceJdsl("3.0.0")
 class JpqlRenderIntrospector(
     private val introspector: JpqlIntrospector,
 ) : AbstractRenderContextElement(Key) {
@@ -13,6 +14,7 @@ class JpqlRenderIntrospector(
 
     private val tableLookupCache: MutableMap<KClass<*>, JpqlEntityDescription> = ConcurrentHashMap()
 
+    @SinceJdsl("3.0.0")
     operator fun plus(introspector: JpqlIntrospector): JpqlRenderIntrospector {
         val combinedIntrospector = CombinedJpqlIntrospector(
             primary = introspector,
@@ -22,6 +24,7 @@ class JpqlRenderIntrospector(
         return JpqlRenderIntrospector(combinedIntrospector)
     }
 
+    @SinceJdsl("3.0.0")
     fun introspect(clazz: KClass<*>): JpqlEntityDescription {
         return getCachedDescription(clazz)
     }

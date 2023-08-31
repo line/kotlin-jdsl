@@ -23,6 +23,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entityable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
@@ -42,16 +43,25 @@ import kotlin.internal.Exact
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
+/**
+ * Builds new JPQL query using newly created [Jpql].
+ */
 @SinceJdsl("3.0.0")
 inline fun <Q : JpqlQuery<Q>> jpql(init: Jpql.() -> JpqlQueryable<Q>): Q {
     return Jpql().init().toQuery()
 }
 
+/**
+ * Builds new JPQL query using provided [JpqlDsl].
+ */
 @SinceJdsl("3.0.0")
 inline fun <DSL : JpqlDsl, Q : JpqlQuery<Q>> jpql(dsl: JpqlDsl.Constructor<DSL>, init: DSL.() -> JpqlQueryable<Q>): Q {
     return dsl.newInstance().init().toQuery()
 }
 
+/**
+ * Default implementation of DSL for building JPQL query.
+ */
 @SinceJdsl("3.0.0")
 open class Jpql : JpqlDsl {
     companion object Constructor : JpqlDsl.Constructor<Jpql> {
@@ -134,13 +144,13 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> Path<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
-        return Paths.path(this, property)
+    fun <T : Any, V> Pathable<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toPath(), property)
     }
 
     @SinceJdsl("3.0.0")
-    operator fun <T : Any, V> Path<T>.invoke(property: KProperty1<T, @Exact V>): Path<V & Any> {
-        return Paths.path(this, property)
+    operator fun <T : Any, V> Pathable<T>.invoke(property: KProperty1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toPath(), property)
     }
 
     @SinceJdsl("3.0.0")
@@ -164,118 +174,253 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any, S : T> Path<T>.treat(type: KClass<S>): Path<S> {
-        return Paths.treat(this, type)
+    fun <T : Any, S : T> Entityable<T>.treat(type: KClass<S>): Entity<S> {
+        return Entities.treat(this.toEntity(), type)
     }
 
+    @SinceJdsl("3.0.0")
+    fun <T : Any, S : T> Pathable<T>.treat(type: KClass<S>): Path<S> {
+        return Paths.treat(this.toPath(), type)
+    }
+
+    /**
+     * Expression that returns the plus of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) + (value2)```.
+     */
+    @JvmName("plusWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> plus(value1: Expressionable<@Exact T>, value2: S): Expression<T> {
+        return Expressions.plus(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(Expressions.value(value2)),
+        )
+    }
+
+    /**
+     * Expression that returns the plus of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) + (value2)```.
+     */
+    @JvmName("plusWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T> plus(value1: Expressionable<@Exact T>, value2: Expressionable<S>): Expression<T> {
+        return Expressions.plus(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(value2.toExpression()),
+        )
+    }
+
+    /**
+     * Expression that returns the plus of [this] and [plus].
+     *
+     * This is the same as ```value1 + value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T?> Expressionable<@Exact T>.plus(value: S): Expression<T> {
         return Expressions.plus(this.toExpression(), Expressions.value(value))
     }
 
+    /**
+     * Expression that returns the plus of [this] and [plus].
+     *
+     * This is the same as ```value1 + value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.plus(value: Expressionable<S>): Expression<T> {
         return Expressions.plus(this.toExpression(), value.toExpression())
     }
 
+    /**
+     * Expression that returns the minus of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) - (value2)```.
+     */
+    @JvmName("minusWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> minus(value1: Expressionable<@Exact T>, value2: S): Expression<T> {
+        return Expressions.minus(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(Expressions.value(value2)),
+        )
+    }
+
+    /**
+     * Expression that returns the minus of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) - (value2)```.
+     */
+    @JvmName("minusWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T> minus(value1: Expressionable<@Exact T>, value2: Expressionable<S>): Expression<T> {
+        return Expressions.minus(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(value2.toExpression()),
+        )
+    }
+
+    /**
+     * Expression that returns the minus of [this] and [plus].
+     *
+     * This is the same as ```value1 - value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T?> Expressionable<@Exact T>.minus(value: S): Expression<T> {
         return Expressions.minus(this.toExpression(), Expressions.value(value))
     }
 
+    /**
+     * Expression that returns the minus of [this] and [plus].
+     *
+     * This is the same as ```value1 - value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.minus(value: Expressionable<S>): Expression<T> {
         return Expressions.minus(this.toExpression(), value.toExpression())
     }
 
+    /**
+     * Expression that returns the times of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) * (value2)```.
+     */
+    @JvmName("timesWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> times(value1: Expressionable<@Exact T>, value2: S): Expression<T> {
+        return Expressions.times(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(Expressions.value(value2)),
+        )
+    }
+
+    /**
+     * Expression that returns the times of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) * (value2)```.
+     */
+    @JvmName("timesWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T> times(value1: Expressionable<@Exact T>, value2: Expressionable<S>): Expression<T> {
+        return Expressions.times(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(value2.toExpression()),
+        )
+    }
+
+    /**
+     * Expression that returns the times of [this] and [plus].
+     *
+     * This is the same as ```value1 * value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T?> Expressionable<@Exact T>.times(value: S): Expression<T> {
         return Expressions.times(this.toExpression(), Expressions.value(value))
     }
 
+    /**
+     * Expression that returns the times of [this] and [plus].
+     *
+     * This is the same as ```value1 * value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.times(value: Expressionable<S>): Expression<T> {
         return Expressions.times(this.toExpression(), value.toExpression())
     }
 
+    /**
+     * Expression that returns the divide of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) / (value2)```.
+     */
+    @JvmName("divWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T?> div(value1: Expressionable<@Exact T>, value2: S): Expression<T> {
+        return Expressions.div(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(Expressions.value(value2)),
+        )
+    }
+
+    /**
+     * Expression that returns the divide of [value1] and [value2].
+     * [value1] and [value2] are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) / (value2)```.
+     */
+    @JvmName("divWithParentheses")
+    @SinceJdsl("3.0.0")
+    fun <T : Number, S : T> div(value1: Expressionable<@Exact T>, value2: Expressionable<S>): Expression<T> {
+        return Expressions.div(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(value2.toExpression()),
+        )
+    }
+
+    /**
+     * Expression that returns the divide of [this] and [plus].
+     *
+     * This is the same as ```value1 / value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T?> Expressionable<@Exact T>.div(value: S): Expression<T> {
         return Expressions.div(this.toExpression(), Expressions.value(value))
     }
 
+    /**
+     * Expression that returns the divide of [this] and [plus].
+     *
+     * This is the same as ```value1 / value2```.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.div(value: Expressionable<S>): Expression<T> {
         return Expressions.div(this.toExpression(), value.toExpression())
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expr].
-     *
-     * If there are no matching rows, it returns 0.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V> count(distinct: Boolean, expr: KProperty1<T, @Exact V>): Expression<Long> {
-        return Expressions.count(distinct, Paths.path(expr))
-    }
-
-    /**
-     * Expression that returns a count of the number of non-null values of [expr].
+     * Expression that returns the count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, V> count(expr: KProperty1<T, @Exact V>): Expression<Long> {
-        return count(distinct = false, expr)
+        return Expressions.count(distinct = false, Paths.path(expr))
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expr].
-     *
-     * If there are no matching rows, it returns 0.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V> countDistinct(expr: KProperty1<T, @Exact V>): Expression<Long> {
-        return count(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns a count of the number of non-null values of [expr].
-     *
-     * If there are no matching rows, it returns 0.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any> count(distinct: Boolean, expr: Expressionable<T>): Expression<Long> {
-        return Expressions.count(distinct, expr.toExpression())
-    }
-
-    /**
-     * Expression that returns a count of the number of non-null values of [expr].
+     * Expression that returns the count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> count(expr: Expressionable<T>): Expression<Long> {
-        return count(distinct = false, expr)
+        return Expressions.count(distinct = false, expr.toExpression())
     }
 
     /**
-     * Expression that returns a count of the number of non-null values of [expr].
+     * Expression that returns the count of the number of non-null values of [expr].
+     *
+     * If there are no matching rows, it returns 0.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, V> countDistinct(expr: KProperty1<T, @Exact V>): Expression<Long> {
+        return Expressions.count(distinct = true, Paths.path(expr))
+    }
+
+    /**
+     * Expression that returns the count of the number of non-null values of [expr].
      *
      * If there are no matching rows, it returns 0.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> countDistinct(expr: Expressionable<T>): Expression<Long> {
-        return count(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the maximum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Comparable<*>?> max(distinct: Boolean, expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return Expressions.max(distinct, Paths.path(expr))
+        return Expressions.count(distinct = true, expr.toExpression())
     }
 
     /**
@@ -285,27 +430,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, V : Comparable<*>?> max(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return max(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the maximum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Comparable<*>?> maxDistinct(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return max(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the maximum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> max(distinct: Boolean, expr: Expressionable<@Exact T>): Expression<T> {
-        return Expressions.max(distinct, expr.toExpression())
+        return Expressions.max(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -315,7 +440,17 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Comparable<*>> max(expr: Expressionable<@Exact T>): Expression<T> {
-        return max(distinct = false, expr)
+        return Expressions.max(distinct = false, expr.toExpression())
+    }
+
+    /**
+     * Expression that returns the maximum value of [expr].
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, V : Comparable<*>?> maxDistinct(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
+        return Expressions.max(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -325,17 +460,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Comparable<*>> maxDistinct(expr: Expressionable<@Exact T>): Expression<T> {
-        return max(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the minimum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Comparable<*>?> min(distinct: Boolean, expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return Expressions.min(distinct, Paths.path(expr))
+        return Expressions.max(distinct = true, expr.toExpression())
     }
 
     /**
@@ -345,27 +470,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, V : Comparable<*>?> min(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return min(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the minimum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Comparable<*>?> minDistinct(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
-        return min(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the minimum value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Comparable<*>> min(distinct: Boolean, expr: Expressionable<@Exact T>): Expression<T> {
-        return Expressions.min(distinct, expr.toExpression())
+        return Expressions.min(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -375,7 +480,17 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Comparable<*>> min(expr: Expressionable<@Exact T>): Expression<T> {
-        return min(distinct = false, expr)
+        return Expressions.min(distinct = false, expr.toExpression())
+    }
+
+    /**
+     * Expression that returns the minimum value of [expr].
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, V : Comparable<*>?> minDistinct(expr: KProperty1<T, @Exact V>): Expression<V & Any> {
+        return Expressions.min(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -385,17 +500,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Comparable<*>> minDistinct(expr: Expressionable<@Exact T>): Expression<T> {
-        return min(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the average value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Number?> avg(distinct: Boolean, expr: KProperty1<T, @Exact V>): Expression<Double> {
-        return Expressions.avg(distinct, Paths.path(expr))
+        return Expressions.min(distinct = true, expr.toExpression())
     }
 
     /**
@@ -405,27 +510,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, V : Number?> avg(expr: KProperty1<T, @Exact V>): Expression<Double> {
-        return avg(distinct = false, Paths.path(expr))
-    }
-
-    /**
-     * Expression that returns the average value of [expr]
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Any, V : Number?> avgDistinct(expr: KProperty1<T, @Exact V>): Expression<Double> {
-        return avg(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the average value of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Number> avg(distinct: Boolean, expr: Expressionable<@Exact T>): Expression<Double> {
-        return Expressions.avg(distinct, expr.toExpression())
+        return Expressions.avg(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -435,7 +520,17 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Number> avg(expr: Expressionable<@Exact T>): Expression<Double> {
-        return avg(distinct = false, expr)
+        return Expressions.avg(distinct = false, expr.toExpression())
+    }
+
+    /**
+     * Expression that returns the average value of [expr]
+     *
+     * If there are no matching rows, or if all expressions are null, it returns null.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, V : Number?> avgDistinct(expr: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.avg(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -445,18 +540,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Number> avgDistinct(expr: Expressionable<@Exact T>): Expression<Double> {
-        return avg(distinct = true, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumInt")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, Int?>): Expression<Long> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.avg(distinct = true, expr.toExpression())
     }
 
     /**
@@ -467,18 +551,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumInt")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, Int?>): Expression<Long> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumLong")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, Long?>): Expression<Long> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -489,18 +562,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumLong")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, Long?>): Expression<Long> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumFloat")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, Float?>): Expression<Double> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -511,18 +573,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumFloat")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, Float?>): Expression<Double> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumDouble")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, Double?>): Expression<Double> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -533,18 +584,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDouble")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, Double?>): Expression<Double> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumBigInteger")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, BigInteger?>): Expression<BigInteger> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -555,18 +595,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumBigInteger")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, BigInteger?>): Expression<BigInteger> {
-        return sum(distinct = false, Paths.path(expr))
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumBigDecimal")
-    @SinceJdsl("3.0.0")
-    fun <T : Any> sum(distinct: Boolean, expr: KProperty1<T, BigDecimal?>): Expression<BigDecimal> {
-        return Expressions.sum(distinct, Paths.path(expr))
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -577,18 +606,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumBigDecimal")
     @SinceJdsl("3.0.0")
     fun <T : Any> sum(expr: KProperty1<T, BigDecimal?>): Expression<BigDecimal> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumInt")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Int>): Expression<Long> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, Paths.path(expr))
     }
 
     /**
@@ -599,18 +617,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumInt")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<Int>): Expression<Long> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumLong")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Long>): Expression<Long> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -621,18 +628,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumLong")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<Long>): Expression<Long> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumFloat")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Float>): Expression<Double> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -643,18 +639,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumFloat")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<Float>): Expression<Double> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumDouble")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<Double>): Expression<Double> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -665,18 +650,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDouble")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<Double>): Expression<Double> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumBigInteger")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<BigInteger>): Expression<BigInteger> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -687,18 +661,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumBigInteger")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<BigInteger>): Expression<BigInteger> {
-        return sum(distinct = false, expr)
-    }
-
-    /**
-     * Expression that returns the sum of [expr].
-     *
-     * If there are no matching rows, or if all expressions are null, it returns null.
-     */
-    @JvmName("sumBigDecimal")
-    @SinceJdsl("3.0.0")
-    fun sum(distinct: Boolean, expr: Expressionable<BigDecimal>): Expression<BigDecimal> {
-        return Expressions.sum(distinct, expr.toExpression())
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -709,7 +672,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumBigDecimal")
     @SinceJdsl("3.0.0")
     fun sum(expr: Expressionable<BigDecimal>): Expression<BigDecimal> {
-        return sum(distinct = false, expr)
+        return Expressions.sum(distinct = false, expr.toExpression())
     }
 
     /**
@@ -720,7 +683,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctInt")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, Int?>): Expression<Long> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -731,7 +694,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctLong")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, Long?>): Expression<Long> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -742,7 +705,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctFloat")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, Float?>): Expression<Double> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -753,7 +716,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctDouble")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, Double?>): Expression<Double> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -764,7 +727,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctBigInteger")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, BigInteger?>): Expression<BigInteger> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -775,7 +738,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctBigDecimal")
     @SinceJdsl("3.0.0")
     fun <T : Any> sumDistinct(expr: KProperty1<T, BigDecimal?>): Expression<BigDecimal> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, Paths.path(expr))
     }
 
     /**
@@ -786,7 +749,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctInt")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<Int>): Expression<Long> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -797,7 +760,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctLong")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<Long>): Expression<Long> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -808,7 +771,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctFloat")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<Float>): Expression<Double> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -819,7 +782,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctDouble")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<Double>): Expression<Double> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -830,7 +793,7 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctBigInteger")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<BigInteger>): Expression<BigInteger> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
     /**
@@ -841,9 +804,20 @@ open class Jpql : JpqlDsl {
     @JvmName("sumDistinctBigDecimal")
     @SinceJdsl("3.0.0")
     fun sumDistinct(expr: Expressionable<BigDecimal>): Expression<BigDecimal> {
-        return sum(distinct = true, expr)
+        return Expressions.sum(distinct = true, expr.toExpression())
     }
 
+    /**
+     * Expression that return the object specified by [type].
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any> new(type: KClass<T>, vararg args: Any): Expression<T> {
+        return Expressions.new(type, args.map { Expressions.value(it) })
+    }
+
+    /**
+     * Expression that return the object specified by [type].
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> new(type: KClass<T>, vararg args: Expressionable<*>): Expression<T> {
         return Expressions.new(type, args.map { it.toExpression() })
@@ -863,7 +837,7 @@ open class Jpql : JpqlDsl {
      * If no comparison is true, the result after ELSE is returned, or NULL if there is no ELSE part.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any> case(value: Pathable<T>): CaseValueWhenFirstStep<T> {
+    fun <T : Any> caseValue(value: Pathable<T>): CaseValueWhenFirstStep<T> {
         return CaseValueWhenFirstStepDsl(value.toPath())
     }
 
@@ -904,7 +878,7 @@ open class Jpql : JpqlDsl {
     /**
      * Expression that returns null if left = right is true, otherwise returns left.
      *
-     * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END. ```
+     * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END```.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, S : T?> nullIf(value: Expressionable<@Exact T>, compareValue: S): Expression<T> {
@@ -914,7 +888,7 @@ open class Jpql : JpqlDsl {
     /**
      * Expression that returns null if left = right is true, otherwise returns left.
      *
-     * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END. ```
+     * This is the same as ```CASE WHEN left = right THEN NULL ELSE left END```.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> nullIf(value: Expressionable<@Exact T>, compareValue: Expressionable<T>): Expression<T> {
@@ -938,13 +912,59 @@ open class Jpql : JpqlDsl {
      * ```
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any> type(path: Pathable<T>): Expression<KClass<T>> {
+    fun type(entity: Entityable<*>): Expression<KClass<*>> {
+        return Expressions.type(entity.toEntity())
+    }
+
+    /**
+     * Expression that returns the type of the entity.
+     *
+     * This is the same as ```TYPE(entity)``` and can be used to restrict query polymorphism.
+     *
+     * Examples:
+     * ```sql
+     * TYPE(entity) IN (Exempt, Contractor)
+     * ```
+     * ```sql
+     * CASE TYPE(entity) WHEN Exempt THEN 'Exempt'
+     *                   WHEN Contractor THEN 'Contractor'
+     *                   ELSE 'NonExempt'
+     * END
+     * ```
+     */
+    @SinceJdsl("3.0.0")
+    fun type(path: Pathable<*>): Expression<KClass<*>> {
         return Expressions.type(path.toPath())
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> function(type: KClass<T>, name: String, vararg args: Any): Expression<T> {
+        return Expressions.function(type, name, args.map { Expressions.value(it) })
     }
 
     @SinceJdsl("3.0.0")
     fun <T : Any> function(type: KClass<T>, name: String, vararg args: Expressionable<*>): Expression<T> {
         return Expressions.function(type, name, args.map { it.toExpression() })
+    }
+
+    /**
+     * Expression that renders the user-defined string to JPQL.
+     *
+     * The user-defined string can have PlaceHolders.
+     * PlaceHolders in string are replaced with Expression in args, matching with index.
+     *
+     * ```
+     * PlaceHolder: { ArgumentIndex }
+     * ```
+     *
+     * Examples:
+     * ```
+     * customExpression(String::class, "CAST({0} AS VARCHAR)", 100)
+     * ```
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any> customExpression(type: KClass<T>, template: String, vararg args: Any): Expression<T> {
+        return Expressions.customExpression(type, template, args.map { Expressions.value(it) })
     }
 
     /**
@@ -977,201 +997,309 @@ open class Jpql : JpqlDsl {
         return Entities.derivedEntity(this.toQuery())
     }
 
-    fun <T : Any> join(entity: KClass<T>): JoinOnStep<T> {
-        return JoinDsl(Entities.entity(entity), JoinType.INNER)
-    }
-
-    fun <T : Any> join(entity: Entity<T>): JoinOnStep<T> {
-        return JoinDsl(entity, JoinType.INNER)
-    }
-
-    inline fun <T : Any, reified V> join(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
-    }
-
-    @JvmName("joinCollection")
-    inline fun <T : Any, reified V, S : Collection<V>> join(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
-    }
-
-    inline fun <reified T : Any> join(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
-    }
-
-    @JvmName("joinCollection")
-    inline fun <reified T : Any, S : Collection<T>> join(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
-    }
-
-    fun <T : Any> innerJoin(entity: KClass<T>): JoinOnStep<T> {
-        return JoinDsl(Entities.entity(entity), JoinType.INNER)
-    }
-
-    fun <T : Any> innerJoin(entity: Entity<T>): JoinOnStep<T> {
-        return JoinDsl(entity, JoinType.INNER)
-    }
-
-    inline fun <T : Any, reified V> innerJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
-    }
-
-    @JvmName("innerJoinCollection")
-    inline fun <T : Any, reified V, S : Collection<V>> innerJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
-    }
-
-    inline fun <reified T : Any> innerJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
-    }
-
-    @JvmName("innerJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> innerJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
-    }
-
-    fun <T : Any> leftJoin(entity: KClass<T>): JoinOnStep<T> {
-        return JoinDsl(Entities.entity(entity), JoinType.LEFT)
-    }
-
-    fun <T : Any> leftJoin(entity: Entity<T>): JoinOnStep<T> {
-        return JoinDsl(entity, JoinType.LEFT)
-    }
-
-    inline fun <T : Any, reified V> leftJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationJoinDsl(entity, Paths.path(property), JoinType.LEFT)
-    }
-
-    @JvmName("leftJoinCollection")
-    inline fun <T : Any, reified V, S : Collection<V>> leftJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationJoinDsl(entity, Paths.path(property), JoinType.LEFT)
-    }
-
-    inline fun <reified T : Any> leftJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
-    }
-
-    @JvmName("leftJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> leftJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
-    }
-
-    fun <T : Any> fetchJoin(entity: KClass<T>): JoinOnStep<T> {
-        return FetchJoinDsl(Entities.entity(entity), JoinType.INNER)
-    }
-
-    fun <T : Any> fetchJoin(entity: Entity<T>): JoinOnStep<T> {
-        return FetchJoinDsl(entity, JoinType.INNER)
-    }
-
-    inline fun <T : Any, reified V> fetchJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
-    }
-
-    @JvmName("fetchJoinCollection")
-    inline fun <T : Any, reified V, S : Collection<V>> fetchJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
-    }
-
-    inline fun <reified T : Any> fetchJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
-    }
-
-    @JvmName("fetchJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> fetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
-    }
-
-    fun <T : Any> innerFetchJoin(entity: KClass<T>): JoinOnStep<T> {
-        return FetchJoinDsl(Entities.entity(entity), JoinType.INNER)
-    }
-
-    fun <T : Any> innerFetchJoin(entity: Entity<T>): JoinOnStep<T> {
-        return FetchJoinDsl(entity, JoinType.INNER)
-    }
-
-    inline fun <T : Any, reified V> innerFetchJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
-    }
-
-    @JvmName("innerFetchJoinCollection")
-    inline fun <T : Any, reified V, S : Collection<V>> innerFetchJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
-    }
-
-    inline fun <reified T : Any> innerFetchJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
-    }
-
-    @JvmName("innerFetchJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> innerFetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.INNER)
-    }
-
-    fun <T : Any> leftFetchJoin(entity: KClass<T>): JoinOnStep<T> {
-        return FetchJoinDsl(Entities.entity(entity), JoinType.LEFT)
-    }
-
-    fun <T : Any> leftFetchJoin(entity: Entity<T>): JoinOnStep<T> {
-        return FetchJoinDsl(entity, JoinType.LEFT)
-    }
-
-    inline fun <T : Any, reified V> leftFetchJoin(property: KProperty1<T, @Exact V>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.LEFT)
-    }
-
-    @JvmName("leftFetchJoinCollection")
-    inline fun <T : Any, reified V, S : Collection<V>> leftFetchJoin(property: KProperty1<T, @Exact S>): AssociationJoinOnStep<V & Any> {
-        @Suppress("UNCHECKED_CAST")
-        val entity = Entities.entity(V::class as KClass<V & Any>)
-
-        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.LEFT)
-    }
-
-    inline fun <reified T : Any> leftFetchJoin(path: Path<T>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
-    }
-
-    @JvmName("leftFetchJoinCollection")
-    inline fun <reified T : Any, S : Collection<T>> leftFetchJoin(path: Path<S>): AssociationJoinOnStep<T> {
-        return AssociationFetchJoinDsl(Entities.entity(T::class), path, JoinType.LEFT)
-    }
-
     @SinceJdsl("3.0.0")
     fun <T : Any> JpqlQueryable<SelectQuery<T>>.asEntity(alias: String): Entity<T> {
         return Entities.derivedEntity(this.toQuery(), alias)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> join(
+        entity: KClass<T>,
+    ): JoinOnStep<T> {
+        return JoinDsl(Entities.entity(entity), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> join(
+        entity: Entityable<T>,
+    ): JoinOnStep<T> {
+        return JoinDsl(entity.toEntity(), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V> join(
+        property: KProperty1<T, @Exact V>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
+    @JvmName("joinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V, S : Collection<V>> join(
+        property: KProperty1<T, @Exact S>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> join(
+        path: Pathable<T>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
+    }
+
+    @JvmName("joinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any, S : Collection<T>> join(
+        path: Pathable<S>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> innerJoin(
+        entity: KClass<T>,
+    ): JoinOnStep<T> {
+        return JoinDsl(Entities.entity(entity), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> innerJoin(
+        entity: Entityable<T>,
+    ): JoinOnStep<T> {
+        return JoinDsl(entity.toEntity(), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V> innerJoin(
+        property: KProperty1<T, @Exact V>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
+    @JvmName("innerJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V, S : Collection<V>> innerJoin(
+        property: KProperty1<T, @Exact S>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> innerJoin(
+        path: Pathable<T>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
+    }
+
+    @JvmName("innerJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any, S : Collection<T>> innerJoin(
+        path: Pathable<S>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> leftJoin(
+        entity: KClass<T>,
+    ): JoinOnStep<T> {
+        return JoinDsl(Entities.entity(entity), JoinType.LEFT)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> leftJoin(
+        entity: Entityable<T>,
+    ): JoinOnStep<T> {
+        return JoinDsl(entity.toEntity(), JoinType.LEFT)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V> leftJoin(
+        property: KProperty1<T, @Exact V>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationJoinDsl(entity, Paths.path(property), JoinType.LEFT)
+    }
+
+    @JvmName("leftJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V, S : Collection<V>> leftJoin(
+        property: KProperty1<T, @Exact S>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationJoinDsl(entity, Paths.path(property), JoinType.LEFT)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> leftJoin(
+        path: Pathable<T>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.LEFT)
+    }
+
+    @JvmName("leftJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any, S : Collection<T>> leftJoin(
+        path: Pathable<S>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.LEFT)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> fetchJoin(
+        entity: KClass<T>,
+    ): JoinOnStep<T> {
+        return FetchJoinDsl(Entities.entity(entity), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> fetchJoin(
+        entity: Entityable<T>,
+    ): JoinOnStep<T> {
+        return FetchJoinDsl(entity.toEntity(), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V> fetchJoin(
+        property: KProperty1<T, @Exact V>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
+    @JvmName("fetchJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V, S : Collection<V>> fetchJoin(
+        property: KProperty1<T, @Exact S>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> fetchJoin(
+        path: Pathable<T>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
+    }
+
+    @JvmName("fetchJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any, S : Collection<T>> fetchJoin(
+        path: Pathable<S>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> innerFetchJoin(
+        entity: KClass<T>,
+    ): JoinOnStep<T> {
+        return FetchJoinDsl(Entities.entity(entity), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> innerFetchJoin(
+        entity: Entityable<T>,
+    ): JoinOnStep<T> {
+        return FetchJoinDsl(entity.toEntity(), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V> innerFetchJoin(
+        property: KProperty1<T, @Exact V>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
+    @JvmName("innerFetchJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V, S : Collection<V>> innerFetchJoin(
+        property: KProperty1<T, @Exact S>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> innerFetchJoin(
+        path: Pathable<T>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
+    }
+
+    @JvmName("innerFetchJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any, S : Collection<T>> innerFetchJoin(
+        path: Pathable<S>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.INNER)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> leftFetchJoin(
+        entity: KClass<T>,
+    ): JoinOnStep<T> {
+        return FetchJoinDsl(Entities.entity(entity), JoinType.LEFT)
+    }
+
+    @SinceJdsl("3.0.0")
+    fun <T : Any> leftFetchJoin(
+        entity: Entityable<T>,
+    ): JoinOnStep<T> {
+        return FetchJoinDsl(entity.toEntity(), JoinType.LEFT)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V> leftFetchJoin(
+        property: KProperty1<T, @Exact V>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.LEFT)
+    }
+
+    @JvmName("leftFetchJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <T : Any, reified V, S : Collection<V>> leftFetchJoin(
+        property: KProperty1<T, @Exact S>,
+    ): AssociationJoinOnStep<V & Any> {
+        @Suppress("UNCHECKED_CAST")
+        val entity = Entities.entity(V::class as KClass<V & Any>)
+
+        return AssociationFetchJoinDsl(entity, Paths.path(property), JoinType.LEFT)
+    }
+
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any> leftFetchJoin(
+        path: Pathable<T>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.LEFT)
+    }
+
+    @JvmName("leftFetchJoinCollection")
+    @SinceJdsl("3.0.0")
+    inline fun <reified T : Any, S : Collection<T>> leftFetchJoin(
+        path: Pathable<S>,
+    ): AssociationJoinOnStep<T> {
+        return AssociationFetchJoinDsl(Entities.entity(T::class), path.toPath(), JoinType.LEFT)
     }
 
     @SinceJdsl("3.0.0")
@@ -1186,7 +1314,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun and(vararg predicates: Predicatable?): Predicate {
-        return Predicates.and(predicates.mapNotNull { it?.toPredicate() })
+        return Predicates.and(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) })
     }
 
     @SinceJdsl("3.0.0")
@@ -1201,7 +1329,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun or(vararg predicates: Predicatable?): Predicate {
-        return Predicates.or(predicates.mapNotNull { it?.toPredicate() })
+        return Predicates.or(predicates.mapNotNull { it?.toPredicate() }.map { Predicates.parentheses(it) })
     }
 
     @SinceJdsl("3.0.0")
@@ -1331,6 +1459,14 @@ open class Jpql : JpqlDsl {
         }
     }
 
+    /**
+     * Predicate that tests if the [this] is less than the [value].
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThan(value: Expressionable<T>): Predicate {
+        return lessThan(value, inclusive = false)
+    }
+
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>> Expressionable<@Exact T>.lessThanAll(subquery: Subquery<T>, inclusive: Boolean): Predicate {
         return if (inclusive) {
@@ -1347,14 +1483,6 @@ open class Jpql : JpqlDsl {
         } else {
             Predicates.lessThanAny(this.toExpression(), subquery)
         }
-    }
-
-    /**
-     * Predicate that tests if the [this] is less than the [value].
-     */
-    @SinceJdsl("3.0.0")
-    fun <T : Comparable<T>> Expressionable<@Exact T>.lessThan(value: Expressionable<T>): Predicate {
-        return lessThan(value, inclusive = false)
     }
 
     @SinceJdsl("3.0.0")
@@ -1497,7 +1625,7 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThan(
         value: Expressionable<T>,
-        inclusive: Boolean
+        inclusive: Boolean,
     ): Predicate {
         return if (inclusive) {
             Predicates.greaterThanOrEqualTo(this.toExpression(), value.toExpression())
@@ -1509,7 +1637,7 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThanAll(
         subquery: Subquery<T>,
-        inclusive: Boolean
+        inclusive: Boolean,
     ): Predicate {
         return if (inclusive) {
             Predicates.greaterThanOrEqualToAll(this.toExpression(), subquery)
@@ -1521,7 +1649,7 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>> Expressionable<@Exact T>.greaterThanAny(
         subquery: Subquery<T>,
-        inclusive: Boolean
+        inclusive: Boolean,
     ): Predicate {
         return if (inclusive) {
             Predicates.greaterThanOrEqualToAny(this.toExpression(), subquery)
@@ -1660,7 +1788,7 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>> Expressionable<@Exact T>.between(
         min: Expressionable<T>,
-        max: Expressionable<T>
+        max: Expressionable<T>,
     ): Predicate {
         return Predicates.between(this.toExpression(), min.toExpression(), max.toExpression())
     }
@@ -1673,7 +1801,7 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Comparable<T>> Expressionable<@Exact T>.notBetween(
         min: Expressionable<T>,
-        max: Expressionable<T>
+        max: Expressionable<T>,
     ): Predicate {
         return Predicates.notBetween(this.toExpression(), min.toExpression(), max.toExpression())
     }
@@ -1688,14 +1816,14 @@ open class Jpql : JpqlDsl {
         return Predicates.`in`(this.toExpression(), compareValues.map { Expressions.value(it) })
     }
 
-    @JvmName("inExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<@Exact T>.`in`(compareValues: Iterable<Expressionable<T>?>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.`in`(vararg compareValues: Expressionable<T>?): Predicate {
         return Predicates.`in`(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
+    @JvmName("inExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<@Exact T>.`in`(vararg compareValues: Expressionable<T>?): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.`in`(compareValues: Iterable<Expressionable<T>?>): Predicate {
         return Predicates.`in`(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
@@ -1714,14 +1842,14 @@ open class Jpql : JpqlDsl {
         return Predicates.notIn(this.toExpression(), compareValues.map { Expressions.value(it) })
     }
 
-    @JvmName("notInExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<@Exact T>.notIn(compareValues: Iterable<Expressionable<T>?>): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notIn(vararg compareValues: Expressionable<T>?): Predicate {
         return Predicates.notIn(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
+    @JvmName("notInExpressions")
     @SinceJdsl("3.0.0")
-    fun <T : Any> Expressionable<@Exact T>.notIn(vararg compareValues: Expressionable<T>?): Predicate {
+    fun <T : Any> Expressionable<@Exact T>.notIn(compareValues: Iterable<Expressionable<T>?>): Predicate {
         return Predicates.notIn(this.toExpression(), compareValues.mapNotNull { it?.toExpression() })
     }
 
@@ -1731,33 +1859,61 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun Expressionable<String>.like(pattern: String): Predicate {
-        return Predicates.like(this.toExpression(), Expressions.value(pattern))
+    fun Expressionable<String>.like(
+        pattern: String,
+        escape: Char? = null,
+    ): Predicate {
+        return Predicates.like(
+            this.toExpression(),
+            Expressions.value(pattern),
+            escape?.let { Expressions.value(it) },
+        )
     }
 
     @SinceJdsl("3.0.0")
-    fun Expressionable<String>.like(pattern: Expressionable<String>): Predicate {
-        return Predicates.like(this.toExpression(), pattern.toExpression())
+    fun Expressionable<String>.like(
+        pattern: Expressionable<String>,
+        escape: Expressionable<Char>? = null,
+    ): Predicate {
+        return Predicates.like(
+            this.toExpression(),
+            pattern.toExpression(),
+            escape?.toExpression(),
+        )
     }
 
     @SinceJdsl("3.0.0")
-    fun Expressionable<String>.notLike(pattern: String): Predicate {
-        return Predicates.notLike(this.toExpression(), Expressions.value(pattern))
+    fun Expressionable<String>.notLike(
+        pattern: String,
+        escape: Char? = null,
+    ): Predicate {
+        return Predicates.notLike(
+            this.toExpression(),
+            Expressions.value(pattern),
+            escape?.let { Expressions.value(it) },
+        )
     }
 
     @SinceJdsl("3.0.0")
-    fun Expressionable<String>.notLike(pattern: Expressionable<String>): Predicate {
-        return Predicates.notLike(this.toExpression(), pattern.toExpression())
+    fun Expressionable<String>.notLike(
+        pattern: Expressionable<String>,
+        escape: Expressionable<Char>? = null,
+    ): Predicate {
+        return Predicates.notLike(
+            this.toExpression(),
+            pattern.toExpression(),
+            escape?.toExpression(),
+        )
     }
 
     @SinceJdsl("3.0.0")
-    fun <T, S : Collection<T>> Path<S>.isEmpty(): Predicate {
-        return Predicates.isEmpty(this)
+    fun <T, S : Collection<T>> Pathable<S>.isEmpty(): Predicate {
+        return Predicates.isEmpty(this.toPath())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T, S : Collection<T>> Path<S>.isNotEmpty(): Predicate {
-        return Predicates.isNotEmpty(this)
+    fun <T, S : Collection<T>> Pathable<S>.isNotEmpty(): Predicate {
+        return Predicates.isNotEmpty(this.toPath())
     }
 
     @SinceJdsl("3.0.0")
@@ -1871,12 +2027,12 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> update(entity: Entity<T>): UpdateQuerySetFirstStep<T> {
-        return UpdateQuerySetStepFirstDsl(entity)
+    fun <T : Any> update(entity: Entityable<T>): UpdateQuerySetFirstStep<T> {
+        return UpdateQuerySetStepFirstDsl(entity.toEntity())
     }
 
     @SinceJdsl("3.0.0")
-    fun <T : Any> deleteFrom(entity: Entity<T>): DeleteQueryWhereStep<T> {
-        return DeleteQueryDsl(entity)
+    fun <T : Any> deleteFrom(entity: Entityable<T>): DeleteQueryWhereStep<T> {
+        return DeleteQueryDsl(entity.toEntity())
     }
 }
