@@ -1,4 +1,4 @@
-name: Lint Commit Messages
+name: Lint Kotlin
 on:
   pull_request:
     branches:
