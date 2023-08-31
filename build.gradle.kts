@@ -2,6 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.nio.file.Files
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -139,4 +140,25 @@ koverReport {
             packages("com.linecorp.kotlinjdsl.benchmark.*")
         }
     }
+}
+
+// Git Hooks
+File("$projectDir/.githook").let { projectGitHookDir ->
+    val gitHookDir = File("$projectDir/.git/hooks")
+
+    gitHookDir
+        .listFiles()
+        ?.forEach {
+            it.deleteRecursively()
+        }
+
+    projectGitHookDir
+        .listFiles()
+        ?.forEach {
+            val gitHook = File(gitHookDir, it.nameWithoutExtension)
+
+            Files.copy(it.toPath(), gitHook.toPath())
+
+            gitHook.setExecutable(true)
+        }
 }
