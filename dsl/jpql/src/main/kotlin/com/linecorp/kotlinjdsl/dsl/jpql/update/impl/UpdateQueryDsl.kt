@@ -16,7 +16,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 
 @PublishedApi
 internal data class UpdateQueryDsl<T : Any>(
-    private val builder: UpdateQueryBuilder<T>
+    private val builder: UpdateQueryBuilder<T>,
 ) : UpdateQuerySetFirstStep<T>,
     UpdateQuerySetStep<T>,
     UpdateQueryWhereStep<T> {

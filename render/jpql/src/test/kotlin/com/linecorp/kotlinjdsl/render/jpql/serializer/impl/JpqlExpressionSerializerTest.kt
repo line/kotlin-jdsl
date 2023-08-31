@@ -11,7 +11,7 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
-class JpqlExpressionSerializerTest: WithAssertions {
+class JpqlExpressionSerializerTest : WithAssertions {
     val sut = JpqlExpressionSerializer()
 
     @MockK
@@ -46,5 +46,3 @@ class JpqlExpressionSerializerTest: WithAssertions {
         }
     }
 }
-
-

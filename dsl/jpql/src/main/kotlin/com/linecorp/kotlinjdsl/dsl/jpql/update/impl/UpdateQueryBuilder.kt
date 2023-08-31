@@ -23,7 +23,7 @@ internal data class UpdateQueryBuilder<T : Any>(
 
     constructor(
         entity: Entity<T>,
-        map: Map<Path<*>, Expression<*>>
+        map: Map<Path<*>, Expression<*>>,
     ) : this(
         entity = entity,
         set = map.toMutableMap(),

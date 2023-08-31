@@ -9,12 +9,12 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
 @Internal
-class JpqlIsEmptySerializer : JpqlSerializer<JpqlIsEmpty<*,*>> {
-    override fun handledType(): KClass<JpqlIsEmpty<*,*>> {
+class JpqlIsEmptySerializer : JpqlSerializer<JpqlIsEmpty<*, *>> {
+    override fun handledType(): KClass<JpqlIsEmpty<*, *>> {
         return JpqlIsEmpty::class
     }
 
-    override fun serialize(part: JpqlIsEmpty<*,*>, writer: JpqlWriter, context: RenderContext) {
+    override fun serialize(part: JpqlIsEmpty<*, *>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         delegate.serialize(part.path, writer, context)

@@ -7,7 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
 internal data class DeleteQueryBuilder<T : Any>(
     private val entity: Entity<T>,
-    private var where: Predicate? = null
+    private var where: Predicate? = null,
 ) {
     fun where(predicate: Predicate): DeleteQueryBuilder<T> {
         where = predicate

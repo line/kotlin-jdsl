@@ -8,7 +8,7 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
 @Internal
-class JpqlNullSerializer: JpqlSerializer<JpqlNull> {
+class JpqlNullSerializer : JpqlSerializer<JpqlNull> {
     override fun handledType(): KClass<JpqlNull> {
         return JpqlNull::class
     }

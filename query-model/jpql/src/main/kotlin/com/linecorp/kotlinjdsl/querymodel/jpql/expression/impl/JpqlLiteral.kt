@@ -25,35 +25,35 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 @Internal
 sealed interface JpqlLiteral<T : Any> : Expression<T> {
     data class IntLiteral internal constructor(
-        val int: Int
+        val int: Int,
     ) : JpqlLiteral<Int>
 
     data class LongLiteral internal constructor(
-        val long: Long
+        val long: Long,
     ) : JpqlLiteral<Long>
 
     data class FloatLiteral internal constructor(
-        val float: Float
+        val float: Float,
     ) : JpqlLiteral<Float>
 
     data class DoubleLiteral internal constructor(
-        val double: Double
+        val double: Double,
     ) : JpqlLiteral<Double>
 
     data class BooleanLiteral internal constructor(
-        val boolean: Boolean
+        val boolean: Boolean,
     ) : JpqlLiteral<Boolean>
 
     data class CharLiteral internal constructor(
-        val char: Char
+        val char: Char,
     ) : JpqlLiteral<Char>
 
     data class StringLiteral internal constructor(
-        val string: String
+        val string: String,
     ) : JpqlLiteral<String>
 
     data class EnumLiteral<T : Enum<T>> internal constructor(
-        val enum: T
+        val enum: T,
     ) : JpqlLiteral<T>
 
     data object NullLiteral : JpqlLiteral<Any>

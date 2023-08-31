@@ -1,6 +1,10 @@
 package com.linecorp.kotlinjdsl.benchmark.sample.entity.employee
 
-import jakarta.persistence.*
+import jakarta.persistence.AttributeOverride
+import jakarta.persistence.Column
+import jakarta.persistence.DiscriminatorValue
+import jakarta.persistence.Embedded
+import jakarta.persistence.Entity
 
 @DiscriminatorValue("FULL_TIME")
 @Entity

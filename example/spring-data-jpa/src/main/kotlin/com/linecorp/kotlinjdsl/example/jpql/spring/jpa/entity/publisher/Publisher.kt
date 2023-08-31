@@ -14,7 +14,7 @@ class Publisher(
     val publisherId: Long,
 
     @Column(name = "name")
-    var name: String
+    var name: String,
 ) {
     override fun equals(other: Any?): Boolean = Objects.equals(publisherId, (other as? Publisher)?.publisherId)
     override fun hashCode(): Int = Objects.hashCode(publisherId)

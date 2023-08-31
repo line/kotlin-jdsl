@@ -21,9 +21,9 @@ class JpqlEntitySerializer : JpqlSerializer<JpqlEntity<*>> {
         val clause = context.getValue(JpqlRenderClause)
 
         if (
-            (statement.isSelect() && clause.isFrom())
-            || (statement.isUpdate() && clause.isUpdate())
-            || (statement.isDelete() && clause.isDeleteFrom())
+            (statement.isSelect() && clause.isFrom()) ||
+            (statement.isUpdate() && clause.isUpdate()) ||
+            (statement.isDelete() && clause.isDeleteFrom())
         ) {
             val introspector = context.getValue(JpqlRenderIntrospector)
             val entity = introspector.introspect(part.type)

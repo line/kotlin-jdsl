@@ -12,7 +12,7 @@ class SuperClassDepthComparatorTest : WithAssertions {
     private val subType: Class<SubType> = SubType::class.java
 
     @Test
-    fun `WHEN sort using this Comparator, THEN it's sorted in the order in which the the super relationship is close`() {
+    fun `It's sorted in the order in which the the super relationship is close`() {
         // given
         val supers = listOf(superSuperType, superType, targetType)
 
@@ -24,7 +24,7 @@ class SuperClassDepthComparatorTest : WithAssertions {
     }
 
     @Test
-    fun `WHEN compare super class to non-super classes, THEN it determines that non-super class is bigger then super class`() {
+    fun `It determines that non-super class is bigger then super class`() {
         // when
         val actual = sut.compare(subType, superType)
 

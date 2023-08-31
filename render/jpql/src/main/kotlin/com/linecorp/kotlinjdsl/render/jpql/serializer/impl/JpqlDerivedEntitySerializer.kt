@@ -23,9 +23,9 @@ class JpqlDerivedEntitySerializer : JpqlSerializer<JpqlDerivedEntity<*>> {
         val clause = context.getValue(JpqlRenderClause)
 
         if (
-            (statement.isSelect() && clause.isFrom())
-            || (statement.isUpdate() && clause.isUpdate())
-            || (statement.isDelete() && clause.isDeleteFrom())
+            (statement.isSelect() && clause.isFrom()) ||
+            (statement.isUpdate() && clause.isUpdate()) ||
+            (statement.isDelete() && clause.isDeleteFrom())
         ) {
             writer.writeParentheses {
                 delegate.serialize(part.selectQuery, writer, context)

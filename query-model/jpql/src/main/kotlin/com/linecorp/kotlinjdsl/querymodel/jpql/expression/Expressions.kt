@@ -2,7 +2,32 @@ package com.linecorp.kotlinjdsl.querymodel.jpql.expression
 
 import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.*
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMinus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNew
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTimes
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
@@ -228,7 +253,7 @@ object Expressions {
     fun <T : Any> customExpression(
         type: KClass<T>,
         template: String,
-        args: Iterable<Expression<*>>
+        args: Iterable<Expression<*>>,
     ): Expression<T> {
         return JpqlCustomExpression(type, template, args)
     }

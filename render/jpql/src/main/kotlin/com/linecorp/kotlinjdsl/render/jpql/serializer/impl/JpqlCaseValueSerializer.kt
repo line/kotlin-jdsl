@@ -9,12 +9,12 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
 @Internal
-class JpqlCaseValueSerializer : JpqlSerializer<JpqlCaseValue<*,*>> {
-    override fun handledType(): KClass<JpqlCaseValue<*,*>> {
+class JpqlCaseValueSerializer : JpqlSerializer<JpqlCaseValue<*, *>> {
+    override fun handledType(): KClass<JpqlCaseValue<*, *>> {
         return JpqlCaseValue::class
     }
 
-    override fun serialize(part: JpqlCaseValue<*,*>, writer: JpqlWriter, context: RenderContext) {
+    override fun serialize(part: JpqlCaseValue<*, *>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         writer.write("CASE")

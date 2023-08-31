@@ -13,7 +13,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 
 @PublishedApi
 internal data class AssociationJoinDsl<T : Any>(
-    private val builder: AssociationJoinBuilder<T>
+    private val builder: AssociationJoinBuilder<T>,
 ) : AssociationJoinOnStep<T>,
     AssociationJoinAsStep<T> {
 
