@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.support.spring.data.jpa.javax.autoconfigure
 
+import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderModule
@@ -14,9 +15,11 @@ import javax.persistence.EntityManager
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EntityManager::class, JpqlRenderContext::class)
+@SinceJdsl("3.0.0")
 open class KotlinJdslAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
+    @SinceJdsl("3.0.0")
     open fun jpqlRenderContext(serializers: List<JpqlSerializer<*>>): JpqlRenderContext {
         val userDefinedSerializers = object : JpqlRenderModule {
             override fun setupModule(context: JpqlRenderModule.SetupContext) {
@@ -29,6 +32,7 @@ open class KotlinJdslAutoConfiguration {
     }
 
     @Bean
+    @SinceJdsl("3.0.0")
     open fun kotlinJdslJpqlExecutor(
         entityManager: EntityManager,
         renderContexts: List<RenderContext>,
@@ -42,6 +46,7 @@ open class KotlinJdslAutoConfiguration {
     }
 
     @Bean
+    @SinceJdsl("3.0.0")
     open fun kotlinJdslJpaRepositoryFactoryBeanPostProcessor(
         kotlinJdslJpqlExecutor: KotlinJdslJpqlExecutor,
     ): KotlinJdslJpaRepositoryFactoryBeanPostProcessor {

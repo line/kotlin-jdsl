@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.support.spring.data.jpa.javax.repository
 
+import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.dsl.jpql.Jpql
 import com.linecorp.kotlinjdsl.dsl.jpql.JpqlDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
@@ -19,6 +20,7 @@ import javax.persistence.NoResultException
 
 @Transactional
 @NoRepositoryBean
+@SinceJdsl("3.0.0")
 open class KotlinJdslJpqlExecutorImpl(
     private val entityManager: EntityManager,
     private val renderContext: RenderContext,
