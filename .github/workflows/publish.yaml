@@ -9,6 +9,7 @@ on:
 
 jobs:
   publish:
+    name: Publish to the Maven Central Repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
