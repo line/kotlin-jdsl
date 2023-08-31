@@ -1,8 +1,8 @@
-#!/bin/bash
+#!C:/Program\ Files/Git/usr/bin/sh.exe
 
 echo "Running git pre-commit hook"
 
-./gradlew :ktlintFormat
+./gradlew ktlintFormat
 
 status=$?
 

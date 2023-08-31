@@ -1,8 +1,9 @@
-import java.nio.file.Files
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.nio.file.Files
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -144,6 +145,14 @@ koverReport {
 
 // Git Hooks
 File("$projectDir/.githook").let { projectGitHookDir ->
+    val os = OperatingSystem.current()
+
+    val suffix = when {
+        os.isMacOsX -> "macos"
+        os.isWindows -> "windows"
+        else -> "default"
+    }
+
     val gitHookDir = File("$projectDir/.git/hooks")
 
     gitHookDir
@@ -154,8 +163,10 @@ File("$projectDir/.githook").let { projectGitHookDir ->
 
     projectGitHookDir
         .listFiles()
-        ?.forEach {
-            val gitHook = File(gitHookDir, it.nameWithoutExtension)
+        ?.filter {
+            it.nameWithoutExtension.contains(suffix)
+        }?.forEach {
+            val gitHook = File(gitHookDir, it.nameWithoutExtension.removeSuffix("-$suffix"))
 
             Files.copy(it.toPath(), gitHook.toPath())
 
