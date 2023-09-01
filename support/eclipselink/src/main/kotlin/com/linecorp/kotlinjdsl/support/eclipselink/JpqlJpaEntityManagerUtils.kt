@@ -8,8 +8,8 @@ import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import jakarta.persistence.Query
 import jakarta.persistence.TypedQuery
-import org.eclipse.persistence.jpa.JpaEntityManager
 import kotlin.reflect.KClass
+import org.eclipse.persistence.jpa.JpaEntityManager
 
 internal object JpqlJpaEntityManagerUtils {
     fun <T : Any> createQuery(

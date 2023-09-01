@@ -1,6 +1,14 @@
 package com.linecorp.kotlinjdsl.example.eclipselink.entity.employee
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.DiscriminatorColumn
+import jakarta.persistence.Embedded
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Inheritance
+import jakarta.persistence.InheritanceType
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
 import java.util.*
 
 @Entity

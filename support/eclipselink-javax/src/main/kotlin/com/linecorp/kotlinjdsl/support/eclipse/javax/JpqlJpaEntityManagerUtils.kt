@@ -6,10 +6,10 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
-import org.eclipse.persistence.jpa.JpaEntityManager
 import javax.persistence.Query
 import javax.persistence.TypedQuery
 import kotlin.reflect.KClass
+import org.eclipse.persistence.jpa.JpaEntityManager
 
 internal object JpqlJpaEntityManagerUtils {
     fun <T : Any> createQuery(
