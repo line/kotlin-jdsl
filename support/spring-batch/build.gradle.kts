@@ -1,11 +1,12 @@
 dependencies {
-    compileOnly(libs.spring.boot3.batch)
+    compileOnly(libs.spring.boot3.starter)
+    compileOnly(libs.spring.batch5.infrastructure)
     compileOnly(libs.jakarta.persistence.api)
     compileOnly(projects.jpqlDsl)
     compileOnly(projects.jpqlQueryModel)
     compileOnly(projects.jpqlRender)
 
-    testImplementation(libs.test.spring.batch)
+    testImplementation(libs.spring.batch5.infrastructure)
     testImplementation(libs.jakarta.persistence.api)
     testImplementation(projects.jpqlDsl)
     testImplementation(projects.jpqlQueryModel)

@@ -21,13 +21,13 @@ logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 
 # SpringBoot
 spring-boot3-starter = { module = "org.springframework.boot:spring-boot-starter", version = "3.0.3" }
-spring-boot3-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version = "3.0.3" }
-
 spring-boot2-starter = { module = "org.springframework.boot:spring-boot-starter", version = "2.7.10" }
 
 # Spring
 spring-jdbc = { module = "org.springframework:spring-jdbc", version = "6.0.11" }
-spring-batch-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.3.8" }
+
+spring-batch5-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "5.0.0" }
+spring-batch4-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.0.0.RELEASE" }
 
 # https://github.com/spring-projects/spring-data-jpa/issues/2812
 spring-data-jpa3 = { module = "org.springframework.data:spring-data-jpa", version = "3.0.3" }
@@ -35,14 +35,17 @@ spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", versio
 
 # Test
 test-spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "test-spring-boot3" }
+test-spring-boot3-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "test-spring-boot3" }
 test-spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.9.0" }
 test-spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "test-spring-boot3" }
 
 test-spring-boot2-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "test-spring-boot2" }
+test-spring-boot2-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "test-spring-boot2" }
 test-spring-boot2-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.8.1" }
 test-spring-boot2-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "test-spring-boot2" }
 
-test-spring-batch = { module = "org.springframework.batch:spring-batch-test", version = "5.0.1" }
+test-spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "5.0.3" }
+test-spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", version = "4.3.9" }
 
 test-junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.9.2" }
 test-assertJ = { module = "org.assertj:assertj-core", version = "3.24.2" }
