@@ -25,7 +25,12 @@ kotlin {
     jvmToolchain(17)
 }
 
+noArg {
+    annotation("com.linecorp.kotlinjdsl.example.spring.batch.jpql.annotation.CompositeId")
+}
+
 allOpen {
+    annotation("com.linecorp.kotlinjdsl.example.spring.batch.jpql.annotation.CompositeId")
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.Embeddable")
 }
