@@ -67,7 +67,7 @@ junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.0" }
 assertJ = { module = "org.assertj:assertj-core", version = "3.24.2" }
 mockk = { module = "io.mockk:mockk", version = "1.13.7" }
 
-h2 = { module = "com.h2database:h2", version = "2.2.220" }
+h2 = { module = "com.h2database:h2", version = "2.2.222" }
 
 mutiny-core = { module = "io.smallrye.reactive:mutiny", version.ref = "mutiny" }
 mutiny-kotlin = { module = "io.smallrye.reactive:mutiny-kotlin", version.ref = "mutiny" }
