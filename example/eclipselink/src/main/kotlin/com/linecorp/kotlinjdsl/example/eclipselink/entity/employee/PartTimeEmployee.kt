@@ -6,7 +6,6 @@ import jakarta.persistence.DiscriminatorValue
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 
-
 @Entity
 @DiscriminatorValue("PART_TIME")
 class PartTimeEmployee(
