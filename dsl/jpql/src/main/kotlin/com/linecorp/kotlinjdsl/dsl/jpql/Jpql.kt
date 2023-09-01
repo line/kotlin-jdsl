@@ -44,7 +44,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
 /**
- * Builds new JPQL query using newly created [Jpql].
+ * Builds new JPQL query using newly created JpqlDsl.
  */
 @SinceJdsl("3.0.0")
 inline fun <Q : JpqlQuery<Q>> jpql(init: Jpql.() -> JpqlQueryable<Q>): Q {
@@ -52,7 +52,7 @@ inline fun <Q : JpqlQuery<Q>> jpql(init: Jpql.() -> JpqlQueryable<Q>): Q {
 }
 
 /**
- * Builds new JPQL query using provided [JpqlDsl].
+ * Builds new JPQL query using provided JpqlDsl.
  */
 @SinceJdsl("3.0.0")
 inline fun <DSL : JpqlDsl, Q : JpqlQuery<Q>> jpql(dsl: JpqlDsl.Constructor<DSL>, init: DSL.() -> JpqlQueryable<Q>): Q {
@@ -69,7 +69,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a parameter expression with a generated name and the [value].
+     * Creates a parameter expression with a generated name and the value.
      */
     @SinceJdsl("3.0.0")
     fun <T> value(value: @Exact T): Expression<T & Any> {
@@ -85,7 +85,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a literal expression with the [int].
+     * Creates a literal expression with the int.
      */
     @SinceJdsl("3.0.0")
     fun intLiteral(int: Int): Expression<Int> {
@@ -93,50 +93,74 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a literal expression with the [long].
+     * Creates a literal expression with the long.
      */
     @SinceJdsl("3.0.0")
     fun longLiteral(long: Long): Expression<Long> {
         return Expressions.longLiteral(long)
     }
 
+    /**
+     * Creates a literal expression with the float.
+     */
     @SinceJdsl("3.0.0")
     fun floatLiteral(float: Float): Expression<Float> {
         return Expressions.floatLiteral(float)
     }
 
+    /**
+     * Creates a literal expression with the double.
+     */
     @SinceJdsl("3.0.0")
     fun doubleLiteral(double: Double): Expression<Double> {
         return Expressions.doubleLiteral(double)
     }
 
+    /**
+     * Creates a literal expression with the boolean.
+     */
     @SinceJdsl("3.0.0")
     fun booleanLiteral(boolean: Boolean): Expression<Boolean> {
         return Expressions.booleanLiteral(boolean)
     }
 
+    /**
+     * Creates a literal expression with the char.
+     * If the char is '(single quote), it is rendered as ''(two single quotes).
+     */
     @SinceJdsl("3.0.0")
     fun charLiteral(char: Char): Expression<Char> {
         return Expressions.charLiteral(char)
     }
 
+    /**
+     * Creates a literal expression with the string.
+     * If the string contains '(single quote), it is rendered as ''(two single quotes).
+     * For example: literal''s.
+     */
     @SinceJdsl("3.0.0")
     fun stringLiteral(string: String): Expression<String> {
         return Expressions.stringLiteral(string)
     }
 
+    /**
+     * Creates a literal expression with the enum.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Enum<T>> enumLiteral(enum: T): Expression<T> {
         return Expressions.enumLiteral(enum)
     }
 
+    /**
+     * Creates a literal expression with null.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> nullLiteral(): Expression<T> {
         return Expressions.nullLiteral()
     }
 
     /**
-     * Creates a parameter expression with the given [name].
+     * Creates a parameter expression with the given name.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> param(name: String): Expression<T> {
@@ -144,59 +168,105 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a parameter expression with the given [name] and [value].
-     * The [value] can be overridden in the rendering.
+     * Creates a parameter expression with the given name and value.
+     * The value can be overridden in rendering.
      */
     @SinceJdsl("3.0.0")
     fun <T> param(name: String, value: @Exact T): Expression<T & Any> {
         return Expressions.param(name, value)
     }
 
+    /**
+     * Creates an entity expression with the given type and alias.
+     * The entity is identified and referenced by its alias.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> entity(type: KClass<T>, alias: String = type.simpleName!!): Entity<T> {
         return Entities.entity(type, alias)
     }
 
+    /**
+     * Creates a path expression with the given property.
+     * The path starts from the entity which is the owner of the given property.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, V> path(property: KProperty1<T, @Exact V>): Path<V & Any> {
         return Paths.path(property)
     }
 
+    /**
+     * Creates a path expression with the given path and property.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, V> Pathable<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
         return Paths.path(this.toPath(), property)
     }
 
+    /**
+     * Creates a path expression with the given path and property.
+     */
     @SinceJdsl("3.0.0")
     operator fun <T : Any, V> Pathable<T>.invoke(property: KProperty1<T, @Exact V>): Path<V & Any> {
         return Paths.path(this.toPath(), property)
     }
 
+    /**
+     * Creates an aliased expression with the given alias expression.
+     * The aliased expression can be referenced by the alias expression.
+     *
+     * @see expression for creating an alias expression.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> Expressionable<@Exact T>.`as`(alias: Expression<T>): Expression<T> {
         return Expressions.alias(this.toExpression(), alias)
     }
 
+    /**
+     * Creates an aliased expression with the given alias expression.
+     * The aliased expression can be referenced by the alias expression.
+     *
+     * @see expression for creating an alias expression.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> Expressionable<@Exact T>.alias(alias: Expression<T>): Expression<T> {
         return Expressions.alias(this.toExpression(), alias)
     }
 
+    /**
+     * Creates an expression to reference.
+     * The expression can be used for aliasing and referencing.
+     *
+     * @see as for aliasing an expression.
+     * @see alias for aliasing an expression.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> expression(type: KClass<T>, alias: String): Expression<T> {
         return Expressions.expression(type, alias)
     }
 
+    /**
+     * Creates an expression to reference.
+     * The expression can be used for aliasing and referencing.
+     *
+     * @see as for aliasing an expression.
+     * @see alias for aliasing an expression.
+     */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> expression(alias: String): Expression<T> {
         return Expressions.expression(T::class, alias)
     }
 
+    /**
+     * Creates an entity with downcasting.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, S : T> Entityable<T>.treat(type: KClass<S>): Entity<S> {
         return Entities.treat(this.toEntity(), type)
     }
 
+    /**
+     * Creates an entity with downcasting.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, S : T> Pathable<T>.treat(type: KClass<S>): Path<S> {
         return Paths.treat(this.toPath(), type)
