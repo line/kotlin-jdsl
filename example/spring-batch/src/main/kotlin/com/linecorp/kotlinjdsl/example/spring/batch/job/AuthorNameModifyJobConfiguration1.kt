@@ -61,11 +61,11 @@ class AuthorNameModifyJobConfiguration1(
     fun authorNameModifyReader(): JpaCursorItemReader<Author> {
         val query = jpql {
             select(
-                entity(Author::class)
+                entity(Author::class),
             ).from(
-                entity(Author::class)
+                entity(Author::class),
             ).where(
-                jobParameters.authorId?.let { path(Author::authorId).ge(it) }
+                jobParameters.authorId?.let { path(Author::authorId).ge(it) },
             )
         }
 

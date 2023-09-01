@@ -14,7 +14,6 @@ import io.mockk.verifySequence
 import jakarta.persistence.EntityManager
 import jakarta.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
