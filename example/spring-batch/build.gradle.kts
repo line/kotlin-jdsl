@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.spring.boot3.batch)
+    implementation(libs.test.spring.boot3.batch)
     implementation(libs.test.spring.boot3.jpa)
     implementation(libs.test.spring.boot3.p6spy)
     implementation(projects.example)
@@ -16,7 +16,7 @@ dependencies {
     implementation(projects.springBatchSupport)
 
     testImplementation(libs.test.spring.boot3.test)
-    testImplementation(libs.test.spring.batch)
+    testImplementation(libs.test.spring.batch5.test)
 
     testRuntimeOnly(libs.test.h2)
 }
