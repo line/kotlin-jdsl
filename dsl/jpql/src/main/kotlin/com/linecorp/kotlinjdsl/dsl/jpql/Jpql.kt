@@ -60,7 +60,7 @@ inline fun <DSL : JpqlDsl, Q : JpqlQuery<Q>> jpql(dsl: JpqlDsl.Constructor<DSL>,
 }
 
 /**
- * Default implementation of DSL for building JPQL query.
+ * Default implementation of DSL for building a JPQL query.
  */
 @SinceJdsl("3.0.0")
 open class Jpql : JpqlDsl {
@@ -68,21 +68,33 @@ open class Jpql : JpqlDsl {
         override fun newInstance(): Jpql = Jpql()
     }
 
+    /**
+     * Creates a parameter expression with a generated name and the [value].
+     */
     @SinceJdsl("3.0.0")
     fun <T> value(value: @Exact T): Expression<T & Any> {
         return Expressions.value(value)
     }
 
+    /**
+     * Creates a parameter expression with a generated name and null.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> nullValue(): Expression<T> {
         return Expressions.nullValue()
     }
 
+    /**
+     * Creates a literal expression with the [int].
+     */
     @SinceJdsl("3.0.0")
     fun intLiteral(int: Int): Expression<Int> {
         return Expressions.intLiteral(int)
     }
 
+    /**
+     * Creates a literal expression with the [long].
+     */
     @SinceJdsl("3.0.0")
     fun longLiteral(long: Long): Expression<Long> {
         return Expressions.longLiteral(long)
@@ -123,11 +135,18 @@ open class Jpql : JpqlDsl {
         return Expressions.nullLiteral()
     }
 
+    /**
+     * Creates a parameter expression with the given [name].
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> param(name: String): Expression<T> {
         return Expressions.param(name)
     }
 
+    /**
+     * Creates a parameter expression with the given [name] and [value].
+     * The [value] can be overridden in the rendering.
+     */
     @SinceJdsl("3.0.0")
     fun <T> param(name: String, value: @Exact T): Expression<T & Any> {
         return Expressions.param(name, value)
