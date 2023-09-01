@@ -38,7 +38,5 @@ class Employee(
     override fun equals(other: Any?): Boolean = Objects.equals(employeeId, (other as? Employee)?.employeeId)
     override fun hashCode(): Int = Objects.hashCode(employeeId)
 
-    override fun toString(): String {
-        return "Employee(employeeId=$employeeId, name='$name')"
-    }
+    override fun toString(): String = "Employee(employeeId=$employeeId)"
 }
