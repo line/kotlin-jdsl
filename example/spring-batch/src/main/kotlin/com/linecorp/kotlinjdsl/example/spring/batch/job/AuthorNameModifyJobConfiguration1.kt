@@ -69,7 +69,7 @@ class AuthorNameModifyJobConfiguration1(
             )
         }
 
-        val kotlinJdslQueryProvider = kotlinJdslQueryProviderFactory.createKotlinJdslQueryProvider(query)
+        val kotlinJdslQueryProvider = kotlinJdslQueryProviderFactory.create(query)
 
         return JpaCursorItemReaderBuilder<Author>()
             .entityManagerFactory(entityManagerFactory)
