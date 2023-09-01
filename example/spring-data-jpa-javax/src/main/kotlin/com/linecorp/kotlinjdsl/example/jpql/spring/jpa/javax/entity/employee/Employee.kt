@@ -1,3 +1,5 @@
+@file:Suppress("unused", "LeakingThis", "JpaDataSourceORMInspection")
+
 package com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.entity.employee
 
 import java.util.*
@@ -35,6 +37,10 @@ class Employee(
     @OneToMany(mappedBy = "employee")
     val departments: MutableSet<EmployeeDepartment>,
 ) {
+    init {
+        departments.forEach { it.employee = this }
+    }
+
     override fun equals(other: Any?): Boolean = Objects.equals(employeeId, (other as? Employee)?.employeeId)
     override fun hashCode(): Int = Objects.hashCode(employeeId)
 
