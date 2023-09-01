@@ -1,18 +1,57 @@
 package com.linecorp.kotlinjdsl.support.spring.batch.item.database.orm
 
+import com.linecorp.kotlinjdsl.dsl.jpql.Jpql
+import com.linecorp.kotlinjdsl.dsl.jpql.JpqlDsl
+import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 
 class KotlinJdslQueryProviderFactory(
     private val context: RenderContext,
 ) {
-    fun <T : Any> createKotlinJdslQueryProvider(
+    fun <T : Any> create(
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): KotlinJdslQueryProvider<T> {
+        val query = Jpql().init().toQuery()
+
+        return KotlinJdslQueryProvider(query, emptyMap(), context)
+    }
+
+    fun <T : Any> create(
+        queryParams: Map<String, Any?>,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): KotlinJdslQueryProvider<T> {
+        val query = Jpql().init().toQuery()
+
+        return KotlinJdslQueryProvider(query, queryParams, context)
+    }
+
+    fun <DSL : JpqlDsl, T : Any> create(
+        dsl: JpqlDsl.Constructor<DSL>,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): KotlinJdslQueryProvider<T> {
+        val query = dsl.newInstance().init().toQuery()
+
+        return KotlinJdslQueryProvider(query, emptyMap(), context)
+    }
+
+    fun <DSL : JpqlDsl, T : Any> create(
+        dsl: JpqlDsl.Constructor<DSL>,
+        queryParams: Map<String, Any?>,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): KotlinJdslQueryProvider<T> {
+        val query = dsl.newInstance().init().toQuery()
+
+        return KotlinJdslQueryProvider(query, queryParams, context)
+    }
+
+    fun <T : Any> create(
         query: SelectQuery<T>,
     ): KotlinJdslQueryProvider<T> {
         return KotlinJdslQueryProvider(query, emptyMap(), context)
     }
 
-    fun <T : Any> createKotlinJdslQueryProvider(
+    fun <T : Any> create(
         query: SelectQuery<T>,
         queryParams: Map<String, Any?>,
     ): KotlinJdslQueryProvider<T> {
