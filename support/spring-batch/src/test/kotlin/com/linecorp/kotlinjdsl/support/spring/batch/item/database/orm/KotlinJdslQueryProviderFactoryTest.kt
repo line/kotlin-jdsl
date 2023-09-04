@@ -4,7 +4,6 @@ import com.linecorp.kotlinjdsl.dsl.jpql.Jpql
 import com.linecorp.kotlinjdsl.dsl.jpql.JpqlDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
-import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.spring.batch.entity.author.Author
@@ -25,9 +24,19 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
 
     private val createSelectQuery1: Jpql.() -> JpqlQueryable<SelectQuery<Author>> = {
         select(
-            Entities.entity(Author::class),
+            entity(Author::class),
         ).from(
-            Entities.entity(Author::class),
+            entity(Author::class),
+        )
+    }
+
+    private val createSelectQuery2: MyJpql.() -> JpqlQueryable<SelectQuery<Author>> = {
+        select(
+            entity(Author::class),
+        ).from(
+            entity(Author::class),
+        ).where(
+            path(Author::authorId).eq(1L),
         )
     }
 
@@ -68,11 +77,11 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
     @Test
     fun `create() with JpqlDsl and JpqlQueryable`() {
         // when
-        val actual = sut.create(MyJpql, createSelectQuery1)
+        val actual = sut.create(MyJpql, createSelectQuery2)
 
         // then
         val expected = KotlinJdslQueryProvider(
-            query = jpql(createSelectQuery1),
+            query = jpql(MyJpql, createSelectQuery2),
             queryParams = emptyMap(),
             context = context,
         )
@@ -83,11 +92,11 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
     @Test
     fun `create() with JpqlDsl, JpqlQueryable and query parameters`() {
         // when
-        val actual = sut.create(MyJpql, queryParams1, createSelectQuery1)
+        val actual = sut.create(MyJpql, queryParams1, createSelectQuery2)
 
         // then
         val expected = KotlinJdslQueryProvider(
-            query = jpql(createSelectQuery1),
+            query = jpql(MyJpql, createSelectQuery2),
             queryParams = queryParams1,
             context = context,
         )
@@ -113,7 +122,7 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
     @Test
     fun `create() with SelectQuery and query parameters`() {
         // when
-        val actual = sut.create(queryParams1, selectQuery1)
+        val actual = sut.create(selectQuery1, queryParams1)
 
         // then
         val expected = KotlinJdslQueryProvider(
