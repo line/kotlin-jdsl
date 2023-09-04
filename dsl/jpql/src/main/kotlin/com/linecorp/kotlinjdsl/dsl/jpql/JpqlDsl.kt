@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.dsl.jpql.JpqlDsl.Constructor
 
 /**
- * Marker interface to indicate that this is DSL for JPQL.
+ * Marker interface to represent the DSL for JPQL.
  *
  * The class that implements this interface must have the companion object that implements [Constructor].
  */

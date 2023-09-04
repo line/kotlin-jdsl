@@ -7,12 +7,21 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 
 @SinceJdsl("3.0.0")
 interface DeleteQueryWhereStep<T : Any> : JpqlQueryable<DeleteQuery<T>> {
+    /**
+     * Creates a where clause in an update query.
+     */
     @SinceJdsl("3.0.0")
     fun where(predicate: Predicatable?): JpqlQueryable<DeleteQuery<T>>
 
+    /**
+     * Creates a where clause in an update query.
+     */
     @SinceJdsl("3.0.0")
     fun whereAnd(vararg predicates: Predicatable?): JpqlQueryable<DeleteQuery<T>>
 
+    /**
+     * Creates a where clause in an update query.
+     */
     @SinceJdsl("3.0.0")
     fun whereOr(vararg predicates: Predicatable?): JpqlQueryable<DeleteQuery<T>>
 }

@@ -6,6 +6,9 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 
 @SinceJdsl("3.0.0")
 interface CaseWhenStep<T : Any> : CaseElseStep<T>, Expressionable<T> {
+    /**
+     * Creates a when operator in a case expression.
+     */
     @SinceJdsl("3.0.0")
     fun `when`(predicate: Predicatable): CaseThenStep<T>
 }

@@ -2368,7 +2368,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query.
+     * Creates a select clause in a select query.
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> select(
@@ -2378,7 +2378,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query.
+     * Creates a select clause in a select query.
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> select(
@@ -2388,7 +2388,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query.
+     * Creates a select clause in a select query.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> select(
@@ -2399,7 +2399,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query.
+     * Creates a select clause in a select query.
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectDistinct(
@@ -2409,7 +2409,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query.
+     * Creates a select clause in a select query.
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectDistinct(
@@ -2419,7 +2419,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query.
+     * Creates a select clause in a select query.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> selectDistinct(
@@ -2430,7 +2430,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query with the DTO projection.
+     * Creates a select clause with the DTO projection in a select query.
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectNew(
@@ -2444,7 +2444,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query with the DTO projection.
+     * Creates a select clause with the DTO projection in a select query.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> selectNew(
@@ -2459,7 +2459,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query with the DTO projection.
+     * Creates a select clause with the DTO projection in a select query.
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectDistinctNew(
@@ -2473,7 +2473,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a select query with the DTO projection.
+     * Creates a select clause with the DTO projection in a select query.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> selectDistinctNew(
@@ -2488,7 +2488,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a update query.
+     * Creates an update clause in an update query.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> update(entity: Entityable<T>): UpdateQuerySetFirstStep<T> {
@@ -2496,7 +2496,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a delete query.
+     * Creates a delete from clause in a delete query.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> deleteFrom(entity: Entityable<T>): DeleteQueryWhereStep<T> {

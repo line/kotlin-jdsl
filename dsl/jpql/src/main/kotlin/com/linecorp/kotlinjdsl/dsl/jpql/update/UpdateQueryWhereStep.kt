@@ -7,12 +7,21 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 
 @SinceJdsl("3.0.0")
 interface UpdateQueryWhereStep<T : Any> : JpqlQueryable<UpdateQuery<T>> {
+    /**
+     * Creates a where clause in an update query.
+     */
     @SinceJdsl("3.0.0")
     fun where(predicate: Predicatable?): JpqlQueryable<UpdateQuery<T>>
 
+    /**
+     * Creates a where clause in an update query.
+     */
     @SinceJdsl("3.0.0")
     fun whereAnd(vararg predicates: Predicatable?): JpqlQueryable<UpdateQuery<T>>
 
+    /**
+     * Creates a where clause in an update query.
+     */
     @SinceJdsl("3.0.0")
     fun whereOr(vararg predicates: Predicatable?): JpqlQueryable<UpdateQuery<T>>
 }
