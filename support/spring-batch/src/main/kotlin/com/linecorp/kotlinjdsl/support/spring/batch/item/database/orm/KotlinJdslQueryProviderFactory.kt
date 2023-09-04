@@ -53,8 +53,8 @@ class KotlinJdslQueryProviderFactory(
     }
 
     fun <T : Any> create(
-        queryParams: Map<String, Any?>,
         query: SelectQuery<T>,
+        queryParams: Map<String, Any?>,
     ): KotlinJdslQueryProvider<T> {
         return KotlinJdslQueryProvider(query, queryParams, context)
     }
