@@ -134,7 +134,7 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
         assertThat(actual).isEqualTo(expected)
     }
 
-    class MyJpql : Jpql() {
+    private class MyJpql : Jpql() {
         companion object Constructor : JpqlDsl.Constructor<MyJpql> {
             override fun newInstance(): MyJpql = MyJpql()
         }
