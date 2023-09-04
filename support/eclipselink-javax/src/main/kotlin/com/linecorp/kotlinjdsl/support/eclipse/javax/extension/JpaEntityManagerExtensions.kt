@@ -6,9 +6,9 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.eclipse.javax.JpqlJpaEntityManagerUtils
-import org.eclipse.persistence.jpa.JpaEntityManager
 import javax.persistence.Query
 import javax.persistence.TypedQuery
+import org.eclipse.persistence.jpa.JpaEntityManager
 
 /**
  * Creates [javax.persistence.TypedQuery] from the [SelectQuery] and [RenderContext].
