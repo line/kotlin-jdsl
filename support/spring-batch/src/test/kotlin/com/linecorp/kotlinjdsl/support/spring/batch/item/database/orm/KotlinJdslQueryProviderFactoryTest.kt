@@ -148,4 +148,6 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
             return javaClass.hashCode()
         }
     }
+
+
 }
