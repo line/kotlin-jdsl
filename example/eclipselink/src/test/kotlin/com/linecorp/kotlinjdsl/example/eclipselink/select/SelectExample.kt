@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.example.eclipselink
+package com.linecorp.kotlinjdsl.example.eclipselink.select
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.author.Author
@@ -7,7 +7,6 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.BookAuthor
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeDepartment
-import com.linecorp.kotlinjdsl.example.eclipselink.entity.publisher.Publisher
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
 import jakarta.persistence.Persistence
@@ -17,26 +16,6 @@ import org.junit.jupiter.api.Test
 
 class SelectExample : WithAssertions {
     private val entityManagerFactory = Persistence.createEntityManagerFactory("example")
-
-    @Test
-    fun test() {
-        val entityManger = entityManagerFactory.createEntityManager().unwrap(JpaEntityManager::class.java)
-
-        val context = JpqlRenderContext()
-
-        val query = jpql {
-            select(
-                path(Publisher::name),
-            ).from(
-                entity(Publisher::class),
-            )
-        }
-
-        val typedQuery = entityManger.createQuery(query, context)
-
-        val result = typedQuery.resultList
-        println(result)
-    }
 
     @Test
     fun `the most prolific author`() {
@@ -57,7 +36,7 @@ class SelectExample : WithAssertions {
         }
 
         // when
-        val actual = entityManger.createQuery(jpqlQuery, context).setMaxResults(1).resultList.firstOrNull()
+        val actual = entityManger.createQuery(jpqlQuery, context).setMaxResults(1).singleResult
 
         // then
         assertThat(actual).isEqualTo(1L)
@@ -130,8 +109,7 @@ class SelectExample : WithAssertions {
         }
 
         // when
-        // SELECT t0.ISBN AS a1 FROM book t0, book_author t1 WHERE (t1.isbn = t0.ISBN) GROUP BY t0.ISBN ORDER BY COUNT(t0.ISBN) DESC LIMIT ? OFFSET ?
-        val actual = entityManger.createQuery(jpqlQuery, context).setMaxResults(1).resultList.firstOrNull()
+        val actual = entityManger.createQuery(jpqlQuery, context).setMaxResults(1).singleResult
 
         // then
         assertThat(actual).isEqualTo(Isbn("01"))

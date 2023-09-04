@@ -26,6 +26,7 @@
             <property name="jakarta.persistence.schema-generation.create-source" value="script"/>
             <property name="jakarta.persistence.schema-generation.create-script-source" value="schema-eclipselink.sql"/>
             <property name="jakarta.persistence.sql-load-script-source" value="data-eclipselink.sql"/>
+            <property name="eclipselink.target-database" value="MySQL"/>
             <property name="eclipselink.logging.level.sql" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>
         </properties>
