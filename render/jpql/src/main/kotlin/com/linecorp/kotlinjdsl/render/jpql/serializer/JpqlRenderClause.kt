@@ -4,6 +4,9 @@ import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.render.AbstractRenderContextElement
 import com.linecorp.kotlinjdsl.render.RenderContext
 
+/**
+ * Element of [RenderContext] to know which clause is being rendered.
+ */
 @SinceJdsl("3.0.0")
 sealed class JpqlRenderClause : AbstractRenderContextElement(Key) {
     companion object Key : RenderContext.Key<JpqlRenderClause>

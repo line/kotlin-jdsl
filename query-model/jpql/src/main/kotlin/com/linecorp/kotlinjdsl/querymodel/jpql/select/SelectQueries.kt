@@ -9,8 +9,14 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import kotlin.reflect.KClass
 
+/**
+ * Factory class that creates [SelectQuery].
+ */
 @SinceJdsl("3.0.0")
 object SelectQueries {
+    /**
+     * Creates a select query.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> selectQuery(
         returnType: KClass<T>,

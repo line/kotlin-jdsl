@@ -15,6 +15,8 @@ import org.springframework.data.repository.NoRepositoryBean
 @SinceJdsl("3.0.0")
 interface KotlinJdslJpqlExecutor {
     /**
+     * Returns the first result of the select query.
+     *
      * @throws org.springframework.dao.EmptyResultDataAccessException if there is no result
      */
     @SinceJdsl("3.0.0")
@@ -23,6 +25,8 @@ interface KotlinJdslJpqlExecutor {
     ): T
 
     /**
+     * Returns the first result of the select query.
+     *
      * @throws org.springframework.dao.EmptyResultDataAccessException if there is no result
      */
     @SinceJdsl("3.0.0")
@@ -32,6 +36,8 @@ interface KotlinJdslJpqlExecutor {
     ): T
 
     /**
+     * Returns the first N results of the select query.
+     *
      * @throws org.springframework.dao.EmptyResultDataAccessException if there is no result
      */
     @SinceJdsl("3.0.0")
@@ -41,6 +47,8 @@ interface KotlinJdslJpqlExecutor {
     ): List<T>
 
     /**
+     * Returns the first N results of the select query.
+     *
      * @throws org.springframework.dao.EmptyResultDataAccessException if there is no result
      */
     @SinceJdsl("3.0.0")
@@ -50,11 +58,19 @@ interface KotlinJdslJpqlExecutor {
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T>
 
+    /**
+     * Returns the first result of the select query.
+     * Returns null if there is no result.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> findFirstOrNull(
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
     ): T?
 
+    /**
+     * Returns the first result of the select query.
+     * Returns null if there is no result.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> findFirstOrNull(
         dsl: JpqlDsl.Constructor<DSL>,
@@ -62,7 +78,9 @@ interface KotlinJdslJpqlExecutor {
     ): T?
 
     /**
-     * @throws jakarta.persistence.NonUniqueResultException if more than one result
+     * Returns a single result of the select query.
+     *
+     * @throws org.springframework.dao.IncorrectResultSizeDataAccessException if more than one result
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> findOne(
@@ -70,7 +88,9 @@ interface KotlinJdslJpqlExecutor {
     ): T?
 
     /**
-     * @throws jakarta.persistence.NonUniqueResultException if more than one result
+     * Returns a single result of the select query.
+     *
+     * @throws org.springframework.dao.IncorrectResultSizeDataAccessException if more than one result
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> findOne(
@@ -78,23 +98,35 @@ interface KotlinJdslJpqlExecutor {
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): T?
 
+    /**
+     * Returns all results of the select query.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> findAll(
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?>
 
+    /**
+     * Returns all results of the select query.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> findAll(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?>
 
+    /**
+     * Returns all results of the select query.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> findAll(
         pageable: Pageable,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
     ): Page<T?>
 
+    /**
+     * Returns all results of the select query.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> findAll(
         dsl: JpqlDsl.Constructor<DSL>,
@@ -102,25 +134,45 @@ interface KotlinJdslJpqlExecutor {
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): Page<T?>
 
+    /**
+     * Execute the update query.
+     *
+     * @return the number of entities updated
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> update(
         init: Jpql.() -> JpqlQueryable<UpdateQuery<T>>,
-    )
+    ): Int
 
+    /**
+     * Execute the update query.
+     *
+     * @return the number of entities updated
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> update(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<UpdateQuery<T>>,
-    )
+    ): Int
 
+    /**
+     * Execute the delete query.
+     *
+     * @return the number of entities deleted
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> delete(
         init: Jpql.() -> JpqlQueryable<DeleteQuery<T>>,
-    )
+    ): Int
 
+    /**
+     * Execute the delete query.
+     *
+     * @return the number of entities deleted
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> delete(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
-    )
+    ): Int
 }

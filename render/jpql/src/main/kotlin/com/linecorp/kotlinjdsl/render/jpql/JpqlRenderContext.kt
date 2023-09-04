@@ -59,6 +59,8 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanAllSerial
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanAnySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanOrEqualToAllSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanOrEqualToAnySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanOrEqualToSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLikeSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLiteralSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlMaxSerializer
@@ -90,6 +92,9 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTimesSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlUpdateQuerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlValueSerializer
 
+/**
+ * RenderContext for rendering JPQL.
+ */
 @SinceJdsl("3.0.0")
 class JpqlRenderContext private constructor(
     private val modules: Iterable<JpqlRenderModule>,
@@ -185,16 +190,25 @@ class JpqlRenderContext private constructor(
         return JpqlRenderSerializer(serializers)
     }
 
+    /**
+     * Returns a new [JpqlRenderContext] with the module.
+     */
     @SinceJdsl("3.0.0")
     fun registerModule(module: JpqlRenderModule): JpqlRenderContext {
         return JpqlRenderContext(this.modules + module)
     }
 
+    /**
+     * Returns a new [JpqlRenderContext] with the module.
+     */
     @SinceJdsl("3.0.0")
     fun registerModules(vararg modules: JpqlRenderModule): JpqlRenderContext {
         return JpqlRenderContext(this.modules.toList() + modules.toList())
     }
 
+    /**
+     * Returns a new [JpqlRenderContext] with the module.
+     */
     @SinceJdsl("3.0.0")
     fun registerModules(modules: Iterable<JpqlRenderModule>): JpqlRenderContext {
         return JpqlRenderContext(this.modules.toList() + modules.toList())
@@ -274,6 +288,8 @@ private class DefaultModule : JpqlRenderModule {
             JpqlLessThanAnySerializer(),
             JpqlLessThanOrEqualToAllSerializer(),
             JpqlLessThanOrEqualToAnySerializer(),
+            JpqlLessThanOrEqualToSerializer(),
+            JpqlLessThanSerializer(),
             JpqlLikeSerializer(),
             JpqlLiteralSerializer(),
             JpqlMaxSerializer(),

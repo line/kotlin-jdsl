@@ -13,15 +13,15 @@ import kotlin.reflect.KClass
 
 object Entities {
     private val classes = listOf(
-        Employee::class,
-        FullTimeEmployee::class,
-        PartTimeEmployee::class,
-        Author::class,
-        Book::class,
-        BookAuthor::class,
-        BookPublisher::class,
-        Department::class,
-        Publisher::class,
+        Employee::class, // 0
+        FullTimeEmployee::class, // 1
+        PartTimeEmployee::class, // 2
+        Author::class, // 3
+        Book::class, // 4
+        BookAuthor::class, // 5
+        BookPublisher::class, // 6
+        Department::class, // 7
+        Publisher::class, // 8
     )
 
     fun getClass(index: Int): KClass<*> {

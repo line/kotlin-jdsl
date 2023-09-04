@@ -8,18 +8,31 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import kotlin.reflect.KClass
 
+/**
+ * Factory class that creates [Entity].
+ */
 @SinceJdsl("3.0.0")
 object Entities {
+    /**
+     * Creates an entity expression with the type and alias.
+     * The entity is identified and referenced by its alias.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> entity(type: KClass<T>, alias: String = type.simpleName!!): Entity<T> {
         return JpqlEntity(type, alias)
     }
 
+    /**
+     * Creates an entity with downcasting.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any, S : T> treat(entity: Entity<T>, type: KClass<S>): Entity<S> {
         return JpqlEntityTreat(entity, type)
     }
 
+    /**
+     * Creates a derived entity with the select query and alias.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> derivedEntity(
         selectQuery: SelectQuery<T>,
