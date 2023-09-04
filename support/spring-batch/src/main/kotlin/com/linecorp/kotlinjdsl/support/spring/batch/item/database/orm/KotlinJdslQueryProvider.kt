@@ -18,4 +18,22 @@ class KotlinJdslQueryProvider<T : Any>(
     override fun afterPropertiesSet() {
         // ignore
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as KotlinJdslQueryProvider<*>
+
+        if (query != other.query) return false
+        if (queryParams != other.queryParams) return false
+        return context == other.context
+    }
+
+    override fun hashCode(): Int {
+        var result = query.hashCode()
+        result = 31 * result + queryParams.hashCode()
+        result = 31 * result + context.hashCode()
+        return result
+    }
 }
