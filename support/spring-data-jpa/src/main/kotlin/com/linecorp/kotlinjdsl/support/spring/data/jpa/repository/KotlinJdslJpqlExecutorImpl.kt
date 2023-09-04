@@ -12,7 +12,9 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.JpqlEntityManagerUtils
 import jakarta.persistence.EntityManager
 import jakarta.persistence.NoResultException
+import jakarta.persistence.NonUniqueResultException
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.dao.IncorrectResultSizeDataAccessException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.NoRepositoryBean
@@ -90,6 +92,9 @@ open class KotlinJdslJpqlExecutorImpl(
 
         return try {
             jpa.setMaxResults(2).singleResult
+        } catch (e: NonUniqueResultException) {
+            @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+            throw IncorrectResultSizeDataAccessException(e.message, 1, e)
         } catch (e: NoResultException) {
             null
         }
@@ -130,33 +135,33 @@ open class KotlinJdslJpqlExecutorImpl(
 
     override fun <T : Any> update(
         init: Jpql.() -> JpqlQueryable<UpdateQuery<T>>,
-    ) {
-        update(Jpql, init)
+    ): Int {
+        return update(Jpql, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> update(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<UpdateQuery<T>>,
-    ) {
+    ): Int {
         val query: UpdateQuery<T> = jpql(dsl, init)
         val jpaQuery = JpqlEntityManagerUtils.createQuery(entityManager, query, renderContext)
 
-        jpaQuery.executeUpdate()
+        return jpaQuery.executeUpdate()
     }
 
     override fun <T : Any> delete(
         init: Jpql.() -> JpqlQueryable<DeleteQuery<T>>,
-    ) {
-        delete(Jpql, init)
+    ): Int {
+        return delete(Jpql, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> delete(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
-    ) {
+    ): Int {
         val query: DeleteQuery<T> = jpql(dsl, init)
         val jpaQuery = JpqlEntityManagerUtils.createQuery(entityManager, query, renderContext)
 
-        jpaQuery.executeUpdate()
+        return jpaQuery.executeUpdate()
     }
 }
