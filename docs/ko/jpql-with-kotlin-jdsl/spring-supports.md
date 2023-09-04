@@ -36,3 +36,27 @@ bookRepository.findAll(pageable) {
     )
 }
 ```
+
+## Spring Batch
+
+SpringBatch는 JPQL로 쿼리를 할 수 있도록 `JpaPagingItemReader`와 `JpaCursorItemReader`를 제공합니다.
+Kotlin JDSL은 DSL로 생성된 JPQL 쿼리가 JpqReader들에서 실행될 수 있도록 `KotlinJdslQueryProvider`을 제공합니다.
+
+```kotlin
+@Auwoired
+lateinit var queryProviderFactory: KotlinJdslQueryProviderFactory
+
+val queryProvider = queryProviderFactory.create {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class),
+    )
+}
+
+JpaCursorItemReaderBuilder<Isbn>()
+    .entityManagerFactory(entityManagerFactory)
+    .queryProvider(queryProvider)
+    .saveState(false)
+    .build()
+```
