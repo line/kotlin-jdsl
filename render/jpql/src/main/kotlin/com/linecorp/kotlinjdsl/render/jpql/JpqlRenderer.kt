@@ -7,13 +7,22 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.impl.DefaultJpqlWriter
 import org.slf4j.LoggerFactory
 
+/**
+ * Renderer to render [JpqlQuery] as String.
+ */
 @SinceJdsl("3.0.0")
 class JpqlRenderer {
+    /**
+     * Render the query as String.
+     */
     @SinceJdsl("3.0.0")
     fun render(query: JpqlQuery<*>, context: RenderContext): JpqlRendered {
         return render(query, emptyMap(), context)
     }
 
+    /**
+     * Render the query as String.
+     */
     @SinceJdsl("3.0.0")
     fun render(query: JpqlQuery<*>, params: Map<String, Any?>, context: RenderContext): JpqlRendered {
         val serializer = context.getValue(JpqlRenderSerializer)
