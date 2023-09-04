@@ -6,6 +6,9 @@ import com.linecorp.kotlinjdsl.support.spring.batch.JpqlEntityManagerUtils
 import jakarta.persistence.Query
 import org.springframework.batch.item.database.orm.AbstractJpaQueryProvider
 
+/**
+ * [AbstractJpaQueryProvider] implementation for KotlinJdsl.
+ */
 class KotlinJdslQueryProvider<T : Any>(
     private val query: SelectQuery<T>,
     private val queryParams: Map<String, Any?>,

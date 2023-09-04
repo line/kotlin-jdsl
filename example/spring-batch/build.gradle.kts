@@ -1,3 +1,5 @@
+@file:Suppress("VulnerableLibrariesLocal")
+
 plugins {
     alias(libs.plugins.test.spring.boot3)
     alias(libs.plugins.kotlin.noarg)
