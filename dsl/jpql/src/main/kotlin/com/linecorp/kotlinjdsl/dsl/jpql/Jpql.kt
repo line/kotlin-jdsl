@@ -160,7 +160,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a parameter expression with the given name.
+     * Creates a parameter expression with the name.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> param(name: String): Expression<T> {
@@ -168,7 +168,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a parameter expression with the given name and value.
+     * Creates a parameter expression with the name and value.
      * The value can be overridden in rendering.
      */
     @SinceJdsl("3.0.0")
@@ -177,7 +177,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an entity expression with the given type and alias.
+     * Creates an entity expression with the type and alias.
      * The entity is identified and referenced by its alias.
      */
     @SinceJdsl("3.0.0")
@@ -186,8 +186,8 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a path expression with the given property.
-     * The path starts from the entity which is the owner of the given property.
+     * Creates a path expression with the property.
+     * The path starts from the entity which is the owner of the property.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, V> path(property: KProperty1<T, @Exact V>): Path<V & Any> {
@@ -195,7 +195,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a path expression with the given path and property.
+     * Creates a path expression with the path and property.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, V> Pathable<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
@@ -203,7 +203,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a path expression with the given path and property.
+     * Creates a path expression with the path and property.
      */
     @SinceJdsl("3.0.0")
     operator fun <T : Any, V> Pathable<T>.invoke(property: KProperty1<T, @Exact V>): Path<V & Any> {
@@ -211,7 +211,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an aliased expression with the given alias expression.
+     * Creates an aliased expression with the alias expression.
      * The aliased expression can be referenced by the alias expression.
      *
      * @see expression for creating an alias expression.
@@ -222,7 +222,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an aliased expression with the given alias expression.
+     * Creates an aliased expression with the alias expression.
      * The aliased expression can be referenced by the alias expression.
      *
      * @see expression for creating an alias expression.
@@ -1006,7 +1006,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that represents the type of the entity.
+     * Creates an expression that represents the type of the path.
      *
      * This is the same as ```TYPE(entity)``` and can be used to restrict query polymorphism.
      *
@@ -1083,7 +1083,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a subquery with the given select query.
+     * Creates a subquery with the select query.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> JpqlQueryable<SelectQuery<T>>.asSubquery(): Subquery<T> {
@@ -1091,7 +1091,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a derived entity with the given select query.
+     * Creates a derived entity with the select query.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> JpqlQueryable<SelectQuery<T>>.asEntity(): Entity<T> {
@@ -1099,7 +1099,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a derived entity with the given select query and alias.
+     * Creates a derived entity with the select query and alias.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> JpqlQueryable<SelectQuery<T>>.asEntity(alias: String): Entity<T> {
@@ -1515,7 +1515,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a predicate the inverse of the given predicate.
+     * Creates a predicate the inverse of the predicate.
      */
     @SinceJdsl("3.0.0")
     fun not(predicate: Predicatable): Predicate {
@@ -2211,7 +2211,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a predicate that tests whether the value is in compareValues.
+     * Creates a predicate that tests whether the value is in the subquery.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> Expressionable<@Exact T>.`in`(subquery: Subquery<T>): Predicate {
@@ -2252,7 +2252,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates a predicate that tests whether the value is not in compareValues.
+     * Creates a predicate that tests whether the value is not in the subquery.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> Expressionable<@Exact T>.notIn(subquery: Subquery<T>): Predicate {

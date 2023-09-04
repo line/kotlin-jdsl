@@ -13,8 +13,14 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlLeftJoin
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 
+/**
+ * Factory class that creates [Join].
+ */
 @SinceJdsl("3.0.0")
 object Joins {
+    /**
+     * Creates a join with the entity.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> innerJoin(
         entity: Entity<T>,
@@ -23,6 +29,9 @@ object Joins {
         return JpqlInnerJoin(entity, predicate)
     }
 
+    /**
+     * Creates an association join with the entity and path.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> innerJoin(
         entity: Entity<T>,
@@ -32,6 +41,9 @@ object Joins {
         return JpqlInnerAssociationJoin(entity, association, predicate)
     }
 
+    /**
+     * Creates a join with the entity.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> leftJoin(
         entity: Entity<T>,
@@ -40,6 +52,9 @@ object Joins {
         return JpqlLeftJoin(entity, predicate)
     }
 
+    /**
+     * Creates an association join with the entity and path.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> leftJoin(
         entity: Entity<T>,
@@ -49,6 +64,9 @@ object Joins {
         return JpqlLeftAssociationJoin(entity, association, predicate)
     }
 
+    /**
+     * Creates a fetch join with the entity.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> innerFetchJoin(
         entity: Entity<T>,
@@ -57,6 +75,9 @@ object Joins {
         return JpqlInnerFetchJoin(entity, predicate)
     }
 
+    /**
+     * Creates an association fetch join with the entity and path.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> innerFetchJoin(
         entity: Entity<T>,
@@ -66,6 +87,9 @@ object Joins {
         return JpqlInnerAssociationFetchJoin(entity, association, predicate)
     }
 
+    /**
+     * Creates a fetch join with the entity.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> leftFetchJoin(
         entity: Entity<T>,
@@ -74,6 +98,9 @@ object Joins {
         return JpqlLeftFetchJoin(entity, predicate)
     }
 
+    /**
+     * Creates an association fetch join with the entity and path.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> leftFetchJoin(
         entity: Entity<T>,

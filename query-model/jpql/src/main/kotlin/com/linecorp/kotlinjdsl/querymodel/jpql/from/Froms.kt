@@ -5,8 +5,16 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
 import com.linecorp.kotlinjdsl.querymodel.jpql.from.impl.JpqlJoinedEntity
 import com.linecorp.kotlinjdsl.querymodel.jpql.join.Join
 
+/**
+ * Factory class that creates [From].
+ */
 @SinceJdsl("3.0.0")
 object Froms {
+    /**
+     * Creates reduced froms.
+     * The reduced froms has elements that concatenate the entity and joins, based on order of elements.
+     * This makes it easier to understand the relationship between entities and joins.
+     */
     @SinceJdsl("3.0.0")
     fun reduce(froms: Iterable<From>): Iterable<From> {
         val reduced = mutableListOf<From>()

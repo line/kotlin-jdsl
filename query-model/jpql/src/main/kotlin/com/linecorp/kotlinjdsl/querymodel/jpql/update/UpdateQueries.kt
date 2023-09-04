@@ -7,8 +7,14 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.impl.JpqlUpdateQuery
 
+/**
+ * Factory class that creates [UpdateQuery].
+ */
 @SinceJdsl("3.0.0")
 object UpdateQueries {
+    /**
+     * Creates a update query.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> updateQuery(
         entity: Entity<T>,

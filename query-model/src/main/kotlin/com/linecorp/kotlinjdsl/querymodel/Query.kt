@@ -3,9 +3,9 @@ package com.linecorp.kotlinjdsl.querymodel
 import com.linecorp.kotlinjdsl.SinceJdsl
 
 /**
- * Represents a query.
+ * Marker interface to represent a query.
  *
- * Classes that inherit from this interface should be immutable.
+ * Classes that inherit this should be immutable.
  */
 @SinceJdsl("3.0.0")
 interface Query<SELF : Query<SELF>> : Queryable<SELF>, QueryPart {
