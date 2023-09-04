@@ -40,14 +40,15 @@ class KotlinJdslQueryProviderTest : WithAssertions {
     fun setUp() {
         mockkObject(JpqlEntityManagerUtils)
 
-        every { JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any()) } returns
-            stringTypedQuery
+        sut.setEntityManager(entityManager)
     }
 
     @Test
     fun createQuery() {
         // given
-        sut.setEntityManager(entityManager)
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
+        } returns stringTypedQuery
 
         // when
         val actual = sut.createQuery()
