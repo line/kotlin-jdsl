@@ -7,31 +7,39 @@ plugins {
 }
 
 dependencies {
-    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
-    implementation(libs.test.h2)
-    implementation(libs.hibernate.reactive1)
-    implementation(libs.slf4j)
+    implementation(libs.test.hibernate.reactive1.core)
+    implementation(libs.test.vertx.jdbc.client)
+    implementation(libs.test.agroal.pool)
     implementation(libs.logback)
-    implementation(libs.vertx.jdbc.client)
-    implementation(libs.agroal.pool)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
     implementation(projects.hibernateReactiveJavaxSupport)
+
+    runtimeOnly(libs.test.h2)
+
+    testFixturesImplementation(libs.test.hibernate.reactive1.core)
+    testFixturesImplementation(projects.jpqlRender)
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(11)
 }
 
 noArg {
-    annotation("com.linecorp.kotlinjdsl.example.jpql.hibernate.reactive.javax.entity.annotation.CompositeId")
+    annotation("com.linecorp.kotlinjdsl.example.hibernate.reactive.javax.jpql.entity.annotation.CompositeId")
 }
 
 allOpen {
-    annotation("com.linecorp.kotlinjdsl.example.jpql.hibernate.reactive.javax.entity.annotation.CompositeId")
+    annotation("com.linecorp.kotlinjdsl.example.hibernate.reactive.javax.jpql.entity.annotation.CompositeId")
     annotation("javax.persistence.Entity")
     annotation("javax.persistence.Embeddable")
+}
+
+kover {
+    excludeInstrumentation {
+        packages("org.hibernate.*")
+    }
 }
 
 tasks.withType<PublishToMavenRepository>().configureEach { enabled = false }

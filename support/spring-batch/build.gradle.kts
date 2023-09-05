@@ -1,4 +1,5 @@
 dependencies {
+    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     compileOnly(libs.spring.boot3.starter)
     compileOnly(libs.spring.batch5.infrastructure)
     compileOnly(libs.jakarta.persistence.api)

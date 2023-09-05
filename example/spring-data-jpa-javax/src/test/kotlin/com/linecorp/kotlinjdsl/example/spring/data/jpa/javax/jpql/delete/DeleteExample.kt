@@ -49,7 +49,7 @@ class DeleteExample : WithAssertions {
     }
 
     @Test
-    fun `remove the employees from department 03`() {
+    fun `delete the employees from department 03`() {
         // when
         employeeRepository.delete {
             val employeeIds = select<Long>(

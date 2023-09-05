@@ -1,6 +1,5 @@
-@file:Suppress("VulnerableLibrariesLocal")
-
 dependencies {
+    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     compileOnly(libs.spring.boot3.starter)
     compileOnly(libs.spring.data.jpa3)
     compileOnly(libs.jakarta.persistence.api)
@@ -8,6 +7,7 @@ dependencies {
     compileOnly(projects.jpqlQueryModel)
     compileOnly(projects.jpqlRender)
 
+    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     testImplementation(libs.spring.boot3.starter)
     testImplementation(libs.spring.data.jpa3)
     testImplementation(libs.jakarta.persistence.api)

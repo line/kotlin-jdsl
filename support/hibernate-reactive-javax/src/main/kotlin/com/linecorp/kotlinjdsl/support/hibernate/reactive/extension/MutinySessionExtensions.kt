@@ -12,37 +12,37 @@ import org.hibernate.reactive.mutiny.Mutiny
 fun <T : Any> Mutiny.Session.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
-) = JpqlMutinySessionUtils.createQuery(this, query, context)
+): Mutiny.Query<T> = JpqlMutinySessionUtils.createQuery(this, query, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createQuery(
     query: SelectQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-) = JpqlMutinySessionUtils.createQuery(this, query, queryParams, context)
+): Mutiny.Query<T> = JpqlMutinySessionUtils.createQuery(this, query, queryParams, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createQuery(
     query: UpdateQuery<T>,
     context: RenderContext,
-) = JpqlMutinySessionUtils.createQuery(this, query, context)
+): Mutiny.Query<T> = JpqlMutinySessionUtils.createQuery(this, query, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createQuery(
     query: UpdateQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-) = JpqlMutinySessionUtils.createQuery(this, query, queryParams, context)
+): Mutiny.Query<T> = JpqlMutinySessionUtils.createQuery(this, query, queryParams, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createQuery(
     query: DeleteQuery<T>,
     context: RenderContext,
-) = JpqlMutinySessionUtils.createQuery(this, query, context)
+): Mutiny.Query<T> = JpqlMutinySessionUtils.createQuery(this, query, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createQuery(
     query: DeleteQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-) = JpqlMutinySessionUtils.createQuery(this, query, queryParams, context)
+): Mutiny.Query<T> = JpqlMutinySessionUtils.createQuery(this, query, queryParams, context)

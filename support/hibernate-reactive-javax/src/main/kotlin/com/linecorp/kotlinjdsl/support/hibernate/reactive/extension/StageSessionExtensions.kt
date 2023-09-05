@@ -12,37 +12,37 @@ import org.hibernate.reactive.stage.Stage
 fun <T : Any> Stage.Session.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
-) = JpqlStageSessionUtils.createQuery(this, query, context)
+): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: SelectQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-) = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)
+): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: UpdateQuery<T>,
     context: RenderContext,
-) = JpqlStageSessionUtils.createQuery(this, query, context)
+): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: UpdateQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-) = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)
+): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: DeleteQuery<T>,
     context: RenderContext,
-) = JpqlStageSessionUtils.createQuery(this, query, context)
+): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, context)
 
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: DeleteQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-) = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)
+): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)

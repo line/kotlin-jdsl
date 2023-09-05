@@ -1,5 +1,3 @@
-@file:Suppress("VulnerableLibrariesLocal")
-
 plugins {
     alias(libs.plugins.test.spring.boot3)
     alias(libs.plugins.kotlin.noarg)
@@ -9,6 +7,7 @@ plugins {
 }
 
 dependencies {
+    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     implementation(libs.test.spring.boot3.batch)
     implementation(libs.test.spring.boot3.jpa)
     implementation(libs.test.spring.boot3.p6spy)
@@ -17,10 +16,10 @@ dependencies {
     implementation(projects.jpqlRender)
     implementation(projects.springBatchSupport)
 
+    runtimeOnly(libs.test.h2)
+
     testImplementation(libs.test.spring.boot3.test)
     testImplementation(libs.test.spring.batch5.test)
-
-    testRuntimeOnly(libs.test.h2)
 }
 
 kotlin {

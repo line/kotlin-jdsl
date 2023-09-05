@@ -15,9 +15,9 @@ dependencies {
     implementation(projects.jpqlRender)
     implementation(projects.springDataJpaJavaxSupport)
 
-    testImplementation(libs.test.spring.boot2.test)
+    runtimeOnly(libs.test.h2)
 
-    testRuntimeOnly(libs.test.h2)
+    testImplementation(libs.test.spring.boot2.test)
 }
 
 kotlin {
