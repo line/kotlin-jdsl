@@ -1,3 +1,5 @@
+@file:Suppress("JpaDataSourceORMInspection")
+
 package com.linecorp.kotlinjdsl.example.eclipselink.entity.publisher
 
 import jakarta.persistence.Column
@@ -18,4 +20,6 @@ class Publisher(
 ) {
     override fun equals(other: Any?): Boolean = Objects.equals(publisherId, (other as? Publisher)?.publisherId)
     override fun hashCode(): Int = Objects.hashCode(publisherId)
+
+    override fun toString(): String = "Publisher(publisherId=$publisherId)"
 }

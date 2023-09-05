@@ -1,3 +1,5 @@
+@file:Suppress("JpaDataSourceORMInspection")
+
 package com.linecorp.kotlinjdsl.example.eclipselink.entity.department
 
 import jakarta.persistence.Column
@@ -18,4 +20,6 @@ class Department(
 ) {
     override fun equals(other: Any?): Boolean = Objects.equals(departmentId, (other as? Department)?.departmentId)
     override fun hashCode(): Int = Objects.hashCode(departmentId)
+
+    override fun toString(): String = "Department(departmentId=$departmentId)"
 }

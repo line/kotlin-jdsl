@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.linecorp.kotlinjdsl.example.eclipselink.entity.employee
 
 import jakarta.persistence.AttributeOverride
@@ -31,4 +33,6 @@ class PartTimeEmployee(
     phone = phone,
     address = address,
     departments = departments,
-)
+) {
+    override fun toString(): String = "PartTimeEmployee(weeklySalary=$weeklySalary)"
+}

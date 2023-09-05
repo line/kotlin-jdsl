@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.linecorp.kotlinjdsl.example.eclipselink.entity.book
 
 import jakarta.persistence.Column

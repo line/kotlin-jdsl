@@ -1,3 +1,5 @@
+@file:Suppress("LeakingThis", "unused", "JpaDataSourceORMInspection")
+
 package com.linecorp.kotlinjdsl.example.eclipselink.entity.employee
 
 import jakarta.persistence.Column
@@ -35,10 +37,12 @@ class Employee(
     @OneToMany(mappedBy = "employee")
     val departments: MutableSet<EmployeeDepartment>,
 ) {
+    init {
+        departments.forEach { it.employee = this }
+    }
+
     override fun equals(other: Any?): Boolean = Objects.equals(employeeId, (other as? Employee)?.employeeId)
     override fun hashCode(): Int = Objects.hashCode(employeeId)
 
-    override fun toString(): String {
-        return "Employee(employeeId=$employeeId, name='$name')"
-    }
+    override fun toString(): String = "Employee(employeeId=$employeeId)"
 }

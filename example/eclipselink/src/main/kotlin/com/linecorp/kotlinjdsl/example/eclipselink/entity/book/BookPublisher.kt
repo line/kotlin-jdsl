@@ -1,3 +1,5 @@
+@file:Suppress("JpaDataSourceORMInspection")
+
 package com.linecorp.kotlinjdsl.example.eclipselink.entity.book
 
 import com.linecorp.kotlinjdsl.example.eclipselink.annotation.CompositeId

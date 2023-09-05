@@ -31,4 +31,6 @@ class FullTimeEmployee(
     phone = phone,
     address = address,
     departments = departments,
-)
+) {
+    override fun toString(): String = "FullTimeEmployee(employeeId=$employeeId)"
+}

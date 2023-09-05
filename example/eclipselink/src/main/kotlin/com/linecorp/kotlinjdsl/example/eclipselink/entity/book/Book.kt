@@ -1,4 +1,4 @@
-@file:Suppress("LeakingThis")
+@file:Suppress("LeakingThis", "unused", "JpaDataSourceORMInspection")
 
 package com.linecorp.kotlinjdsl.example.eclipselink.entity.book
 
