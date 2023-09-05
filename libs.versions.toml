@@ -4,8 +4,10 @@ kotlin = "1.9.0"
 spring6 = "6.0.11"
 spring5 = "5.3.29"
 
-test-spring-boot3 = "3.1.2"
+test-spring-boot3 = "3.1.3"
 test-spring-boot2 = "2.7.15"
+
+mutiny = "2.4.0"
 
 [libraries]
 # kotlin
@@ -22,6 +24,21 @@ logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 # SpringBoot
 spring-boot3-starter = { module = "org.springframework.boot:spring-boot-starter", version = "3.0.3" }
 spring-boot2-starter = { module = "org.springframework.boot:spring-boot-starter", version = "2.7.10" }
+
+# hibernate-reactive
+hibernate-reactive1 = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
+hibernate-reactive2 = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.4" }
+
+# vertx-jdbc-client
+vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.4.5" }
+agroal-pool = { module = "io.agroal:agroal-pool", version = "2.2" }
+
+# coroutines
+coroutine-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version = "1.7.3" }
+
+# mutiny
+mutiny-core = { module = "io.smallrye.reactive:mutiny", version.ref = "mutiny" }
+mutiny-kotlin = { module = "io.smallrye.reactive:mutiny-kotlin", version.ref = "mutiny" }
 
 # Spring
 spring-jdbc = { module = "org.springframework:spring-jdbc", version = "6.0.11" }
@@ -48,11 +65,14 @@ test-spring-boot2-test = { module = "org.springframework.boot:spring-boot-starte
 test-spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "5.0.3" }
 test-spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", version = "4.3.9" }
 
-test-junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.9.2" }
+test-junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.0" }
 test-assertJ = { module = "org.assertj:assertj-core", version = "3.24.2" }
-test-mockk = { module = "io.mockk:mockk", version = "1.13.4" }
+test-mockk = { module = "io.mockk:mockk", version = "1.13.7" }
 
-test-h2 = { module = "com.h2database:h2", version = "2.2.220" }
+test-h2 = { module = "com.h2database:h2", version = "2.2.222" }
+
+[bundles]
+mutiny = ["mutiny-core", "mutiny-kotlin"]
 
 [plugins]
 test-spring-boot3 = { id = "org.springframework.boot", version.ref = "test-spring-boot3" }
