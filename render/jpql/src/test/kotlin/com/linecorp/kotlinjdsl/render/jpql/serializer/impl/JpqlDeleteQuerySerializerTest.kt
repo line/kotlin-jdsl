@@ -56,6 +56,8 @@ class JpqlDeleteQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("DELETE")
             writer.write(" ")
+            writer.write("FROM")
+            writer.write(" ")
             serializer.serialize(
                 entity1,
                 writer,
@@ -79,6 +81,8 @@ class JpqlDeleteQuerySerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("DELETE")
+            writer.write(" ")
+            writer.write("FROM")
             writer.write(" ")
             serializer.serialize(
                 entity1,
