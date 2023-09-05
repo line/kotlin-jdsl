@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.linecorp.kotlinjdsl.example.spring.batch.jpql.repository.publisher
 
 import com.linecorp.kotlinjdsl.example.spring.batch.jpql.entity.publisher.Publisher
