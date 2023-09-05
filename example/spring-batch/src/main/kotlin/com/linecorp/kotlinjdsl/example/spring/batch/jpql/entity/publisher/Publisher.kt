@@ -1,3 +1,5 @@
+@file:Suppress("JpaDataSourceORMInspection")
+
 package com.linecorp.kotlinjdsl.example.spring.batch.jpql.entity.publisher
 
 import jakarta.persistence.Column
