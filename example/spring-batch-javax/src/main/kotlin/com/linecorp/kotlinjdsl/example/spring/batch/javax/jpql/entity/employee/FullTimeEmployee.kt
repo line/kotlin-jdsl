@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.linecorp.kotlinjdsl.example.spring.batch.javax.jpql.entity.employee
 
 import javax.persistence.AttributeOverride
