@@ -28,7 +28,7 @@ logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 
 # hibernate-reactive
 hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.0.0.Final" }
-hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.0" }
+hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.0.Final" }
 
 # spring-boot
 spring-boot3-starter = { module = "org.springframework.boot:spring-boot-starter", version = "3.0.3" }
@@ -60,7 +60,7 @@ test-spring-batch5-test = { module = "org.springframework.batch:spring-batch-tes
 test-spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", version = "4.3.9" }
 
 test-hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
-test-hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.4" }
+test-hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.5.Final" }
 
 test-vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.4.5" }
 test-agroal-pool = { module = "io.agroal:agroal-pool", version = "2.2" }
