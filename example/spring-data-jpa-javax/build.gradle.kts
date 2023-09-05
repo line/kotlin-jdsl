@@ -25,11 +25,11 @@ kotlin {
 }
 
 noArg {
-    annotation("com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.annotation.CompositeId")
+    annotation("com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.annotation.CompositeId")
 }
 
 allOpen {
-    annotation("com.linecorp.kotlinjdsl.example.jpql.spring.jpa.javax.annotation.CompositeId")
+    annotation("com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.annotation.CompositeId")
     annotation("javax.persistence.Entity")
     annotation("javax.persistence.Embeddable")
 }
