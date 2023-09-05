@@ -7,7 +7,7 @@ dependencies {
     compileOnly(projects.jpqlRender)
 
     testImplementation(libs.spring.batch5.infrastructure)
-    testImplementation(libs.spring.beans)
+    testImplementation(libs.spring.beans6)
     testImplementation(libs.jakarta.persistence.api)
     testImplementation(projects.jpqlDsl)
     testImplementation(projects.jpqlQueryModel)

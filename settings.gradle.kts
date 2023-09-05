@@ -23,6 +23,7 @@ module(name = ":jpql-render", path = "render/jpql")
 
 module(name = ":support", path = "support")
 module(name = ":spring-batch-support", path = "support/spring-batch")
+module(name = ":spring-batch-javax-support", path = "support/spring-batch-javax")
 module(name = ":spring-data-jpa-support", path = "support/spring-data-jpa")
 module(name = ":spring-data-jpa-javax-support", path = "support/spring-data-jpa-javax")
 

@@ -25,7 +25,9 @@ spring-boot2-starter = { module = "org.springframework.boot:spring-boot-starter"
 
 # Spring
 spring-jdbc = { module = "org.springframework:spring-jdbc", version = "6.0.11" }
-spring-beans = { module = "org.springframework:spring-beans", version = "6.0.11" }
+
+spring-beans6 = { module = "org.springframework:spring-beans", version = "6.0.11" }
+spring-beans5 = { module = "org.springframework:spring-beans", version = "5.3.29" }
 
 spring-batch5-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "5.0.0" }
 spring-batch4-infrastructure = { module = "org.springframework.batch:spring-batch-infrastructure", version = "4.0.0.RELEASE" }
