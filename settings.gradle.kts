@@ -29,6 +29,7 @@ module(name = ":spring-data-jpa-javax-support", path = "support/spring-data-jpa-
 
 module(name = ":example", path = "example")
 module(name = ":spring-batch-example", path = "example/spring-batch")
+module(name = ":spring-batch-javax-example", path = "example/spring-batch-javax")
 module(name = ":spring-data-jpa-example", path = "example/spring-data-jpa")
 module(name = ":spring-data-jpa-javax-example", path = "example/spring-data-jpa-javax")
 
