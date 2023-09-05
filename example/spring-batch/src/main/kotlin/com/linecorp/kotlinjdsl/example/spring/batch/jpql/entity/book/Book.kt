@@ -1,4 +1,4 @@
-@file:Suppress("LeakingThis")
+@file:Suppress("LeakingThis", "JpaDataSourceORMInspection", "unused")
 
 package com.linecorp.kotlinjdsl.example.spring.batch.jpql.entity.book
 
