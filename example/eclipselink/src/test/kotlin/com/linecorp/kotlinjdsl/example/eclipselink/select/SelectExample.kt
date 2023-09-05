@@ -11,10 +11,10 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeDepar
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
 import jakarta.persistence.Persistence
+import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
 import org.eclipse.persistence.jpa.JpaEntityManager
 import org.junit.jupiter.api.Test
-import java.time.OffsetDateTime
 
 class SelectExample : WithAssertions {
     private val entityManagerFactory = Persistence.createEntityManagerFactory("example")
@@ -114,7 +114,6 @@ class SelectExample : WithAssertions {
         // then
         assertThat(actual).isEqualTo(Isbn("10"))
     }
-
 
     @Test
     fun `the most recently published book`() {

@@ -9,10 +9,10 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.FullTimeEmplo
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
 import jakarta.persistence.Persistence
+import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.eclipse.persistence.jpa.JpaEntityManager
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 class UpdateExample : WithAssertions {
     private val entityManagerFactory = Persistence.createEntityManagerFactory("example")
