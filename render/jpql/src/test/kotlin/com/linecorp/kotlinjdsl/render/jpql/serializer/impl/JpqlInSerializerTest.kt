@@ -61,6 +61,7 @@ class JpqlInSerializerTest : WithAssertions {
         // then
         verifySequence {
             serializer.serialize(expression1, writer, context)
+            writer.write(" ")
             writer.write("IN")
             writer.write(" ")
             writer.writeParentheses(any())
