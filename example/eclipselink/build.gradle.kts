@@ -9,12 +9,13 @@ dependencies {
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
-    implementation(libs.jakarta.persistence.api)
-    implementation(libs.eclipselink.v4)
-    implementation(libs.test.h2)
     implementation(projects.eclipselinkSupport)
 
-    testRuntimeOnly(libs.test.h2)
+    implementation(libs.jakarta.persistence.api)
+    implementation(libs.logback)
+    implementation(libs.eclipselink.v4)
+
+    runtimeOnly(libs.test.h2)
 }
 
 kotlin {
