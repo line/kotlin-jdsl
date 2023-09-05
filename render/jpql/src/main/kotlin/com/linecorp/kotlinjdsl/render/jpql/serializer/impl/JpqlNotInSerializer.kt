@@ -24,6 +24,7 @@ class JpqlNotInSerializer : JpqlSerializer<JpqlNotIn<*>> {
 
         delegate.serialize(part.value, writer, context)
 
+        writer.write(" ")
         writer.write("NOT IN")
         writer.write(" ")
 
