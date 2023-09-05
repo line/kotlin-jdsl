@@ -7,8 +7,9 @@ dependencies {
     compileOnly(projects.jpqlQueryModel)
     compileOnly(projects.jpqlRender)
 
+    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
+    testImplementation(libs.spring.boot3.starter)
     testImplementation(libs.spring.batch5.infrastructure)
-    testImplementation(libs.spring.beans6)
     testImplementation(libs.jakarta.persistence.api)
     testImplementation(projects.jpqlDsl)
     testImplementation(projects.jpqlQueryModel)

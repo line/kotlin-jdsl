@@ -30,8 +30,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.PlatformTransactionManager
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
-@EnableBatchProcessing
 @SpringBootTest
+@EnableBatchProcessing
 class BatchExampleTest : WithAssertions {
     @Autowired
     private lateinit var jobRepository: JobRepository

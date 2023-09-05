@@ -6,11 +6,13 @@ import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.support.spring.batch.javax.entity.author.Author
+import io.mockk.every
+import io.mockk.excludeRecords
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.WithAssertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -22,30 +24,36 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
     @MockK
     private lateinit var context: RenderContext
 
-    private val createSelectQuery1: Jpql.() -> JpqlQueryable<SelectQuery<Author>> = {
-        select(
-            entity(Author::class),
-        ).from(
-            entity(Author::class),
-        )
-    }
+    @MockK
+    private lateinit var createSelectQuery1: Jpql.() -> JpqlQueryable<SelectQuery<String>>
 
-    private val createSelectQuery2: MyJpql.() -> JpqlQueryable<SelectQuery<Author>> = {
-        select(
-            entity(Author::class),
-        ).from(
-            entity(Author::class),
-        ).where(
-            path(Author::authorId).eq(1L),
-        )
-    }
+    @MockK
+    private lateinit var createSelectQuery2: MyJpql.() -> JpqlQueryable<SelectQuery<String>>
 
-    private val selectQuery1: SelectQuery<Author> = jpql(createSelectQuery1)
+    @MockK
+    private lateinit var selectQuery1: SelectQuery<String>
+
+    @MockK
+    private lateinit var selectQuery2: SelectQuery<String>
 
     private val queryParams1 = mapOf("authorId" to 1L)
 
+    @BeforeEach
+    fun setUp() {
+        every { createSelectQuery1.invoke(any()) } returns selectQuery1
+        every { createSelectQuery2.invoke(any()) } returns selectQuery2
+
+        every { selectQuery1.toQuery() } returns selectQuery1
+        every { selectQuery2.toQuery() } returns selectQuery2
+
+        excludeRecords { createSelectQuery1.invoke(any()) }
+        excludeRecords { createSelectQuery2.invoke(any()) }
+        excludeRecords { selectQuery1.toQuery() }
+        excludeRecords { selectQuery2.toQuery() }
+    }
+
     @Test
-    fun `create() with JpqlQueryable`() {
+    fun `create() with a select queryable`() {
         // when
         val actual = sut.create(createSelectQuery1)
 
@@ -60,7 +68,7 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
     }
 
     @Test
-    fun `create() with JpqlQueryable and query parameters`() {
+    fun `create() with a select queryable and query params`() {
         // when
         val actual = sut.create(queryParams1, createSelectQuery1)
 
@@ -75,7 +83,7 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
     }
 
     @Test
-    fun `create() with JpqlDsl and JpqlQueryable`() {
+    fun `create() with a dsl and a select queryable`() {
         // when
         val actual = sut.create(MyJpql, createSelectQuery2)
 
@@ -90,7 +98,7 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
     }
 
     @Test
-    fun `create() with JpqlDsl, JpqlQueryable and query parameters`() {
+    fun `create() with a dsl, a select queryable, and query params`() {
         // when
         val actual = sut.create(MyJpql, queryParams1, createSelectQuery2)
 
@@ -105,7 +113,7 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
     }
 
     @Test
-    fun `create() with SelectQuery`() {
+    fun `create() with a select query`() {
         // when
         val actual = sut.create(selectQuery1)
 
@@ -120,7 +128,7 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
     }
 
     @Test
-    fun `create() with SelectQuery and query parameters`() {
+    fun `create() with a select query and query params`() {
         // when
         val actual = sut.create(selectQuery1, queryParams1)
 
