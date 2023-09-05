@@ -3,7 +3,7 @@
 ## Spring Boot AutoConfigure
 
 Kotlin JDSL supports Spring Boot AutoConfigure.
-If you have Spring Boot and `com.linecorp.kotlinjdsl:spring-data-jpa-support` dependency together, the `JpqlRenderContext` bean is created by `KotlinJdslAutoConfiguration`.
+If you have Spring Boot and `com.linecorp.kotlin-jdsl:spring-data-jpa-support` or `com.linecorp.kotlin-jdsl:spring-batch-support` dependency together, the `JpqlRenderContext` bean is created by AutoConfiguration.
 
 If you declare your `JpqlSerializer` as a bean, it will be included with the `JpqlRenderContext` bean.
 
@@ -35,4 +35,28 @@ bookRepository.findAll(pageable) {
         entity(Book::class),
     )
 }
+```
+
+## Spring Batch
+
+Spring Batch provides `JpaPagingItemReader` and `JpaCursorItemReader` for querying data with JPQL.
+Kotlin JDSL provides `KotlinJdslQueryProvider` so that a JPQL query created in DSL can be executed on it.
+
+```kotlin
+@Auwoired
+lateinit var queryProviderFactory: KotlinJdslQueryProviderFactory
+
+val queryProvider = queryProviderFactory.create {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class),
+    )
+}
+
+JpaCursorItemReaderBuilder<Isbn>()
+    .entityManagerFactory(entityManagerFactory)
+    .queryProvider(queryProvider)
+    .saveState(false)
+    .build()
 ```

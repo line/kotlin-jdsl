@@ -24,6 +24,7 @@ class JpqlInSerializer : JpqlSerializer<JpqlIn<*>> {
 
         delegate.serialize(part.value, writer, context)
 
+        writer.write(" ")
         writer.write("IN")
         writer.write(" ")
 

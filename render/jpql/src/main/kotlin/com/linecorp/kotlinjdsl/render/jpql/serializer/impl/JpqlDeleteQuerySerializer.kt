@@ -31,6 +31,8 @@ class JpqlDeleteQuerySerializer : JpqlSerializer<JpqlDeleteQuery<*>> {
 
         writer.write("DELETE")
         writer.write(" ")
+        writer.write("FROM")
+        writer.write(" ")
 
         delegate.serialize(entity, writer, newContext)
     }

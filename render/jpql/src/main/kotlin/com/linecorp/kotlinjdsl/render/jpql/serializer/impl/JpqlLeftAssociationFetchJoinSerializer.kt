@@ -23,9 +23,9 @@ class JpqlLeftAssociationFetchJoinSerializer : JpqlSerializer<JpqlLeftAssociatio
         delegate.serialize(part.association, writer, context)
 
         writer.write(" ")
-
         writer.write("AS")
         writer.write(" ")
+
         writer.write(part.entity.alias)
 
         val on = part.on

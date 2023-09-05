@@ -15,9 +15,9 @@ dependencies {
     implementation(projects.jpqlRender)
     implementation(projects.springDataJpaSupport)
 
-    testImplementation(libs.test.spring.boot3.test)
+    runtimeOnly(libs.test.h2)
 
-    testRuntimeOnly(libs.test.h2)
+    testImplementation(libs.test.spring.boot3.test)
 }
 
 kotlin {
@@ -25,11 +25,11 @@ kotlin {
 }
 
 noArg {
-    annotation("com.linecorp.kotlinjdsl.example.jpql.spring.jpa.annotation.CompositeId")
+    annotation("com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.annotation.CompositeId")
 }
 
 allOpen {
-    annotation("com.linecorp.kotlinjdsl.example.jpql.spring.jpa.annotation.CompositeId")
+    annotation("com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.annotation.CompositeId")
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.Embeddable")
 }
