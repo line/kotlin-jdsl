@@ -1,6 +1,7 @@
 package com.linecorp.kotlinjdsl.example.eclipselink.update
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
+import com.linecorp.kotlinjdsl.example.eclipselink.entity.author.Author
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.department.Department
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeDepartment
@@ -18,6 +19,41 @@ class UpdateExample : WithAssertions {
     private val entityManagerFactory = Persistence.createEntityManagerFactory("example")
 
     private val context = JpqlRenderContext()
+
+    @Test
+    fun `update author's name with id 1`() {
+        // given
+        val entityManger = entityManagerFactory.createEntityManager().unwrap(JpaEntityManager::class.java)
+        val deleteJpqlQuery = jpql {
+            update(
+                entity(Author::class),
+            ).set(
+                path(Author::name),
+                "Author001",
+            ).where(
+                path(Author::authorId).eq(1L),
+            )
+        }
+        val selectJpqlQuery = jpql {
+            select(
+                entity(Author::class),
+            ).from(
+                entity(Author::class),
+            ).where(
+                path(Author::authorId).eq(1L),
+            )
+        }
+
+        // when
+        val transaction = entityManger.transaction
+        transaction.begin()
+        entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
+        transaction.commit()
+        val actual = entityManger.createQuery(selectJpqlQuery, context).setMaxResults(1).singleResult
+
+        // then
+        assertThat(actual.name).isEqualTo("Author001")
+    }
 
     @Test
     fun increase_the_annual_salaries_of_employees_in_department_03_by_10_percent() {

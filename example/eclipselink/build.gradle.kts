@@ -11,7 +11,6 @@ dependencies {
     implementation(projects.jpqlRender)
     implementation(projects.eclipselinkSupport)
 
-    implementation(libs.jakarta.persistence.api)
     implementation(libs.logback)
     implementation(libs.eclipselink.v4)
 

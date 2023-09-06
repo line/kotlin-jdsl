@@ -1,6 +1,7 @@
 package com.linecorp.kotlinjdsl.example.eclipselink.delete
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
+import com.linecorp.kotlinjdsl.example.eclipselink.entity.author.Author
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.Book
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.department.Department
@@ -18,6 +19,42 @@ class DeleteExample : WithAssertions {
     private val entityManagerFactory = Persistence.createEntityManagerFactory("example")
 
     private val context = JpqlRenderContext()
+
+    @Test
+    fun `delete author with id 1`() {
+        // given
+        val entityManger = entityManagerFactory.createEntityManager().unwrap(JpaEntityManager::class.java)
+        val deleteJpqlQuery = jpql {
+            deleteFrom(
+                entity(Author::class),
+            ).where(
+                path(Author::authorId).eq(1L),
+            )
+        }
+        val selectJpqlQuery = jpql {
+            select(
+                entity(Author::class),
+            ).from(
+                entity(Author::class),
+            )
+        }
+
+        // when
+        val transaction = entityManger.transaction
+        transaction.begin()
+        entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
+        transaction.commit()
+        val actual = entityManger.createQuery(selectJpqlQuery, context).resultList
+
+        // then
+        assertThat(actual.map { it.authorId }).isEqualTo(
+            listOf(
+                2L,
+                3L,
+                4L,
+            ),
+        )
+    }
 
     @Test
     fun `delete all books published after June 2023`() {
