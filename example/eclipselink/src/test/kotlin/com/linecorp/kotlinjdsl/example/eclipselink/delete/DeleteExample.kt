@@ -131,7 +131,7 @@ class DeleteExample : WithAssertions {
         val actual = entityManger.createQuery(selectJpqlQuery, context).resultList
 
         // then
-        assertThat(actual).isEqualTo(
+        assertThat(actual.map { it.employeeId }).isEqualTo(
             listOf(
                 2L,
                 3L,

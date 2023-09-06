@@ -25,6 +25,8 @@
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="jakarta.persistence.schema-generation.create-source" value="script"/>
             <property name="jakarta.persistence.schema-generation.create-script-source" value="schema-eclipselink.sql"/>
+            <property name="javax.persistence.schema-generation.drop-source" value="script"/>
+            <property name="javax.persistence.schema-generation.drop-script-source" value="drop.sql"/>
             <property name="jakarta.persistence.sql-load-script-source" value="data-eclipselink.sql"/>
 
 <!--            <property name="eclipselink.target-database" value="MySQL"/>-->
