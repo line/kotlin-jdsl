@@ -45,6 +45,11 @@ spring-data-jpa3 = { module = "org.springframework.data:spring-data-jpa", versio
 spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", version = "2.7.9" }
 
 # test
+# hibernate
+javax-hibernate-core = { module = "org.hibernate:hibernate-core", version = "5.6.15.Final" }
+jakarta-hibernate-core = { module = "org.hibernate:hibernate-core", version = "6.3.0.Final" }
+
+# Test
 test-spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "test-spring-boot3" }
 test-spring-boot3-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "test-spring-boot3" }
 test-spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.9.0" }
