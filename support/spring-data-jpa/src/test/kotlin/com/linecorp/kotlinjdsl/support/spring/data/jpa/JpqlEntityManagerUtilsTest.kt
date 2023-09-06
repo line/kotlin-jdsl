@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.executor.spring.jpa.javax.jpql
+package com.linecorp.kotlinjdsl.support.spring.data.jpa
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
@@ -7,18 +7,15 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderer
-import com.linecorp.kotlinjdsl.support.spring.data.jpa.javax.JpqlEntityManagerUtils
-import com.linecorp.kotlinjdsl.support.spring.data.jpa.javax.JpqlRendererHolder
 import io.mockk.every
 import io.mockk.excludeRecords
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.verifySequence
+import jakarta.persistence.EntityManager
+import jakarta.persistence.TypedQuery
 import java.util.function.LongSupplier
-import javax.persistence.EntityManager
-import javax.persistence.Query
-import javax.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -41,9 +38,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
     @MockK
     private lateinit var deleteQuery: DeleteQuery<String>
-
-    @MockK
-    private lateinit var query: Query
 
     @MockK
     private lateinit var stringTypedQuery: TypedQuery<String>
@@ -80,7 +74,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { JpqlRendererHolder.get() } returns renderer
 
         excludeRecords { JpqlRendererHolder.get() }
-        excludeRecords { query.equals(any()) }
         excludeRecords { stringTypedQuery.equals(any()) }
     }
 

@@ -12,7 +12,6 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.verifySequence
 import javax.persistence.EntityManager
-import javax.persistence.Query
 import javax.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
@@ -26,9 +25,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
     @MockK
     private lateinit var selectQuery: SelectQuery<String>
-
-    @MockK
-    private lateinit var query: Query
 
     @MockK
     private lateinit var stringTypedQuery: TypedQuery<String>
@@ -54,7 +50,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { JpqlRendererHolder.get() } returns renderer
 
         excludeRecords { JpqlRendererHolder.get() }
-        excludeRecords { query.equals(any()) }
         excludeRecords { stringTypedQuery.equals(any()) }
     }
 

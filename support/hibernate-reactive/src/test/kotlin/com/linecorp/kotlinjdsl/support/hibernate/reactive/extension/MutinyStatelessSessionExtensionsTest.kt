@@ -47,7 +47,9 @@ class MutinyStatelessSessionExtensionsTest : WithAssertions {
     @Test
     fun `createQuery() with a select query`() {
         // given
-        every { JpqlMutinyStatelessSessionUtils.createQuery(session, selectQuery, context) } returns query
+        every {
+            JpqlMutinyStatelessSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(selectQuery, context)
@@ -63,7 +65,9 @@ class MutinyStatelessSessionExtensionsTest : WithAssertions {
     @Test
     fun `createQuery() with a select query and query params`() {
         // given
-        every { JpqlMutinyStatelessSessionUtils.createQuery(session, selectQuery, queryParams, context) } returns query
+        every {
+            JpqlMutinyStatelessSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(selectQuery, queryParams, context)
@@ -79,7 +83,9 @@ class MutinyStatelessSessionExtensionsTest : WithAssertions {
     @Test
     fun `createQuery() with an update query`() {
         // given
-        every { JpqlMutinyStatelessSessionUtils.createQuery(session, updateQuery, context) } returns query
+        every {
+            JpqlMutinyStatelessSessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(updateQuery, context)
@@ -95,7 +101,9 @@ class MutinyStatelessSessionExtensionsTest : WithAssertions {
     @Test
     fun `createQuery() with an update query and query params`() {
         // given
-        every { JpqlMutinyStatelessSessionUtils.createQuery(session, updateQuery, queryParams, context) } returns query
+        every {
+            JpqlMutinyStatelessSessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(updateQuery, queryParams, context)
@@ -111,7 +119,9 @@ class MutinyStatelessSessionExtensionsTest : WithAssertions {
     @Test
     fun `createQuery() with a delete query`() {
         // given
-        every { JpqlMutinyStatelessSessionUtils.createQuery(session, deleteQuery, context) } returns query
+        every {
+            JpqlMutinyStatelessSessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(deleteQuery, context)
@@ -127,7 +137,9 @@ class MutinyStatelessSessionExtensionsTest : WithAssertions {
     @Test
     fun `createQuery() with a delete query and query params`() {
         // given
-        every { JpqlMutinyStatelessSessionUtils.createQuery(session, deleteQuery, queryParams, context) } returns query
+        every {
+            JpqlMutinyStatelessSessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(deleteQuery, queryParams, context)

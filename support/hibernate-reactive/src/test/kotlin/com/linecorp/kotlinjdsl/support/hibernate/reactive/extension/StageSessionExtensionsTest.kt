@@ -50,7 +50,9 @@ class StageSessionExtensionsTest : WithAssertions {
     @Test
     fun `createQuery() with a select query`() {
         // given
-        every { JpqlStageSessionUtils.createQuery(session, selectQuery, context) } returns selectionQuery
+        every {
+            JpqlStageSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any())
+        } returns selectionQuery
 
         // when
         val actual = session.createQuery(selectQuery, context)
@@ -66,7 +68,9 @@ class StageSessionExtensionsTest : WithAssertions {
     @Test
     fun `createQuery() with a select query and query params`() {
         // given
-        every { JpqlStageSessionUtils.createQuery(session, selectQuery, queryParams, context) } returns selectionQuery
+        every {
+            JpqlStageSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
+        } returns selectionQuery
 
         // when
         val actual = session.createQuery(selectQuery, queryParams, context)
@@ -82,7 +86,9 @@ class StageSessionExtensionsTest : WithAssertions {
     @Test
     fun `createMutationQuery() with an update query`() {
         // given
-        every { JpqlStageSessionUtils.createMutationQuery(session, updateQuery, context) } returns mutationQuery
+        every {
+            JpqlStageSessionUtils.createMutationQuery(any(), any<UpdateQuery<String>>(), any())
+        } returns mutationQuery
 
         // when
         val actual = session.createMutationQuery(updateQuery, context)
@@ -99,12 +105,7 @@ class StageSessionExtensionsTest : WithAssertions {
     fun `createMutationQuery() with an update query and query params`() {
         // given
         every {
-            JpqlStageSessionUtils.createMutationQuery(
-                session,
-                updateQuery,
-                queryParams,
-                context,
-            )
+            JpqlStageSessionUtils.createMutationQuery(any(), any<UpdateQuery<String>>(), any(), any())
         } returns mutationQuery
 
         // when
@@ -121,7 +122,9 @@ class StageSessionExtensionsTest : WithAssertions {
     @Test
     fun `createMutationQuery() with a delete query`() {
         // given
-        every { JpqlStageSessionUtils.createMutationQuery(session, deleteQuery, context) } returns mutationQuery
+        every {
+            JpqlStageSessionUtils.createMutationQuery(any(), any<DeleteQuery<String>>(), any())
+        } returns mutationQuery
 
         // when
         val actual = session.createMutationQuery(deleteQuery, context)
@@ -138,12 +141,7 @@ class StageSessionExtensionsTest : WithAssertions {
     fun `createMutationQuery() with a delete query and query params`() {
         // given
         every {
-            JpqlStageSessionUtils.createMutationQuery(
-                session = session,
-                query = deleteQuery,
-                queryParams = queryParams,
-                context = context,
-            )
+            JpqlStageSessionUtils.createMutationQuery(any(), any<DeleteQuery<String>>(), any(), any())
         } returns mutationQuery
 
         // when

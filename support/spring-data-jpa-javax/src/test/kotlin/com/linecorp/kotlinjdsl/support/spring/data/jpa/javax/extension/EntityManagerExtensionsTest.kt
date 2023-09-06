@@ -1,19 +1,18 @@
-package com.linecorp.kotlinjdsl.executor.spring.jpa
+package com.linecorp.kotlinjdsl.support.spring.data.jpa.javax.extension
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.support.spring.data.jpa.JpqlEntityManagerUtils
-import com.linecorp.kotlinjdsl.support.spring.data.jpa.extension.createQuery
+import com.linecorp.kotlinjdsl.support.spring.data.jpa.javax.JpqlEntityManagerUtils
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.verifySequence
-import jakarta.persistence.EntityManager
-import jakarta.persistence.Query
-import jakarta.persistence.TypedQuery
+import javax.persistence.EntityManager
+import javax.persistence.Query
+import javax.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -51,9 +50,11 @@ class EntityManagerExtensionsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - select query`() {
+    fun `createQuery() with a select query`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any()) } returns typedQuery
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any())
+        } returns typedQuery
 
         // when
         val actual = entityManager.createQuery(selectQuery, context)
@@ -67,9 +68,11 @@ class EntityManagerExtensionsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - select query with query params`() {
+    fun `createQuery() with a select query and query params`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any()) } returns typedQuery
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
+        } returns typedQuery
 
         // when
         val actual = entityManager.createQuery(selectQuery, queryParams, context)
@@ -83,9 +86,11 @@ class EntityManagerExtensionsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - update query`() {
+    fun `createQuery() with an update query`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any()) } returns query
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any())
+        } returns query
 
         // when
         val actual = entityManager.createQuery(updateQuery, context)
@@ -99,9 +104,11 @@ class EntityManagerExtensionsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - update query with query params`() {
+    fun `createQuery() with an update query and query params`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any(), any()) } returns query
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any(), any())
+        } returns query
 
         // when
         val actual = entityManager.createQuery(updateQuery, queryParams, context)
@@ -115,9 +122,11 @@ class EntityManagerExtensionsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - delete query`() {
+    fun `createQuery() with a delete query`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any()) } returns query
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any())
+        } returns query
 
         // when
         val actual = entityManager.createQuery(deleteQuery, context)
@@ -131,9 +140,11 @@ class EntityManagerExtensionsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - delete query with query params`() {
+    fun `createQuery() with a delete query and query params`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any(), any()) } returns query
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any(), any())
+        } returns query
 
         // when
         val actual = entityManager.createQuery(deleteQuery, queryParams, context)
