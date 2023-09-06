@@ -149,6 +149,7 @@ Kotlin JDSL은 DSL로 생성된 쿼리를 실행시킬 수 있는 Support depend
 - eclipselink-support: EclipseLink를 통해 쿼리를 실행하도록 도움을 주는 라이브러리.
 - spring-batch-support: Spring Batch와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
 - spring-data-jpa-support: Spring Data Jpa와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
+- hibernate-reactive-support: Hibernate Reactive와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
 
 #### Javax
 
@@ -158,6 +159,7 @@ javax 패키지를 사용하는 경우 다음 dependency들 중에서 선택하�
 - eclipselink-javax-support: EclipseLink를 통해 쿼리를 실행하도록 도움을 주는 라이브러리.
 - spring-batch-javax-support: Spring Batch와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
 - spring-data-jpa-javax-support: Spring Data Jpa와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
+- hibernate-reactive-javax-support: Hibernate Reactive와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
 
 ## Build a query
 
