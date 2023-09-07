@@ -3,7 +3,7 @@ package com.linecorp.kotlinjdsl.example.eclipselink.delete
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.author.Author
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.Book
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
+import com.linecorp.kotlinjdsl.example.eclipselink.jpql.JpqlRenderContextUtils
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Persistence
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 class DeleteExample : WithAssertions {
     private val entityManagerFactory = Persistence.createEntityManagerFactory("example")
 
-    private val context = JpqlRenderContext()
+    private val context = JpqlRenderContextUtils.getJpqlRenderContext()
 
     @Test
     fun `delete author with id 2`() {

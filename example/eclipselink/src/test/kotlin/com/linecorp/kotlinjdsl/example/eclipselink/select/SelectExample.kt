@@ -7,7 +7,7 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.BookAuthor
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.BookPrice
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeDepartment
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
+import com.linecorp.kotlinjdsl.example.eclipselink.jpql.JpqlRenderContextUtils
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
 import jakarta.persistence.Persistence
 import java.time.OffsetDateTime
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test
 class SelectExample : WithAssertions {
     private val entityManagerFactory = Persistence.createEntityManagerFactory("example")
 
-    private val context = JpqlRenderContext()
+    private val context = JpqlRenderContextUtils.getJpqlRenderContext()
 
     @Test
     fun `the most prolific author`() {
