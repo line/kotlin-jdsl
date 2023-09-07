@@ -7,10 +7,10 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderer
-import io.mockk.junit5.MockKExtension
 import io.mockk.every
 import io.mockk.excludeRecords
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.verifySequence
 import jakarta.persistence.TypedQuery

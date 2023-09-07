@@ -9,16 +9,16 @@ import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderer
 import io.mockk.every
 import io.mockk.excludeRecords
-import io.mockk.junit5.MockKExtension
 import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.verifySequence
+import javax.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
 import org.eclipse.persistence.jpa.JpaEntityManager
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import javax.persistence.TypedQuery
 
 @ExtendWith(MockKExtension::class)
 class JpqlJpaEntityManagerUtilsTest : WithAssertions {
