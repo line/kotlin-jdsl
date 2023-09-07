@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
 import org.springframework.data.repository.NoRepositoryBean
 
 @NoRepositoryBean
@@ -122,7 +123,7 @@ interface KotlinJdslJpqlExecutor {
     fun <T : Any> findAll(
         pageable: Pageable,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
-    ): Page<T?>
+    ): List<T?>
 
     /**
      * Returns all results of the select query.
@@ -132,7 +133,45 @@ interface KotlinJdslJpqlExecutor {
         dsl: JpqlDsl.Constructor<DSL>,
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): List<T?>
+
+    /**
+     * Returns the page of the select query.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any> findPage(
+        pageable: Pageable,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
     ): Page<T?>
+
+    /**
+     * Returns the page of the select query.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Page<T?>
+
+    /**
+     * Returns the slice of the select query.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any> findSlice(
+        pageable: Pageable,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Slice<T?>
+
+    /**
+     * Returns the slice of the select query.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, DSL : JpqlDsl> findSlice(
+        dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Slice<T?>
 
     /**
      * Execute the update query.

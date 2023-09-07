@@ -72,7 +72,7 @@ class SelectExample : WithAssertions {
     }
 
     @Test
-    fun books() {
+    fun `the list of books`() {
         // given
         val pageable = PageRequest.of(1, 3, Sort.by(Sort.Direction.ASC, "isbn"))
 
@@ -86,9 +86,46 @@ class SelectExample : WithAssertions {
         }
 
         // then
+        assertThat(actual).isEqualTo(listOf(Isbn("04"), Isbn("05"), Isbn("06")))
+    }
+
+    @Test
+    fun `the page of books`() {
+        // given
+        val pageable = PageRequest.of(1, 3, Sort.by(Sort.Direction.ASC, "isbn"))
+
+        // when
+        val actual = bookRepository.findPage(pageable) {
+            select(
+                path(Book::isbn),
+            ).from(
+                entity(Book::class),
+            )
+        }
+
+        // then
         assertThat(actual.content).isEqualTo(listOf(Isbn("04"), Isbn("05"), Isbn("06")))
         assertThat(actual.totalPages).isEqualTo(4L)
         assertThat(actual.totalElements).isEqualTo(12L)
+    }
+
+    @Test
+    fun `the slice of books`() {
+        // given
+        val pageable = PageRequest.of(1, 3, Sort.by(Sort.Direction.ASC, "isbn"))
+
+        // when
+        val actual = bookRepository.findSlice(pageable) {
+            select(
+                path(Book::isbn),
+            ).from(
+                entity(Book::class),
+            )
+        }
+
+        // then
+        assertThat(actual.content).isEqualTo(listOf(Isbn("04"), Isbn("05"), Isbn("06")))
+        assertThat(actual.hasNext()).isTrue
     }
 
     @Test

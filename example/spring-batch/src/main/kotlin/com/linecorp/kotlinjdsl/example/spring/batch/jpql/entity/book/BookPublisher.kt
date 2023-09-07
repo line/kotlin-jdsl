@@ -1,3 +1,5 @@
+@file:Suppress("JpaDataSourceORMInspection")
+
 package com.linecorp.kotlinjdsl.example.spring.batch.jpql.entity.book
 
 import com.linecorp.kotlinjdsl.example.spring.batch.jpql.annotation.CompositeId

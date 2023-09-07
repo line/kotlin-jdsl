@@ -8,7 +8,6 @@ import com.linecorp.kotlinjdsl.support.hibernate.reactive.JpqlStageStatelessSess
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
@@ -32,6 +31,9 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
     private lateinit var deleteQuery: DeleteQuery<String>
 
     @MockK
+    private lateinit var query: Stage.Query<String>
+
+    @MockK
     private lateinit var queryParams: Map<String, Any?>
 
     @MockK
@@ -44,10 +46,10 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
 
     @Test
     fun `createQuery() with a select query`() {
-        val query = mockk<Stage.Query<String>>()
-
         // given
-        every { JpqlStageStatelessSessionUtils.createQuery(session, selectQuery, context) } returns query
+        every {
+            JpqlStageStatelessSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(selectQuery, context)
@@ -62,10 +64,10 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
 
     @Test
     fun `createQuery() with a select query and query params`() {
-        val query = mockk<Stage.Query<String>>()
-
         // given
-        every { JpqlStageStatelessSessionUtils.createQuery(session, selectQuery, queryParams, context) } returns query
+        every {
+            JpqlStageStatelessSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(selectQuery, queryParams, context)
@@ -80,10 +82,10 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
 
     @Test
     fun `createQuery() with an update query`() {
-        val query = mockk<Stage.Query<String>>()
-
         // given
-        every { JpqlStageStatelessSessionUtils.createQuery(session, updateQuery, context) } returns query
+        every {
+            JpqlStageStatelessSessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(updateQuery, context)
@@ -98,10 +100,10 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
 
     @Test
     fun `createQuery() with an update query and query params`() {
-        val query = mockk<Stage.Query<String>>()
-
         // given
-        every { JpqlStageStatelessSessionUtils.createQuery(session, updateQuery, queryParams, context) } returns query
+        every {
+            JpqlStageStatelessSessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(updateQuery, queryParams, context)
@@ -116,10 +118,10 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
 
     @Test
     fun `createQuery() with a delete query`() {
-        val query = mockk<Stage.Query<String>>()
-
         // given
-        every { JpqlStageStatelessSessionUtils.createQuery(session, deleteQuery, context) } returns query
+        every {
+            JpqlStageStatelessSessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(deleteQuery, context)
@@ -134,10 +136,10 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
 
     @Test
     fun `createQuery() with a delete query and query params`() {
-        val query = mockk<Stage.Query<String>>()
-
         // given
-        every { JpqlStageStatelessSessionUtils.createQuery(session, deleteQuery, queryParams, context) } returns query
+        every {
+            JpqlStageStatelessSessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any(), any())
+        } returns query
 
         // when
         val actual = session.createQuery(deleteQuery, queryParams, context)

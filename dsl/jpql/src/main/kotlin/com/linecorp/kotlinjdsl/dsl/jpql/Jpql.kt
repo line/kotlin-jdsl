@@ -195,11 +195,27 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates a path expression with the entity and property.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any, V> Entityable<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toEntity(), property)
+    }
+
+    /**
      * Creates a path expression with the path and property.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, V> Pathable<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
         return Paths.path(this.toPath(), property)
+    }
+
+    /**
+     * Creates a path expression with the entity and property.
+     */
+    @SinceJdsl("3.0.0")
+    operator fun <T : Any, V> Entityable<T>.invoke(property: KProperty1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toEntity(), property)
     }
 
     /**

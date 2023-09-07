@@ -14,6 +14,8 @@ import javax.persistence.TypedQuery
 import kotlin.reflect.KClass
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
+import org.springframework.data.domain.SliceImpl
 import org.springframework.data.jpa.repository.query.QueryUtilsAdaptor
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
 
@@ -81,6 +83,16 @@ internal object JpqlEntityManagerUtils {
         return createQuery(entityManager, rendered)
     }
 
+    private fun <T : Any> createQuery(
+        entityManager: EntityManager,
+        rendered: JpqlRendered,
+        resultClass: KClass<T>,
+    ): TypedQuery<T> {
+        return entityManager.createQuery(rendered.query, resultClass.java).apply {
+            setParams(this, rendered.params)
+        }
+    }
+
     private fun createQuery(
         entityManager: EntityManager,
         rendered: JpqlRendered,
@@ -90,14 +102,15 @@ internal object JpqlEntityManagerUtils {
         }
     }
 
-    private fun <T : Any> createQuery(
+    fun <T : Any> queryForList(
         entityManager: EntityManager,
-        rendered: JpqlRendered,
-        resultClass: KClass<T>,
-    ): TypedQuery<T> {
-        return entityManager.createQuery(rendered.query, resultClass.java).apply {
-            setParams(this, rendered.params)
-        }
+        query: SelectQuery<T>,
+        pageable: Pageable,
+        context: RenderContext,
+    ): List<T?> {
+        val rendered = JpqlRendererHolder.get().render(query, context)
+
+        return queryForList(entityManager, rendered, pageable, query.returnType)
     }
 
     fun <T : Any> queryForPage(
@@ -111,16 +124,35 @@ internal object JpqlEntityManagerUtils {
         return queryForPage(entityManager, rendered, pageable, query.returnType)
     }
 
-    fun <T : Any> queryForPage(
+    fun <T : Any> queryForSlice(
         entityManager: EntityManager,
         query: SelectQuery<T>,
-        queryParams: Map<String, Any?>,
         pageable: Pageable,
         context: RenderContext,
-    ): Page<T?> {
-        val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
+    ): Slice<T?> {
+        val rendered = JpqlRendererHolder.get().render(query, context)
 
-        return queryForPage(entityManager, rendered, pageable, query.returnType)
+        return queryForSlice(entityManager, rendered, pageable, query.returnType)
+    }
+
+    private fun <T : Any> queryForList(
+        entityManager: EntityManager,
+        rendered: JpqlRendered,
+        pageable: Pageable,
+        resultClass: KClass<T>,
+    ): List<T?> {
+        val sortedQuery = QueryUtilsAdaptor.applySorting(rendered.query, pageable.sort)
+
+        val jpaQuery = entityManager.createQuery(sortedQuery, resultClass.java).apply {
+            setParams(this, rendered.params)
+        }
+
+        if (pageable.isPaged) {
+            jpaQuery.firstResult = pageable.offset.toInt()
+            jpaQuery.maxResults = pageable.pageSize
+        }
+
+        return jpaQuery.resultList
     }
 
     private fun <T : Any> queryForPage(
@@ -153,6 +185,33 @@ internal object JpqlEntityManagerUtils {
             } else {
                 counts.count().toLong()
             }
+        }
+    }
+
+    private fun <T : Any> queryForSlice(
+        entityManager: EntityManager,
+        rendered: JpqlRendered,
+        pageable: Pageable,
+        resultClass: KClass<T>,
+    ): Slice<T?> {
+        val sortedQuery = QueryUtilsAdaptor.applySorting(rendered.query, pageable.sort)
+
+        val jpaQuery = entityManager.createQuery(sortedQuery, resultClass.java).apply {
+            setParams(this, rendered.params)
+        }
+
+        return if (pageable.isPaged) {
+            jpaQuery.firstResult = pageable.offset.toInt()
+            jpaQuery.maxResults = pageable.pageSize + 1
+
+            val results = jpaQuery.resultList
+            val hasNext = results.size > pageable.pageSize
+
+            SliceImpl(takeIf { hasNext }?.let { results.dropLast(1) } ?: results, pageable, hasNext)
+        } else {
+            val results = jpaQuery.resultList
+
+            SliceImpl(results, pageable, false)
         }
     }
 
