@@ -21,14 +21,14 @@ class DeleteExample : WithAssertions {
     private val context = JpqlRenderContext()
 
     @Test
-    fun `delete author with id 1`() {
+    fun `delete author with id 2`() {
         // given
         val entityManger = entityManagerFactory.createEntityManager().unwrap(JpaEntityManager::class.java)
         val deleteJpqlQuery = jpql {
             deleteFrom(
                 entity(Author::class),
             ).where(
-                path(Author::authorId).eq(1L),
+                path(Author::authorId).eq(2L),
             )
         }
         val selectJpqlQuery = jpql {
@@ -49,7 +49,7 @@ class DeleteExample : WithAssertions {
         // then
         assertThat(actual.map { it.authorId }).isEqualTo(
             listOf(
-                2L,
+                1L,
                 3L,
                 4L,
             ),
