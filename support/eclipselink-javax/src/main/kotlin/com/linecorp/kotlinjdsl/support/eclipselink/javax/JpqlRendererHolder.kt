@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.support.eclipse.javax
+package com.linecorp.kotlinjdsl.support.eclipselink.javax
 
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderer
 

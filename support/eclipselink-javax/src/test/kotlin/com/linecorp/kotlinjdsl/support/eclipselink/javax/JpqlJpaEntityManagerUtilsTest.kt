@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.support.eclipse.javax
+package com.linecorp.kotlinjdsl.support.eclipselink.javax
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
@@ -97,8 +97,8 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
 
         // when
-        val actual = JpqlJpaEntityManagerUtils
-            .createQuery(entityManager, selectQuery, mapOf(queryParam1, queryParam2), context)
+        val actual =
+            JpqlJpaEntityManagerUtils.createQuery(entityManager, selectQuery, mapOf(queryParam1, queryParam2), context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery)
@@ -145,8 +145,8 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
 
         // when
-        val actual = JpqlJpaEntityManagerUtils
-            .createQuery(entityManager, updateQuery, mapOf(queryParam1, queryParam2), context)
+        val actual =
+            JpqlJpaEntityManagerUtils.createQuery(entityManager, updateQuery, mapOf(queryParam1, queryParam2), context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery)
@@ -192,8 +192,8 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
 
         // when
-        val actual = JpqlJpaEntityManagerUtils
-            .createQuery(entityManager, deleteQuery, mapOf(queryParam1, queryParam2), context)
+        val actual =
+            JpqlJpaEntityManagerUtils.createQuery(entityManager, deleteQuery, mapOf(queryParam1, queryParam2), context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery)

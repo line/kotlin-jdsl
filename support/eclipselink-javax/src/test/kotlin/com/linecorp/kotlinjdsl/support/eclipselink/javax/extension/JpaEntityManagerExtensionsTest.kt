@@ -1,10 +1,10 @@
-package com.linecorp.kotlinjdsl.support.eclipse.javax.extension
+package com.linecorp.kotlinjdsl.support.eclipselink.javax.extension
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.support.eclipse.javax.JpqlJpaEntityManagerUtils
+import com.linecorp.kotlinjdsl.support.eclipselink.javax.JpqlJpaEntityManagerUtils
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
