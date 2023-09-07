@@ -13,10 +13,6 @@ abstract class HibernateExample {
     protected val entityManager: EntityManager = Persistence.createEntityManagerFactory("example").createEntityManager()
     private val renderContext = JpqlRenderContext()
 
-    init {
-        TestDataInitializer.initialize(entityManager)
-    }
-
     protected fun <T : Any> EntityManager.createQuery(query: SelectQuery<T>) = entityManager.createQuery(
         query,
         renderContext,

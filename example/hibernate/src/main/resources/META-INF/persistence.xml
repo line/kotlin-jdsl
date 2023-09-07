@@ -10,6 +10,16 @@
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+
+            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="jakarta.persistence.schema-generation.create-source" value="script"/>
+            <property name="jakarta.persistence.schema-generation.create-script-source" value="schema.sql"/>
+            <property name="jakarta.persistence.schema-generation.drop-source" value="script"/>
+            <property name="jakarta.persistence.schema-generation.drop-script-source" value="drop.sql"/>
+            <property name="jakarta.persistence.sql-load-script-source" value="data.sql"/>
+
+            <property name="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.schema.internal.script.MultiLineSqlScriptExtractor" />
+
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
