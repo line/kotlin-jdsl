@@ -6,7 +6,6 @@ import jakarta.persistence.AttributeOverride
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
-import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
@@ -19,9 +18,8 @@ import java.util.*
 @Table(name = "book")
 class Book(
     @Id
-    @EmbeddedId
-    @AttributeOverride(name = "value", column = Column(name = "isbn"))
-    val isbn: Isbn,
+    @Column(name = "isbn")
+    val isbn: String,
 
     @Column(name = "title")
     var title: String,

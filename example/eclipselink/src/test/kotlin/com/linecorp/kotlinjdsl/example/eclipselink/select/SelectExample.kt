@@ -5,7 +5,6 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.author.Author
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.Book
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.BookAuthor
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.BookPrice
-import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
@@ -90,7 +89,7 @@ class SelectExample : WithAssertions {
         val actual = entityManger.createQuery(jpqlQuery, context).setMaxResults(1).singleResult
 
         // then
-        assertThat(actual).isEqualTo(Isbn("01"))
+        assertThat(actual).isEqualTo("01")
     }
 
     @Test
@@ -112,7 +111,7 @@ class SelectExample : WithAssertions {
         val actual = entityManger.createQuery(jpqlQuery, context).setMaxResults(1).singleResult
 
         // then
-        assertThat(actual).isEqualTo(Isbn("10"))
+        assertThat(actual).isEqualTo("10")
     }
 
     @Test
@@ -134,7 +133,7 @@ class SelectExample : WithAssertions {
         val actual = entityManger.createQuery(jpqlQuery, context).setMaxResults(1).singleResult
 
         // then
-        assertThat(actual).isEqualTo(Isbn("10"))
+        assertThat(actual).isEqualTo("10")
     }
 
     @Test
@@ -162,12 +161,12 @@ class SelectExample : WithAssertions {
         // then
         assertThat(actual).isEqualTo(
             listOf(
-                Isbn("01"),
-                Isbn("02"),
-                Isbn("03"),
-                Isbn("04"),
-                Isbn("05"),
-                Isbn("06"),
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
             ),
         )
     }
@@ -190,7 +189,7 @@ class SelectExample : WithAssertions {
         val actual = entityManger.createQuery(jpqlQuery, context).setMaxResults(1).singleResult
 
         // then
-        assertThat(actual).isEqualTo(Isbn("12"))
+        assertThat(actual).isEqualTo("12")
     }
 
     @Test

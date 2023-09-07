@@ -39,7 +39,7 @@ class BookAuthor(
 
     @CompositeId
     data class BookAuthorId(
-        val book: Isbn,
+        val book: String,
         val authorId: Long,
     ) : Serializable
 }
