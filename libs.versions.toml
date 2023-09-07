@@ -26,6 +26,10 @@ jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-ap
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.7" }
 logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 
+# hibernate
+hibernate5-core = { module = "org.hibernate:hibernate-core", version = "5.0.0.Final" }
+hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.0.0.Final" }
+
 # hibernate-reactive
 hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.0.0.Final" }
 hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.0.Final" }
@@ -45,11 +49,6 @@ spring-data-jpa3 = { module = "org.springframework.data:spring-data-jpa", versio
 spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", version = "2.7.9" }
 
 # test
-# hibernate
-javax-hibernate-core = { module = "org.hibernate:hibernate-core", version = "5.6.15.Final" }
-jakarta-hibernate-core = { module = "org.hibernate:hibernate-core", version = "6.3.0.Final" }
-
-# Test
 test-spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "test-spring-boot3" }
 test-spring-boot3-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "test-spring-boot3" }
 test-spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.9.0" }
@@ -62,6 +61,9 @@ test-spring-boot2-test = { module = "org.springframework.boot:spring-boot-starte
 
 test-spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "5.0.3" }
 test-spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", version = "4.3.9" }
+
+test-hibernate5-core = { module = "org.hibernate:hibernate-core", version = "5.6.15.Final" }
+test-hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.3.0.Final" }
 
 test-hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
 test-hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.5.Final" }

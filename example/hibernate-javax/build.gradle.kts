@@ -5,15 +5,14 @@ plugins {
 }
 
 dependencies {
-    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
+    implementation(libs.test.hibernate5.core)
+    implementation(libs.logback)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
-    implementation(libs.javax.hibernate.core)
     implementation(projects.hibernateJavaxSupport)
-    implementation(libs.logback)
 
-    implementation(libs.test.h2)
+    runtimeOnly(libs.test.h2)
 }
 
 kotlin {
@@ -30,6 +29,12 @@ allOpen {
     annotation("com.linecorp.kotlinjdsl.example.jpql.hibernate.javax.annotation.CompositeId")
     annotation("javax.persistence.Entity")
     annotation("javax.persistence.Embeddable")
+}
+
+kover {
+    excludeInstrumentation {
+        packages("org.hibernate.*")
+    }
 }
 
 tasks.withType<PublishToMavenRepository>().configureEach { enabled = false }
