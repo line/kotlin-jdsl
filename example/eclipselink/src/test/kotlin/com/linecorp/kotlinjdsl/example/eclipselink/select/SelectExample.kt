@@ -1,6 +1,7 @@
 package com.linecorp.kotlinjdsl.example.eclipselink.select
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
+import com.linecorp.kotlinjdsl.example.eclipselink.JpaEntityManagerFactoryTestUtils
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.author.Author
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.Book
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.BookAuthor
@@ -8,27 +9,14 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.BookPrice
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.example.eclipselink.jpql.JpqlRenderContextUtils
-import com.linecorp.kotlinjdsl.example.eclipselink.reader.MultipleLinesSqlCommandFileReader
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
-import jakarta.persistence.Persistence
 import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
 import org.eclipse.persistence.jpa.JpaEntityManager
 import org.junit.jupiter.api.Test
 
 class SelectExample : WithAssertions {
-    private val entityManagerFactory =
-        Persistence.createEntityManagerFactory(
-            "example",
-            mapOf(
-                "jakarta.persistence.schema-generation.create-script-source" to
-                    MultipleLinesSqlCommandFileReader("../src/main/resources/schema.sql"),
-                "jakarta.persistence.schema-generation.drop-script-source" to
-                    MultipleLinesSqlCommandFileReader("../src/main/resources/drop.sql"),
-                "jakarta.persistence.sql-load-script-source" to
-                    MultipleLinesSqlCommandFileReader("../src/main/resources/data.sql"),
-            ),
-        )
+    private val entityManagerFactory = JpaEntityManagerFactoryTestUtils.getJpaEntityManagerFactory()
 
     private val context = JpqlRenderContextUtils.getJpqlRenderContext()
 
