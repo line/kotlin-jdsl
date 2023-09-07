@@ -17,6 +17,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.dao.IncorrectResultSizeDataAccessException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
 import org.springframework.data.repository.NoRepositoryBean
 import org.springframework.transaction.annotation.Transactional
 
@@ -103,7 +104,7 @@ open class KotlinJdslJpqlExecutorImpl(
     override fun <T : Any> findAll(
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
-        return findAll(dsl = Jpql, init = init)
+        return findAll(Jpql, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> findAll(
@@ -119,7 +120,7 @@ open class KotlinJdslJpqlExecutorImpl(
     override fun <T : Any> findAll(
         pageable: Pageable,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
-    ): Page<T?> {
+    ): List<T?> {
         return findAll(Jpql, pageable, init)
     }
 
@@ -127,10 +128,44 @@ open class KotlinJdslJpqlExecutorImpl(
         dsl: JpqlDsl.Constructor<DSL>,
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): List<T?> {
+        val query: SelectQuery<T> = jpql(dsl, init)
+
+        return JpqlEntityManagerUtils.queryForList(entityManager, query, pageable, renderContext)
+    }
+
+    override fun <T : Any> findPage(
+        pageable: Pageable,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Page<T?> {
+        return findPage(Jpql, pageable, init)
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): Page<T?> {
         val query: SelectQuery<T> = jpql(dsl, init)
 
         return JpqlEntityManagerUtils.queryForPage(entityManager, query, pageable, renderContext)
+    }
+
+    override fun <T : Any> findSlice(
+        pageable: Pageable,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Slice<T?> {
+        return findSlice(Jpql, pageable, init)
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> findSlice(
+        dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Slice<T?> {
+        val query: SelectQuery<T> = jpql(dsl, init)
+
+        return JpqlEntityManagerUtils.queryForSlice(entityManager, query, pageable, renderContext)
     }
 
     override fun <T : Any> update(
