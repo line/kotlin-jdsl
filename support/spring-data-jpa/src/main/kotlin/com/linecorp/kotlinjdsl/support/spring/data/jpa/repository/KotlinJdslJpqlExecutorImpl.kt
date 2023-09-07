@@ -127,7 +127,7 @@ open class KotlinJdslJpqlExecutorImpl(
     override fun <T : Any, DSL : JpqlDsl> findAll(
         dsl: JpqlDsl.Constructor<DSL>,
         pageable: Pageable,
-        init: DSL.() -> JpqlQueryable<SelectQuery<T>>
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
         val query: SelectQuery<T> = jpql(dsl, init)
 
