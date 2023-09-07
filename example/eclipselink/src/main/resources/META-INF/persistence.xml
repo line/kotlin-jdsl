@@ -29,7 +29,7 @@
             <property name="javax.persistence.schema-generation.drop-script-source" value="drop.sql"/>
             <property name="jakarta.persistence.sql-load-script-source" value="data-eclipselink.sql"/>
 
-<!--            <property name="eclipselink.target-database" value="MySQL"/>-->
+            <property name="eclipselink.target-database" value="MySQL"/>
             <property name="eclipselink.logging.level.sql" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>
         </properties>

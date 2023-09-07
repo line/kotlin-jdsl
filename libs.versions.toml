@@ -45,8 +45,6 @@ spring-data-jpa3 = { module = "org.springframework.data:spring-data-jpa", versio
 spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", version = "2.7.9" }
 
 # Eclipselink
-#eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.13" }
-#eclipselink-v4 = { module = "org.eclipse.persistence:eclipse", version = "4.0.2" }
 eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.13" }
 eclipselink-v4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.2" }
 
