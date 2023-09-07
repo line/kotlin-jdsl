@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
+import jakarta.persistence.EntityManager
 import jakarta.persistence.Persistence
 import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
@@ -40,11 +41,10 @@ class DeleteExample : WithAssertions {
         }
 
         // when
-        val transaction = entityManger.transaction
-        transaction.begin()
-        entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
-        transaction.commit()
-        val actual = entityManger.createQuery(selectJpqlQuery, context).resultList
+        val actual = entityManger.withTransaction {
+            entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
+            entityManger.createQuery(selectJpqlQuery, context).resultList
+        }
 
         // then
         assertThat(actual.map { it.authorId }).isEqualTo(
@@ -76,11 +76,10 @@ class DeleteExample : WithAssertions {
         }
 
         // when
-        val transaction = entityManger.transaction
-        transaction.begin()
-        entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
-        transaction.commit()
-        val actual = entityManger.createQuery(selectJpqlQuery, context).resultList
+        val actual = entityManger.withTransaction {
+            entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
+            entityManger.createQuery(selectJpqlQuery, context).resultList
+        }
 
         // then
         assertThat(actual.map { it.isbn }).isEqualTo(
@@ -124,11 +123,10 @@ class DeleteExample : WithAssertions {
         }
 
         // when
-        val transaction = entityManger.transaction
-        transaction.begin()
-        entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
-        transaction.commit()
-        val actual = entityManger.createQuery(selectJpqlQuery, context).resultList
+        val actual = entityManger.withTransaction {
+            entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
+            entityManger.createQuery(selectJpqlQuery, context).resultList
+        }
 
         // then
         assertThat(actual.map { it.employeeId }).isEqualTo(
@@ -147,5 +145,15 @@ class DeleteExample : WithAssertions {
                 22L,
             ),
         )
+    }
+
+    private fun <T> EntityManager.withTransaction(work: () -> T): T {
+        val transaction = this.transaction
+        transaction.begin()
+        return try {
+            work()
+        } finally {
+            transaction.rollback()
+        }
     }
 }

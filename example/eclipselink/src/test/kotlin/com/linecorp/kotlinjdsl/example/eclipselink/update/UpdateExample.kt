@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeSalar
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.FullTimeEmployee
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
+import jakarta.persistence.EntityManager
 import jakarta.persistence.Persistence
 import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
@@ -24,7 +25,7 @@ class UpdateExample : WithAssertions {
     fun `update author's name with id 1`() {
         // given
         val entityManger = entityManagerFactory.createEntityManager().unwrap(JpaEntityManager::class.java)
-        val deleteJpqlQuery = jpql {
+        val updateJpqlQuery = jpql {
             update(
                 entity(Author::class),
             ).set(
@@ -45,11 +46,10 @@ class UpdateExample : WithAssertions {
         }
 
         // when
-        val transaction = entityManger.transaction
-        transaction.begin()
-        entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
-        transaction.commit()
-        val actual = entityManger.createQuery(selectJpqlQuery, context).setMaxResults(1).singleResult
+        val actual = entityManger.withTransaction {
+            entityManger.createQuery(updateJpqlQuery, context).executeUpdate()
+            entityManger.createQuery(selectJpqlQuery, context).setMaxResults(1).singleResult
+        }
 
         // then
         assertThat(actual.name).isEqualTo("Author001")
@@ -96,11 +96,10 @@ class UpdateExample : WithAssertions {
         }
 
         // when
-        val transaction = entityManger.transaction
-        transaction.begin()
-        entityManger.createQuery(updateJpqlQuery, context).executeUpdate()
-        transaction.commit()
-        val actual = entityManger.createQuery(selectJpqlQuery, context).resultList
+        val actual = entityManger.withTransaction {
+            entityManger.createQuery(updateJpqlQuery, context).executeUpdate()
+            entityManger.createQuery(selectJpqlQuery, context).resultList
+        }
 
         // then
         assertThat(actual).isEqualTo(
@@ -166,11 +165,10 @@ class UpdateExample : WithAssertions {
         }
 
         // when
-        val transaction = entityManger.transaction
-        transaction.begin()
-        entityManger.createQuery(updateJpqlQuery, context).executeUpdate()
-        transaction.commit()
-        val actual = entityManger.createQuery(selectJpqlQuery, context).resultList
+        val actual = entityManger.withTransaction {
+            entityManger.createQuery(updateJpqlQuery, context).executeUpdate()
+            entityManger.createQuery(selectJpqlQuery, context).resultList
+        }
 
         // then
         assertThat(actual).isEqualTo(
@@ -207,5 +205,15 @@ class UpdateExample : WithAssertions {
                 Row(30, "Nickname30"),
             ),
         )
+    }
+
+    private fun <T> EntityManager.withTransaction(work: () -> T): T {
+        val transaction = this.transaction
+        transaction.begin()
+        return try {
+            work()
+        } finally {
+            transaction.rollback()
+        }
     }
 }
