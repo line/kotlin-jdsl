@@ -15,6 +15,9 @@ dependencies {
     implementation(libs.eclipselink.v4)
 
     runtimeOnly(libs.test.h2)
+
+    testFixturesImplementation(libs.eclipselink.v4)
+    testFixturesImplementation(projects.jpqlRender)
 }
 
 kotlin {

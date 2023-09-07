@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.dsl.jpql.jpql
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.author.Author
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.Book
 import com.linecorp.kotlinjdsl.example.eclipselink.jpql.JpqlRenderContextUtils
+import com.linecorp.kotlinjdsl.example.eclipselink.reader.MultipleLinesSqlCommandFileReader
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Persistence
@@ -13,7 +14,18 @@ import org.eclipse.persistence.jpa.JpaEntityManager
 import org.junit.jupiter.api.Test
 
 class DeleteExample : WithAssertions {
-    private val entityManagerFactory = Persistence.createEntityManagerFactory("example")
+    private val entityManagerFactory =
+        Persistence.createEntityManagerFactory(
+            "example",
+            mapOf(
+                "jakarta.persistence.schema-generation.create-script-source" to
+                    MultipleLinesSqlCommandFileReader("../src/main/resources/schema.sql"),
+                "jakarta.persistence.schema-generation.drop-script-source" to
+                    MultipleLinesSqlCommandFileReader("../src/main/resources/drop.sql"),
+                "jakarta.persistence.sql-load-script-source" to
+                    MultipleLinesSqlCommandFileReader("../src/main/resources/data.sql"),
+            ),
+        )
 
     private val context = JpqlRenderContextUtils.getJpqlRenderContext()
 
