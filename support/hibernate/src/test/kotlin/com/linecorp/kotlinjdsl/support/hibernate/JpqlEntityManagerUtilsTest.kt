@@ -62,7 +62,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     private val renderedQuery = "query"
     private val renderedParam = "paramName" to "paramValue"
 
-
     @BeforeEach
     fun setUp() {
         mockkObject(JpqlRendererHolder)
@@ -86,7 +85,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { typedQuery.setParameter(any<String>(), any()) } returns typedQuery
         every { entityManager.createQuery(any(), any<Class<*>>()) } returns typedQuery
 
-
         // when
         val actual = jpqlEntityManagerUtils.createQuery(entityManager, selectQuery, context)
 
@@ -109,7 +107,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { typedQuery.setParameter(any<String>(), any()) } returns typedQuery
         every { entityManager.createQuery(any(), any<Class<*>>()) } returns typedQuery
 
-
         // when
         val actual = jpqlEntityManagerUtils.createQuery(entityManager, selectQuery, queryParams, context)
 
@@ -131,7 +128,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { query.setParameter(any<String>(), any()) } returns query
         every { entityManager.createQuery(any<String>()) } returns query
 
-
         // when
         val actual = jpqlEntityManagerUtils.createQuery(entityManager, updateQuery, context)
 
@@ -151,7 +147,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { jpqlRenderer.render(any(), any(), any()) } returns jpqlRendered
         every { query.setParameter(any<String>(), any()) } returns query
         every { entityManager.createQuery(any<String>()) } returns query
-
 
         // when
         val actual = jpqlEntityManagerUtils.createQuery(entityManager, updateQuery, queryParams, context)
@@ -173,7 +168,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { query.setParameter(any<String>(), any()) } returns query
         every { entityManager.createQuery(any<String>()) } returns query
 
-
         // when
         val actual = jpqlEntityManagerUtils.createQuery(entityManager, deleteQuery, context)
 
@@ -193,7 +187,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { jpqlRenderer.render(any(), any(), any()) } returns jpqlRendered
         every { query.setParameter(any<String>(), any()) } returns query
         every { entityManager.createQuery(any<String>()) } returns query
-
 
         // when
         val actual = jpqlEntityManagerUtils.createQuery(entityManager, deleteQuery, queryParams, context)

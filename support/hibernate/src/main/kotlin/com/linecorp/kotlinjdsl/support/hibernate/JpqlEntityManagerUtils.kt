@@ -82,7 +82,6 @@ internal object JpqlEntityManagerUtils {
         rendered: JpqlRendered,
         resultClass: KClass<T>,
     ): TypedQuery<T> {
-
         return entityManager.createQuery(rendered.query, resultClass.java).apply {
             setParams(this, rendered.params)
         }
