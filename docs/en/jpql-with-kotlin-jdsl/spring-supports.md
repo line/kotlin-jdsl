@@ -28,7 +28,7 @@ authorRepository.findFirst {
     )
 }
 
-bookRepository.findAll(pageable) {
+bookRepository.findPage(pageable) {
     select(
         path(Book::isbn),
     ).from(
