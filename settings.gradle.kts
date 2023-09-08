@@ -30,6 +30,8 @@ module(name = ":hibernate-reactive-support", path = "support/hibernate-reactive"
 module(name = ":hibernate-reactive-javax-support", path = "support/hibernate-reactive-javax")
 module(name = ":hibernate-support", path = "support/hibernate")
 module(name = ":hibernate-javax-support", path = "support/hibernate-javax")
+module(name = ":eclipselink-support", path = "support/eclipselink")
+module(name = ":eclipselink-javax-support", path = "support/eclipselink-javax")
 
 module(name = ":example", path = "example")
 module(name = ":spring-batch-example", path = "example/spring-batch")
@@ -40,6 +42,8 @@ module(name = ":hibernate-reactive-example", path = "example/hibernate-reactive"
 module(name = ":hibernate-reactive-javax-example", path = "example/hibernate-reactive-javax")
 module(name = ":hibernate-example", path = "example/hibernate")
 module(name = ":hibernate-javax-example", path = "example/hibernate-javax")
+module(name = ":eclipselink-example", path = "example/eclipselink")
+module(name = ":eclipselink-javax-example", path = "example/eclipselink-javax")
 
 module(name = ":benchmark", path = "benchmark")
 
