@@ -116,7 +116,7 @@ class SelectExample : WithAssertions {
                 path(Book::isbn).asc(),
             )
         }
-        val actual = entityManager.createQuery(query,context).setMaxResults(1).resultList.first()
+        val actual = entityManager.createQuery(query, context).setMaxResults(1).resultList.first()
 
         // then
         assertThat(actual).isEqualTo(Isbn("10"))
