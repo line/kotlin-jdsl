@@ -99,4 +99,10 @@ internal object JpqlJpaEntityManagerUtils {
             query.setParameter(name, value)
         }
     }
+
+    private fun setParams2(query: Query, params: JpqlRenderedParams) {
+        params.forEach { (name, value) ->
+            query.setParameter(name, value)
+        }
+    }
 }
