@@ -34,7 +34,7 @@ class SelectExample : WithAssertions {
     @Test
     fun `the most prolific author`() {
         // when
-        val actual = authorRepository.findFirst {
+        val actual = authorRepository.findAll {
             select(
                 path(Author::authorId),
             ).from(
@@ -45,7 +45,7 @@ class SelectExample : WithAssertions {
             ).orderBy(
                 count(Author::authorId).desc(),
             )
-        }
+        }.firstNotNullOf { it }
 
         // then
         assertThat(actual).isEqualTo(1L)
@@ -131,7 +131,7 @@ class SelectExample : WithAssertions {
     @Test
     fun `the book with the most authors`() {
         // when
-        val actual = bookRepository.findFirst {
+        val actual = bookRepository.findAll {
             select(
                 path(Book::isbn),
             ).from(
@@ -142,7 +142,7 @@ class SelectExample : WithAssertions {
             ).orderBy(
                 count(Book::isbn).desc(),
             )
-        }
+        }.firstNotNullOf { it }
 
         // then
         assertThat(actual).isEqualTo(Isbn("01"))
@@ -151,7 +151,7 @@ class SelectExample : WithAssertions {
     @Test
     fun `the most expensive book`() {
         // when
-        val actual = bookRepository.findFirst {
+        val actual = bookRepository.findAll {
             select(
                 path(Book::isbn),
             ).from(
@@ -160,7 +160,7 @@ class SelectExample : WithAssertions {
                 path(Book::salePrice).desc(),
                 path(Book::isbn).asc(),
             )
-        }
+        }.firstNotNullOf { it }
 
         // then
         assertThat(actual).isEqualTo(Isbn("10"))
@@ -169,7 +169,7 @@ class SelectExample : WithAssertions {
     @Test
     fun `the most recently published book`() {
         // when
-        val actual = bookRepository.findFirst {
+        val actual = bookRepository.findAll {
             select(
                 path(Book::isbn),
             ).from(
@@ -178,7 +178,7 @@ class SelectExample : WithAssertions {
                 path(Book::salePrice).desc(),
                 path(Book::isbn).asc(),
             )
-        }
+        }.firstNotNullOf { it }
 
         // then
         assertThat(actual).isEqualTo(Isbn("10"))
@@ -218,7 +218,7 @@ class SelectExample : WithAssertions {
     @Test
     fun `the book with the biggest discounts`() {
         // when
-        val actual = bookRepository.findFirst {
+        val actual = bookRepository.findAll {
             select(
                 path(Book::isbn),
             ).from(
@@ -226,7 +226,7 @@ class SelectExample : WithAssertions {
             ).orderBy(
                 path(Book::price)(BookPrice::value).minus(path(Book::salePrice)(BookPrice::value)).desc(),
             )
-        }
+        }.firstNotNullOf { it }
 
         // then
         assertThat(actual).isEqualTo(Isbn("12"))
