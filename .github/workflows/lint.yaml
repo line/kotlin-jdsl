@@ -30,7 +30,6 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-      actions: write
     steps:
       - name: Clone repo
         uses: actions/checkout@master
