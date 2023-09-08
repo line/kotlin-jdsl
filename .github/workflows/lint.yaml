@@ -1,8 +1,7 @@
 name: Lint
 on:
-  pull_request_target:
+  pull_request:
     branches:
-      - main
       - develop/*
 
 concurrency:
@@ -28,6 +27,10 @@ jobs:
   ktlint:
     name: Lint Kotlin
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      actions: write
     steps:
       - name: Clone repo
         uses: actions/checkout@master
