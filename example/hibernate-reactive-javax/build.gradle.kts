@@ -12,6 +12,8 @@ dependencies {
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
+
+
     implementation(projects.hibernateReactiveJavaxSupport)
 
     runtimeOnly(libs.test.h2)
