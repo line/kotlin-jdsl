@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlin.jpa)
 }
 
+
+
+
 dependencies {
     implementation(libs.test.hibernate.reactive1.core)
     implementation(libs.test.vertx.jdbc.client)
