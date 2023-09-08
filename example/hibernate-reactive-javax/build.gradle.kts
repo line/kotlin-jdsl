@@ -14,7 +14,9 @@ dependencies {
     implementation(projects.jpqlRender)
     implementation(projects.hibernateReactiveJavaxSupport)
 
-    runtimeOnly(libs.test.h2)
+    runtimeOnly(libs.test.h2 )
+
+
 
     testFixturesImplementation(libs.test.hibernate.reactive1.core)
     testFixturesImplementation(projects.jpqlRender)
