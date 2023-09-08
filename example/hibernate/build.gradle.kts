@@ -12,6 +12,9 @@ dependencies {
     implementation(projects.hibernateSupport)
 
     implementation(libs.test.h2)
+
+    testFixturesImplementation(libs.test.hibernate6.core)
+    testFixturesImplementation(projects.jpqlRender)
 }
 
 kotlin {

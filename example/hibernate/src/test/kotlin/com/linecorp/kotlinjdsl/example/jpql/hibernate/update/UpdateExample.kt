@@ -1,20 +1,25 @@
 package com.linecorp.kotlinjdsl.example.jpql.hibernate.update
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
-import com.linecorp.kotlinjdsl.example.jpql.hibernate.HibernateExample
+import com.linecorp.kotlinjdsl.example.jpql.hibernate.EntityManagerTestUtils
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.department.Department
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.employee.EmployeeSalary
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.employee.FullTimeEmployee
+import com.linecorp.kotlinjdsl.example.jpql.hibernate.jpql.JpqlRenderContextUtils
+import com.linecorp.kotlinjdsl.support.hibernate.extension.createQuery
 import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
-class UpdateExample : WithAssertions, HibernateExample() {
+class UpdateExample : WithAssertions {
+    private val entityManager = EntityManagerTestUtils.getEntityManager()
+
+    private val context = JpqlRenderContextUtils.getJpqlRenderContext()
 
     @Test
-    fun increase_the_annual_salaries_of_employees_in_department_03_by_10_percent() = withTransaction {
+    fun increase_the_annual_salaries_of_employees_in_department_03_by_10_percent() {
         // given
         data class Row(
             val employeeId: Long,
@@ -22,41 +27,48 @@ class UpdateExample : WithAssertions, HibernateExample() {
         )
 
         // when
-        entityManager.createQuery(
-            jpql {
-                val employeeIds = select<Long>(
-                    path(EmployeeDepartment::employee)(Employee::employeeId),
-                ).from(
-                    entity(Department::class),
-                    join(EmployeeDepartment::class)
-                        .on(path(Department::departmentId).equal(path(EmployeeDepartment::departmentId))),
-                ).where(
-                    path(Department::name).like("%03"),
-                ).asSubquery()
+        val updateQuery = jpql {
+            val employeeIds = select<Long>(
+                path(EmployeeDepartment::employee)(Employee::employeeId),
+            ).from(
+                entity(Department::class),
+                join(EmployeeDepartment::class)
+                    .on(path(Department::departmentId).equal(path(EmployeeDepartment::departmentId))),
+            ).where(
+                path(Department::name).like("%03"),
+            ).asSubquery()
 
-                update(
-                    entity(FullTimeEmployee::class),
-                ).set(
-                    path(FullTimeEmployee::annualSalary)(EmployeeSalary::value),
-                    path(FullTimeEmployee::annualSalary)(EmployeeSalary::value).times(BigDecimal.valueOf(1.1)),
-                ).where(
-                    path(FullTimeEmployee::employeeId).`in`(employeeIds),
-                )
-            },
-        ).executeUpdate()
+            update(
+                entity(FullTimeEmployee::class),
+            ).set(
+                path(FullTimeEmployee::annualSalary)(EmployeeSalary::value),
+                path(FullTimeEmployee::annualSalary)(EmployeeSalary::value).times(BigDecimal.valueOf(1.1)),
+            ).where(
+                path(FullTimeEmployee::employeeId).`in`(employeeIds),
+            )
+        }
 
-        val actual = entityManager.createQuery(
-            jpql {
-                selectNew<Row>(
-                    path(FullTimeEmployee::employeeId),
-                    path(FullTimeEmployee::annualSalary),
-                ).from(
-                    entity(FullTimeEmployee::class),
-                ).orderBy(
-                    path(FullTimeEmployee::employeeId).asc(),
-                )
-            },
-        ).resultList
+        val selectQuery = jpql {
+            selectNew<Row>(
+                path(FullTimeEmployee::employeeId),
+                path(FullTimeEmployee::annualSalary),
+            ).from(
+                entity(FullTimeEmployee::class),
+            ).orderBy(
+                path(FullTimeEmployee::employeeId).asc(),
+            )
+        }
+
+        val actual: List<Row>
+
+        entityManager.transaction.let { tx ->
+            tx.begin()
+
+            entityManager.createQuery(updateQuery, context).executeUpdate()
+            actual = entityManager.createQuery(selectQuery, context).resultList
+
+            tx.rollback()
+        }
 
         // then
         assertThat(actual).isEqualTo(
@@ -81,7 +93,7 @@ class UpdateExample : WithAssertions, HibernateExample() {
     }
 
     @Test
-    fun set_the_nickname_to_the_name_for_employees_in_department_03_who_do_not_have_nicknames() = withTransaction {
+    fun set_the_nickname_to_the_name_for_employees_in_department_03_who_do_not_have_nicknames() {
         // given
         data class Row(
             val employeeId: Long,
@@ -89,42 +101,49 @@ class UpdateExample : WithAssertions, HibernateExample() {
         )
 
         // when
-        entityManager.createQuery(
-            jpql {
-                val employeeIds = select<Long>(
-                    path(EmployeeDepartment::employee)(Employee::employeeId),
-                ).from(
-                    entity(Department::class),
-                    join(EmployeeDepartment::class)
-                        .on(path(Department::departmentId).equal(path(EmployeeDepartment::departmentId))),
-                ).where(
-                    path(Department::name).like("%03"),
-                ).asSubquery()
+        val updateQuery = jpql {
+            val employeeIds = select<Long>(
+                path(EmployeeDepartment::employee)(Employee::employeeId),
+            ).from(
+                entity(Department::class),
+                join(EmployeeDepartment::class)
+                    .on(path(Department::departmentId).equal(path(EmployeeDepartment::departmentId))),
+            ).where(
+                path(Department::name).like("%03"),
+            ).asSubquery()
 
-                update(
-                    entity(Employee::class),
-                ).set(
-                    path(Employee::nickname),
-                    path(Employee::name),
-                ).whereAnd(
-                    path(Employee::nickname).isNull(),
-                    path(Employee::employeeId).`in`(employeeIds),
-                )
-            },
-        ).executeUpdate()
+            update(
+                entity(Employee::class),
+            ).set(
+                path(Employee::nickname),
+                path(Employee::name),
+            ).whereAnd(
+                path(Employee::nickname).isNull(),
+                path(Employee::employeeId).`in`(employeeIds),
+            )
+        }
 
-        val actual = entityManager.createQuery(
-            jpql {
-                selectNew<Row>(
-                    path(Employee::employeeId),
-                    path(Employee::nickname),
-                ).from(
-                    entity(Employee::class),
-                ).orderBy(
-                    path(Employee::employeeId).asc(),
-                )
-            },
-        ).resultList
+        val selectQuery = jpql {
+            selectNew<Row>(
+                path(Employee::employeeId),
+                path(Employee::nickname),
+            ).from(
+                entity(Employee::class),
+            ).orderBy(
+                path(Employee::employeeId).asc(),
+            )
+        }
+
+        val actual: List<Row>
+
+        entityManager.transaction.let { tx ->
+            tx.begin()
+
+            entityManager.createQuery(updateQuery, context).executeUpdate()
+            actual = entityManager.createQuery(selectQuery, context).resultList
+
+            tx.rollback()
+        }
 
         // then
         assertThat(actual).isEqualTo(

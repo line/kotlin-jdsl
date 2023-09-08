@@ -13,6 +13,9 @@ dependencies {
     implementation(projects.hibernateJavaxSupport)
 
     runtimeOnly(libs.test.h2)
+
+    testFixturesImplementation(libs.test.hibernate5.core)
+    testFixturesImplementation(projects.jpqlRender)
 }
 
 kotlin {
