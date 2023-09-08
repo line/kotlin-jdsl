@@ -22,21 +22,26 @@ import org.openjdk.jmh.annotations.State
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 class JpqlRenderBenchmark {
-    private lateinit var sut: JpqlRenderer
+    private lateinit var sut: JpqlRenderer;
 
     private lateinit var context: JpqlRenderContext
 
     private lateinit var query: JpqlQuery<*>
 
-    @Param("0", "1", "2", "3", "4", "5")
-    private var index = 0
+    @Param("0", "1", "2", "3", "4", "5",)
+    private var index = 0;
+
+
 
     @Setup(Level.Trial)
-    fun setUp() {
+    fun setUp(
+
+    ) {
         sut = JpqlRenderer()
         context = JpqlRenderContext()
         query = Queries.get(index)
     }
+
 
     @Benchmark
     fun benchmark(): JpqlRendered {
