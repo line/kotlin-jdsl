@@ -1,13 +1,13 @@
 @file:Suppress("VulnerableLibrariesLocal")
 
 dependencies {
-    compileOnly(libs.eclipselink)
+    compileOnly(libs.eclipselink2)
     compileOnly(libs.javax.persistence.api)
     compileOnly(projects.jpqlDsl)
     compileOnly(projects.jpqlQueryModel)
     compileOnly(projects.jpqlRender)
 
-    testImplementation(libs.eclipselink)
+    testImplementation(libs.eclipselink2)
     testImplementation(libs.javax.persistence.api)
     testImplementation(projects.jpqlDsl)
     testImplementation(projects.jpqlQueryModel)
@@ -15,5 +15,5 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(8)
 }

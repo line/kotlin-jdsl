@@ -1,12 +1,12 @@
 package com.linecorp.kotlinjdsl.example.eclipselink
 
 import com.linecorp.kotlinjdsl.example.eclipselink.reader.MultipleLinesSqlCommandFileReader
+import jakarta.persistence.EntityManagerFactory
 import jakarta.persistence.Persistence
-import org.eclipse.persistence.jpa.JpaEntityManagerFactory
 
-object JpaEntityManagerFactoryTestUtils {
-    fun getJpaEntityManagerFactory(): JpaEntityManagerFactory {
-        return entityManagerFactory.unwrap(JpaEntityManagerFactory::class.java)
+object EntityManagerFactoryTestUtils {
+    fun getEntityManagerFactory(): EntityManagerFactory {
+        return entityManagerFactory
     }
 }
 

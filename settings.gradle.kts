@@ -28,7 +28,6 @@ module(name = ":spring-data-jpa-support", path = "support/spring-data-jpa")
 module(name = ":spring-data-jpa-javax-support", path = "support/spring-data-jpa-javax")
 module(name = ":hibernate-reactive-support", path = "support/hibernate-reactive")
 module(name = ":hibernate-reactive-javax-support", path = "support/hibernate-reactive-javax")
-
 module(name = ":eclipselink-support", path = "support/eclipselink")
 module(name = ":eclipselink-javax-support", path = "support/eclipselink-javax")
 
@@ -39,7 +38,6 @@ module(name = ":spring-data-jpa-example", path = "example/spring-data-jpa")
 module(name = ":spring-data-jpa-javax-example", path = "example/spring-data-jpa-javax")
 module(name = ":hibernate-reactive-example", path = "example/hibernate-reactive")
 module(name = ":hibernate-reactive-javax-example", path = "example/hibernate-reactive-javax")
-
 module(name = ":eclipselink-example", path = "example/eclipselink")
 module(name = ":eclipselink-javax-example", path = "example/eclipselink-javax")
 

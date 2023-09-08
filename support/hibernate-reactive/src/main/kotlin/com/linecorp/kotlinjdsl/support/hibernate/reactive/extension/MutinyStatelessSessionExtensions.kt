@@ -8,12 +8,18 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.hibernate.reactive.JpqlMutinyStatelessSessionUtils
 import org.hibernate.reactive.mutiny.Mutiny
 
+/**
+ * Creates [Mutiny.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.StatelessSession.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
 ): Mutiny.SelectionQuery<T> = JpqlMutinyStatelessSessionUtils.createQuery(this, query, context)
 
+/**
+ * Creates [Mutiny.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.StatelessSession.createQuery(
     query: SelectQuery<T>,
@@ -21,12 +27,18 @@ fun <T : Any> Mutiny.StatelessSession.createQuery(
     context: RenderContext,
 ): Mutiny.SelectionQuery<T> = JpqlMutinyStatelessSessionUtils.createQuery(this, query, queryParams, context)
 
+/**
+ * Creates [Mutiny.Query] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.StatelessSession.createQuery(
     query: UpdateQuery<T>,
     context: RenderContext,
 ): Mutiny.Query<T> = JpqlMutinyStatelessSessionUtils.createQuery(this, query, context)
 
+/**
+ * Creates [Mutiny.Query] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.StatelessSession.createQuery(
     query: UpdateQuery<T>,
@@ -34,12 +46,18 @@ fun <T : Any> Mutiny.StatelessSession.createQuery(
     context: RenderContext,
 ): Mutiny.Query<T> = JpqlMutinyStatelessSessionUtils.createQuery(this, query, queryParams, context)
 
+/**
+ * Creates [Mutiny.Query] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.StatelessSession.createQuery(
     query: DeleteQuery<T>,
     context: RenderContext,
 ): Mutiny.Query<T> = JpqlMutinyStatelessSessionUtils.createQuery(this, query, context)
 
+/**
+ * Creates [Mutiny.Query] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.StatelessSession.createQuery(
     query: DeleteQuery<T>,

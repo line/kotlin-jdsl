@@ -1,4 +1,4 @@
-package com.linecorp.kotlinjdsl.support.eclipselink
+package com.linecorp.kotlinjdsl.support.eclipselink.javax
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
@@ -6,14 +6,14 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
-import jakarta.persistence.Query
-import jakarta.persistence.TypedQuery
+import javax.persistence.EntityManager
+import javax.persistence.Query
+import javax.persistence.TypedQuery
 import kotlin.reflect.KClass
-import org.eclipse.persistence.jpa.JpaEntityManager
 
-internal object JpqlJpaEntityManagerUtils {
+internal object JpqlEntityManagerUtils {
     fun <T : Any> createQuery(
-        entityManager: JpaEntityManager,
+        entityManager: EntityManager,
         query: SelectQuery<T>,
         context: RenderContext,
     ): TypedQuery<T> {
@@ -23,7 +23,7 @@ internal object JpqlJpaEntityManagerUtils {
     }
 
     fun <T : Any> createQuery(
-        entityManager: JpaEntityManager,
+        entityManager: EntityManager,
         query: SelectQuery<T>,
         queryParams: Map<String, Any?>,
         context: RenderContext,
@@ -34,7 +34,7 @@ internal object JpqlJpaEntityManagerUtils {
     }
 
     fun <T : Any> createQuery(
-        entityManager: JpaEntityManager,
+        entityManager: EntityManager,
         query: UpdateQuery<T>,
         context: RenderContext,
     ): Query {
@@ -44,7 +44,7 @@ internal object JpqlJpaEntityManagerUtils {
     }
 
     fun <T : Any> createQuery(
-        entityManager: JpaEntityManager,
+        entityManager: EntityManager,
         query: UpdateQuery<T>,
         queryParams: Map<String, Any?>,
         context: RenderContext,
@@ -55,7 +55,7 @@ internal object JpqlJpaEntityManagerUtils {
     }
 
     fun <T : Any> createQuery(
-        entityManager: JpaEntityManager,
+        entityManager: EntityManager,
         query: DeleteQuery<T>,
         context: RenderContext,
     ): Query {
@@ -65,7 +65,7 @@ internal object JpqlJpaEntityManagerUtils {
     }
 
     fun <T : Any> createQuery(
-        entityManager: JpaEntityManager,
+        entityManager: EntityManager,
         query: DeleteQuery<T>,
         queryParams: Map<String, Any?>,
         context: RenderContext,
@@ -76,7 +76,7 @@ internal object JpqlJpaEntityManagerUtils {
     }
 
     private fun <T : Any> createQuery(
-        entityManager: JpaEntityManager,
+        entityManager: EntityManager,
         rendered: JpqlRendered,
         resultClass: KClass<T>,
     ): TypedQuery<T> {
@@ -86,7 +86,7 @@ internal object JpqlJpaEntityManagerUtils {
     }
 
     private fun createQuery(
-        entityManager: JpaEntityManager,
+        entityManager: EntityManager,
         rendered: JpqlRendered,
     ): Query {
         return entityManager.createQuery(rendered.query).apply {

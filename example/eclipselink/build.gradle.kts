@@ -5,18 +5,16 @@ plugins {
 }
 
 dependencies {
-    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
+    implementation(libs.test.eclipselink4)
+    implementation(libs.logback)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
     implementation(projects.eclipselinkSupport)
 
-    implementation(libs.logback)
-    implementation(libs.eclipselink.v4)
-
     runtimeOnly(libs.test.h2)
 
-    testFixturesImplementation(libs.eclipselink.v4)
+    testFixturesImplementation(libs.test.eclipselink4)
     testFixturesImplementation(projects.jpqlRender)
 }
 

@@ -13,17 +13,17 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.verifySequence
+import jakarta.persistence.EntityManager
 import jakarta.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
-import org.eclipse.persistence.jpa.JpaEntityManager
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
-class JpqlJpaEntityManagerUtilsTest : WithAssertions {
+class JpqlEntityManagerUtilsTest : WithAssertions {
     @MockK
-    private lateinit var entityManager: JpaEntityManager
+    private lateinit var entityManager: EntityManager
 
     @MockK
     private lateinit var selectQuery: SelectQuery<String>
@@ -62,7 +62,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - select query`() {
+    fun `createQuery() with a select query`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
@@ -72,7 +72,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
 
         // when
-        val actual = JpqlJpaEntityManagerUtils.createQuery(entityManager, selectQuery, context)
+        val actual = JpqlEntityManagerUtils.createQuery(entityManager, selectQuery, context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery)
@@ -87,7 +87,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - select query with query params`() {
+    fun `createQuery() with a select query and query params`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
@@ -97,7 +97,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
 
         // when
-        val actual = JpqlJpaEntityManagerUtils
+        val actual = JpqlEntityManagerUtils
             .createQuery(entityManager, selectQuery, mapOf(queryParam1, queryParam2), context)
 
         // then
@@ -113,7 +113,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - update query`() {
+    fun `createQuery() with an update query`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
@@ -122,7 +122,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
 
         // when
-        val actual = JpqlJpaEntityManagerUtils.createQuery(entityManager, updateQuery, context)
+        val actual = JpqlEntityManagerUtils.createQuery(entityManager, updateQuery, context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery)
@@ -136,7 +136,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - update query with query params`() {
+    fun `createQuery() with an update query and query params`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
@@ -145,7 +145,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
 
         // when
-        val actual = JpqlJpaEntityManagerUtils
+        val actual = JpqlEntityManagerUtils
             .createQuery(entityManager, updateQuery, mapOf(queryParam1, queryParam2), context)
 
         // then
@@ -160,7 +160,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - delete query`() {
+    fun `createQuery() with a delete query`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
@@ -169,7 +169,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
 
         // when
-        val actual = JpqlJpaEntityManagerUtils.createQuery(entityManager, deleteQuery, context)
+        val actual = JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery, context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery)
@@ -183,7 +183,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery - delete query with query params`() {
+    fun `createQuery() with a delete query and query params`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
@@ -192,7 +192,7 @@ class JpqlJpaEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
 
         // when
-        val actual = JpqlJpaEntityManagerUtils
+        val actual = JpqlEntityManagerUtils
             .createQuery(entityManager, deleteQuery, mapOf(queryParam1, queryParam2), context)
 
         // then

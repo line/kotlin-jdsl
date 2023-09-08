@@ -30,6 +30,10 @@ logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.0.0.Final" }
 hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.0.Final" }
 
+# eclipse-link
+eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.0" }
+eclipselink3 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "3.0.0" }
+
 # spring-boot
 spring-boot3-starter = { module = "org.springframework.boot:spring-boot-starter", version = "3.0.3" }
 spring-boot2-starter = { module = "org.springframework.boot:spring-boot-starter", version = "2.7.10" }
@@ -43,10 +47,6 @@ spring-batch4-infrastructure = { module = "org.springframework.batch:spring-batc
 # https://github.com/spring-projects/spring-data-jpa/issues/2812
 spring-data-jpa3 = { module = "org.springframework.data:spring-data-jpa", version = "3.0.3" }
 spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", version = "2.7.9" }
-
-# Eclipselink
-eclipselink = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.13" }
-eclipselink-v4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.2" }
 
 # test
 test-spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "test-spring-boot3" }
@@ -64,6 +64,9 @@ test-spring-batch4-test = { module = "org.springframework.batch:spring-batch-tes
 
 test-hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
 test-hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.5.Final" }
+
+test-eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.13" }
+test-eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.2" }
 
 test-vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.4.5" }
 test-agroal-pool = { module = "io.agroal:agroal-pool", version = "2.2" }

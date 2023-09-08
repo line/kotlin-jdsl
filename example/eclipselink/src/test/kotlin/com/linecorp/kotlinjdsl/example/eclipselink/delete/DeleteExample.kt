@@ -1,26 +1,30 @@
 package com.linecorp.kotlinjdsl.example.eclipselink.delete
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
-import com.linecorp.kotlinjdsl.example.eclipselink.JpaEntityManagerFactoryTestUtils
+import com.linecorp.kotlinjdsl.example.eclipselink.EntityManagerFactoryTestUtils
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.author.Author
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.book.Book
 import com.linecorp.kotlinjdsl.example.eclipselink.jpql.JpqlRenderContextUtils
-import com.linecorp.kotlinjdsl.example.eclipselink.withTransaction
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
 import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
-import org.eclipse.persistence.jpa.JpaEntityManager
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class DeleteExample : WithAssertions {
-    private val entityManagerFactory = JpaEntityManagerFactoryTestUtils.getJpaEntityManagerFactory()
+    private val entityManagerFactory = EntityManagerFactoryTestUtils.getEntityManagerFactory()
+    private val entityManager = entityManagerFactory.createEntityManager()
 
     private val context = JpqlRenderContextUtils.getJpqlRenderContext()
 
+    @AfterEach
+    fun tearDown() {
+        entityManager.close()
+    }
+
     @Test
     fun `delete author with id 2`() {
-        // given
-        val entityManger = entityManagerFactory.createEntityManager().unwrap(JpaEntityManager::class.java)
+        // when
         val deleteJpqlQuery = jpql {
             deleteFrom(
                 entity(Author::class),
@@ -28,6 +32,7 @@ class DeleteExample : WithAssertions {
                 path(Author::authorId).eq(2L),
             )
         }
+
         val selectJpqlQuery = jpql {
             select(
                 entity(Author::class),
@@ -36,10 +41,15 @@ class DeleteExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManger.withTransaction {
-            entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
-            entityManger.createQuery(selectJpqlQuery, context).resultList
+        val actual: List<Author>
+
+        entityManager.transaction.also { tx ->
+            tx.begin()
+
+            entityManager.createQuery(deleteJpqlQuery, context).executeUpdate()
+            actual = entityManager.createQuery(selectJpqlQuery, context).resultList
+
+            tx.rollback()
         }
 
         // then
@@ -54,8 +64,7 @@ class DeleteExample : WithAssertions {
 
     @Test
     fun `delete all books published after June 2023`() {
-        // given
-        val entityManger = entityManagerFactory.createEntityManager().unwrap(JpaEntityManager::class.java)
+        // when
         val deleteJpqlQuery = jpql {
             deleteFrom(
                 entity(Book::class),
@@ -63,6 +72,7 @@ class DeleteExample : WithAssertions {
                 path(Book::publishDate).ge(OffsetDateTime.parse("2023-06-01T00:00:00+09:00")),
             )
         }
+
         val selectJpqlQuery = jpql {
             select(
                 entity(Book::class),
@@ -71,10 +81,15 @@ class DeleteExample : WithAssertions {
             )
         }
 
-        // when
-        val actual = entityManger.withTransaction {
-            entityManger.createQuery(deleteJpqlQuery, context).executeUpdate()
-            entityManger.createQuery(selectJpqlQuery, context).resultList
+        val actual: List<Book>
+
+        entityManager.transaction.also { tx ->
+            tx.begin()
+
+            entityManager.createQuery(deleteJpqlQuery, context).executeUpdate()
+            actual = entityManager.createQuery(selectJpqlQuery, context).resultList
+
+            tx.rollback()
         }
 
         // then

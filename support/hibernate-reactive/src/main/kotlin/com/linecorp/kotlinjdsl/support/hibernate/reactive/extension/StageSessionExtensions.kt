@@ -8,12 +8,18 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.hibernate.reactive.JpqlStageSessionUtils
 import org.hibernate.reactive.stage.Stage
 
+/**
+ * Creates [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
 ): Stage.SelectionQuery<T> = JpqlStageSessionUtils.createQuery(this, query, context)
 
+/**
+ * Creates [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: SelectQuery<T>,
@@ -21,12 +27,18 @@ fun <T : Any> Stage.Session.createQuery(
     context: RenderContext,
 ): Stage.SelectionQuery<T> = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)
 
+/**
+ * Creates [Stage.MutationQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createMutationQuery(
     query: UpdateQuery<T>,
     context: RenderContext,
 ): Stage.MutationQuery = JpqlStageSessionUtils.createMutationQuery(this, query, context)
 
+/**
+ * Creates [Stage.MutationQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createMutationQuery(
     query: UpdateQuery<T>,
@@ -34,12 +46,18 @@ fun <T : Any> Stage.Session.createMutationQuery(
     context: RenderContext,
 ): Stage.MutationQuery = JpqlStageSessionUtils.createMutationQuery(this, query, queryParams, context)
 
+/**
+ * Creates [Stage.MutationQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createMutationQuery(
     query: DeleteQuery<T>,
     context: RenderContext,
 ): Stage.MutationQuery = JpqlStageSessionUtils.createMutationQuery(this, query, context)
 
+/**
+ * Creates [Stage.MutationQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createMutationQuery(
     query: DeleteQuery<T>,
