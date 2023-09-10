@@ -8,12 +8,18 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.hibernate.reactive.JpqlStageStatelessSessionUtils
 import org.hibernate.reactive.stage.Stage
 
+/**
+ * Creates [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
 ): Stage.SelectionQuery<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, context)
 
+/**
+ * Creates [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
     query: SelectQuery<T>,
@@ -21,12 +27,18 @@ fun <T : Any> Stage.StatelessSession.createQuery(
     context: RenderContext,
 ): Stage.SelectionQuery<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, queryParams, context)
 
+/**
+ * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
     query: UpdateQuery<T>,
     context: RenderContext,
 ): Stage.Query<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, context)
 
+/**
+ * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
     query: UpdateQuery<T>,
@@ -34,12 +46,18 @@ fun <T : Any> Stage.StatelessSession.createQuery(
     context: RenderContext,
 ): Stage.Query<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, queryParams, context)
 
+/**
+ * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
     query: DeleteQuery<T>,
     context: RenderContext,
 ): Stage.Query<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, context)
 
+/**
+ * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
     query: DeleteQuery<T>,

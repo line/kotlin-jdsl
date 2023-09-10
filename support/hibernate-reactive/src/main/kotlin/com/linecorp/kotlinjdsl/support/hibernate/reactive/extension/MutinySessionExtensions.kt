@@ -8,12 +8,18 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.hibernate.reactive.JpqlMutinySessionUtils
 import org.hibernate.reactive.mutiny.Mutiny
 
+/**
+ * Creates [Mutiny.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
 ): Mutiny.SelectionQuery<T> = JpqlMutinySessionUtils.createQuery(this, query, context)
 
+/**
+ * Creates [Mutiny.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createQuery(
     query: SelectQuery<T>,
@@ -21,12 +27,18 @@ fun <T : Any> Mutiny.Session.createQuery(
     context: RenderContext,
 ): Mutiny.SelectionQuery<T> = JpqlMutinySessionUtils.createQuery(this, query, queryParams, context)
 
+/**
+ * Creates [Mutiny.MutationQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createMutationQuery(
     query: UpdateQuery<T>,
     context: RenderContext,
 ): Mutiny.MutationQuery = JpqlMutinySessionUtils.createMutationQuery(this, query, context)
 
+/**
+ * Creates [Mutiny.MutationQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createMutationQuery(
     query: UpdateQuery<T>,
@@ -34,12 +46,18 @@ fun <T : Any> Mutiny.Session.createMutationQuery(
     context: RenderContext,
 ): Mutiny.MutationQuery = JpqlMutinySessionUtils.createMutationQuery(this, query, queryParams, context)
 
+/**
+ * Creates [Mutiny.MutationQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createMutationQuery(
     query: DeleteQuery<T>,
     context: RenderContext,
 ): Mutiny.MutationQuery = JpqlMutinySessionUtils.createMutationQuery(this, query, context)
 
+/**
+ * Creates [Mutiny.MutationQuery] from the [SelectQuery] and [RenderContext].
+ */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createMutationQuery(
     query: DeleteQuery<T>,

@@ -15,7 +15,7 @@ Kotlin JDSL은 Spring Boot AutoConfigure를 지원합니다.
 interface AuthorRepository : JpaRepository<Author, Long>, KotlinJdslJpqlExecutor
 interface BookRepository : JpaRepository<Book, Isbn>, KotlinJdslJpqlExecutor
 
-authorRepository.findFirst {
+authorRepository.findAll {
     select(
         path(Author::authorId),
     ).from(

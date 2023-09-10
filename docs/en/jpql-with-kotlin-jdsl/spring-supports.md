@@ -15,7 +15,7 @@ If your `JpaRepository` extends `KotlinJdslJpqlExecutor`, you can use the extens
 interface AuthorRepository : JpaRepository<Author, Long>, KotlinJdslJpqlExecutor
 interface BookRepository : JpaRepository<Book, Isbn>, KotlinJdslJpqlExecutor
 
-authorRepository.findFirst {
+authorRepository.findAll {
     select(
         path(Author::authorId),
     ).from(
