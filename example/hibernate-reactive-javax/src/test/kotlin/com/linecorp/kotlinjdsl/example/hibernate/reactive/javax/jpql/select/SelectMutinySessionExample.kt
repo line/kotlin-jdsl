@@ -301,4 +301,57 @@ class SelectMutinySessionExample : WithAssertions {
         // then
         assertThat(actual).isEqualTo(listOf(7L))
     }
+
+    @Test
+    fun `employee who doesn't have a nickname`() {
+        // when
+        val expected = "If the replacement value is null, this value is extracted"
+        val actualStringValuesQuery = jpql {
+            select(
+                coalesce(path(Employee::nickname), null, expected),
+            ).from(
+                entity(Employee::class),
+            ).where(
+                path(Employee::nickname).isNull(),
+            )
+        }
+
+        val actualStringLiteralValuesQuery = jpql {
+            select(
+                coalesce(path(Employee::nickname), nullLiteral(), stringLiteral(expected)),
+            ).from(
+                entity(Employee::class),
+            ).where(
+                path(Employee::nickname).isNull(),
+            )
+        }
+
+        val countHaveNickNamesQuery = jpql {
+            select(
+                count(entity(Employee::class)),
+            ).from(
+                entity(Employee::class),
+            ).where(
+                path(Employee::nickname).isNotNull(),
+            )
+        }
+
+        val countHaveNickNames = sessionFactory.withSession {
+            it.createQuery(countHaveNickNamesQuery, context).singleResult
+        }.await().indefinitely().toInt()
+
+        val actualStringLiteralValues = sessionFactory.withSession {
+            it.createQuery(actualStringLiteralValuesQuery, context).resultList
+        }.await().indefinitely().filterNotNull()
+
+        val actualStringValues = sessionFactory.withSession {
+            it.createQuery(actualStringValuesQuery, context).resultList
+        }.await().indefinitely().filterNotNull()
+
+        // then
+        listOf(actualStringValues, actualStringLiteralValues).forEach {
+            assertThat(it).hasSize(countHaveNickNames)
+            assertThat(it.toSet()).containsExactly(expected)
+        }
+    }
 }

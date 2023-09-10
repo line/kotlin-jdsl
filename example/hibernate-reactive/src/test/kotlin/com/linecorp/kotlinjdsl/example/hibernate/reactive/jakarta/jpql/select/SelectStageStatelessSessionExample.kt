@@ -301,4 +301,57 @@ class SelectStageStatelessSessionExample : WithAssertions {
         // then
         assertThat(actual).isEqualTo(listOf(7L))
     }
+
+    @Test
+    fun `employee who doesn't have a nickname`() {
+        // when
+        val expected = "If the replacement value is null, this value is extracted"
+        val actualStringValuesQuery = jpql {
+            select(
+                coalesce(path(Employee::nickname), null, expected),
+            ).from(
+                entity(Employee::class),
+            ).where(
+                path(Employee::nickname).isNull(),
+            )
+        }
+
+        val actualStringLiteralValuesQuery = jpql {
+            select(
+                coalesce(path(Employee::nickname), nullLiteral(), stringLiteral(expected)),
+            ).from(
+                entity(Employee::class),
+            ).where(
+                path(Employee::nickname).isNull(),
+            )
+        }
+
+        val countHaveNickNamesQuery = jpql {
+            select(
+                count(entity(Employee::class)),
+            ).from(
+                entity(Employee::class),
+            ).where(
+                path(Employee::nickname).isNotNull(),
+            )
+        }
+
+        val countHaveNickNames = sessionFactory.withStatelessSession {
+            it.createQuery(countHaveNickNamesQuery, context).singleResult
+        }.toCompletableFuture().get().toInt()
+
+        val actualStringLiteralValues = sessionFactory.withStatelessSession {
+            it.createQuery(actualStringLiteralValuesQuery, context).resultList
+        }.toCompletableFuture().get().filterNotNull()
+
+        val actualStringValues = sessionFactory.withStatelessSession {
+            it.createQuery(actualStringValuesQuery, context).resultList
+        }.toCompletableFuture().get().filterNotNull()
+
+        // then
+        listOf(actualStringValues, actualStringLiteralValues).forEach {
+            assertThat(it).hasSize(countHaveNickNames)
+            assertThat(it.toSet()).containsExactly(expected)
+        }
+    }
 }
