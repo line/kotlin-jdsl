@@ -10,6 +10,7 @@ import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.entity.employe
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.repository.author.AuthorRepository
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.repository.book.BookRepository
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.repository.employee.EmployeeRepository
+import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.transaction.annotation.Transactional
-import java.time.OffsetDateTime
 
 @Transactional
 @SpringBootTest

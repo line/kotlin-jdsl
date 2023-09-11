@@ -10,10 +10,10 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.example.eclipselink.jpql.JpqlRenderContextUtils
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
+import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import java.time.OffsetDateTime
 
 class SelectExample : WithAssertions {
     private val entityManagerFactory = EntityManagerFactoryTestUtils.getEntityManagerFactory()
