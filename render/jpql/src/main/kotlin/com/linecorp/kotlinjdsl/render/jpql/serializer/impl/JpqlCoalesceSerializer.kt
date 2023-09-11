@@ -21,15 +21,8 @@ internal class JpqlCoalesceSerializer : JpqlSerializer<JpqlCoalesce<*>> {
         writer.write("COALESCE")
 
         writer.writeParentheses {
-            val expressions = part.expr.toList()
-
-            expressions.forEachIndexed { index, it ->
+            writer.writeEach(part.expr) {
                 delegate.serialize(it, writer, context)
-
-                if (index < expressions.size - 1) {
-                    writer.write(",")
-                    writer.write(" ")
-                }
             }
         }
     }
