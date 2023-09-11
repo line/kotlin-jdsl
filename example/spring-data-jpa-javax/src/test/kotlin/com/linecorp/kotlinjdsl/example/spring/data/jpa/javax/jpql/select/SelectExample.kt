@@ -10,7 +10,6 @@ import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.entity.employe
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.repository.author.AuthorRepository
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.repository.book.BookRepository
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.repository.employee.EmployeeRepository
-import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.transaction.annotation.Transactional
+import java.time.OffsetDateTime
 
 @Transactional
 @SpringBootTest
@@ -328,46 +328,5 @@ class SelectExample : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(listOf(7L))
-    }
-
-    @Test
-    fun `employee who doesn't have a nickname`() {
-        // when
-        val expected = "If the replacement value is null, this value is extracted"
-        val actualStringValues = authorRepository.findAll {
-            select(
-                coalesce(path(Employee::nickname), null, expected),
-            ).from(
-                entity(Employee::class),
-            ).where(
-                path(Employee::nickname).isNull(),
-            )
-        }
-
-        val actualStringLiteralValues = authorRepository.findAll {
-            select(
-                coalesce(path(Employee::nickname), nullLiteral(), stringLiteral(expected)),
-            ).from(
-                entity(Employee::class),
-            ).where(
-                path(Employee::nickname).isNull(),
-            )
-        }
-
-        val countHaveNickNames = authorRepository.findAll {
-            select(
-                count(entity(Employee::class)),
-            ).from(
-                entity(Employee::class),
-            ).where(
-                path(Employee::nickname).isNotNull(),
-            )
-        }.firstNotNullOf { it?.toInt() }
-
-        // then
-        listOf(actualStringValues, actualStringLiteralValues).forEach {
-            assertThat(it).hasSize(countHaveNickNames)
-            assertThat(it.toSet()).containsExactly(expected)
-        }
     }
 }

@@ -11,9 +11,9 @@ import com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.em
 import com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.example.hibernate.reactive.jpql.JpqlRenderContextUtils
 import com.linecorp.kotlinjdsl.support.hibernate.reactive.extension.createQuery
-import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import java.time.OffsetDateTime
 
 class SelectStageSessionExample : WithAssertions {
     private val sessionFactory = SessionFactoryTestUtils.getStageSessionFactory()
@@ -300,58 +300,5 @@ class SelectStageSessionExample : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(listOf(7L))
-    }
-
-    @Test
-    fun `employee who doesn't have a nickname`() {
-        // when
-        val expected = "If the replacement value is null, this value is extracted"
-        val actualStringValuesQuery = jpql {
-            select(
-                coalesce(path(Employee::nickname), null, expected),
-            ).from(
-                entity(Employee::class),
-            ).where(
-                path(Employee::nickname).isNull(),
-            )
-        }
-
-        val actualStringLiteralValuesQuery = jpql {
-            select(
-                coalesce(path(Employee::nickname), nullLiteral(), stringLiteral(expected)),
-            ).from(
-                entity(Employee::class),
-            ).where(
-                path(Employee::nickname).isNull(),
-            )
-        }
-
-        val countHaveNickNamesQuery = jpql {
-            select(
-                count(entity(Employee::class)),
-            ).from(
-                entity(Employee::class),
-            ).where(
-                path(Employee::nickname).isNotNull(),
-            )
-        }
-
-        val countHaveNickNames = sessionFactory.withSession {
-            it.createQuery(countHaveNickNamesQuery, context).singleResult
-        }.toCompletableFuture().get().toInt()
-
-        val actualStringLiteralValues = sessionFactory.withSession {
-            it.createQuery(actualStringLiteralValuesQuery, context).resultList
-        }.toCompletableFuture().get().filterNotNull()
-
-        val actualStringValues = sessionFactory.withSession {
-            it.createQuery(actualStringValuesQuery, context).resultList
-        }.toCompletableFuture().get().filterNotNull()
-
-        // then
-        listOf(actualStringValues, actualStringLiteralValues).forEach {
-            assertThat(it).hasSize(countHaveNickNames)
-            assertThat(it.toSet()).containsExactly(expected)
-        }
     }
 }

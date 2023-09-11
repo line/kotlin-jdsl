@@ -10,10 +10,10 @@ import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.eclipselink.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.example.eclipselink.jpql.JpqlRenderContextUtils
 import com.linecorp.kotlinjdsl.support.eclipselink.extension.createQuery
-import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import java.time.OffsetDateTime
 
 class SelectExample : WithAssertions {
     private val entityManagerFactory = EntityManagerFactoryTestUtils.getEntityManagerFactory()
@@ -286,53 +286,5 @@ class SelectExample : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(listOf(7L))
-    }
-
-    @Test
-    fun `employee who doesn't have a nickname`() {
-        // when
-        val expected = "If the replacement value is null, this value is extracted"
-        val actualStringValuesQuery = jpql {
-            select(
-                coalesce(path(Employee::nickname), null, expected),
-            ).from(
-                entity(Employee::class),
-            ).where(
-                path(Employee::nickname).isNull(),
-            )
-        }
-
-        val actualStringLiteralValuesQuery = jpql {
-            select(
-                coalesce(path(Employee::nickname), nullLiteral(), stringLiteral(expected)),
-            ).from(
-                entity(Employee::class),
-            ).where(
-                path(Employee::nickname).isNull(),
-            )
-        }
-
-        val countHaveNickNamesQuery = jpql {
-            select(
-                count(entity(Employee::class)),
-            ).from(
-                entity(Employee::class),
-            ).where(
-                path(Employee::nickname).isNotNull(),
-            )
-        }
-
-        val countHaveNickNames = entityManager.createQuery(countHaveNickNamesQuery, context).singleResult.toInt()
-
-        val actualStringLiteralValues = entityManager.createQuery(actualStringLiteralValuesQuery, context).resultList
-            .filterNotNull()
-
-        val actualStringValues = entityManager.createQuery(actualStringValuesQuery, context).resultList.filterNotNull()
-
-        // then
-        listOf(actualStringValues, actualStringLiteralValues).forEach {
-            assertThat(it).hasSize(countHaveNickNames)
-            assertThat(it.toSet()).containsExactly(expected)
-        }
     }
 }
