@@ -38,6 +38,21 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
 
     private val queryParams1 = mapOf("authorId" to 1L)
 
+    private class MyJpql : Jpql() {
+        companion object Constructor : JpqlDsl.Constructor<MyJpql> {
+            override fun newInstance(): MyJpql = MyJpql()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            return javaClass == other?.javaClass
+        }
+
+        override fun hashCode(): Int {
+            return javaClass.hashCode()
+        }
+    }
+
     @BeforeEach
     fun setUp() {
         every { createSelectQuery1.invoke(any()) } returns selectQuery1
@@ -140,20 +155,5 @@ class KotlinJdslQueryProviderFactoryTest : WithAssertions {
         )
 
         assertThat(actual).isEqualTo(expected)
-    }
-
-    private class MyJpql : Jpql() {
-        companion object Constructor : JpqlDsl.Constructor<MyJpql> {
-            override fun newInstance(): MyJpql = MyJpql()
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            return javaClass == other?.javaClass
-        }
-
-        override fun hashCode(): Int {
-            return javaClass.hashCode()
-        }
     }
 }
