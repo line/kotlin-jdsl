@@ -1,3 +1,5 @@
+## This is still a snapshot version. Version 3.0.0 will be released on October 24th.
+
 Visit [the gitbook](https://kotlin-jdsl.gitbook.io/docs/) for more information.
 
 # Kotlin JDSL
