@@ -24,16 +24,16 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     private lateinit var entityManager: EntityManager
 
     @MockK
-    private lateinit var selectQuery: SelectQuery<String>
-
-    @MockK
-    private lateinit var stringTypedQuery: TypedQuery<String>
-
-    @MockK
     private lateinit var renderer: JpqlRenderer
 
     @MockK
     private lateinit var context: RenderContext
+
+    @MockK
+    private lateinit var selectQuery1: SelectQuery<String>
+
+    @MockK
+    private lateinit var stringTypedQuery1: TypedQuery<String>
 
     private val renderedQuery1 = "query"
     private val renderedParam1 = "queryParam1" to "queryParamValue1"
@@ -50,7 +50,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { JpqlRendererHolder.get() } returns renderer
 
         excludeRecords { JpqlRendererHolder.get() }
-        excludeRecords { stringTypedQuery.equals(any()) }
+        excludeRecords { stringTypedQuery1.equals(any()) }
     }
 
     @Test
@@ -59,23 +59,23 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any(), any()) } returns rendered1
-        every { selectQuery.returnType } returns String::class
-        every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery
-        every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
+        every { selectQuery1.returnType } returns String::class
+        every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
         val actual = JpqlEntityManagerUtils
-            .createQuery(entityManager, selectQuery, mapOf(queryParam1, queryParam2), context)
+            .createQuery(entityManager, selectQuery1, mapOf(queryParam1, queryParam2), context)
 
         // then
-        assertThat(actual).isEqualTo(stringTypedQuery)
+        assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(selectQuery, mapOf(queryParam1, queryParam2), context)
-            selectQuery.returnType
+            renderer.render(selectQuery1, mapOf(queryParam1, queryParam2), context)
+            selectQuery1.returnType
             entityManager.createQuery(rendered1.query, String::class.java)
-            stringTypedQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 }

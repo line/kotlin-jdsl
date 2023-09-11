@@ -21,7 +21,7 @@ class JpqlCoalesceSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
-    private val expression1 = Expressions.nullValue<Int>()
+    private val expression1 = Expressions.value(1)
     private val expression2 = Expressions.value(2)
     private val expression3 = Expressions.value(3)
 
@@ -37,7 +37,11 @@ class JpqlCoalesceSerializerTest : WithAssertions {
     @Test
     fun serialize() {
         // given
-        val coalesce = Expressions.coalesce(expression1, expression2, listOf(expression3))
+        val coalesce = Expressions.coalesce(
+            expression1,
+            expression2,
+            listOf(expression3),
+        )
         val context = TestRenderContext(serializer)
 
         // when
@@ -46,14 +50,11 @@ class JpqlCoalesceSerializerTest : WithAssertions {
         // then
         verifySequence {
             writer.write("COALESCE")
-
             writer.writeParentheses(any())
-
-            val expressions = listOf(expression1, expression2, expression3)
-            writer.writeEach(expressions, write = any())
-            expressions.forEach {
-                serializer.serialize(it, writer, context)
-            }
+            writer.writeEach(listOf(expression1, expression2, expression3), ", ", "", "", any())
+            serializer.serialize(expression1, writer, context)
+            serializer.serialize(expression2, writer, context)
+            serializer.serialize(expression3, writer, context)
         }
     }
 }

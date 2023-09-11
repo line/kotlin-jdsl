@@ -7,7 +7,6 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderer
-import com.linecorp.kotlinjdsl.support.hibernate.reactive.extension.createMutationQuery
 import io.mockk.every
 import io.mockk.excludeRecords
 import io.mockk.impl.annotations.MockK
@@ -26,25 +25,25 @@ class JpqlMutinySessionUtilsTest : WithAssertions {
     private lateinit var session: Mutiny.Session
 
     @MockK
-    private lateinit var selectQuery: SelectQuery<String>
-
-    @MockK
-    private lateinit var updateQuery: UpdateQuery<String>
-
-    @MockK
-    private lateinit var deleteQuery: DeleteQuery<String>
-
-    @MockK
-    private lateinit var selectionQuery: Mutiny.SelectionQuery<String>
-
-    @MockK
-    private lateinit var mutationQuery: Mutiny.MutationQuery
-
-    @MockK
     private lateinit var renderer: JpqlRenderer
 
     @MockK
     private lateinit var context: RenderContext
+
+    @MockK
+    private lateinit var selectQuery1: SelectQuery<String>
+
+    @MockK
+    private lateinit var updateQuery1: UpdateQuery<String>
+
+    @MockK
+    private lateinit var deleteQuery1: DeleteQuery<String>
+
+    @MockK
+    private lateinit var selectionQuery1: Mutiny.SelectionQuery<String>
+
+    @MockK
+    private lateinit var mutationQuery1: Mutiny.MutationQuery
 
     private val renderedQuery1 = "query"
     private val renderedParam1 = "queryParam1" to "queryParamValue1"
@@ -61,8 +60,8 @@ class JpqlMutinySessionUtilsTest : WithAssertions {
         every { JpqlRendererHolder.get() } returns renderer
 
         excludeRecords { JpqlRendererHolder.get() }
-        excludeRecords { selectionQuery.equals(any()) }
-        excludeRecords { mutationQuery.equals(any()) }
+        excludeRecords { selectionQuery1.equals(any()) }
+        excludeRecords { mutationQuery1.equals(any()) }
     }
 
     @Test
@@ -71,22 +70,22 @@ class JpqlMutinySessionUtilsTest : WithAssertions {
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any()) } returns rendered1
-        every { selectQuery.returnType } returns String::class
-        every { session.createQuery(any<String>(), any<Class<String>>()) } returns selectionQuery
-        every { selectionQuery.setParameter(any<String>(), any()) } returns selectionQuery
+        every { selectQuery1.returnType } returns String::class
+        every { session.createQuery(any<String>(), any<Class<String>>()) } returns selectionQuery1
+        every { selectionQuery1.setParameter(any<String>(), any()) } returns selectionQuery1
 
         // when
-        val actual = JpqlMutinySessionUtils.createQuery(session, selectQuery, context)
+        val actual = JpqlMutinySessionUtils.createQuery(session, selectQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(selectionQuery)
+        assertThat(actual).isEqualTo(selectionQuery1)
 
         verifySequence {
-            renderer.render(selectQuery, context)
-            selectQuery.returnType
+            renderer.render(selectQuery1, context)
+            selectQuery1.returnType
             session.createQuery(rendered1.query, String::class.java)
-            selectionQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            selectionQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            selectionQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            selectionQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
@@ -96,23 +95,23 @@ class JpqlMutinySessionUtilsTest : WithAssertions {
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any(), any()) } returns rendered1
-        every { selectQuery.returnType } returns String::class
-        every { session.createQuery(any<String>(), any<Class<String>>()) } returns selectionQuery
-        every { selectionQuery.setParameter(any<String>(), any()) } returns selectionQuery
+        every { selectQuery1.returnType } returns String::class
+        every { session.createQuery(any<String>(), any<Class<String>>()) } returns selectionQuery1
+        every { selectionQuery1.setParameter(any<String>(), any()) } returns selectionQuery1
 
         // when
         val actual = JpqlMutinySessionUtils
-            .createQuery(session, selectQuery, mapOf(queryParam1, queryParam2), context)
+            .createQuery(session, selectQuery1, mapOf(queryParam1, queryParam2), context)
 
         // then
-        assertThat(actual).isEqualTo(selectionQuery)
+        assertThat(actual).isEqualTo(selectionQuery1)
 
         verifySequence {
-            renderer.render(selectQuery, mapOf(queryParam1, queryParam2), context)
-            selectQuery.returnType
+            renderer.render(selectQuery1, mapOf(queryParam1, queryParam2), context)
+            selectQuery1.returnType
             session.createQuery(rendered1.query, String::class.java)
-            selectionQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            selectionQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            selectionQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            selectionQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
@@ -122,20 +121,20 @@ class JpqlMutinySessionUtilsTest : WithAssertions {
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any()) } returns rendered1
-        every { session.createMutationQuery(any<String>()) } returns mutationQuery
-        every { mutationQuery.setParameter(any<String>(), any()) } returns mutationQuery
+        every { session.createMutationQuery(any<String>()) } returns mutationQuery1
+        every { mutationQuery1.setParameter(any<String>(), any()) } returns mutationQuery1
 
         // when
-        val actual = JpqlMutinySessionUtils.createMutationQuery(session, updateQuery, context)
+        val actual = JpqlMutinySessionUtils.createMutationQuery(session, updateQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(mutationQuery)
+        assertThat(actual).isEqualTo(mutationQuery1)
 
         verifySequence {
-            renderer.render(updateQuery, context)
+            renderer.render(updateQuery1, context)
             session.createMutationQuery(rendered1.query)
-            mutationQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            mutationQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            mutationQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            mutationQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
@@ -145,21 +144,21 @@ class JpqlMutinySessionUtilsTest : WithAssertions {
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any(), any()) } returns rendered1
-        every { session.createMutationQuery(any<String>()) } returns mutationQuery
-        every { mutationQuery.setParameter(any<String>(), any()) } returns mutationQuery
+        every { session.createMutationQuery(any<String>()) } returns mutationQuery1
+        every { mutationQuery1.setParameter(any<String>(), any()) } returns mutationQuery1
 
         // when
         val actual = JpqlMutinySessionUtils
-            .createMutationQuery(session, updateQuery, mapOf(queryParam1, queryParam2), context)
+            .createMutationQuery(session, updateQuery1, mapOf(queryParam1, queryParam2), context)
 
         // then
-        assertThat(actual).isEqualTo(mutationQuery)
+        assertThat(actual).isEqualTo(mutationQuery1)
 
         verifySequence {
-            renderer.render(updateQuery, mapOf(queryParam1, queryParam2), context)
+            renderer.render(updateQuery1, mapOf(queryParam1, queryParam2), context)
             session.createMutationQuery(rendered1.query)
-            mutationQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            mutationQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            mutationQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            mutationQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
@@ -169,20 +168,20 @@ class JpqlMutinySessionUtilsTest : WithAssertions {
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any()) } returns rendered1
-        every { session.createMutationQuery(any<String>()) } returns mutationQuery
-        every { mutationQuery.setParameter(any<String>(), any()) } returns mutationQuery
+        every { session.createMutationQuery(any<String>()) } returns mutationQuery1
+        every { mutationQuery1.setParameter(any<String>(), any()) } returns mutationQuery1
 
         // when
-        val actual = JpqlMutinySessionUtils.createMutationQuery(session, deleteQuery, context)
+        val actual = JpqlMutinySessionUtils.createMutationQuery(session, deleteQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(mutationQuery)
+        assertThat(actual).isEqualTo(mutationQuery1)
 
         verifySequence {
-            renderer.render(deleteQuery, context)
+            renderer.render(deleteQuery1, context)
             session.createMutationQuery(rendered1.query)
-            mutationQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            mutationQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            mutationQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            mutationQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
@@ -192,21 +191,21 @@ class JpqlMutinySessionUtilsTest : WithAssertions {
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any(), any()) } returns rendered1
-        every { session.createMutationQuery(any<String>()) } returns mutationQuery
-        every { mutationQuery.setParameter(any<String>(), any()) } returns mutationQuery
+        every { session.createMutationQuery(any<String>()) } returns mutationQuery1
+        every { mutationQuery1.setParameter(any<String>(), any()) } returns mutationQuery1
 
         // when
         val actual = JpqlMutinySessionUtils
-            .createMutationQuery(session, deleteQuery, mapOf(queryParam1, queryParam2), context)
+            .createMutationQuery(session, deleteQuery1, mapOf(queryParam1, queryParam2), context)
 
         // then
-        assertThat(actual).isEqualTo(mutationQuery)
+        assertThat(actual).isEqualTo(mutationQuery1)
 
         verifySequence {
-            renderer.render(deleteQuery, mapOf(queryParam1, queryParam2), context)
+            renderer.render(deleteQuery1, mapOf(queryParam1, queryParam2), context)
             session.createMutationQuery(rendered1.query)
-            mutationQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            mutationQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            mutationQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            mutationQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 }

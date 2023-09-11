@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.SliceImpl
 import org.springframework.data.jpa.repository.query.QueryUtilsAdaptor
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
 
@@ -31,28 +32,28 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     private lateinit var entityManager: EntityManager
 
     @MockK
-    private lateinit var selectQuery: SelectQuery<String>
-
-    @MockK
-    private lateinit var updateQuery: UpdateQuery<String>
-
-    @MockK
-    private lateinit var deleteQuery: DeleteQuery<String>
-
-    @MockK
-    private lateinit var stringTypedQuery: TypedQuery<String>
-
-    @MockK
-    private lateinit var longTypedQuery: TypedQuery<Long>
-
-    @MockK
-    private lateinit var page: Page<String>
-
-    @MockK
     private lateinit var renderer: JpqlRenderer
 
     @MockK
     private lateinit var context: RenderContext
+
+    @MockK
+    private lateinit var selectQuery1: SelectQuery<String>
+
+    @MockK
+    private lateinit var updateQuery1: UpdateQuery<String>
+
+    @MockK
+    private lateinit var deleteQuery1: DeleteQuery<String>
+
+    @MockK
+    private lateinit var stringTypedQuery1: TypedQuery<String>
+
+    @MockK
+    private lateinit var longTypedQuery1: TypedQuery<Long>
+
+    @MockK
+    private lateinit var page1: Page<String>
 
     private val renderedQuery1 = "query"
     private val renderedParam1 = "queryParam1" to "queryParamValue1"
@@ -74,208 +75,286 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { JpqlRendererHolder.get() } returns renderer
 
         excludeRecords { JpqlRendererHolder.get() }
-        excludeRecords { stringTypedQuery.equals(any()) }
+        excludeRecords { stringTypedQuery1.equals(any()) }
     }
 
     @Test
-    fun `createQuery - select query`() {
+    fun `createQuery() with a select query`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any()) } returns rendered1
-        every { selectQuery.returnType } returns String::class
-        every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery
-        every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
+        every { selectQuery1.returnType } returns String::class
+        every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
-        val actual = JpqlEntityManagerUtils.createQuery(entityManager, selectQuery, context)
+        val actual = JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(stringTypedQuery)
+        assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(selectQuery, context)
-            selectQuery.returnType
+            renderer.render(selectQuery1, context)
+            selectQuery1.returnType
             entityManager.createQuery(rendered1.query, String::class.java)
-            stringTypedQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
     @Test
-    fun `createQuery - select query with query params`() {
+    fun `createQuery() with a select query and query params`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any(), any()) } returns rendered1
-        every { selectQuery.returnType } returns String::class
-        every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery
-        every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
+        every { selectQuery1.returnType } returns String::class
+        every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
-        val actual = JpqlEntityManagerUtils
-            .createQuery(entityManager, selectQuery, mapOf(queryParam1, queryParam2), context)
+        val actual =
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, mapOf(queryParam1, queryParam2), context)
 
         // then
-        assertThat(actual).isEqualTo(stringTypedQuery)
+        assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(selectQuery, mapOf(queryParam1, queryParam2), context)
-            selectQuery.returnType
+            renderer.render(selectQuery1, mapOf(queryParam1, queryParam2), context)
+            selectQuery1.returnType
             entityManager.createQuery(rendered1.query, String::class.java)
-            stringTypedQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
     @Test
-    fun `createQuery - update query`() {
+    fun `createQuery() with an update query`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any()) } returns rendered1
-        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery
-        every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
+        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
-        val actual = JpqlEntityManagerUtils.createQuery(entityManager, updateQuery, context)
+        val actual = JpqlEntityManagerUtils.createQuery(entityManager, updateQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(stringTypedQuery)
+        assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(updateQuery, context)
+            renderer.render(updateQuery1, context)
             entityManager.createQuery(rendered1.query)
-            stringTypedQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
     @Test
-    fun `createQuery - update query with query params`() {
+    fun `createQuery() with an update query and query params`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any(), any()) } returns rendered1
-        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery
-        every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
+        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
-        val actual = JpqlEntityManagerUtils
-            .createQuery(entityManager, updateQuery, mapOf(queryParam1, queryParam2), context)
+        val actual =
+            JpqlEntityManagerUtils.createQuery(entityManager, updateQuery1, mapOf(queryParam1, queryParam2), context)
 
         // then
-        assertThat(actual).isEqualTo(stringTypedQuery)
+        assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(updateQuery, mapOf(queryParam1, queryParam2), context)
+            renderer.render(updateQuery1, mapOf(queryParam1, queryParam2), context)
             entityManager.createQuery(rendered1.query)
-            stringTypedQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
     @Test
-    fun `createQuery - delete query`() {
+    fun `createQuery() with a delete query`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any()) } returns rendered1
-        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery
-        every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
+        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
-        val actual = JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery, context)
+        val actual = JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(stringTypedQuery)
+        assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(deleteQuery, context)
+            renderer.render(deleteQuery1, context)
             entityManager.createQuery(rendered1.query)
-            stringTypedQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
     @Test
-    fun `createQuery - delete query with query params`() {
+    fun `createQuery() with a delete query and query params`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any(), any()) } returns rendered1
-        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery
-        every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
+        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
-        val actual = JpqlEntityManagerUtils
-            .createQuery(entityManager, deleteQuery, mapOf(queryParam1, queryParam2), context)
+        val actual =
+            JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery1, mapOf(queryParam1, queryParam2), context)
 
         // then
-        assertThat(actual).isEqualTo(stringTypedQuery)
+        assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(deleteQuery, mapOf(queryParam1, queryParam2), context)
+            renderer.render(deleteQuery1, mapOf(queryParam1, queryParam2), context)
             entityManager.createQuery(rendered1.query)
-            stringTypedQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
     }
 
     @Test
-    fun `queryForPage - select query`() {
+    fun queryForList() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
-        val list1 = listOf("1", "2", "3")
         val pageable1 = PageRequest.of(1, 10)
+        val list1 = listOf("1", "2", "3")
+
+        every { renderer.render(any(), any()) } returns rendered1
+        every { selectQuery1.returnType } returns String::class
+        every { QueryUtilsAdaptor.applySorting(any(), any()) } returns sortedQuery1
+        every { entityManager.createQuery(any<String>(), any<Class<*>>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultList } returns list1
+
+        // when
+        val actual = JpqlEntityManagerUtils.queryForList(entityManager, selectQuery1, pageable1, context)
+
+        // then
+        assertThat(actual).isEqualTo(list1)
+
+        verifySequence {
+            renderer.render(selectQuery1, context)
+            selectQuery1.returnType
+
+            QueryUtilsAdaptor.applySorting(rendered1.query, pageable1.sort)
+
+            entityManager.createQuery(sortedQuery1, String::class.java)
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.firstResult = pageable1.offset.toInt()
+            stringTypedQuery1.maxResults = pageable1.pageSize
+
+            stringTypedQuery1.resultList
+        }
+    }
+
+    @Test
+    fun queryForPage() {
+        // given
+        val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
+
+        val pageable1 = PageRequest.of(1, 10)
+        val list1 = listOf("1", "2", "3")
         val counts1 = listOf(1L, 1L, 1L)
 
         every { renderer.render(any(), any()) } returns rendered1
-        every { selectQuery.returnType } returns String::class
+        every { selectQuery1.returnType } returns String::class
         every { QueryUtilsAdaptor.applySorting(any(), any()) } returns sortedQuery1
         every { QueryUtilsAdaptor.createCountQueryFor(any(), any(), any()) } returns countQuery1
         every {
             entityManager.createQuery(any<String>(), any<Class<*>>())
-        } returns stringTypedQuery andThen longTypedQuery
-        every { stringTypedQuery.setParameter(any<String>(), any()) } returns stringTypedQuery
-        every { stringTypedQuery.setFirstResult(any()) } returns stringTypedQuery
-        every { stringTypedQuery.setMaxResults(any()) } returns stringTypedQuery
-        every { stringTypedQuery.resultList } returns list1
-        every { longTypedQuery.setParameter(any<String>(), any()) } returns longTypedQuery
-        every { longTypedQuery.resultList } returns counts1
+        } returns stringTypedQuery1 andThen longTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultList } returns list1
+        every { longTypedQuery1.setParameter(any<String>(), any()) } returns longTypedQuery1
+        every { longTypedQuery1.resultList } returns counts1
         every { PageableExecutionUtilsAdaptor.getPage<String>(any(), any(), any()) } answers {
             lastArg<LongSupplier>().asLong
 
-            page
+            page1
         }
 
         // when
-        val actual = JpqlEntityManagerUtils.queryForPage(entityManager, selectQuery, pageable1, context)
+        val actual = JpqlEntityManagerUtils.queryForPage(entityManager, selectQuery1, pageable1, context)
 
         // then
-        assertThat(actual).isEqualTo(page)
+        assertThat(actual).isEqualTo(page1)
 
         verifySequence {
-            renderer.render(selectQuery, context)
-            selectQuery.returnType
+            renderer.render(selectQuery1, context)
+            selectQuery1.returnType
 
             QueryUtilsAdaptor.applySorting(rendered1.query, pageable1.sort)
             QueryUtilsAdaptor.createCountQueryFor(rendered1.query, null, false)
 
             entityManager.createQuery(sortedQuery1, String::class.java)
-            stringTypedQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery.setParameter(renderedParam2.first, renderedParam2.second)
-            stringTypedQuery.firstResult = pageable1.offset.toInt()
-            stringTypedQuery.maxResults = pageable1.pageSize
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.firstResult = pageable1.offset.toInt()
+            stringTypedQuery1.maxResults = pageable1.pageSize
 
             entityManager.createQuery(countQuery1, Long::class.javaObjectType)
-            longTypedQuery.setParameter(renderedParam1.first, renderedParam1.second)
-            longTypedQuery.setParameter(renderedParam2.first, renderedParam2.second)
+            longTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            longTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
 
-            stringTypedQuery.resultList
+            stringTypedQuery1.resultList
             PageableExecutionUtilsAdaptor.getPage(list1, pageable1, any())
-            longTypedQuery.resultList
+            longTypedQuery1.resultList
+        }
+    }
+
+    @Test
+    fun queryForSlice() {
+        // given
+        val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
+
+        val pageable1 = PageRequest.of(1, 3)
+        val list1 = listOf("1", "2", "3", "4")
+
+        every { renderer.render(any(), any()) } returns rendered1
+        every { selectQuery1.returnType } returns String::class
+        every { QueryUtilsAdaptor.applySorting(any(), any()) } returns sortedQuery1
+        every { entityManager.createQuery(any<String>(), any<Class<*>>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultList } returns list1
+
+        // when
+        val actual = JpqlEntityManagerUtils.queryForSlice(entityManager, selectQuery1, pageable1, context)
+
+        // then
+        assertThat(actual).isEqualTo(SliceImpl(list1.dropLast(1), pageable1, true))
+
+        verifySequence {
+            renderer.render(selectQuery1, context)
+            selectQuery1.returnType
+
+            QueryUtilsAdaptor.applySorting(rendered1.query, pageable1.sort)
+
+            entityManager.createQuery(sortedQuery1, String::class.java)
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
+            stringTypedQuery1.firstResult = pageable1.offset.toInt()
+            stringTypedQuery1.maxResults = pageable1.pageSize + 1
+
+            stringTypedQuery1.resultList
         }
     }
 }

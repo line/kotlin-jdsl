@@ -22,22 +22,22 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
     private lateinit var session: Stage.StatelessSession
 
     @MockK
-    private lateinit var selectQuery: SelectQuery<String>
-
-    @MockK
-    private lateinit var updateQuery: UpdateQuery<String>
-
-    @MockK
-    private lateinit var deleteQuery: DeleteQuery<String>
-
-    @MockK
-    private lateinit var query: Stage.Query<String>
-
-    @MockK
-    private lateinit var queryParams: Map<String, Any?>
-
-    @MockK
     private lateinit var context: RenderContext
+
+    @MockK
+    private lateinit var selectQuery1: SelectQuery<String>
+
+    @MockK
+    private lateinit var updateQuery1: UpdateQuery<String>
+
+    @MockK
+    private lateinit var deleteQuery1: DeleteQuery<String>
+
+    @MockK
+    private lateinit var query1: Stage.Query<String>
+
+    @MockK
+    private lateinit var queryParams1: Map<String, Any?>
 
     @BeforeEach
     fun setUp() {
@@ -49,16 +49,16 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageStatelessSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(selectQuery, context)
+        val actual = session.createQuery(selectQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageStatelessSessionUtils.createQuery(session, selectQuery, context)
+            JpqlStageStatelessSessionUtils.createQuery(session, selectQuery1, context)
         }
     }
 
@@ -67,16 +67,16 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageStatelessSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(selectQuery, queryParams, context)
+        val actual = session.createQuery(selectQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageStatelessSessionUtils.createQuery(any(), selectQuery, any(), any())
+            JpqlStageStatelessSessionUtils.createQuery(any(), selectQuery1, any(), any())
         }
     }
 
@@ -85,16 +85,16 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageStatelessSessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(updateQuery, context)
+        val actual = session.createQuery(updateQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageStatelessSessionUtils.createQuery(session, updateQuery, context)
+            JpqlStageStatelessSessionUtils.createQuery(session, updateQuery1, context)
         }
     }
 
@@ -103,16 +103,16 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageStatelessSessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(updateQuery, queryParams, context)
+        val actual = session.createQuery(updateQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageStatelessSessionUtils.createQuery(session, updateQuery, queryParams, context)
+            JpqlStageStatelessSessionUtils.createQuery(session, updateQuery1, queryParams1, context)
         }
     }
 
@@ -121,16 +121,16 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageStatelessSessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(deleteQuery, context)
+        val actual = session.createQuery(deleteQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageStatelessSessionUtils.createQuery(session, deleteQuery, context)
+            JpqlStageStatelessSessionUtils.createQuery(session, deleteQuery1, context)
         }
     }
 
@@ -139,16 +139,16 @@ class StageStatelessSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageStatelessSessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(deleteQuery, queryParams, context)
+        val actual = session.createQuery(deleteQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageStatelessSessionUtils.createQuery(session, deleteQuery, queryParams, context)
+            JpqlStageStatelessSessionUtils.createQuery(session, deleteQuery1, queryParams1, context)
         }
     }
 }

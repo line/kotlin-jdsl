@@ -22,25 +22,25 @@ class StageSessionExtensionsTest : WithAssertions {
     private lateinit var session: Stage.Session
 
     @MockK
-    private lateinit var selectQuery: SelectQuery<String>
-
-    @MockK
-    private lateinit var updateQuery: UpdateQuery<String>
-
-    @MockK
-    private lateinit var deleteQuery: DeleteQuery<String>
-
-    @MockK
-    private lateinit var selectionQuery: Stage.SelectionQuery<String>
-
-    @MockK
-    private lateinit var mutationQuery: Stage.MutationQuery
-
-    @MockK
-    private lateinit var queryParams: Map<String, Any?>
-
-    @MockK
     private lateinit var context: RenderContext
+
+    @MockK
+    private lateinit var selectQuery1: SelectQuery<String>
+
+    @MockK
+    private lateinit var updateQuery1: UpdateQuery<String>
+
+    @MockK
+    private lateinit var deleteQuery1: DeleteQuery<String>
+
+    @MockK
+    private lateinit var selectionQuery1: Stage.SelectionQuery<String>
+
+    @MockK
+    private lateinit var mutationQuery1: Stage.MutationQuery
+
+    @MockK
+    private lateinit var queryParams1: Map<String, Any?>
 
     @BeforeEach
     fun setUp() {
@@ -52,16 +52,16 @@ class StageSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any())
-        } returns selectionQuery
+        } returns selectionQuery1
 
         // when
-        val actual = session.createQuery(selectQuery, context)
+        val actual = session.createQuery(selectQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(selectionQuery)
+        assertThat(actual).isEqualTo(selectionQuery1)
 
         verifySequence {
-            JpqlStageSessionUtils.createQuery(session, selectQuery, context)
+            JpqlStageSessionUtils.createQuery(session, selectQuery1, context)
         }
     }
 
@@ -70,16 +70,16 @@ class StageSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
-        } returns selectionQuery
+        } returns selectionQuery1
 
         // when
-        val actual = session.createQuery(selectQuery, queryParams, context)
+        val actual = session.createQuery(selectQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(selectionQuery)
+        assertThat(actual).isEqualTo(selectionQuery1)
 
         verifySequence {
-            JpqlStageSessionUtils.createQuery(session, selectQuery, queryParams, context)
+            JpqlStageSessionUtils.createQuery(session, selectQuery1, queryParams1, context)
         }
     }
 
@@ -88,16 +88,16 @@ class StageSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageSessionUtils.createMutationQuery(any(), any<UpdateQuery<String>>(), any())
-        } returns mutationQuery
+        } returns mutationQuery1
 
         // when
-        val actual = session.createMutationQuery(updateQuery, context)
+        val actual = session.createMutationQuery(updateQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(mutationQuery)
+        assertThat(actual).isEqualTo(mutationQuery1)
 
         verifySequence {
-            JpqlStageSessionUtils.createMutationQuery(session, updateQuery, context)
+            JpqlStageSessionUtils.createMutationQuery(session, updateQuery1, context)
         }
     }
 
@@ -106,16 +106,16 @@ class StageSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageSessionUtils.createMutationQuery(any(), any<UpdateQuery<String>>(), any(), any())
-        } returns mutationQuery
+        } returns mutationQuery1
 
         // when
-        val actual = session.createMutationQuery(updateQuery, queryParams, context)
+        val actual = session.createMutationQuery(updateQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(mutationQuery)
+        assertThat(actual).isEqualTo(mutationQuery1)
 
         verifySequence {
-            JpqlStageSessionUtils.createMutationQuery(session, updateQuery, queryParams, context)
+            JpqlStageSessionUtils.createMutationQuery(session, updateQuery1, queryParams1, context)
         }
     }
 
@@ -124,16 +124,16 @@ class StageSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageSessionUtils.createMutationQuery(any(), any<DeleteQuery<String>>(), any())
-        } returns mutationQuery
+        } returns mutationQuery1
 
         // when
-        val actual = session.createMutationQuery(deleteQuery, context)
+        val actual = session.createMutationQuery(deleteQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(mutationQuery)
+        assertThat(actual).isEqualTo(mutationQuery1)
 
         verifySequence {
-            JpqlStageSessionUtils.createMutationQuery(session, deleteQuery, context)
+            JpqlStageSessionUtils.createMutationQuery(session, deleteQuery1, context)
         }
     }
 
@@ -142,16 +142,16 @@ class StageSessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlStageSessionUtils.createMutationQuery(any(), any<DeleteQuery<String>>(), any(), any())
-        } returns mutationQuery
+        } returns mutationQuery1
 
         // when
-        val actual = session.createMutationQuery(deleteQuery, queryParams, context)
+        val actual = session.createMutationQuery(deleteQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(mutationQuery)
+        assertThat(actual).isEqualTo(mutationQuery1)
 
         verifySequence {
-            JpqlStageSessionUtils.createMutationQuery(session, deleteQuery, queryParams, context)
+            JpqlStageSessionUtils.createMutationQuery(session, deleteQuery1, queryParams1, context)
         }
     }
 }

@@ -22,22 +22,22 @@ class MutinySessionExtensionsTest : WithAssertions {
     private lateinit var session: Mutiny.Session
 
     @MockK
-    private lateinit var selectQuery: SelectQuery<String>
-
-    @MockK
-    private lateinit var updateQuery: UpdateQuery<String>
-
-    @MockK
-    private lateinit var deleteQuery: DeleteQuery<String>
-
-    @MockK
-    private lateinit var query: Mutiny.Query<String>
-
-    @MockK
-    private lateinit var queryParams: Map<String, Any?>
-
-    @MockK
     private lateinit var context: RenderContext
+
+    @MockK
+    private lateinit var selectQuery1: SelectQuery<String>
+
+    @MockK
+    private lateinit var updateQuery1: UpdateQuery<String>
+
+    @MockK
+    private lateinit var deleteQuery1: DeleteQuery<String>
+
+    @MockK
+    private lateinit var query1: Mutiny.Query<String>
+
+    @MockK
+    private lateinit var queryParams1: Map<String, Any?>
 
     @BeforeEach
     fun setUp() {
@@ -49,16 +49,16 @@ class MutinySessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlMutinySessionUtils.createQuery(any(), any<SelectQuery<String>>(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(selectQuery, context)
+        val actual = session.createQuery(selectQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlMutinySessionUtils.createQuery(session, selectQuery, context)
+            JpqlMutinySessionUtils.createQuery(session, selectQuery1, context)
         }
     }
 
@@ -67,16 +67,16 @@ class MutinySessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlMutinySessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(selectQuery, queryParams, context)
+        val actual = session.createQuery(selectQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlMutinySessionUtils.createQuery(session, selectQuery, queryParams, context)
+            JpqlMutinySessionUtils.createQuery(session, selectQuery1, queryParams1, context)
         }
     }
 
@@ -85,16 +85,16 @@ class MutinySessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlMutinySessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(updateQuery, context)
+        val actual = session.createQuery(updateQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlMutinySessionUtils.createQuery(session, updateQuery, context)
+            JpqlMutinySessionUtils.createQuery(session, updateQuery1, context)
         }
     }
 
@@ -103,16 +103,16 @@ class MutinySessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlMutinySessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(updateQuery, queryParams, context)
+        val actual = session.createQuery(updateQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlMutinySessionUtils.createQuery(session, updateQuery, queryParams, context)
+            JpqlMutinySessionUtils.createQuery(session, updateQuery1, queryParams1, context)
         }
     }
 
@@ -121,16 +121,16 @@ class MutinySessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlMutinySessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(deleteQuery, context)
+        val actual = session.createQuery(deleteQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlMutinySessionUtils.createQuery(session, deleteQuery, context)
+            JpqlMutinySessionUtils.createQuery(session, deleteQuery1, context)
         }
     }
 
@@ -139,16 +139,16 @@ class MutinySessionExtensionsTest : WithAssertions {
         // given
         every {
             JpqlMutinySessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = session.createQuery(deleteQuery, queryParams, context)
+        val actual = session.createQuery(deleteQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlMutinySessionUtils.createQuery(session, deleteQuery, queryParams, context)
+            JpqlMutinySessionUtils.createQuery(session, deleteQuery1, queryParams1, context)
         }
     }
 }

@@ -25,16 +25,16 @@ class KotlinJdslQueryProviderTest : WithAssertions {
     private lateinit var entityManager: EntityManager
 
     @MockK
-    private lateinit var query: SelectQuery<String>
-
-    @MockK
-    private lateinit var queryParams: Map<String, Any?>
-
-    @MockK
     private lateinit var context: RenderContext
 
     @MockK
-    private lateinit var stringTypedQuery: TypedQuery<String>
+    private lateinit var query1: SelectQuery<String>
+
+    @MockK
+    private lateinit var queryParams1: Map<String, Any?>
+
+    @MockK
+    private lateinit var stringTypedQuery1: TypedQuery<String>
 
     @BeforeEach
     fun setUp() {
@@ -48,19 +48,19 @@ class KotlinJdslQueryProviderTest : WithAssertions {
         // given
         every {
             JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
-        } returns stringTypedQuery
+        } returns stringTypedQuery1
 
         // when
         val actual = sut.createQuery()
 
         // then
-        assertThat(actual).isEqualTo(stringTypedQuery)
+        assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
             JpqlEntityManagerUtils.createQuery(
                 entityManager = entityManager,
-                query = query,
-                queryParams = queryParams,
+                query = query1,
+                queryParams = queryParams1,
                 context = context,
             )
         }

@@ -24,25 +24,25 @@ class EntityManagerExtensionsTest : WithAssertions {
     private lateinit var entityManager: EntityManager
 
     @MockK
-    private lateinit var selectQuery: SelectQuery<String>
-
-    @MockK
-    private lateinit var updateQuery: UpdateQuery<String>
-
-    @MockK
-    private lateinit var deleteQuery: DeleteQuery<String>
-
-    @MockK
-    private lateinit var queryParams: Map<String, Any?>
-
-    @MockK
-    private lateinit var query: Query
-
-    @MockK
-    private lateinit var typedQuery: TypedQuery<String>
-
-    @MockK
     private lateinit var context: RenderContext
+
+    @MockK
+    private lateinit var selectQuery1: SelectQuery<String>
+
+    @MockK
+    private lateinit var updateQuery1: UpdateQuery<String>
+
+    @MockK
+    private lateinit var deleteQuery1: DeleteQuery<String>
+
+    @MockK
+    private lateinit var query1: Query
+
+    @MockK
+    private lateinit var queryParams1: Map<String, Any?>
+
+    @MockK
+    private lateinit var typedQuery1: TypedQuery<String>
 
     @BeforeEach
     fun setUp() {
@@ -54,16 +54,16 @@ class EntityManagerExtensionsTest : WithAssertions {
         // given
         every {
             JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any())
-        } returns typedQuery
+        } returns typedQuery1
 
         // when
-        val actual = entityManager.createQuery(selectQuery, context)
+        val actual = entityManager.createQuery(selectQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(typedQuery)
+        assertThat(actual).isEqualTo(typedQuery1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery, context)
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, context)
         }
     }
 
@@ -72,16 +72,16 @@ class EntityManagerExtensionsTest : WithAssertions {
         // given
         every {
             JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
-        } returns typedQuery
+        } returns typedQuery1
 
         // when
-        val actual = entityManager.createQuery(selectQuery, queryParams, context)
+        val actual = entityManager.createQuery(selectQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(typedQuery)
+        assertThat(actual).isEqualTo(typedQuery1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery, queryParams, context)
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, queryParams1, context)
         }
     }
 
@@ -90,16 +90,16 @@ class EntityManagerExtensionsTest : WithAssertions {
         // given
         every {
             JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = entityManager.createQuery(updateQuery, context)
+        val actual = entityManager.createQuery(updateQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, updateQuery, context)
+            JpqlEntityManagerUtils.createQuery(entityManager, updateQuery1, context)
         }
     }
 
@@ -108,16 +108,16 @@ class EntityManagerExtensionsTest : WithAssertions {
         // given
         every {
             JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = entityManager.createQuery(updateQuery, queryParams, context)
+        val actual = entityManager.createQuery(updateQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, updateQuery, queryParams, context)
+            JpqlEntityManagerUtils.createQuery(entityManager, updateQuery1, queryParams1, context)
         }
     }
 
@@ -126,16 +126,16 @@ class EntityManagerExtensionsTest : WithAssertions {
         // given
         every {
             JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = entityManager.createQuery(deleteQuery, context)
+        val actual = entityManager.createQuery(deleteQuery1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery, context)
+            JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery1, context)
         }
     }
 
@@ -144,16 +144,16 @@ class EntityManagerExtensionsTest : WithAssertions {
         // given
         every {
             JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any(), any())
-        } returns query
+        } returns query1
 
         // when
-        val actual = entityManager.createQuery(deleteQuery, queryParams, context)
+        val actual = entityManager.createQuery(deleteQuery1, queryParams1, context)
 
         // then
-        assertThat(actual).isEqualTo(query)
+        assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery, queryParams, context)
+            JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery1, queryParams1, context)
         }
     }
 }

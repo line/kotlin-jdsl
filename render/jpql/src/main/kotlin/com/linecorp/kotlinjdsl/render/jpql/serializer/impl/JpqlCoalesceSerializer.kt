@@ -20,7 +20,7 @@ internal class JpqlCoalesceSerializer : JpqlSerializer<JpqlCoalesce<*>> {
         writer.write("COALESCE")
 
         writer.writeParentheses {
-            writer.writeEach(part.expr) {
+            writer.writeEach(part.expr, separator = ", ") {
                 delegate.serialize(it, writer, context)
             }
         }
