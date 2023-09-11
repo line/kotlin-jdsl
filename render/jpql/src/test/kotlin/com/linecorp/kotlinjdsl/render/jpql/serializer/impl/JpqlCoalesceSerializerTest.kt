@@ -45,7 +45,6 @@ class JpqlCoalesceSerializerTest : WithAssertions {
 
         // then
         verifySequence {
-            writer.write(" ")
             writer.write("COALESCE")
 
             writer.writeParentheses(any())

@@ -17,7 +17,6 @@ internal class JpqlCoalesceSerializer : JpqlSerializer<JpqlCoalesce<*>> {
     override fun serialize(part: JpqlCoalesce<*>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
-        writer.write(" ")
         writer.write("COALESCE")
 
         writer.writeParentheses {
