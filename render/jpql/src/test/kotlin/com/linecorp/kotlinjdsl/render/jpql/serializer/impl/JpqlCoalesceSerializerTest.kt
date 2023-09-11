@@ -35,31 +35,7 @@ class JpqlCoalesceSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize if others input does not entered then draws only expression1, 2`() {
-        // given
-        val coalesce = Expressions.coalesce(expression1, expression2, listOf())
-        val context = TestRenderContext(serializer)
-
-        // when
-        sut.serialize(coalesce as JpqlCoalesce<*>, writer, context)
-
-        // then
-        verifySequence {
-            writer.write(" ")
-            writer.write("COALESCE")
-
-            writer.writeParentheses(any())
-
-            serializer.serialize(expression1, writer, context)
-            writer.write(",")
-            writer.write(" ")
-
-            serializer.serialize(expression2, writer, context)
-        }
-    }
-
-    @Test
-    fun `serialize if others input entered then draws only expression1, 2, others`() {
+    fun serialize() {
         // given
         val coalesce = Expressions.coalesce(expression1, expression2, listOf(expression3))
         val context = TestRenderContext(serializer)
@@ -74,15 +50,11 @@ class JpqlCoalesceSerializerTest : WithAssertions {
 
             writer.writeParentheses(any())
 
-            serializer.serialize(expression1, writer, context)
-            writer.write(",")
-            writer.write(" ")
-
-            serializer.serialize(expression2, writer, context)
-            writer.write(",")
-            writer.write(" ")
-
-            serializer.serialize(expression3, writer, context)
+            val expressions = listOf(expression1, expression2, expression3)
+            writer.writeEach(expressions, write = any())
+            expressions.forEach {
+                serializer.serialize(it, writer, context)
+            }
         }
     }
 }
