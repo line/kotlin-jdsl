@@ -1,10 +1,12 @@
 package com.linecorp.kotlinjdsl.example.jpql.hibernate
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.Persistence
+import javax.persistence.EntityManagerFactory
+import javax.persistence.Persistence
 
-object EntityManagerTestUtils {
-    fun getEntityManager(): EntityManager = entityManagerFactory.createEntityManager()
+object EntityManagerFactoryTestUtils {
+    fun getEntityManagerFactory(): EntityManagerFactory {
+        return entityManagerFactory
+    }
 }
 
 private val entityManagerFactory = Persistence.createEntityManagerFactory("example").also {

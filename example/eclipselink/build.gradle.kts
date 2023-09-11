@@ -24,6 +24,8 @@ kotlin {
 
 noArg {
     annotation("com.linecorp.kotlinjdsl.example.eclipselink.annotation.CompositeId")
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.Embeddable")
 }
 
 allOpen {

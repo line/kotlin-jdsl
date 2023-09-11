@@ -1,5 +1,3 @@
-@file:Suppress("VulnerableLibrariesLocal")
-
 dependencies {
     compileOnly(libs.eclipselink3)
     compileOnly(libs.jakarta.persistence.api)

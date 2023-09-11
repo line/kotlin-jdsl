@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.example.jpql.hibernate.javax.delete
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
-import com.linecorp.kotlinjdsl.example.jpql.hibernate.EntityManagerTestUtils
+import com.linecorp.kotlinjdsl.example.jpql.hibernate.EntityManagerFactoryTestUtils
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.javax.entity.book.Book
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.javax.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.javax.entity.department.Department
@@ -11,12 +11,19 @@ import com.linecorp.kotlinjdsl.example.jpql.hibernate.jpql.JpqlRenderContextUtil
 import com.linecorp.kotlinjdsl.support.hibernate.extension.createQuery
 import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class DeleteExample : WithAssertions {
-    private val entityManager = EntityManagerTestUtils.getEntityManager()
+    private val entityManagerFactory = EntityManagerFactoryTestUtils.getEntityManagerFactory()
+    private val entityManager = entityManagerFactory.createEntityManager()
 
     private val context = JpqlRenderContextUtils.getJpqlRenderContext()
+
+    @AfterEach
+    fun tearDown() {
+        entityManager.close()
+    }
 
     @Test
     fun `delete all books published after June 2023`() {
@@ -30,8 +37,11 @@ class DeleteExample : WithAssertions {
         }
 
         val selectQuery = jpql {
-            select(path(Book::isbn))
-                .from(entity(Book::class))
+            select(
+                path(Book::isbn),
+            ).from(
+                entity(Book::class),
+            )
         }
 
         val actual: List<Isbn>
@@ -79,8 +89,11 @@ class DeleteExample : WithAssertions {
         }
 
         val selectQuery = jpql {
-            select(path(Employee::employeeId))
-                .from(entity(Employee::class))
+            select(
+                path(Employee::employeeId),
+            ).from(
+                entity(Employee::class),
+            )
         }
 
         val actual: List<Long>

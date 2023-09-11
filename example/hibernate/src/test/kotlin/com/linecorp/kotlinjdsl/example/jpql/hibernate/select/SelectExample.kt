@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.example.jpql.hibernate.select
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
-import com.linecorp.kotlinjdsl.example.jpql.hibernate.EntityManagerTestUtils
+import com.linecorp.kotlinjdsl.example.jpql.hibernate.EntityManagerFactoryTestUtils
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.author.Author
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.book.Book
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.book.BookAuthor
@@ -13,12 +13,19 @@ import com.linecorp.kotlinjdsl.example.jpql.hibernate.jpql.JpqlRenderContextUtil
 import com.linecorp.kotlinjdsl.support.hibernate.extension.createQuery
 import java.time.OffsetDateTime
 import org.assertj.core.api.WithAssertions
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class SelectExample : WithAssertions {
-    private val entityManager = EntityManagerTestUtils.getEntityManager()
+    private val entityManagerFactory = EntityManagerFactoryTestUtils.getEntityManagerFactory()
+    private val entityManager = entityManagerFactory.createEntityManager()
 
     private val context = JpqlRenderContextUtils.getJpqlRenderContext()
+
+    @AfterEach
+    fun tearDown() {
+        entityManager.close()
+    }
 
     @Test
     fun `the most prolific author`() {
@@ -76,6 +83,7 @@ class SelectExample : WithAssertions {
                 path(Book::isbn).asc(),
             )
         }
+
         val actual = entityManager.createQuery(query, context).setFirstResult(3).setMaxResults(3).resultList
 
         // then
@@ -97,6 +105,7 @@ class SelectExample : WithAssertions {
                 count(Book::isbn).desc(),
             )
         }
+
         val actual = entityManager.createQuery(query, context).setMaxResults(1).resultList.first()
 
         // then
@@ -116,6 +125,7 @@ class SelectExample : WithAssertions {
                 path(Book::isbn).asc(),
             )
         }
+
         val actual = entityManager.createQuery(query, context).setMaxResults(1).resultList.first()
 
         // then
@@ -125,7 +135,6 @@ class SelectExample : WithAssertions {
     @Test
     fun `the most recently published book`() {
         // when
-
         val query = jpql {
             select(
                 path(Book::isbn),
@@ -136,6 +145,7 @@ class SelectExample : WithAssertions {
                 path(Book::isbn).asc(),
             )
         }
+
         val actual = entityManager.createQuery(query, context).setMaxResults(1).resultList.first()
 
         // then
@@ -159,6 +169,7 @@ class SelectExample : WithAssertions {
                 path(Book::isbn).asc(),
             )
         }
+
         val actual = entityManager.createQuery(query, context).resultList
 
         // then
@@ -186,6 +197,7 @@ class SelectExample : WithAssertions {
                 path(Book::price)(BookPrice::value).minus(path(Book::salePrice)(BookPrice::value)).desc(),
             )
         }
+
         val actual = entityManager.createQuery(query, context).setMaxResults(1).resultList.first()
 
         // then
@@ -206,6 +218,7 @@ class SelectExample : WithAssertions {
                 path(Employee::employeeId).asc(),
             )
         }
+
         val actual = entityManager.createQuery(query, context).resultList
 
         // then
@@ -252,6 +265,7 @@ class SelectExample : WithAssertions {
                 path(EmployeeDepartment::departmentId).asc(),
             )
         }
+
         val actual = entityManager.createQuery(query, context).resultList
 
         // then
@@ -292,6 +306,7 @@ class SelectExample : WithAssertions {
                 subquery.asEntity(),
             )
         }
+
         val actual = entityManager.createQuery(query, context).resultList
 
         // then

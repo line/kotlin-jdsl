@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.example.jpql.hibernate.update
 
 import com.linecorp.kotlinjdsl.dsl.jpql.jpql
-import com.linecorp.kotlinjdsl.example.jpql.hibernate.EntityManagerTestUtils
+import com.linecorp.kotlinjdsl.example.jpql.hibernate.EntityManagerFactoryTestUtils
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.department.Department
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.employee.EmployeeDepartment
@@ -11,12 +11,19 @@ import com.linecorp.kotlinjdsl.example.jpql.hibernate.jpql.JpqlRenderContextUtil
 import com.linecorp.kotlinjdsl.support.hibernate.extension.createQuery
 import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class UpdateExample : WithAssertions {
-    private val entityManager = EntityManagerTestUtils.getEntityManager()
+    private val entityManagerFactory = EntityManagerFactoryTestUtils.getEntityManagerFactory()
+    private val entityManager = entityManagerFactory.createEntityManager()
 
     private val context = JpqlRenderContextUtils.getJpqlRenderContext()
+
+    @AfterEach
+    fun tearDown() {
+        entityManager.close()
+    }
 
     @Test
     fun increase_the_annual_salaries_of_employees_in_department_03_by_10_percent() {

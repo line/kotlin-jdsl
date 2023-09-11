@@ -1,5 +1,3 @@
-@file:Suppress("VulnerableLibrariesLocal")
-
 dependencies {
     compileOnly(libs.eclipselink2)
     compileOnly(libs.javax.persistence.api)

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.noarg)
     alias(libs.plugins.kotlin.allopen)
+    alias(libs.plugins.kotlin.jpa)
 }
 
 dependencies {
@@ -11,7 +12,7 @@ dependencies {
     implementation(projects.jpqlRender)
     implementation(projects.hibernateSupport)
 
-    implementation(libs.test.h2)
+    runtimeOnly(libs.test.h2)
 
     testFixturesImplementation(libs.test.hibernate6.core)
     testFixturesImplementation(projects.jpqlRender)
