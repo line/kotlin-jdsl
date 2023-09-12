@@ -2,9 +2,15 @@
 
 echo "Running git pre-commit hook"
 
-./gradlew formatKotlin
+./gradlew lintKotlin
 
 status=$?
 
-[ $status -ne 0 ] && exit 1
+if [ $status -ne 0 ]; then
+    echo "#######################################################"
+    echo "#Lint failed, commit aborted. Please run formatKotlin.#"
+    echo "#######################################################"
+    exit 1
+fi
+
 exit 0
