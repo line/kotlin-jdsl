@@ -92,7 +92,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version = "0.7.1" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.5.1" }
+ktlint = { id = "org.jmailen.kotlinter", version = "3.16.0" }
 
 test-spring-boot3 = { id = "org.springframework.boot", version.ref = "test-spring-boot3" }
 test-spring-boot2 = { id = "org.springframework.boot", version.ref = "test-spring-boot2" }

@@ -16,7 +16,7 @@ plugins {
 allprojects {
     apply(plugin = "kotlin")
     apply(plugin = "org.jetbrains.kotlinx.kover")
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = "org.jmailen.kotlinter")
     apply(plugin = "java-test-fixtures")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
