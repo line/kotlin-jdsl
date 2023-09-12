@@ -1,0 +1,9 @@
+#file: noinspection YAMLSchemaValidation
+coverage:
+  status:
+    project:
+      default:
+        threshold: 0.25
+
+comment:
+  require_changes: true

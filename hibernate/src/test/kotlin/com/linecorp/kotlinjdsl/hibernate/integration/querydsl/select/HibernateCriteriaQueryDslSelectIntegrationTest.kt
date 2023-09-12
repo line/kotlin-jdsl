@@ -1,5 +1,0 @@
-package com.linecorp.kotlinjdsl.hibernate.integration.querydsl.select
-
-import com.linecorp.kotlinjdsl.test.integration.querydsl.select.AbstractCriteriaQueryDslSelectIntegrationTest
-
-class HibernateCriteriaQueryDslSelectIntegrationTest : AbstractCriteriaQueryDslSelectIntegrationTest()

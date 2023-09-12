@@ -1,5 +1,0 @@
-package com.linecorp.kotlinjdsl.hibernate.integration.querydsl.where
-
-import com.linecorp.kotlinjdsl.test.integration.querydsl.where.AbstractCriteriaQueryDslWhereIntegrationTest
-
-internal class HibernateCriteriaQueryDslWhereIntegrationTest : AbstractCriteriaQueryDslWhereIntegrationTest()

@@ -1,82 +1,65 @@
 rootProject.name = "kotlin-jdsl"
 
-val modules: MutableList<Module> = mutableListOf()
-
-fun module(name: String, path: String) {
-    modules.add(Module(name, "${rootDir}/${path}"))
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
 
-data class Module(
-    val name: String,
-    val path: String,
-)
-
-// CORE
-module(name = ":kotlin-jdsl-core", path = "core")
-module(name = ":kotlin-jdsl-reactive-core", path = "reactive-core")
-module(name = ":hibernate-kotlin-jdsl", path = "hibernate")
-module(name = ":hibernate-reactive-kotlin-jdsl", path = "hibernate-reactive")
-module(name = ":eclipselink-kotlin-jdsl", path = "eclipselink")
-module(name = ":kotlin-jdsl-query", path = "query")
-
-// SPRING
-module(name = ":spring", path = "spring")
-module(name = ":spring-data-kotlin-jdsl-core", path = "spring/data-core")
-module(name = ":spring-data-kotlin-jdsl-reactive-core", path = "spring/data-reactive-core")
-module(name = ":spring-data-kotlin-jdsl-hibernate-reactive", path = "spring/data-hibernate-reactive")
-module(name = ":spring-batch-kotlin-jdsl-infrastructure", path = "spring/batch-infrastructure")
-module(name = ":spring-data-kotlin-jdsl-autoconfigure", path = "spring/data-autoconfigure")
-module(name = ":spring-data-kotlin-jdsl-starter", path = "spring/data-starter")
-
-// TEST FIXTURE
-module(name = ":test-fixture-core", path = "test-fixture/core")
-module(name = ":test-fixture-entity", path = "test-fixture/entity")
-module(name = ":test-fixture-integration", path = "test-fixture/integration")
-module(name = ":test-fixture-integration-reactive", path = "test-fixture/integration-reactive")
-module(name = ":test-fixture-hibernate-reactive", path = "test-fixture/hibernate-reactive")
-
-// EXAMPLES
-module(name = ":hibernate-example", path = "examples/hibernate")
-module(name = ":eclipselink-example", path = "examples/eclipselink")
-module(name = ":spring-data-boot-2.6-example", path = "examples/spring-boot-2.6")
-module(name = ":spring-data-boot-2.7-example", path = "examples/spring-boot-2.7")
-module(name = ":spring-data-boot-3-example", path = "examples/spring-boot-3")
-module(name = ":spring-data-boot-hibernate-reactive-2.6-example", path = "examples/spring-boot-hibernate-reactive-2.6")
-module(name = ":spring-data-boot-hibernate-reactive-2.7-example", path = "examples/spring-boot-hibernate-reactive-2.7")
-module(name = ":spring-data-boot-hibernate-reactive-3-example", path = "examples/spring-boot-hibernate-reactive-3")
-module(name = ":spring-data-boot-2.5-example", path = "examples/spring-boot-2.5")
-module(name = ":spring-data-boot-2.4-example", path = "examples/spring-boot-2.4")
-
-// Jakarta
-module(name = ":kotlin-jdsl-core-jakarta", path = "core-jakarta")
-module(name = ":kotlin-jdsl-reactive-core-jakarta", path = "reactive-core-jakarta")
-module(name = ":kotlin-jdsl-query-jakarta", path = "query-jakarta")
-module(name = ":hibernate-kotlin-jdsl-jakarta", path = "hibernate-jakarta")
-module(name = ":hibernate-reactive-kotlin-jdsl-jakarta", path = "hibernate-reactive-jakarta")
-module(name = ":eclipselink-kotlin-jdsl-jakarta", path = "eclipselink-jakarta")
-
-// Jakarta - Spring
-module(name = ":spring-data-kotlin-jdsl-core-jakarta", path = "spring/data-core-jakarta")
-module(name = ":spring-batch-kotlin-jdsl-infrastructure-jakarta", path = "spring/batch-infrastructure-jakarta")
-module(name = ":spring-data-kotlin-jdsl-autoconfigure-jakarta", path = "spring/data-autoconfigure-jakarta")
-module(name = ":spring-data-kotlin-jdsl-starter-jakarta", path = "spring/data-starter-jakarta")
-module(name = ":spring-data-kotlin-jdsl-reactive-core-jakarta", path = "spring/data-reactive-core-jakarta")
-module(name = ":spring-data-kotlin-jdsl-hibernate-reactive-jakarta", path = "spring/data-hibernate-reactive-jakarta")
-
-module(name = ":test-fixture-integration-jakarta", path = "test-fixture/integration-jakarta")
-module(name = ":test-fixture-entity-jakarta", path = "test-fixture/entity-jakarta")
-module(name = ":test-fixture-integration-reactive-jakarta", path = "test-fixture/integration-reactive-jakarta")
-module(name = ":test-fixture-hibernate-reactive-jakarta", path = "test-fixture/hibernate-reactive-jakarta")
-
-modules.forEach {
-    include(it.name)
-    project(it.name).projectDir = file(it.path)
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.6.0"
 }
 
+// Module
+module(name = ":dsl", path = "dsl")
+module(name = ":jpql-dsl", path = "dsl/jpql")
+
+module(name = ":query-model", path = "query-model")
+module(name = ":jpql-query-model", path = "query-model/jpql")
+
+module(name = ":render", path = "render")
+module(name = ":jpql-render", path = "render/jpql")
+
+module(name = ":support", path = "support")
+module(name = ":spring-batch-support", path = "support/spring-batch")
+module(name = ":spring-batch-javax-support", path = "support/spring-batch-javax")
+module(name = ":spring-data-jpa-support", path = "support/spring-data-jpa")
+module(name = ":spring-data-jpa-javax-support", path = "support/spring-data-jpa-javax")
+module(name = ":hibernate-reactive-support", path = "support/hibernate-reactive")
+module(name = ":hibernate-reactive-javax-support", path = "support/hibernate-reactive-javax")
+module(name = ":hibernate-support", path = "support/hibernate")
+module(name = ":hibernate-javax-support", path = "support/hibernate-javax")
+module(name = ":eclipselink-support", path = "support/eclipselink")
+module(name = ":eclipselink-javax-support", path = "support/eclipselink-javax")
+
+module(name = ":example", path = "example")
+module(name = ":spring-batch-example", path = "example/spring-batch")
+module(name = ":spring-batch-javax-example", path = "example/spring-batch-javax")
+module(name = ":spring-data-jpa-example", path = "example/spring-data-jpa")
+module(name = ":spring-data-jpa-javax-example", path = "example/spring-data-jpa-javax")
+module(name = ":hibernate-reactive-example", path = "example/hibernate-reactive")
+module(name = ":hibernate-reactive-javax-example", path = "example/hibernate-reactive-javax")
+module(name = ":hibernate-example", path = "example/hibernate")
+module(name = ":hibernate-javax-example", path = "example/hibernate-javax")
+module(name = ":eclipselink-example", path = "example/eclipselink")
+module(name = ":eclipselink-javax-example", path = "example/eclipselink-javax")
+
+module(name = ":benchmark", path = "benchmark")
+
+// Version Catalog
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             from(files("libs.versions.toml"))
         }
     }
+}
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+// Util
+fun module(name: String, path: String) {
+    include(name)
+    project(name).projectDir = file(path)
 }

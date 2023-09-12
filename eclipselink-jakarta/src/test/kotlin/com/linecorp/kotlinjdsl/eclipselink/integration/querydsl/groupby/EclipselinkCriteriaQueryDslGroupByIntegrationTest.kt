@@ -1,5 +1,0 @@
-package com.linecorp.kotlinjdsl.eclipselink.integration.querydsl.groupby
-
-import com.linecorp.kotlinjdsl.test.integration.querydsl.groupby.AbstractCriteriaQueryDslGroupByIntegrationTest
-
-internal class EclipselinkCriteriaQueryDslGroupByIntegrationTest : AbstractCriteriaQueryDslGroupByIntegrationTest()
