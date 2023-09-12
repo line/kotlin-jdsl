@@ -9,10 +9,10 @@ import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.employee.EmployeeSa
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.entity.employee.FullTimeEmployee
 import com.linecorp.kotlinjdsl.example.jpql.hibernate.jpql.JpqlRenderContextUtils
 import com.linecorp.kotlinjdsl.support.hibernate.extension.createQuery
-import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
 class UpdateExample : WithAssertions {
     private val entityManagerFactory = EntityManagerFactoryTestUtils.getEntityManagerFactory()

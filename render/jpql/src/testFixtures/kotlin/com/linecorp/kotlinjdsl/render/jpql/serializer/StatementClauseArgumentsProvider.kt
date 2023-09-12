@@ -1,10 +1,10 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer
 
-import java.util.stream.Stream
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.support.AnnotationConsumer
+import java.util.stream.Stream
 
 internal class StatementClauseArgumentsProvider : ArgumentsProvider, AnnotationConsumer<StatementClauseSource> {
     private lateinit var includes: LinkedHashSet<StatementClauseArguments>

@@ -9,9 +9,9 @@ import com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.em
 import com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.employee.FullTimeEmployee
 import com.linecorp.kotlinjdsl.example.hibernate.reactive.jpql.JpqlRenderContextUtils
 import com.linecorp.kotlinjdsl.support.hibernate.reactive.extension.createQuery
-import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
 class UpdateStageStatelessSessionExample : WithAssertions {
     private val sessionFactory = SessionFactoryTestUtils.getStageSessionFactory()

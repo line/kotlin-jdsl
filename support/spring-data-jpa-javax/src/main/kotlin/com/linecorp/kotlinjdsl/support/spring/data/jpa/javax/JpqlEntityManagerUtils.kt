@@ -8,16 +8,16 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
-import javax.persistence.EntityManager
-import javax.persistence.Query
-import javax.persistence.TypedQuery
-import kotlin.reflect.KClass
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.domain.SliceImpl
 import org.springframework.data.jpa.repository.query.QueryUtilsAdaptor
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
+import javax.persistence.EntityManager
+import javax.persistence.Query
+import javax.persistence.TypedQuery
+import kotlin.reflect.KClass
 
 internal object JpqlEntityManagerUtils {
     fun <T : Any> createQuery(

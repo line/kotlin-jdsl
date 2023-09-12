@@ -11,13 +11,13 @@ import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Query
 import jakarta.persistence.TypedQuery
-import kotlin.reflect.KClass
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.domain.SliceImpl
 import org.springframework.data.jpa.repository.query.QueryUtilsAdaptor
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
+import kotlin.reflect.KClass
 
 internal object JpqlEntityManagerUtils {
     fun <T : Any> createQuery(

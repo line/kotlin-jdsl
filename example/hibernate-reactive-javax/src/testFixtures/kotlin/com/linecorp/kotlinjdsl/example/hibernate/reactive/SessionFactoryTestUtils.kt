@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.example.hibernate.reactive
 
-import javax.persistence.Persistence
 import org.hibernate.reactive.mutiny.Mutiny
 import org.hibernate.reactive.stage.Stage
+import javax.persistence.Persistence
 
 object SessionFactoryTestUtils {
     fun getMutinySessionFactory(): Mutiny.SessionFactory {

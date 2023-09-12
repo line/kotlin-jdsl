@@ -7,9 +7,6 @@ import com.linecorp.kotlinjdsl.example.spring.batch.javax.jpql.entity.book.BookP
 import com.linecorp.kotlinjdsl.example.spring.batch.javax.jpql.repository.author.AuthorRepository
 import com.linecorp.kotlinjdsl.example.spring.batch.javax.jpql.repository.book.BookRepository
 import com.linecorp.kotlinjdsl.support.spring.batch.javax.item.database.orm.KotlinJdslQueryProviderFactory
-import java.math.BigDecimal
-import java.util.*
-import javax.persistence.EntityManagerFactory
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.springframework.batch.core.BatchStatus
@@ -28,6 +25,9 @@ import org.springframework.batch.test.JobLauncherTestUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.PlatformTransactionManager
+import java.math.BigDecimal
+import java.util.*
+import javax.persistence.EntityManagerFactory
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest

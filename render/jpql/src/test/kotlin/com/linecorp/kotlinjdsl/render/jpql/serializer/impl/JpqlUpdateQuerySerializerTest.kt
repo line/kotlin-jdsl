@@ -17,9 +17,9 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import io.mockk.impl.annotations.MockK
 import io.mockk.verifySequence
-import java.math.BigDecimal
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
 @JpqlSerializerTest
 class JpqlUpdateQuerySerializerTest : WithAssertions {

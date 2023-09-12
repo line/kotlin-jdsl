@@ -1,10 +1,10 @@
 package com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.configuration
 
 import io.vertx.sqlclient.SqlConnectOptions
-import java.net.URI
 import org.hibernate.internal.util.config.ConfigurationHelper
 import org.hibernate.reactive.pool.impl.DefaultSqlClientPoolConfiguration
 import org.hibernate.reactive.provider.Settings
+import java.net.URI
 
 class H2DBConnectionPoolConfiguration : DefaultSqlClientPoolConfiguration() {
     private lateinit var user: String

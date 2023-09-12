@@ -15,7 +15,6 @@ import io.mockk.mockkObject
 import io.mockk.verifySequence
 import jakarta.persistence.EntityManager
 import jakarta.persistence.TypedQuery
-import java.util.function.LongSupplier
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -25,6 +24,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.SliceImpl
 import org.springframework.data.jpa.repository.query.QueryUtilsAdaptor
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
+import java.util.function.LongSupplier
 
 @ExtendWith(MockKExtension::class)
 class JpqlEntityManagerUtilsTest : WithAssertions {

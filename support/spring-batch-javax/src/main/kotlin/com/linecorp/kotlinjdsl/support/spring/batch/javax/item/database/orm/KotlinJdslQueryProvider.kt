@@ -3,8 +3,8 @@ package com.linecorp.kotlinjdsl.support.spring.batch.javax.item.database.orm
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.spring.batch.javax.JpqlEntityManagerUtils
-import javax.persistence.Query
 import org.springframework.batch.item.database.orm.AbstractJpaQueryProvider
+import javax.persistence.Query
 
 /**
  * [AbstractJpaQueryProvider] implementation for KotlinJdsl.

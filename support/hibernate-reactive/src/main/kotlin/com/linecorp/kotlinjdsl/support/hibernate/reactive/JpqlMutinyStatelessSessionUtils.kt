@@ -6,8 +6,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
-import kotlin.reflect.KClass
 import org.hibernate.reactive.mutiny.Mutiny
+import kotlin.reflect.KClass
 
 internal object JpqlMutinyStatelessSessionUtils {
     fun <T : Any> createQuery(

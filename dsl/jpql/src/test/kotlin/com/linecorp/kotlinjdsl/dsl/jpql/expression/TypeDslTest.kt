@@ -7,9 +7,9 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
-import kotlin.reflect.KClass
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import kotlin.reflect.KClass
 
 class TypeDslTest : WithAssertions {
     private val entity1 = Entities.entity(Employee::class)

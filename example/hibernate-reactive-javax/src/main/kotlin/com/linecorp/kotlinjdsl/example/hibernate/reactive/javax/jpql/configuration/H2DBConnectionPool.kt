@@ -6,8 +6,8 @@ import io.vertx.jdbcclient.JDBCPool
 import io.vertx.sqlclient.Pool
 import io.vertx.sqlclient.PoolOptions
 import io.vertx.sqlclient.SqlConnectOptions
-import java.net.URI
 import org.hibernate.reactive.pool.impl.DefaultSqlClientPool
+import java.net.URI
 
 class H2DBConnectionPool : DefaultSqlClientPool() {
     override fun createPool(
