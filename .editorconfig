@@ -116,3 +116,7 @@ ij_yaml_spaces_within_brackets = true
 
 [*.md]
 max_line_length = 300
+
+[*.json]
+tab_width = 2
+indent_size = 2

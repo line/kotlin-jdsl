@@ -53,6 +53,9 @@ dependencyResolutionManagement {
         create("libs") {
             from(files("libs.versions.toml"))
         }
+        create("exampleLibs") {
+            from(files("libs.example.versions.toml"))
+        }
     }
 }
 

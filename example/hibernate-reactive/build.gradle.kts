@@ -1,22 +1,22 @@
 plugins {
-    alias(libs.plugins.kotlin.noarg)
-    alias(libs.plugins.kotlin.allopen)
-    alias(libs.plugins.kotlin.jpa)
+    alias(exampleLibs.plugins.kotlin.noarg)
+    alias(exampleLibs.plugins.kotlin.allopen)
+    alias(exampleLibs.plugins.kotlin.jpa)
 }
 
 dependencies {
-    implementation(libs.test.hibernate.reactive2.core)
-    implementation(libs.test.vertx.jdbc.client)
-    implementation(libs.test.agroal.pool)
-    implementation(libs.logback)
+    implementation(exampleLibs.test.hibernate.reactive2.core)
+    implementation(exampleLibs.test.vertx.jdbc.client)
+    implementation(exampleLibs.test.agroal.pool)
+    implementation(exampleLibs.logback)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
     implementation(projects.hibernateReactiveSupport)
 
-    runtimeOnly(libs.test.h2)
+    runtimeOnly(exampleLibs.test.h2)
 
-    testFixturesImplementation(libs.test.hibernate.reactive2.core)
+    testFixturesImplementation(exampleLibs.test.hibernate.reactive2.core)
     testFixturesImplementation(projects.jpqlRender)
 }
 

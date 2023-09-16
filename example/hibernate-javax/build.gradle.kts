@@ -1,20 +1,20 @@
 plugins {
-    alias(libs.plugins.kotlin.noarg)
-    alias(libs.plugins.kotlin.allopen)
-    alias(libs.plugins.kotlin.jpa)
+    alias(exampleLibs.plugins.kotlin.noarg)
+    alias(exampleLibs.plugins.kotlin.allopen)
+    alias(exampleLibs.plugins.kotlin.jpa)
 }
 
 dependencies {
-    implementation(libs.test.hibernate5.core)
-    implementation(libs.logback)
+    implementation(exampleLibs.test.hibernate5.core)
+    implementation(exampleLibs.logback)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
     implementation(projects.hibernateJavaxSupport)
 
-    runtimeOnly(libs.test.h2)
+    runtimeOnly(exampleLibs.test.h2)
 
-    testFixturesImplementation(libs.test.hibernate5.core)
+    testFixturesImplementation(exampleLibs.test.hibernate5.core)
     testFixturesImplementation(projects.jpqlRender)
 }
 
