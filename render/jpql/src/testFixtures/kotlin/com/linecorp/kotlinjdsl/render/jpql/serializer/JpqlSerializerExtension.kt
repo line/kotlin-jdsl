@@ -76,13 +76,13 @@ internal class JpqlSerializerExtension : InvocationInterceptor, BeforeEachCallba
             every { any.write(any<String>()) } just runs
             every { any.writeIfAbsent(any<String>()) } just runs
             every { any.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
-                val predicates: Iterable<Any> = arg(0)
-                val write: (Any) -> Unit = arg(4)
+                val predicates = firstArg<Iterable<Any>>()
+                val write = lastArg<(Any) -> Unit>()
 
                 predicates.forEach { predicate -> write(predicate) }
             }
             every { any.writeParentheses(any<() -> Unit>()) } answers {
-                val inner: () -> Unit = arg(0)
+                val inner = firstArg<() -> Unit>()
 
                 inner()
             }
