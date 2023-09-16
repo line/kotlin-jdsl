@@ -1,0 +1,10 @@
+{
+  "baseBranches": [
+    "develop"
+  ],
+  "gradle": {
+    "includePaths": [
+      "libs.example.versions.toml"
+    ]
+  }
+}
