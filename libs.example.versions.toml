@@ -47,7 +47,7 @@ eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa",
 vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.4.5" }
 agroal-pool = { module = "io.agroal:agroal-pool", version = "2.2" }
 
-h2 = { module = "com.h2database:h2", version = "2.2.222" }
+h2 = { module = "com.h2database:h2", version = "2.2.224" }
 
 [plugins]
 kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.9" }
