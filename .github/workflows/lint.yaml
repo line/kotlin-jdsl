@@ -3,7 +3,7 @@ on:
   pull_request:
     branches:
       - main
-      - develop/*
+      - develop
 
 concurrency:
   group: lint-${{ github.event.pull_request.number || github.sha }}
