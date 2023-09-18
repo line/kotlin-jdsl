@@ -1,11 +1,13 @@
-Visit [the gitbook](https://kotlin-jdsl.gitbook.io/snapshot-docs/) for more information.
+## This is still snapshot version. Version 3.0.0 will be released on October 24th.
+
+Visit [the gitbook](https://kotlin-jdsl.gitbook.io/docs/) for more information.
 
 # Kotlin JDSL
 
 <a href="https://github.com/line/kotlin-jdsl"><img src="https://img.shields.io/github/stars/line/kotlin-jdsl.svg?style=social" /></a>
 <a href="https://discord.gg/7FH8c6npmg"><img src="https://img.shields.io/badge/chat-on%20Discord-brightgreen.svg?style=social&amp;logo=discord" /></a>
 <a href="https://github.com/line/kotlin-jdsl/contributors"><img src="https://img.shields.io/github/contributors/line/kotlin-jdsl.svg" /></a>
-<a href="https://codecov.io/gh/line/kotlin-jdsl"><img src="https://codecov.io/gh/line/kotlin-jdsl/branch/develop/graph/badge.svg"/></a>
+<a href="https://codecov.io/gh/line/kotlin-jdsl"><img src="https://codecov.io/gh/line/kotlin-jdsl/branch/main/graph/badge.svg"/></a>
 <a href="https://github.com/line/kotlin-jdsl/pulse"><img src="https://img.shields.io/github/commit-activity/m/line/kotlin-jdsl.svg?label=commits" /></a>
 <a href="https://search.maven.org/search?q=g:com.linecorp.kotlin-jdsl"><img src="https://img.shields.io/maven-central/v/com.linecorp.kotlin-jdsl/kotlin-jdsl.svg?label=version" /></a>
 <a href="https://github.com/line/kotlin-jdsl/commits"><img src="https://img.shields.io/github/release-date/line/kotlin-jdsl.svg?label=release" /></a>
@@ -17,7 +19,6 @@ classes and Kotlin's built-in functions without an annotation processor, and eas
 
 - Java 8 or later if you are a user.
 - Kotlin 1.9 or later if you are a user.
-- See the developer guide if you are building Kotlin JDSL.
 
 ## How to reach us
 
