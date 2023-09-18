@@ -9,7 +9,7 @@ spring-boot2 = "2.7.15"
 kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version = "0.4.9" }
 
 # log
-slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.7" }
+slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.9" }
 logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 
 # jpa
