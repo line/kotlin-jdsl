@@ -123,7 +123,7 @@ class SelectMutinySessionExample : WithAssertions {
             ).from(
                 entity(Book::class),
             ).orderBy(
-                path(Book::salePrice).desc(),
+                path(Book::publishDate).desc(),
                 path(Book::isbn).asc(),
             )
         }
@@ -133,7 +133,7 @@ class SelectMutinySessionExample : WithAssertions {
         }.await().indefinitely()
 
         // then
-        assertThat(actual).isEqualTo(Isbn("10"))
+        assertThat(actual).isEqualTo(Isbn("12"))
     }
 
     @Test

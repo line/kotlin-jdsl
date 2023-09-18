@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.0"
+kotlin = "1.9.10"
 
 [libraries]
 # kotlin
@@ -14,8 +14,7 @@ javax-persistence-api = { module = "javax.persistence:javax.persistence-api", ve
 jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.0.0" }
 
 # log
-slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.7" }
-logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
+slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.9" }
 
 # hibernate
 hibernate5-core = { module = "org.hibernate:hibernate-core", version = "5.0.0.Final" }

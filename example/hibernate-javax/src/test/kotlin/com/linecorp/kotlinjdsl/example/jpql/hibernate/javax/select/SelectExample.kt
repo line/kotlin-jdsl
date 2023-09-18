@@ -141,7 +141,7 @@ class SelectExample : WithAssertions {
             ).from(
                 entity(Book::class),
             ).orderBy(
-                path(Book::salePrice).desc(),
+                path(Book::publishDate).desc(),
                 path(Book::isbn).asc(),
             )
         }
@@ -149,7 +149,7 @@ class SelectExample : WithAssertions {
         val actual = entityManager.createQuery(query, context).setMaxResults(1).resultList.first()
 
         // then
-        assertThat(actual).isEqualTo(Isbn("10"))
+        assertThat(actual).isEqualTo(Isbn("12"))
     }
 
     @Test

@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.0"
+kotlin = "1.9.10"
 
 spring-boot3 = "3.1.3"
 spring-boot2 = "2.7.15"
@@ -9,7 +9,7 @@ spring-boot2 = "2.7.15"
 kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version = "0.4.9" }
 
 # log
-slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.7" }
+slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.9" }
 logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 
 # jpa
@@ -47,7 +47,7 @@ eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa",
 vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.4.5" }
 agroal-pool = { module = "io.agroal:agroal-pool", version = "2.2" }
 
-h2 = { module = "com.h2database:h2", version = "2.2.222" }
+h2 = { module = "com.h2database:h2", version = "2.2.224" }
 
 [plugins]
 kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.9" }
