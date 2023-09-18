@@ -5,16 +5,16 @@ plugins {
 }
 
 dependencies {
-    implementation(exampleLibs.test.hibernate6.core)
+    implementation(exampleLibs.hibernate6.core)
     implementation(exampleLibs.logback)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
     implementation(projects.hibernateSupport)
 
-    runtimeOnly(exampleLibs.test.h2)
+    runtimeOnly(exampleLibs.h2)
 
-    testFixturesImplementation(exampleLibs.test.hibernate6.core)
+    testFixturesImplementation(exampleLibs.hibernate6.core)
     testFixturesImplementation(projects.jpqlRender)
 }
 

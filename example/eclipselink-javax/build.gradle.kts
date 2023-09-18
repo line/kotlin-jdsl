@@ -5,16 +5,16 @@ plugins {
 }
 
 dependencies {
-    implementation(exampleLibs.test.eclipselink2)
+    implementation(exampleLibs.eclipselink2)
     implementation(exampleLibs.logback)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
     implementation(projects.eclipselinkJavaxSupport)
 
-    runtimeOnly(exampleLibs.test.h2)
+    runtimeOnly(exampleLibs.h2)
 
-    testFixturesImplementation(exampleLibs.test.eclipselink2)
+    testFixturesImplementation(exampleLibs.eclipselink2)
     testFixturesImplementation(projects.jpqlRender)
 }
 

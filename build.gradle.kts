@@ -31,13 +31,13 @@ allprojects {
     dependencies {
         implementation(rootProject.libs.kotlin)
 
-        testImplementation(rootProject.libs.test.junit)
-        testImplementation(rootProject.libs.test.mockk)
-        testImplementation(rootProject.libs.test.assertJ)
+        testImplementation(rootProject.libs.junit)
+        testImplementation(rootProject.libs.mockk)
+        testImplementation(rootProject.libs.assertJ)
 
-        testFixturesImplementation(rootProject.libs.test.junit)
-        testFixturesImplementation(rootProject.libs.test.mockk)
-        testFixturesImplementation(rootProject.libs.test.assertJ)
+        testFixturesImplementation(rootProject.libs.junit)
+        testFixturesImplementation(rootProject.libs.mockk)
+        testFixturesImplementation(rootProject.libs.assertJ)
     }
 
     kotlin {

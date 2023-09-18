@@ -1,14 +1,14 @@
 plugins {
-    alias(libs.plugins.kotlin.benchmark)
-    alias(libs.plugins.kotlin.allopen)
-    alias(libs.plugins.kotlin.spring)
-    alias(libs.plugins.kotlin.jpa)
+    alias(exampleLibs.plugins.kotlin.benchmark)
+    alias(exampleLibs.plugins.kotlin.allopen)
+    alias(exampleLibs.plugins.kotlin.spring)
+    alias(exampleLibs.plugins.kotlin.jpa)
 }
 
 dependencies {
-    implementation(libs.kotlin.benchmark)
-    implementation(libs.jakarta.persistence.api)
-    implementation(libs.logback)
+    implementation(exampleLibs.kotlin.benchmark)
+    implementation(exampleLibs.jakarta.persistence.api)
+    implementation(exampleLibs.logback)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
 }

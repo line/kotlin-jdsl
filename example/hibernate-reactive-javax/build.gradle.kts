@@ -5,18 +5,18 @@ plugins {
 }
 
 dependencies {
-    implementation(exampleLibs.test.hibernate.reactive1.core)
-    implementation(exampleLibs.test.vertx.jdbc.client)
-    implementation(exampleLibs.test.agroal.pool)
+    implementation(exampleLibs.hibernate.reactive1.core)
+    implementation(exampleLibs.vertx.jdbc.client)
+    implementation(exampleLibs.agroal.pool)
     implementation(exampleLibs.logback)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
     implementation(projects.hibernateReactiveJavaxSupport)
 
-    runtimeOnly(exampleLibs.test.h2)
+    runtimeOnly(exampleLibs.h2)
 
-    testFixturesImplementation(exampleLibs.test.hibernate.reactive1.core)
+    testFixturesImplementation(exampleLibs.hibernate.reactive1.core)
     testFixturesImplementation(projects.jpqlRender)
 }
 
