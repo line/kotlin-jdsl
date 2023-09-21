@@ -14,6 +14,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
@@ -501,5 +502,13 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
+    }
+
+    /**
+     * Creates an expression that represents the length of the string as an integer.
+     */
+    @SinceJdsl("3.0.0")
+    fun length(value: Expression<String>): Expression<Int> {
+        return JpqlLength(value)
     }
 }
