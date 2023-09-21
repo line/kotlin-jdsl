@@ -506,7 +506,8 @@ object Expressions {
 
     /**
      * Creates an expression that represents the position of the first occurrence of a substring in a string.
-     * If the substring is not found, returns 0. position start with 1.
+     * If the substring is not found, returns 0.
+     * The position starts with 1.
      */
     @SinceJdsl("3.0.0")
     fun locate(
