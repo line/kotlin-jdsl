@@ -94,7 +94,7 @@ class BatchExampleTest : WithAssertions {
                 entity(Book::class),
             ).from(
                 entity(Book::class),
-                fetchJoin(Book::publisher),
+                fetchJoin(Book::publishers),
             )
         }
 
