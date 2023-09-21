@@ -2518,4 +2518,82 @@ open class Jpql : JpqlDsl {
     fun <T : Any> deleteFrom(entity: Entityable<T>): DeleteQueryWhereStep<T> {
         return DeleteQueryDsl(entity.toEntity())
     }
+
+    /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0. position start with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: String,
+        string: String,
+        start: Int?,
+    ): Expression<Int> {
+        return locate(Expressions.value(substring), Expressions.value(string), Expressions.value(start))
+    }
+
+    /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0. position start with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: String,
+        string: Expressionable<String>,
+        start: Int?,
+    ): Expression<Int> {
+        return locate(Expressions.value(substring), string, Expressions.value(start))
+    }
+
+    /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0. position start with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: Expressionable<String>,
+        string: Expressionable<String>,
+        start: Int?,
+    ): Expression<Int> {
+        return locate(substring.toExpression(), string.toExpression(), Expressions.value(start))
+    }
+
+    /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0. position start with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: String,
+        string: String,
+        start: Expressionable<Int>? = null,
+    ): Expression<Int> {
+        return locate(Expressions.value(substring), Expressions.value(string), start)
+    }
+
+    /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0. position start with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: String,
+        string: Expressionable<String>,
+        start: Expressionable<Int>? = null,
+    ): Expression<Int> {
+        return locate(Expressions.value(substring), string.toExpression(), start)
+    }
+
+    /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0. position start with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: Expressionable<String>,
+        string: Expressionable<String>,
+        start: Expressionable<Int>? = null,
+    ): Expression<Int> {
+        return Expressions.locate(substring.toExpression(), string.toExpression(), start?.toExpression())
+    }
 }
