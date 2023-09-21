@@ -414,6 +414,14 @@ object Expressions {
     }
 
     /**
+     * Creates an expression that represents the length of the string as an integer.
+     */
+    @SinceJdsl("3.0.0")
+    fun length(value: Expression<String>): Expression<Int> {
+        return JpqlLength(value)
+    }
+
+    /**
      * Creates an expression that represents predefined database functions and user-defined database functions.
      */
     @SinceJdsl("3.0.0")
@@ -502,13 +510,5 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
-    }
-
-    /**
-     * Creates an expression that represents the length of the string as an integer.
-     */
-    @SinceJdsl("3.0.0")
-    fun length(value: Expression<String>): Expression<Int> {
-        return JpqlLength(value)
     }
 }
