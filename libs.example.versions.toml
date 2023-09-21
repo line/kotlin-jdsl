@@ -2,7 +2,7 @@
 kotlin = "1.9.10"
 
 spring-boot3 = "3.1.3"
-spring-boot2 = "2.7.15"
+spring-boot2 = "2.7.16"
 
 [libraries]
 # kotlin
@@ -14,7 +14,7 @@ logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
 
 # jpa
 javax-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
-jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.0.0" }
+jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.1.0" }
 
 # spring boot
 spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot3" }
@@ -33,7 +33,7 @@ spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", v
 
 # hibernate
 hibernate5-core = { module = "org.hibernate:hibernate-core", version = "5.6.15.Final" }
-hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.3.0.Final" }
+hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.3.1.Final" }
 
 # hibernate-reactive
 hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
