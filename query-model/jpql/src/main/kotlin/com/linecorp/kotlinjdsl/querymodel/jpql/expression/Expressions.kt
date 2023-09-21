@@ -15,6 +15,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMinus
@@ -501,5 +502,19 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
+    }
+
+    /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0. position start with 1.
+     */
+
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: Expression<String>,
+        string: Expression<String>,
+        start: Expression<Int>? = null,
+    ): Expression<Int> {
+        return JpqlLocate(substring, string, start)
     }
 }
