@@ -1043,6 +1043,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the length of the string as an integer.
+     */
+    @SinceJdsl("3.0.0")
+    fun length(value: String): Expression<Int> {
+        return Expressions.length(Expressions.value(value))
+    }
+
+    /**
+     * Creates an expression that represents the length of the string as an integer.
+     */
+    @SinceJdsl("3.0.0")
+    fun length(value: Expressionable<String>): Expression<Int> {
+        return Expressions.length(value.toExpression())
+    }
+
+    /**
      * Creates an expression that represents predefined database functions and user-defined database functions.
      */
     @SinceJdsl("3.0.0")
@@ -2517,21 +2533,5 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> deleteFrom(entity: Entityable<T>): DeleteQueryWhereStep<T> {
         return DeleteQueryDsl(entity.toEntity())
-    }
-
-    /**
-     * Creates an expression that represents the length of the string as an integer.
-     */
-    @SinceJdsl("3.0.0")
-    fun length(value: String): Expression<Int> {
-        return length(Expressions.value(value))
-    }
-
-    /**
-     * Creates an expression that represents the length of the string as an integer.
-     */
-    @SinceJdsl("3.0.0")
-    fun length(value: Expressionable<String>): Expression<Int> {
-        return Expressions.length(value.toExpression())
     }
 }
