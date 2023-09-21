@@ -1058,6 +1058,56 @@ open class Jpql : JpqlDsl {
         return Expressions.length(value.toExpression())
     }
 
+    /** 
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0.
+     * The position starts with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: String,
+        string: String,
+        start: Int? = null,
+    ): Expression<Int> {
+        return Expressions.locate(
+            Expressions.value(substring),
+            Expressions.value(string),
+            start?.let { Expressions.value(it) },
+        )
+    }
+
+    /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0.
+     * The position starts with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: String,
+        string: Expressionable<String>,
+        start: Int? = null,
+    ): Expression<Int> {
+        return Expressions.locate(
+            Expressions.value(substring),
+            string.toExpression(),
+            start?.let { Expressions.value(it) },
+        )
+    }
+
+    /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0.
+     * The position starts with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: Expressionable<String>,
+        string: Expressionable<String>,
+        start: Expressionable<Int>? = null,
+    ): Expression<Int> {
+        return Expressions.locate(substring.toExpression(), string.toExpression(), start?.toExpression())
+    }
+
     /**
      * Creates an expression that represents predefined database functions and user-defined database functions.
      */

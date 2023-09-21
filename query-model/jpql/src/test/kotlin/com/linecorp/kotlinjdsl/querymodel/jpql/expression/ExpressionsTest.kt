@@ -18,6 +18,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionPar
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMinus
@@ -56,6 +57,7 @@ class ExpressionsTest : WithAssertions {
     private val string1: String = "string1"
 
     private val stringExpression1: Expression<String> = Expressions.value("string1")
+    private val stringExpression2: Expression<String> = Expressions.value("string2")
     private val intExpression1: Expression<Int> = Expressions.value(100)
     private val intExpression2: Expression<Int> = Expressions.value(200)
     private val intExpression3: Expression<Int> = Expressions.value(300)
@@ -718,6 +720,24 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlLength(
             stringExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+    
+    fun locate() {
+        // when
+        val actual = Expressions.locate(
+            substring = stringExpression1,
+            string = stringExpression2,
+            start = intExpression1,
+        )
+
+        // then
+        val expected = JpqlLocate(
+            substring = stringExpression1,
+            string = stringExpression2,
+            start = intExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
