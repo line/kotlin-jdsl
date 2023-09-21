@@ -414,6 +414,20 @@ object Expressions {
     }
 
     /**
+     * Creates an expression that represents the position of the first occurrence of a substring in a string.
+     * If the substring is not found, returns 0.
+     * The position starts with 1.
+     */
+    @SinceJdsl("3.0.0")
+    fun locate(
+        substring: Expression<String>,
+        string: Expression<String>,
+        start: Expression<Int>? = null,
+    ): Expression<Int> {
+        return JpqlLocate(substring, string, start)
+    }
+
+    /**
      * Creates an expression that represents predefined database functions and user-defined database functions.
      */
     @SinceJdsl("3.0.0")
@@ -502,19 +516,5 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
-    }
-
-    /**
-     * Creates an expression that represents the position of the first occurrence of a substring in a string.
-     * If the substring is not found, returns 0.
-     * The position starts with 1.
-     */
-    @SinceJdsl("3.0.0")
-    fun locate(
-        substring: Expression<String>,
-        string: Expression<String>,
-        start: Expression<Int>? = null,
-    ): Expression<Int> {
-        return JpqlLocate(substring, string, start)
     }
 }
