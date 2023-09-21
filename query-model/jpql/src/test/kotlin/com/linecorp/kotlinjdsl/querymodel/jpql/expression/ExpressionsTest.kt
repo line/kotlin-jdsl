@@ -724,7 +724,8 @@ class ExpressionsTest : WithAssertions {
 
         assertThat(actual).isEqualTo(expected)
     }
-    
+
+    @Test
     fun locate() {
         // when
         val actual = Expressions.locate(

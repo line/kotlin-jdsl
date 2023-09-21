@@ -1058,7 +1058,7 @@ open class Jpql : JpqlDsl {
         return Expressions.length(value.toExpression())
     }
 
-    /** 
+    /**
      * Creates an expression that represents the position of the first occurrence of a substring in a string.
      * If the substring is not found, returns 0.
      * The position starts with 1.
@@ -1105,7 +1105,11 @@ open class Jpql : JpqlDsl {
         string: Expressionable<String>,
         start: Expressionable<Int>? = null,
     ): Expression<Int> {
-        return Expressions.locate(substring.toExpression(), string.toExpression(), start?.toExpression())
+        return Expressions.locate(
+            substring.toExpression(),
+            string.toExpression(),
+            start?.toExpression(),
+        )
     }
 
     /**
