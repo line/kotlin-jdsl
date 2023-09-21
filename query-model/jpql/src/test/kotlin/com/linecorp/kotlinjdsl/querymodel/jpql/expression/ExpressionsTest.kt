@@ -16,6 +16,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
@@ -712,6 +713,18 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
+    fun length() {
+        // when
+        val actual = Expressions.length(stringExpression1)
+
+        // then
+        val expected = JpqlLength(
+            stringExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+    
     fun locate() {
         // when
         val actual = Expressions.locate(

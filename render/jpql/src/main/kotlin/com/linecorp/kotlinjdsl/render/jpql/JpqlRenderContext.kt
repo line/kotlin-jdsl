@@ -56,6 +56,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftAssociationFe
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftAssociationJoinSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftFetchJoinSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLengthSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanAllSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanAnySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanOrEqualToAllSerializer
@@ -287,6 +288,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlLeftAssociationJoinSerializer(),
             JpqlLeftFetchJoinSerializer(),
             JpqlLeftJoinSerializer(),
+            JpqlLengthSerializer(),
             JpqlLessThanAllSerializer(),
             JpqlLessThanAnySerializer(),
             JpqlLessThanOrEqualToAllSerializer(),

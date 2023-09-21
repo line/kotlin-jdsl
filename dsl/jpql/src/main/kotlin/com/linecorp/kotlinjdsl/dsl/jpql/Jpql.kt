@@ -1043,6 +1043,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the length of the string as an integer.
+     */
+    @SinceJdsl("3.0.0")
+    fun length(value: String): Expression<Int> {
+        return Expressions.length(Expressions.value(value))
+    }
+
+    /**
+     * Creates an expression that represents the length of the string as an integer.
+     */
+    @SinceJdsl("3.0.0")
+    fun length(value: Expressionable<String>): Expression<Int> {
+        return Expressions.length(value.toExpression())
+    }
+
+    /** 
      * Creates an expression that represents the position of the first occurrence of a substring in a string.
      * If the substring is not found, returns 0.
      * The position starts with 1.
