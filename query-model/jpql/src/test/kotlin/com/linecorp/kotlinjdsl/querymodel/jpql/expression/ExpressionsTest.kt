@@ -16,6 +16,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
@@ -54,6 +55,7 @@ class ExpressionsTest : WithAssertions {
     private val char1: Char = 'a'
     private val string1: String = "string1"
 
+    private val stringExpression1: Expression<String> = Expressions.value("string1")
     private val intExpression1: Expression<Int> = Expressions.value(100)
     private val intExpression2: Expression<Int> = Expressions.value(200)
     private val intExpression3: Expression<Int> = Expressions.value(300)
@@ -703,6 +705,19 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlExpressionParentheses(
             intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun length() {
+        // when
+        val actual = Expressions.length(stringExpression1)
+
+        // then
+        val expected = JpqlLength(
+            stringExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
