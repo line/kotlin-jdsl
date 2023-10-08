@@ -2460,7 +2460,11 @@ open class Jpql : JpqlDsl {
     inline fun <reified T : Any> select(
         expr: Expressionable<T>,
     ): SelectQueryFromStep<T> {
-        return SelectQueryFromStepDsl(T::class, distinct = false, listOf(expr.toExpression()))
+        return SelectQueryFromStepDsl(
+            T::class,
+            distinct = false,
+            listOf(expr.toExpression()),
+        )
     }
 
     /**
@@ -2468,9 +2472,14 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> select(
-        vararg expr: Expressionable<*>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return SelectQueryFromStepDsl(T::class, distinct = false, expr.map { it.toExpression() })
+        return SelectQueryFromStepDsl(
+            T::class,
+            distinct = false,
+            listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+        )
     }
 
     /**
@@ -2479,9 +2488,14 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> select(
         returnType: KClass<T>,
-        vararg expr: Expressionable<*>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return SelectQueryFromStepDsl(returnType, distinct = false, expr.map { it.toExpression() })
+        return SelectQueryFromStepDsl(
+            returnType,
+            distinct = false,
+            listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+        )
     }
 
     /**
@@ -2491,7 +2505,11 @@ open class Jpql : JpqlDsl {
     inline fun <reified T : Any> selectDistinct(
         expr: Expressionable<T>,
     ): SelectQueryFromStep<T> {
-        return SelectQueryFromStepDsl(T::class, distinct = true, listOf(expr.toExpression()))
+        return SelectQueryFromStepDsl(
+            T::class,
+            distinct = true,
+            listOf(expr.toExpression()),
+        )
     }
 
     /**
@@ -2499,9 +2517,14 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectDistinct(
-        vararg expr: Expressionable<*>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return SelectQueryFromStepDsl(T::class, distinct = true, expr.map { it.toExpression() })
+        return SelectQueryFromStepDsl(
+            T::class,
+            distinct = true,
+            listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+        )
     }
 
     /**
@@ -2510,9 +2533,14 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> selectDistinct(
         returnType: KClass<T>,
-        vararg expr: Expressionable<*>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
     ): SelectQueryFromStep<T> {
-        return SelectQueryFromStepDsl(returnType, distinct = true, expr.map { it.toExpression() })
+        return SelectQueryFromStepDsl(
+            returnType,
+            distinct = true,
+            listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+        )
     }
 
     /**
@@ -2520,12 +2548,18 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectNew(
-        vararg expr: Expressionable<*>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
     ): SelectQueryFromStep<T> {
         return SelectQueryFromStepDsl(
             returnType = T::class,
             distinct = false,
-            select = listOf(Expressions.new(T::class, expr.map { it.toExpression() })),
+            select = listOf(
+                Expressions.new(
+                    T::class,
+                    listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+                ),
+            ),
         )
     }
 
@@ -2535,12 +2569,18 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> selectNew(
         returnType: KClass<T>,
-        vararg expr: Expressionable<*>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
     ): SelectQueryFromStep<T> {
         return SelectQueryFromStepDsl(
             returnType = returnType,
             distinct = false,
-            select = listOf(Expressions.new(returnType, expr.map { it.toExpression() })),
+            select = listOf(
+                Expressions.new(
+                    returnType,
+                    listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+                ),
+            ),
         )
     }
 
@@ -2549,12 +2589,18 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectDistinctNew(
-        vararg expr: Expressionable<*>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
     ): SelectQueryFromStep<T> {
         return SelectQueryFromStepDsl(
             returnType = T::class,
             distinct = true,
-            select = listOf(Expressions.new(T::class, expr.map { it.toExpression() })),
+            select = listOf(
+                Expressions.new(
+                    T::class,
+                    listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+                ),
+            ),
         )
     }
 
@@ -2564,12 +2610,18 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> selectDistinctNew(
         returnType: KClass<T>,
-        vararg expr: Expressionable<*>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
     ): SelectQueryFromStep<T> {
         return SelectQueryFromStepDsl(
             returnType = returnType,
             distinct = true,
-            select = listOf(Expressions.new(returnType, expr.map { it.toExpression() })),
+            select = listOf(
+                Expressions.new(
+                    returnType,
+                    listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+                ),
+            ),
         )
     }
 
