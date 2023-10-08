@@ -7,5 +7,5 @@ import kotlin.reflect.KProperty1
 @Internal
 data class JpqlPathProperty<T : Any, V> internal constructor(
     val path: Path<T>,
-    val property: KProperty1<T, V>,
+    val property: KProperty1<in T, V>,
 ) : Path<V & Any>
