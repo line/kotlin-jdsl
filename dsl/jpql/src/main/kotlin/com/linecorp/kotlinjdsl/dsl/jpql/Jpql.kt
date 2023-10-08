@@ -198,7 +198,7 @@ open class Jpql : JpqlDsl {
      * Creates a path expression with the entity and property.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> Entityable<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
+    fun <T : Any, V> Entityable<T>.path(property: KProperty1<in T, @Exact V>): Path<V & Any> {
         return Paths.path(this.toEntity(), property)
     }
 
@@ -206,7 +206,7 @@ open class Jpql : JpqlDsl {
      * Creates a path expression with the path and property.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> Pathable<T>.path(property: KProperty1<T, @Exact V>): Path<V & Any> {
+    fun <T : Any, V> Pathable<T>.path(property: KProperty1<in T, @Exact V>): Path<V & Any> {
         return Paths.path(this.toPath(), property)
     }
 
@@ -214,7 +214,7 @@ open class Jpql : JpqlDsl {
      * Creates a path expression with the entity and property.
      */
     @SinceJdsl("3.0.0")
-    operator fun <T : Any, V> Entityable<T>.invoke(property: KProperty1<T, @Exact V>): Path<V & Any> {
+    operator fun <T : Any, V> Entityable<T>.invoke(property: KProperty1<in T, @Exact V>): Path<V & Any> {
         return Paths.path(this.toEntity(), property)
     }
 
@@ -222,7 +222,7 @@ open class Jpql : JpqlDsl {
      * Creates a path expression with the path and property.
      */
     @SinceJdsl("3.0.0")
-    operator fun <T : Any, V> Pathable<T>.invoke(property: KProperty1<T, @Exact V>): Path<V & Any> {
+    operator fun <T : Any, V> Pathable<T>.invoke(property: KProperty1<in T, @Exact V>): Path<V & Any> {
         return Paths.path(this.toPath(), property)
     }
 

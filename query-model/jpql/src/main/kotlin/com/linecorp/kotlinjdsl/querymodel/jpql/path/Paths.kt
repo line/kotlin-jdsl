@@ -30,7 +30,7 @@ object Paths {
      * Creates a path with the entity and property.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> path(entity: Entity<T>, property: KProperty1<T, @Exact V>): Path<V & Any> {
+    fun <T : Any, V> path(entity: Entity<T>, property: KProperty1<in T, @Exact V>): Path<V & Any> {
         return JpqlEntityProperty(entity, property)
     }
 
@@ -38,7 +38,7 @@ object Paths {
      * Creates a path with the path and property.
      */
     @SinceJdsl("3.0.0")
-    fun <T : Any, V> path(path: Path<T>, property: KProperty1<T, @Exact V>): Path<V & Any> {
+    fun <T : Any, V> path(path: Path<T>, property: KProperty1<in T, @Exact V>): Path<V & Any> {
         return JpqlPathProperty(path, property)
     }
 

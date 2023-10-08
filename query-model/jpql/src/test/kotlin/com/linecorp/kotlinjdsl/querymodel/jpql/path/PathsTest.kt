@@ -1,7 +1,6 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql.path
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
-import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.employee.Employee
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.employee.FullTimeEmployee
@@ -13,20 +12,22 @@ import org.junit.jupiter.api.Test
 
 class PathsTest : WithAssertions {
     private val entity1 = Entities.entity(Employee::class)
+    private val entity2 = Entities.entity(FullTimeEmployee::class)
 
     private val path1 = Paths.path(EmployeeDepartment::employee)
+    private val path2 = Paths.treat(Paths.path(EmployeeDepartment::employee), FullTimeEmployee::class)
 
     @Test
     fun path() {
         // when
         val actual = Paths.path(
-            Book::authors,
+            FullTimeEmployee::address,
         )
 
         // then
         val expected = JpqlEntityProperty(
-            entity = Entities.entity(Book::class),
-            property = Book::authors,
+            entity = Entities.entity(FullTimeEmployee::class),
+            property = FullTimeEmployee::address,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -37,13 +38,13 @@ class PathsTest : WithAssertions {
         // when
         val actual = Paths.path(
             entity1,
-            Employee::employeeId,
+            Employee::address,
         )
 
         // then
         val expected = JpqlEntityProperty(
             entity = entity1,
-            property = Employee::employeeId,
+            property = Employee::address,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -54,13 +55,47 @@ class PathsTest : WithAssertions {
         // when
         val actual = Paths.path(
             path1,
-            property = Employee::employeeId,
+            property = Employee::address,
         )
 
         // then
         val expected = JpqlPathProperty(
             path = path1,
-            property = Employee::employeeId,
+            property = Employee::address,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `path() with an entity and a property of super class`() {
+        // when
+        val actual = Paths.path(
+            entity2,
+            Employee::address,
+        )
+
+        // then
+        val expected = JpqlEntityProperty(
+            entity = entity2,
+            property = Employee::address,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `path() with a path and a property of super class`() {
+        // when
+        val actual = Paths.path(
+            path2,
+            property = Employee::address,
+        )
+
+        // then
+        val expected = JpqlPathProperty(
+            path = path2,
+            property = Employee::address,
         )
 
         assertThat(actual).isEqualTo(expected)

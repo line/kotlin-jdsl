@@ -10,7 +10,6 @@ import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
-import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import java.time.OffsetDateTime
 import java.util.*
@@ -43,12 +42,12 @@ class Book(
     @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], orphanRemoval = true)
     val authors: MutableSet<BookAuthor>,
 
-    @OneToOne(mappedBy = "book", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val publisher: BookPublisher,
+    @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val publishers: MutableSet<BookPublisher>,
 ) {
     init {
         authors.forEach { it.book = this }
-        publisher.book = this
+        publishers.forEach { it.book = this }
     }
 
     override fun equals(other: Any?): Boolean = Objects.equals(isbn, (other as? Book)?.isbn)
