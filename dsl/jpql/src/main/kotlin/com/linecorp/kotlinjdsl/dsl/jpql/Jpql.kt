@@ -2485,7 +2485,17 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @Deprecated(
+        """
+        The KClass parameter makes it confusing whether to specify the return type as generic or KClass
+        in the select function signature.
+        Therefore, Kotlin JDSL will remove select functions that accept the KClass parameter
+        to specify the return type as generic only.
+        Since these will be removed in the 3.0.0 release,
+        please use select functions that specify the return type via generic.
+        """,
+        ReplaceWith("select<T>(expr, *exprs)"),
+    )
     fun <T : Any> select(
         returnType: KClass<T>,
         expr: Expressionable<*>,
@@ -2530,7 +2540,17 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @Deprecated(
+        """
+        The KClass parameter makes it confusing whether to specify the return type as generic or KClass
+        in the select function signature.
+        Therefore, Kotlin JDSL will remove select functions that accept the KClass parameter
+        to specify the return type as generic only.
+        Since these will be removed in the 3.0.0 release,
+        please use select functions that specify the return type via generic.
+        """,
+        ReplaceWith("selectDistinct<T>(expr, *exprs)"),
+    )
     fun <T : Any> selectDistinct(
         returnType: KClass<T>,
         expr: Expressionable<*>,
@@ -2566,7 +2586,17 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause with the DTO projection in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @Deprecated(
+        """
+        The KClass parameter makes it confusing whether to specify the return type as generic or KClass
+        in the select function signature.
+        Therefore, Kotlin JDSL will remove select functions that accept the KClass parameter
+        to specify the return type as generic only.
+        Since these will be removed in the 3.0.0 release,
+        please use select functions that specify the return type via generic.
+        """,
+        ReplaceWith("selectNew<T>(expr, *exprs)"),
+    )
     fun <T : Any> selectNew(
         returnType: KClass<T>,
         expr: Expressionable<*>,
@@ -2607,7 +2637,17 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause with the DTO projection in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @Deprecated(
+        """
+        The KClass parameter makes it confusing whether to specify the return type as generic or KClass
+        in the select function signature.
+        Therefore, Kotlin JDSL will remove select functions that accept the KClass parameter
+        to specify the return type as generic only.
+        Since these will be removed in the 3.0.0 release,
+        please use select functions that specify the return type via generic.
+        """,
+        ReplaceWith("selectDistinctNew<T>(expr, *exprs)"),
+    )
     fun <T : Any> selectDistinctNew(
         returnType: KClass<T>,
         expr: Expressionable<*>,
