@@ -70,32 +70,6 @@ class SelectDslTest : WithAssertions {
     }
 
     @Test
-    fun `select() with a class and expressions`() {
-        // when
-        val select = queryPart {
-            select(
-                View::class,
-                expression1,
-                expression2,
-            ).from(
-                entity1,
-            )
-        }.toQuery()
-
-        val actual: SelectQuery<View> = select // for type check
-
-        // then
-        val expected = SelectQueries.selectQuery(
-            returnType = View::class,
-            distinct = false,
-            select = listOf(expression1, expression2),
-            from = listOf(entity1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
     fun `selectDistinct() with an expression`() {
         // when
         val select = queryPart {
@@ -124,32 +98,6 @@ class SelectDslTest : WithAssertions {
         // when
         val select = queryPart {
             selectDistinct<View>(
-                expression1,
-                expression2,
-            ).from(
-                entity1,
-            )
-        }.toQuery()
-
-        val actual: SelectQuery<View> = select // for type check
-
-        // then
-        val expected = SelectQueries.selectQuery(
-            returnType = View::class,
-            distinct = true,
-            select = listOf(expression1, expression2),
-            from = listOf(entity1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `selectDistinct() with a class and expressions`() {
-        // when
-        val select = queryPart {
-            selectDistinct(
-                View::class,
                 expression1,
                 expression2,
             ).from(
@@ -201,72 +149,10 @@ class SelectDslTest : WithAssertions {
     }
 
     @Test
-    fun `selectNew() with a class and expressions`() {
-        // when
-        val select = queryPart {
-            selectNew(
-                Dto::class,
-                expression1,
-                expression2,
-            ).from(
-                entity1,
-            )
-        }.toQuery()
-
-        val actual: SelectQuery<Dto> = select // for type check
-
-        // then
-        val expected = SelectQueries.selectQuery(
-            returnType = Dto::class,
-            distinct = false,
-            select = listOf(
-                Expressions.new(
-                    type = Dto::class,
-                    args = listOf(expression1, expression2),
-                ),
-            ),
-            from = listOf(entity1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
     fun `selectDistinctNew() with a generic type and expressions`() {
         // when
         val select = queryPart {
             selectDistinctNew<Dto>(
-                expression1,
-                expression2,
-            ).from(
-                entity1,
-            )
-        }.toQuery()
-
-        val actual: SelectQuery<Dto> = select // for type check
-
-        // then
-        val expected = SelectQueries.selectQuery(
-            returnType = Dto::class,
-            distinct = true,
-            select = listOf(
-                Expressions.new(
-                    type = Dto::class,
-                    args = listOf(expression1, expression2),
-                ),
-            ),
-            from = listOf(entity1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `selectDistinctNew() with a class and expressions`() {
-        // when
-        val select = queryPart {
-            selectDistinctNew(
-                Dto::class,
                 expression1,
                 expression2,
             ).from(
