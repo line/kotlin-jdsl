@@ -73,6 +73,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNewSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotBetweenSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotEqualAllSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotEqualAnySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotEqualSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotExistsSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotInSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotInSubquerySerializer
@@ -305,6 +306,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlNotBetweenSerializer(),
             JpqlNotEqualAllSerializer(),
             JpqlNotEqualAnySerializer(),
+            JpqlNotEqualSerializer(),
             JpqlNotExistsSerializer(),
             JpqlNotInSerializer(),
             JpqlNotInSubquerySerializer(),
