@@ -599,6 +599,38 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
+    fun length() {
+        // when
+        val actual = Expressions.length(stringExpression1)
+
+        // then
+        val expected = JpqlLength(
+            stringExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun locate() {
+        // when
+        val actual = Expressions.locate(
+            substring = stringExpression1,
+            string = stringExpression2,
+            start = intExpression1,
+        )
+
+        // then
+        val expected = JpqlLocate(
+            substring = stringExpression1,
+            string = stringExpression2,
+            start = intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
     fun function() {
         // when
         val actual = Expressions.function(
@@ -707,38 +739,6 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlExpressionParentheses(
             intExpression1,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun length() {
-        // when
-        val actual = Expressions.length(stringExpression1)
-
-        // then
-        val expected = JpqlLength(
-            stringExpression1,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun locate() {
-        // when
-        val actual = Expressions.locate(
-            substring = stringExpression1,
-            string = stringExpression2,
-            start = intExpression1,
-        )
-
-        // then
-        val expected = JpqlLocate(
-            substring = stringExpression1,
-            string = stringExpression2,
-            start = intExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
