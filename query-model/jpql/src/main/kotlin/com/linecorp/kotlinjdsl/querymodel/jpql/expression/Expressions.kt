@@ -17,6 +17,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMinus
@@ -412,6 +413,14 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun type(path: Path<*>): Expression<KClass<*>> {
         return JpqlPathType(path)
+    }
+
+    /**
+     * Creates an expression that represents the string in lowercase.
+     */
+    @SinceJdsl("3.0.0")
+    fun lower(string: Expression<String>): Expression<String> {
+        return JpqlLower(string)
     }
 
     /**
