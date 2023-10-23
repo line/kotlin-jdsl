@@ -419,8 +419,8 @@ object Expressions {
      * Creates an expression that represents the string in lowercase.
      */
     @SinceJdsl("3.0.0")
-    fun lower(string: Expression<String>): Expression<String> {
-        return JpqlLower(string)
+    fun lower(value: Expression<String>): Expression<String> {
+        return JpqlLower(value)
     }
 
     /**

@@ -20,7 +20,7 @@ class JpqlLowerSerializer : JpqlSerializer<JpqlLower> {
         writer.write("LOWER")
 
         writer.writeParentheses {
-            delegate.serialize(part.string, writer, context)
+            delegate.serialize(part.value, writer, context)
         }
     }
 }

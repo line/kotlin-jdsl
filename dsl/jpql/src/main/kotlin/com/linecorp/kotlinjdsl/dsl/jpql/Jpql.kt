@@ -1046,16 +1046,16 @@ open class Jpql : JpqlDsl {
      * Creates an expression that represents the string in lowercase.
      */
     @SinceJdsl("3.0.0")
-    fun lower(string: String): Expression<String> {
-        return Expressions.lower(Expressions.value(string))
+    fun lower(value: String): Expression<String> {
+        return Expressions.lower(Expressions.value(value))
     }
 
     /**
      * Creates an expression that represents the string in lowercase.
      */
     @SinceJdsl("3.0.0")
-    fun lower(string: Expressionable<String>): Expression<String> {
-        return Expressions.lower(string.toExpression())
+    fun lower(value: Expressionable<String>): Expression<String> {
+        return Expressions.lower(value.toExpression())
     }
 
     /**
