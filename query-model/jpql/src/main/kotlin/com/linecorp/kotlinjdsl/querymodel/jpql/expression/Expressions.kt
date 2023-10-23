@@ -29,6 +29,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTimes
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
@@ -412,6 +413,14 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun type(path: Path<*>): Expression<KClass<*>> {
         return JpqlPathType(path)
+    }
+
+    /**
+     * Creates an expression that represents the string in uppercase.
+     */
+    @SinceJdsl("3.0.0")
+    fun upper(string: Expression<String>): Expression<String> {
+        return JpqlUpper(string)
     }
 
     /**
