@@ -32,6 +32,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTimes
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
@@ -599,6 +600,19 @@ class ExpressionsTest : WithAssertions {
         assertThat(actual).isEqualTo(expected)
     }
 
+    @Test
+    fun upper() {
+        // when
+        val actual = Expressions.upper(stringExpression1)
+
+        // then
+        val expected = JpqlUpper(
+            stringExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+          
     @Test
     fun lower() {
         // when
