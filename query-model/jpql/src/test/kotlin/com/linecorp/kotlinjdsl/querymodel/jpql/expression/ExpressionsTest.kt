@@ -612,7 +612,7 @@ class ExpressionsTest : WithAssertions {
 
         assertThat(actual).isEqualTo(expected)
     }
-          
+
     @Test
     fun lower() {
         // when

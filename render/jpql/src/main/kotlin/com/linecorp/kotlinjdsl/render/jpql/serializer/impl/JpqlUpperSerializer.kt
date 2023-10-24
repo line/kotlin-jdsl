@@ -20,7 +20,7 @@ class JpqlUpperSerializer : JpqlSerializer<JpqlUpper> {
         writer.write("UPPER")
 
         writer.writeParentheses {
-            delegate.serialize(part.string, writer, context)
+            delegate.serialize(part.value, writer, context)
         }
     }
 }

@@ -420,8 +420,8 @@ object Expressions {
      * Creates an expression that represents the string in uppercase.
      */
     @SinceJdsl("3.0.0")
-    fun upper(string: Expression<String>): Expression<String> {
-        return JpqlUpper(string)
+    fun upper(value: Expression<String>): Expression<String> {
+        return JpqlUpper(value)
     }
 
     /**
