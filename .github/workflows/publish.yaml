@@ -5,7 +5,7 @@ on:
     branches:
       - develop
   release:
-    types: [ created ]
+    types: [ published ]
 
 concurrency:
   group: publish-${{ github.event.pull_request.number || github.sha }}
