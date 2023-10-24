@@ -39,7 +39,3 @@ out/
 ### NPM ###
 package-lock.json
 /node_modules/
-
-### Secret ###
-secring.gpg
-local.properties

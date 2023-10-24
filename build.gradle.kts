@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.ktlint)
     `java-test-fixtures`
     `maven-publish`
+    signing
 }
 
 allprojects {
@@ -70,6 +71,16 @@ allprojects {
         withJavadocJar()
     }
 
+    signing {
+        val signingKeyId: String? by project
+        val signingKey: String? by project
+        val signingPassword: String? by project
+
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+
+        sign(publishing.publications)
+    }
+
     publishing {
         repositories {
             maven {
@@ -104,6 +115,19 @@ allprojects {
                         license {
                             name.set("The Apache License, Version 2.0")
                             url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            name.set("LY Corporation")
+                            email.set("dl_oss_dev@linecorp.com")
+                            url.set("https://engineering.linecorp.com/en/")
+                        }
+                        developer {
+                            id.set("shouwn")
+                            name.set("jonghyon.s")
+                            email.set("jonghyon.s@linecorp.com")
                         }
                     }
 
