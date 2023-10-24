@@ -19,6 +19,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMinus
@@ -606,6 +607,19 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlUpper(
+            stringExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+          
+    @Test
+    fun lower() {
+        // when
+        val actual = Expressions.lower(stringExpression1)
+
+        // then
+        val expected = JpqlLower(
             stringExpression1,
         )
 
