@@ -196,7 +196,7 @@ Kotlin JDSL provides functions to support built-in functions in JPA.
 | CONCAT    | not yet      |
 | SUBSTRING | not yet      |
 | TRIM      | not yet      |
-| LOWER     | not yet      |
+| LOWER     | support      |
 | UPPER     | not yet      |
 | LENGTH    | support      |
 | LOCATE    | support      |
