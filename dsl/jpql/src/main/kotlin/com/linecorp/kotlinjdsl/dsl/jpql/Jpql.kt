@@ -1043,6 +1043,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the string in uppercase.
+     */
+    @SinceJdsl("3.0.0")
+    fun upper(value: String): Expression<String> {
+        return Expressions.upper(Expressions.value(value))
+    }
+
+    /**
+     * Creates an expression that represents the string in uppercase.
+     */
+    @SinceJdsl("3.0.0")
+    fun upper(value: Expressionable<String>): Expression<String> {
+        return Expressions.upper(value.toExpression())
+    }
+
+    /**
      * Creates an expression that represents the string in lowercase.
      */
     @SinceJdsl("3.0.0")

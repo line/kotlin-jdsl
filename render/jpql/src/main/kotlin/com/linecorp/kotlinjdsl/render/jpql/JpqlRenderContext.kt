@@ -95,6 +95,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubquerySerialize
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSumSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTimesSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlUpdateQuerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlUpperSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlValueSerializer
 
 /**
@@ -329,6 +330,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlSumSerializer(),
             JpqlTimesSerializer(),
             JpqlUpdateQuerySerializer(),
+            JpqlUpperSerializer(),
             JpqlValueSerializer(),
         )
     }
