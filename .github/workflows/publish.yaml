@@ -26,9 +26,9 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Build with Grade
-        run: ./gradlew --no-daemon build
+        run: ./gradlew build
       - name: Publish to the Maven Central Repository
-        run: ./gradlew --no-daemon --max-workers=1 publish closeAndReleaseStagingRepository
+        run: ./gradlew --max-workers=1 publish closeAndReleaseStagingRepository
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
