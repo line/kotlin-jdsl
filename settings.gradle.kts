@@ -21,8 +21,6 @@ module(name = ":jpql-query-model", path = "query-model/jpql")
 module(name = ":render", path = "render")
 module(name = ":jpql-render", path = "render/jpql")
 
-module(name = ":core", path = "core")
-
 module(name = ":support", path = "support")
 module(name = ":spring-batch-support", path = "support/spring-batch")
 module(name = ":spring-batch-javax-support", path = "support/spring-batch-javax")

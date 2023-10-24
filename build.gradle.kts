@@ -1,9 +1,9 @@
+import java.nio.file.Files
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.nio.file.Files
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -15,15 +15,6 @@ plugins {
 }
 
 allprojects {
-    group = "com.linecorp.kotlin-jdsl"
-    version = "3.0.0"
-
-    repositories {
-        mavenCentral()
-    }
-}
-
-subprojects {
     apply(plugin = "kotlin")
     apply(plugin = "org.jetbrains.kotlinx.kover")
     apply(plugin = "org.jmailen.kotlinter")
@@ -31,16 +22,15 @@ subprojects {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
 
-    rootProject.dependencies {
-        kover(this@subprojects)
+    group = "com.linecorp.kotlin-jdsl"
+    version = "3.0.0"
+
+    repositories {
+        mavenCentral()
     }
 
     dependencies {
         implementation(rootProject.libs.kotlin)
-
-        if (name != rootProject.projects.core.name) {
-            implementation(rootProject.projects.core)
-        }
 
         testImplementation(rootProject.libs.junit)
         testImplementation(rootProject.libs.mockk)
@@ -76,12 +66,6 @@ subprojects {
         }
     }
 
-    kover {
-        excludeSourceSets {
-            names(sourceSets.testFixtures.name)
-        }
-    }
-
     java {
         withSourcesJar()
         withJavadocJar()
@@ -103,6 +87,7 @@ subprojects {
                 val snapshotRepoUri = uri("https://oss.sonatype.org/content/repositories/snapshots/")
                 val releaseRepoUri = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
 
+                name = "OSSRH"
                 url = if (version.toString().endsWith("SNAPSHOT")) snapshotRepoUri else releaseRepoUri
 
                 val sonatypeUsername: String? = System.getenv("SONATYPE_USERNAME")
@@ -153,6 +138,22 @@ subprojects {
                     }
                 }
             }
+        }
+    }
+}
+
+subprojects {
+    rootProject.dependencies {
+        kover(this@subprojects)
+    }
+
+    dependencies {
+        implementation(rootProject)
+    }
+
+    kover {
+        excludeSourceSets {
+            names(sourceSets.testFixtures.name)
         }
     }
 }
