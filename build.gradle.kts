@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kover)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.nexus.publish)
     `java-test-fixtures`
     `maven-publish`
     signing
@@ -82,24 +83,6 @@ allprojects {
     }
 
     publishing {
-        repositories {
-            maven {
-                val snapshotRepoUri = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-                val releaseRepoUri = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-
-                name = "OSSRH"
-                url = if (version.toString().endsWith("SNAPSHOT")) snapshotRepoUri else releaseRepoUri
-
-                val sonatypeUsername: String? = System.getenv("SONATYPE_USERNAME")
-                val sonatypePassword: String? = System.getenv("SONATYPE_PASSWORD")
-
-                credentials {
-                    username = sonatypeUsername ?: ""
-                    password = sonatypePassword ?: ""
-                }
-            }
-        }
-
         publications {
             create<MavenPublication>("maven") {
                 from(components["java"])
@@ -163,6 +146,21 @@ koverReport {
         excludes {
             packages("com.linecorp.kotlinjdsl.example.*")
             packages("com.linecorp.kotlinjdsl.benchmark.*")
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl = uri("https://oss.sonatype.org/service/local/")
+            snapshotRepositoryUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+
+            val sonatypeUsername: String? by project
+            val sonatypePassword: String? by project
+
+            username = sonatypeUsername
+            password = sonatypePassword
         }
     }
 }
