@@ -196,7 +196,7 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 | SUBSTRING | not yet      |
 | TRIM      | not yet      |
 | LOWER     | support      |
-| UPPER     | not yet      |
+| UPPER     | support      |
 | LENGTH    | support      |
 | LOCATE    | support      |
 
