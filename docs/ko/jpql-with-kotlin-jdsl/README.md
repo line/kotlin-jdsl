@@ -176,7 +176,7 @@ val query = jpql {
 ```
 
 유사하게 Kotlin JDSL은 다른 statement를 위한 함수도 지원합니다: [update statement](statements.md#update-statement), [delete statement](statements.md#delete-statement).
-더 많은 에제를 보고 싶으시면 GitHub에 [examples](https://github.com/line/kotlin-jdsl/tree/main/example)을 참고해주세요.
+더 많은 예제를 보고 싶으시면 GitHub에 [examples](https://github.com/line/kotlin-jdsl/tree/main/example)을 참고해주세요.
 
 추가로 [custom DSL](custom-dsl.md)을 통해 본인만의 DSL을 만들 수도 있습니다.
 
