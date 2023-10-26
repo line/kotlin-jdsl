@@ -92,7 +92,7 @@ repositories {
 Kotlin JDSL을 실행시키기 위해서는 다음 dependency들이 필수로 요구됩니다.
 
 - jpql-dsl: JPQL 쿼리를 만들 수 있게 도와주는 DSL
-- jpql-render: DSL로 만든 쿼리를 String 변화시켜주는 라이브러리
+- jpql-render: DSL로 만든 쿼리를 String으로 변환시켜주는 라이브러리
 
 {% tabs %}
 
@@ -176,7 +176,7 @@ val query = jpql {
 ```
 
 유사하게 Kotlin JDSL은 다른 statement를 위한 함수도 지원합니다: [update statement](statements.md#update-statement), [delete statement](statements.md#delete-statement).
-더 많은 에제를 보고 싶으시면 GitHub에 [examples](https://github.com/line/kotlin-jdsl/tree/main/example)을 참고해주세요.
+더 많은 예제를 보고 싶으시면 GitHub에 [examples](https://github.com/line/kotlin-jdsl/tree/main/example)을 참고해주세요.
 
 추가로 [custom DSL](custom-dsl.md)을 통해 본인만의 DSL을 만들 수도 있습니다.
 
