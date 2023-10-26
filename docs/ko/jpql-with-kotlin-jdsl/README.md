@@ -92,7 +92,7 @@ repositories {
 Kotlin JDSL을 실행시키기 위해서는 다음 dependency들이 필수로 요구됩니다.
 
 - jpql-dsl: JPQL 쿼리를 만들 수 있게 도와주는 DSL
-- jpql-render: DSL로 만든 쿼리를 String 변화시켜주는 라이브러리
+- jpql-render: DSL로 만든 쿼리를 String으로 변환시켜주는 라이브러리
 
 {% tabs %}
 
