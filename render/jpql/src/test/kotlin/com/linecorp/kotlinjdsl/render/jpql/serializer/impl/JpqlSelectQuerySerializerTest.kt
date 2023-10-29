@@ -80,7 +80,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-            writer.writeEach(expressions, ", ", "", "", any())
+            writer.writeEach(expressions, ", ", any())
             serializer.serialize(
                 expression1,
                 writer,
@@ -94,7 +94,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-            writer.writeEach(entities, separator = ", ", "", "", any())
+            writer.writeEach(entities, separator = ", ", any())
             serializer.serialize(
                 entity1,
                 writer,
@@ -138,7 +138,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("DISTINCT")
             writer.write(" ")
-            writer.writeEach(expressions, ", ", "", "", any())
+            writer.writeEach(expressions, ", ", any())
             serializer.serialize(
                 expression1,
                 writer,
@@ -152,7 +152,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-            writer.writeEach(entities, separator = ", ", "", "", any())
+            writer.writeEach(entities, separator = ", ", any())
             serializer.serialize(
                 entity1,
                 writer,
@@ -195,7 +195,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-            writer.writeEach(expressions, ", ", "", "", any())
+            writer.writeEach(expressions, ", ", any())
             serializer.serialize(
                 expression1,
                 writer,
@@ -209,7 +209,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-            writer.writeEach(entities, separator = ", ", "", "", any())
+            writer.writeEach(entities, separator = ", ", any())
             serializer.serialize(
                 entity1,
                 writer,
@@ -265,7 +265,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-            writer.writeEach(expressions1, ", ", "", "", any())
+            writer.writeEach(expressions1, ", ", any())
             serializer.serialize(
                 expression1,
                 writer,
@@ -279,7 +279,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-            writer.writeEach(entities, separator = ", ", "", "", any())
+            writer.writeEach(entities, separator = ", ", any())
             serializer.serialize(
                 entity1,
                 writer,
@@ -293,7 +293,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("GROUP BY")
             writer.write(" ")
-            writer.writeEach(expressions2, ", ", "", "", any())
+            writer.writeEach(expressions2, ", ", any())
             serializer.serialize(
                 expression3,
                 writer,
@@ -336,7 +336,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-            writer.writeEach(expressions, ", ", "", "", any())
+            writer.writeEach(expressions, ", ", any())
             serializer.serialize(
                 expression1,
                 writer,
@@ -350,7 +350,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-            writer.writeEach(entities, separator = ", ", "", "", any())
+            writer.writeEach(entities, separator = ", ", any())
             serializer.serialize(
                 entity1,
                 writer,
@@ -406,7 +406,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
         verifySequence {
             writer.write("SELECT")
             writer.write(" ")
-            writer.writeEach(expressions, ", ", "", "", any())
+            writer.writeEach(expressions, ", ", any())
             serializer.serialize(
                 expression1,
                 writer,
@@ -420,7 +420,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("FROM")
             writer.write(" ")
-            writer.writeEach(entities, separator = ", ", "", "", any())
+            writer.writeEach(entities, separator = ", ", any())
             serializer.serialize(
                 entity1,
                 writer,
@@ -434,7 +434,7 @@ class JpqlSelectQuerySerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("ORDER BY")
             writer.write(" ")
-            writer.writeEach(sorts, ", ", "", "", any())
+            writer.writeEach(sorts, ", ", any())
             serializer.serialize(
                 sort1,
                 writer,

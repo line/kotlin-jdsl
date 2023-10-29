@@ -75,7 +75,7 @@ internal class JpqlSerializerExtension : InvocationInterceptor, BeforeEachCallba
         if (any is JpqlWriter && isMockKMock(any)) {
             every { any.write(any<String>()) } just runs
             every { any.writeIfAbsent(any<String>()) } just runs
-            every { any.writeEach<Any>(any(), any(), any(), any(), any()) } answers {
+            every { any.writeEach<Any>(any(), any(), any()) } answers {
                 val predicates = firstArg<Iterable<Any>>()
                 val write = lastArg<(Any) -> Unit>()
 

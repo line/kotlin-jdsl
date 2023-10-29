@@ -56,7 +56,7 @@ class JpqlAndSerializerTest : WithAssertions {
 
         // then
         verifySequence {
-            writer.writeEach(predicates, " AND ", "", "", any())
+            writer.writeEach(predicates, " AND ", any())
             serializer.serialize(predicate1, writer, context)
             serializer.serialize(predicate2, writer, context)
             serializer.serialize(predicate3, writer, context)

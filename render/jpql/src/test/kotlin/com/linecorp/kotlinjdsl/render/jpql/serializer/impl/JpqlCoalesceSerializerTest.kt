@@ -51,7 +51,7 @@ class JpqlCoalesceSerializerTest : WithAssertions {
         verifySequence {
             writer.write("COALESCE")
             writer.writeParentheses(any())
-            writer.writeEach(listOf(expression1, expression2, expression3), ", ", "", "", any())
+            writer.writeEach(listOf(expression1, expression2, expression3), ", ", any())
             serializer.serialize(expression1, writer, context)
             serializer.serialize(expression2, writer, context)
             serializer.serialize(expression3, writer, context)

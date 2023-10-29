@@ -63,11 +63,11 @@ class MyRegexLikeSerializer : JpqlSerializer<MyRegexLike> {
 //        clause.isWhere()
 
         writer.write("REGEXP_LIKE")
-        writer.write("(")
-        delegate.serialize(part.expr, writer, context)
-        writer.write(", ")
-        delegate.serialize(part.pattern, writer, context)
-        writer.write(")")
+        writer.writeParentheses {
+            delegate.serialize(part.expr, writer, context)
+            writer.write(", ")
+            delegate.serialize(part.pattern, writer, context)
+        }
     }
 }
 ```
