@@ -62,7 +62,7 @@ class JpqlNewSerializerTest : WithAssertions {
             writer.write(" ")
             writer.write(Row::class.java.name)
             writer.writeParentheses(any())
-            writer.writeEach(expressions, separator = ", ", prefix = "", postfix = "", any())
+            writer.writeEach(expressions, separator = ", ", any())
             serializer.serialize(expression1, writer, context)
             serializer.serialize(expression2, writer, context)
         }
@@ -86,7 +86,7 @@ class JpqlNewSerializerTest : WithAssertions {
             writer.write(" ")
             writer.write(Row::class.java.name)
             writer.writeParentheses(any())
-            writer.writeEach(emptyList<Expression<*>>(), separator = ", ", prefix = "", postfix = "", any())
+            writer.writeEach(emptyList<Expression<*>>(), separator = ", ", any())
         }
     }
 }

@@ -24,16 +24,12 @@ interface JpqlWriter {
      *
      * @param iterable The elements to write.
      * @param separator It is inserted between each element.
-     * @param prefix It is inserted before the first element.
-     * @param postfix It is inserted after the last element.
      * @param write It is called for each element.
      */
     @SinceJdsl("3.0.0")
     fun <T> writeEach(
         iterable: Iterable<T>,
         separator: String = ", ",
-        prefix: String = "",
-        postfix: String = "",
         write: (T) -> Unit,
     )
 
@@ -41,6 +37,8 @@ interface JpqlWriter {
      * Writes parentheses.
      * They are only written once if they are redundant.
      * For example, the ((value)) is written as (value).
+     *
+     * Redundant parentheses added manually by [write] or [writeIfAbsent] can be written repeatedly.
      */
     @SinceJdsl("3.0.0")
     fun writeParentheses(inner: () -> Unit)

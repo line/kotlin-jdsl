@@ -60,7 +60,7 @@ class JpqlCaseWhenSerializerTest : WithAssertions {
         verifySequence {
             writer.write("CASE")
             writer.write(" ")
-            writer.writeEach(predicateAndExpressions.entries, " ", "", "", any())
+            writer.writeEach(predicateAndExpressions.entries, " ", any())
             writer.write("WHEN")
             writer.write(" ")
             serializer.serialize(predicate1, writer, context)
@@ -101,7 +101,7 @@ class JpqlCaseWhenSerializerTest : WithAssertions {
         verifySequence {
             writer.write("CASE")
             writer.write(" ")
-            writer.writeEach(predicateAndExpressions.entries, " ", "", "", any())
+            writer.writeEach(predicateAndExpressions.entries, " ", any())
             writer.write("WHEN")
             writer.write(" ")
             serializer.serialize(predicate1, writer, context)

@@ -62,7 +62,7 @@ class JpqlFunctionSerializerTest : WithAssertions {
             writer.write(functionName1)
             writer.write(",")
             writer.write(" ")
-            writer.writeEach(expressions, ", ", "", "", any())
+            writer.writeEach(expressions, ", ", any())
             serializer.serialize(expression1, writer, context)
             serializer.serialize(expression2, writer, context)
             serializer.serialize(expression3, writer, context)

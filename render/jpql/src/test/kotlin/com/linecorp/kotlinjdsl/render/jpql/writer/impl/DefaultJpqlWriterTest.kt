@@ -71,7 +71,7 @@ class DefaultJpqlWriterTest : WithAssertions {
         val strings = listOf(string1, string2, string3)
 
         // when
-        sut.writeEach(strings, separator = ", ", prefix = "(", postfix = ")") {
+        sut.writeEach(strings, separator = ", ") {
             sut.write(it)
         }
 
@@ -80,7 +80,7 @@ class DefaultJpqlWriterTest : WithAssertions {
 
         // then
         assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("($string1, $string2, $string3)")
+        assertThat(actualQuery).isEqualTo("$string1, $string2, $string3")
     }
 
     @Test
@@ -99,13 +99,11 @@ class DefaultJpqlWriterTest : WithAssertions {
     }
 
     @Test
-    fun `writeParentheses() prints only one parentheses, when there are duplicated parentheses`() {
+    fun `writeParentheses() prints only one parentheses, when there are redundant parentheses`() {
         // when
         sut.writeParentheses {
             sut.writeParentheses {
-                sut.write("(")
                 sut.write(string1)
-                sut.write(")")
             }
         }
 
@@ -118,14 +116,12 @@ class DefaultJpqlWriterTest : WithAssertions {
     }
 
     @Test
-    fun `writeParentheses() prints all parentheses, when there are no duplicated parentheses`() {
+    fun `writeParentheses() prints redundant parentheses, when there are redundant parentheses were added manually`() {
         // when
         sut.writeParentheses {
-            sut.writeParentheses {
-                sut.write(string1)
-            }
-            sut.write(" ")
-            sut.write(string2)
+            sut.write("(")
+            sut.write(string1)
+            sut.write(")")
         }
 
         val actualParam = sut.getParams()
@@ -133,7 +129,30 @@ class DefaultJpqlWriterTest : WithAssertions {
 
         // then
         assertThat(actualParam).isEmpty()
-        assertThat(actualQuery).isEqualTo("(($string1) $string2)")
+        assertThat(actualQuery).isEqualTo("(($string1))")
+    }
+
+    @Test
+    fun `writeParentheses() prints all parentheses, when there are no redundant parentheses`() {
+        // when
+        sut.writeParentheses {
+            sut.writeParentheses {
+                sut.write(string1)
+            }
+            sut.write(" ")
+            sut.write(string2)
+            sut.write(" ")
+            sut.writeParentheses {
+                sut.write(string3)
+            }
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        // then
+        assertThat(actualParam).isEmpty()
+        assertThat(actualQuery).isEqualTo("(($string1) $string2 ($string3))")
     }
 
     @Test
