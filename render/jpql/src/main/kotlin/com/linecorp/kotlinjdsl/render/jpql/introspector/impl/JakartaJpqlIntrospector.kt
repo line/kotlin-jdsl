@@ -3,11 +3,13 @@ package com.linecorp.kotlinjdsl.render.jpql.introspector.impl
 import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlEntityDescription
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
+import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlPropertyDescription
+import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotations
 
 /**
- * Introspector that introspects KClass using [jakarta.persistence.Entity].
+ * Introspector that introspects KClass and KCallable using [jakarta.persistence.Entity].
  */
 @Internal
 class JakartaJpqlIntrospector : JpqlIntrospector {
@@ -19,6 +21,10 @@ class JakartaJpqlIntrospector : JpqlIntrospector {
         } else {
             null
         }
+    }
+
+    override fun introspect(property: KCallable<*>): JpqlPropertyDescription? {
+        TODO("Not yet implemented")
     }
 }
 
