@@ -6,6 +6,8 @@ import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlPropertyDescription
 import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
+import kotlin.reflect.KFunction1
+import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotations
 
 /**
@@ -24,8 +26,19 @@ class JakartaJpqlIntrospector : JpqlIntrospector {
     }
 
     override fun introspect(property: KCallable<*>): JpqlPropertyDescription? {
-        TODO("Not yet implemented")
+        return when (property) {
+            is KProperty1<*, *> -> JpqlProperty(property.name)
+            is KFunction1<*, *> -> JpqlProperty(resolvePropertyName(property))
+            else -> null
+        }
     }
+
+    private fun resolvePropertyName(getter: KFunction1<*, *>): String =
+        if (getter.name.startsWith("is")) {
+            getter.name
+        } else {
+            getter.name.removePrefix("get").replaceFirstChar { it.lowercase() }
+        }
 }
 
 private data class JakartaEntity(
