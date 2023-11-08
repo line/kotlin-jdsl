@@ -13,6 +13,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import kotlin.reflect.KClass
 
 @JpqlSerializerTest
 class JpqlValueSerializerTest : WithAssertions {
@@ -59,7 +60,7 @@ class JpqlValueSerializerTest : WithAssertions {
     @Test
     fun `serialize() draws entity name, when value is KClass`() {
         // given
-        every { introspector.introspect(any()) } returns entityDescription1
+        every { introspector.introspect(any<KClass<*>>()) } returns entityDescription1
 
         val part = Expressions.value(
             Book::class,

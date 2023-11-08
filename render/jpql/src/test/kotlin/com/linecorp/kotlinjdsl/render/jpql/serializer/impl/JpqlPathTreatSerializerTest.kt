@@ -15,6 +15,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import kotlin.reflect.KClass
 
 @JpqlSerializerTest
 class JpqlPathTreatSerializerTest : WithAssertions {
@@ -47,7 +48,7 @@ class JpqlPathTreatSerializerTest : WithAssertions {
     @Test
     fun serialize() {
         // given
-        every { introspector.introspect(any()) } returns entityDescription1
+        every { introspector.introspect(any<KClass<*>>()) } returns entityDescription1
 
         val part = Paths.treat(
             path1,

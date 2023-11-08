@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.render.AbstractRenderContextElement
 import com.linecorp.kotlinjdsl.render.RenderContext
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
 
 /**
@@ -15,7 +16,8 @@ class JpqlRenderIntrospector(
 ) : AbstractRenderContextElement(Key) {
     companion object Key : RenderContext.Key<JpqlRenderIntrospector>
 
-    private val tableLookupCache: MutableMap<KClass<*>, JpqlEntityDescription> = ConcurrentHashMap()
+    private val classTableLookupCache: MutableMap<KClass<*>, JpqlEntityDescription> = ConcurrentHashMap()
+    private val propertyTableLookupCache: MutableMap<KCallable<*>, JpqlPropertyDescription> = ConcurrentHashMap()
 
     /**
      * Creates a new introspector by combining this introspector and the introspector.
@@ -38,8 +40,22 @@ class JpqlRenderIntrospector(
         return getCachedDescription(clazz)
     }
 
+    /**
+     * Introspects the KCallable to get the property information.
+     */
+    @SinceJdsl("3.1.0")
+    fun introspect(property: KCallable<*>): JpqlPropertyDescription {
+        return getCachedDescription(property)
+    }
+
     private fun getCachedDescription(clazz: KClass<*>): JpqlEntityDescription {
-        return tableLookupCache.computeIfAbsent(clazz) {
+        return classTableLookupCache.computeIfAbsent(clazz) {
+            getDescription(it)
+        }
+    }
+
+    private fun getCachedDescription(property: KCallable<*>): JpqlPropertyDescription {
+        return propertyTableLookupCache.computeIfAbsent(property) {
             getDescription(it)
         }
     }
@@ -47,5 +63,10 @@ class JpqlRenderIntrospector(
     private fun getDescription(clazz: KClass<*>): JpqlEntityDescription {
         return introspector.introspect(clazz)
             ?: throw IllegalStateException("There is no description for ${clazz.java.name}")
+    }
+
+    private fun getDescription(property: KCallable<*>): JpqlPropertyDescription {
+        return introspector.introspect(property)
+            ?: throw IllegalStateException("There is no description for ${property.name}")
     }
 }
