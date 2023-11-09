@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospectorModifier
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlRenderIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.JakartaJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.JavaxJpqlIntrospector
+import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.KotlinStyleJpqlPropertyIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerModifier
@@ -245,6 +246,8 @@ private class DefaultModule : JpqlRenderModule {
         if (isJakartaPresent) {
             context.appendIntrospector(JakartaJpqlIntrospector())
         }
+
+        context.appendIntrospector(KotlinStyleJpqlPropertyIntrospector())
 
         context.addAllSerializer(
             JpqlAliasedExpressionSerializer(),
