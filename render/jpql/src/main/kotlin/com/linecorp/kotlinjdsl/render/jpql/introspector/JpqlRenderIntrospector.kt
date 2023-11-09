@@ -16,8 +16,8 @@ class JpqlRenderIntrospector(
 ) : AbstractRenderContextElement(Key) {
     companion object Key : RenderContext.Key<JpqlRenderIntrospector>
 
-    private val classTableLookupCache: MutableMap<KClass<*>, JpqlEntityDescription> = ConcurrentHashMap()
-    private val propertyTableLookupCache: MutableMap<KCallable<*>, JpqlPropertyDescription> = ConcurrentHashMap()
+    private val entityLookupCache: MutableMap<KClass<*>, JpqlEntityDescription> = ConcurrentHashMap()
+    private val propertyLookupCache: MutableMap<KCallable<*>, JpqlPropertyDescription> = ConcurrentHashMap()
 
     /**
      * Creates a new introspector by combining this introspector and the introspector.
@@ -49,13 +49,13 @@ class JpqlRenderIntrospector(
     }
 
     private fun getCachedDescription(clazz: KClass<*>): JpqlEntityDescription {
-        return classTableLookupCache.computeIfAbsent(clazz) {
+        return entityLookupCache.computeIfAbsent(clazz) {
             getDescription(it)
         }
     }
 
     private fun getCachedDescription(property: KCallable<*>): JpqlPropertyDescription {
-        return propertyTableLookupCache.computeIfAbsent(property) {
+        return propertyLookupCache.computeIfAbsent(property) {
             getDescription(it)
         }
     }
