@@ -1,6 +1,7 @@
 package com.linecorp.kotlinjdsl.render.jpql.introspector
 
 import com.linecorp.kotlinjdsl.SinceJdsl
+import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
 
 /**
@@ -14,4 +15,11 @@ interface JpqlIntrospector {
      */
     @SinceJdsl("3.0.0")
     fun introspect(type: KClass<*>): JpqlEntityDescription?
+
+    /**
+     * Introspects the KCallable to get the entity information.
+     * If it cannot introspect this KCallable, it returns null.
+     */
+    @SinceJdsl("3.1.0")
+    fun introspect(property: KCallable<*>): JpqlPropertyDescription?
 }

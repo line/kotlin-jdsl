@@ -11,7 +11,7 @@ class JavaxJpqlIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun introspect() {
+    fun `introspect() returns name of entity annotation, when entity annotation has name`() {
         // given
         val type = EntityClass1::class
 

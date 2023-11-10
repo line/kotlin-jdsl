@@ -2,7 +2,7 @@ package com.linecorp.kotlinjdsl.render.jpql.introspector.impl
 
 import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlEntityDescription
-import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
+import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlEntityIntrospector
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotations
 
@@ -10,7 +10,7 @@ import kotlin.reflect.full.findAnnotations
  * Introspector that introspects KClass using [javax.persistence.Entity].
  */
 @Internal
-class JavaxJpqlIntrospector : JpqlIntrospector {
+class JavaxJpqlIntrospector : JpqlEntityIntrospector() {
     override fun introspect(type: KClass<*>): JpqlEntityDescription? {
         val entity = type.findAnnotations(javax.persistence.Entity::class).firstOrNull()
 
