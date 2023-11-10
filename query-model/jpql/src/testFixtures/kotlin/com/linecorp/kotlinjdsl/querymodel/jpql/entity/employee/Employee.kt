@@ -9,4 +9,6 @@ abstract class Employee(
     val phone: String,
     val address: EmployeeAddress,
     val departments: MutableSet<EmployeeDepartment>,
-)
+) {
+    fun getUpperName(): String = name.uppercase()
+}
