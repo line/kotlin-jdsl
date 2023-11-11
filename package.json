@@ -2,6 +2,6 @@
   "name": "jdsl-commitlint-node-package",
   "devDependencies": {
       "@commitlint/cli": "18.2.0",
-      "@commitlint/config-conventional": "18.1.0"
+      "@commitlint/config-conventional": "18.4.0"
   }
 }
