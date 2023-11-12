@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderModule
+import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutorImpl
@@ -20,15 +21,22 @@ open class KotlinJdslAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @SinceJdsl("3.0.0")
-    open fun jpqlRenderContext(serializers: List<JpqlSerializer<*>>): JpqlRenderContext {
-        val userDefinedSerializers = object : JpqlRenderModule {
+    open fun jpqlRenderContext(
+        serializers: List<JpqlSerializer<*>>,
+        introspectors: List<JpqlIntrospector>,
+    ): JpqlRenderContext {
+        val userDefinedModule = object : JpqlRenderModule {
             override fun setupModule(context: JpqlRenderModule.SetupContext) {
                 context.addAllSerializer(serializers.reversed())
+
+                introspectors.reversed().forEach {
+                    context.prependIntrospector(it)
+                }
             }
         }
 
         return JpqlRenderContext()
-            .registerModules(userDefinedSerializers)
+            .registerModules(userDefinedModule)
     }
 
     @Bean

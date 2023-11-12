@@ -17,4 +17,6 @@ class FullTimeEmployee(
     phone = phone,
     address = address,
     departments = departments,
-)
+) {
+    fun getMonthlySalary() = annualSalary.div(BigDecimal.valueOf(12))
+}
