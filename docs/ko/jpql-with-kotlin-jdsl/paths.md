@@ -55,6 +55,8 @@ path(Book::getAvailable)
 ```
 
 위 규칙 대신 나만의 규칙을 사용하고 싶다면, `JpqlPropertyIntrospector`를 구현하고 이를 이를 `RenderContext`에 추가해야 합니다.
+더 자세한 내용은 [Custom DSL](./custom-dsl.md)을 참고하세요.
+Spring을 사용하고 있다면 [Spring supports](./spring-supports.md)도 참고하세요.
 
 ```kotlin
 class MyIntrospector : JpqlPropertyIntrospector() {

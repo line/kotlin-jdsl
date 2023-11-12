@@ -5,7 +5,7 @@
 Kotlin JDSL supports Spring Boot AutoConfigure.
 If you have Spring Boot and `com.linecorp.kotlin-jdsl:spring-data-jpa-support` or `com.linecorp.kotlin-jdsl:spring-batch-support` dependency together, the `JpqlRenderContext` bean is created by AutoConfiguration.
 
-If you declare your `JpqlSerializer` as a bean, it will be included with the `JpqlRenderContext` bean.
+If you declare your `JpqlSerializer` or `JpqlIntrospector` as a bean, it will be included with the `JpqlRenderContext` bean.
 
 ## Spring Data Repository
 
