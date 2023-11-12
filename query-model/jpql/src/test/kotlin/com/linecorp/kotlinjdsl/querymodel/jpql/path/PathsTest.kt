@@ -18,7 +18,7 @@ class PathsTest : WithAssertions {
     private val path2 = Paths.treat(Paths.path(EmployeeDepartment::employee), FullTimeEmployee::class)
 
     @Test
-    fun `path with a property`() {
+    fun `path() with a property`() {
         // when
         val actual = Paths.path(
             FullTimeEmployee::address,
@@ -34,7 +34,7 @@ class PathsTest : WithAssertions {
     }
 
     @Test
-    fun `path with a getter`() {
+    fun `path() with a getter`() {
         // when
         val actual = Paths.path(
             FullTimeEmployee::getDisplayName,
