@@ -15,7 +15,7 @@ entity(Book::class, "b")(Book::isbn)(Isbn::value)
 
 ## Java entity
 
-`path()` and `invoke()` take `KProperty1` or `KFuction1` as an argument.
+`path()` and `invoke()` can take `KProperty1` or `KFuction1` as an argument.
 `KFunction1` is useful when you use Java entity with private property and public getter.
 
 ```java
@@ -40,7 +40,7 @@ path(Book::title)
 path(Book::getTitle)
 ```
 
-Kotlin JDSL follows the following rules to infer property name from getter name.
+Kotlin JDSL infers the property name from the getter with the following rules:
 
 - If the name starts with `is`, use the name as it is.
 - If the name starts with `get`, remove `get` and change the first letter to lowercase.
@@ -54,7 +54,7 @@ path(Book::isAvailable)
 path(Book::getAvailable)
 ```
 
-If you want to use your own rule instead of the above rules, you need to implement `JpqlPropertyIntrospector` and provide it to `RenderContext`.
+If you want to use your own rule instead of the above rules, you can implement `JpqlPropertyIntrospector` and provide it to `RenderContext`.
 
 ```kotlin
 class MyIntrospector : JpqlPropertyIntrospector() {
