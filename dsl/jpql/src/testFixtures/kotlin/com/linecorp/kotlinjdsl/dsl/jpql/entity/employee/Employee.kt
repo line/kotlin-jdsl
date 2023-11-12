@@ -8,5 +8,5 @@ abstract class Employee(
     val address: EmployeeAddress,
     val departments: MutableSet<EmployeeDepartment>,
 ) {
-    fun getLowerName(): String = name.lowercase()
+    fun getDisplayName() = nickname ?: name
 }

@@ -18,5 +18,5 @@ class FullTimeEmployee(
     address = address,
     departments = departments,
 ) {
-    fun getUpperName(): String = name.uppercase()
+    fun getMonthlySalary() = annualSalary.div(BigDecimal.valueOf(12))
 }

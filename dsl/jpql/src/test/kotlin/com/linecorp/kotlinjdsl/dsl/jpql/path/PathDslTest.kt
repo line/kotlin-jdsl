@@ -10,6 +10,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
 class PathDslTest : WithAssertions {
     private val entity1 = Entities.entity(FullTimeEmployee::class)
@@ -37,14 +38,14 @@ class PathDslTest : WithAssertions {
     fun `path() with a getter`() {
         // when
         val path = queryPart {
-            path(FullTimeEmployee::getUpperName)
+            path(FullTimeEmployee::getMonthlySalary)
         }
 
-        val actual: Path<String> = path // for type check
+        val actual: Path<BigDecimal> = path // for type check
 
         // then
         val excepted = Paths.path(
-            FullTimeEmployee::getUpperName,
+            FullTimeEmployee::getMonthlySalary,
         )
 
         assertThat(actual).isEqualTo(excepted)
@@ -72,15 +73,15 @@ class PathDslTest : WithAssertions {
     fun `path() with a entity and a getter`() {
         // when
         val path = queryPart {
-            entity1.path(FullTimeEmployee::getUpperName)
+            entity1.path(FullTimeEmployee::getMonthlySalary)
         }
 
-        val actual: Path<String> = path // for type check
+        val actual: Path<BigDecimal> = path // for type check
 
         // then
         val excepted = Paths.path(
             entity1,
-            FullTimeEmployee::getUpperName,
+            FullTimeEmployee::getMonthlySalary,
         )
 
         assertThat(actual).isEqualTo(excepted)
@@ -108,15 +109,15 @@ class PathDslTest : WithAssertions {
     fun `path() with a path and a getter`() {
         // when
         val path = queryPart {
-            path1.path(FullTimeEmployee::getUpperName)
+            path1.path(FullTimeEmployee::getMonthlySalary)
         }
 
-        val actual: Path<String> = path // for type check
+        val actual: Path<BigDecimal> = path // for type check
 
         // then
         val excepted = Paths.path(
             path1,
-            FullTimeEmployee::getUpperName,
+            FullTimeEmployee::getMonthlySalary,
         )
 
         assertThat(actual).isEqualTo(excepted)
@@ -144,7 +145,7 @@ class PathDslTest : WithAssertions {
     fun `path() with a entity and a getter of super class`() {
         // when
         val path = queryPart {
-            entity1.path(Employee::getLowerName)
+            entity1.path(Employee::getDisplayName)
         }
 
         val actual: Path<String> = path // for type check
@@ -152,7 +153,7 @@ class PathDslTest : WithAssertions {
         // then
         val excepted = Paths.path(
             entity1,
-            Employee::getLowerName,
+            Employee::getDisplayName,
         )
 
         assertThat(actual).isEqualTo(excepted)
@@ -180,7 +181,7 @@ class PathDslTest : WithAssertions {
     fun `path() with a path and a getter of super class`() {
         // when
         val path = queryPart {
-            path1.path(Employee::getLowerName)
+            path1.path(Employee::getDisplayName)
         }
 
         val actual: Path<String> = path // for type check
@@ -188,7 +189,7 @@ class PathDslTest : WithAssertions {
         // then
         val excepted = Paths.path(
             path1,
-            Employee::getLowerName,
+            Employee::getDisplayName,
         )
 
         assertThat(actual).isEqualTo(excepted)
@@ -216,15 +217,15 @@ class PathDslTest : WithAssertions {
     fun `invoke() with a entity and a getter`() {
         // when
         val path = queryPart {
-            entity1(FullTimeEmployee::getUpperName)
+            entity1(FullTimeEmployee::getMonthlySalary)
         }
 
-        val actual: Path<String> = path // for type check
+        val actual: Path<BigDecimal> = path // for type check
 
         // then
         val excepted = Paths.path(
             entity1,
-            FullTimeEmployee::getUpperName,
+            FullTimeEmployee::getMonthlySalary,
         )
 
         assertThat(actual).isEqualTo(excepted)
@@ -252,15 +253,15 @@ class PathDslTest : WithAssertions {
     fun `invoke() with a path and a getter`() {
         // when
         val path = queryPart {
-            path1(FullTimeEmployee::getUpperName)
+            path1(FullTimeEmployee::getMonthlySalary)
         }
 
-        val actual: Path<String> = path // for type check
+        val actual: Path<BigDecimal> = path // for type check
 
         // then
         val excepted = Paths.path(
             path1,
-            FullTimeEmployee::getUpperName,
+            FullTimeEmployee::getMonthlySalary,
         )
 
         assertThat(actual).isEqualTo(excepted)
@@ -288,7 +289,7 @@ class PathDslTest : WithAssertions {
     fun `invoke() with a entity and a getter of super class`() {
         // when
         val path = queryPart {
-            entity1(Employee::getLowerName)
+            entity1(Employee::getDisplayName)
         }
 
         val actual: Path<String> = path // for type check
@@ -296,7 +297,7 @@ class PathDslTest : WithAssertions {
         // then
         val excepted = Paths.path(
             entity1,
-            Employee::getLowerName,
+            Employee::getDisplayName,
         )
 
         assertThat(actual).isEqualTo(excepted)
@@ -324,7 +325,7 @@ class PathDslTest : WithAssertions {
     fun `invoke() with a path and a getter of super class`() {
         // when
         val path = queryPart {
-            path1(Employee::getLowerName)
+            path1(Employee::getDisplayName)
         }
 
         val actual: Path<String> = path // for type check
@@ -332,7 +333,7 @@ class PathDslTest : WithAssertions {
         // then
         val excepted = Paths.path(
             path1,
-            Employee::getLowerName,
+            Employee::getDisplayName,
         )
 
         assertThat(actual).isEqualTo(excepted)
