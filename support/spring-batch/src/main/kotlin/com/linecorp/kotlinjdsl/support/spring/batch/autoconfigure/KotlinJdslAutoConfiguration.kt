@@ -30,7 +30,8 @@ open class KotlinJdslAutoConfiguration {
             }
         }
 
-        return JpqlRenderContext().registerModules(userDefinedModule)
+        return JpqlRenderContext()
+            .registerModules(userDefinedModule)
     }
 
     @Bean
