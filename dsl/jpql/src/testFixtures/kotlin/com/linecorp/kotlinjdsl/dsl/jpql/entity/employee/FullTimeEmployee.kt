@@ -17,4 +17,6 @@ class FullTimeEmployee(
     phone = phone,
     address = address,
     departments = departments,
-)
+) {
+    fun getUpperName(): String = name.uppercase()
+}

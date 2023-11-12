@@ -41,6 +41,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.internal.Exact
 import kotlin.reflect.KClass
+import kotlin.reflect.KFunction1
 import kotlin.reflect.KProperty1
 
 /**
@@ -195,11 +196,28 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates a path expression with the property.
+     * The path starts from the entity which is the owner of the property.
+     */
+    @SinceJdsl("3.1.0")
+    fun <T : Any, V> path(getter: KFunction1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(getter)
+    }
+
+    /**
      * Creates a path expression with the entity and property.
      */
     @SinceJdsl("3.0.0")
     fun <T : Any, V> Entityable<T>.path(property: KProperty1<in T, @Exact V>): Path<V & Any> {
         return Paths.path(this.toEntity(), property)
+    }
+
+    /**
+     * Creates a path expression with the entity and property.
+     */
+    @SinceJdsl("3.1.0")
+    fun <T : Any, V> Entityable<T>.path(getter: KFunction1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toEntity(), getter)
     }
 
     /**
@@ -211,6 +229,14 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates a path expression with the path and property.
+     */
+    @SinceJdsl("3.1.0")
+    fun <T : Any, V> Pathable<T>.path(getter: KFunction1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toPath(), getter)
+    }
+
+    /**
      * Creates a path expression with the entity and property.
      */
     @SinceJdsl("3.0.0")
@@ -219,11 +245,27 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates a path expression with the entity and property.
+     */
+    @SinceJdsl("3.1.0")
+    operator fun <T : Any, V> Entityable<T>.invoke(getter: KFunction1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toEntity(), getter)
+    }
+
+    /**
      * Creates a path expression with the path and property.
      */
     @SinceJdsl("3.0.0")
     operator fun <T : Any, V> Pathable<T>.invoke(property: KProperty1<in T, @Exact V>): Path<V & Any> {
         return Paths.path(this.toPath(), property)
+    }
+
+    /**
+     * Creates a path expression with the path and property.
+     */
+    @SinceJdsl("3.1.0")
+    operator fun <T : Any, V> Pathable<T>.invoke(getter: KFunction1<T, @Exact V>): Path<V & Any> {
+        return Paths.path(this.toPath(), getter)
     }
 
     /**
