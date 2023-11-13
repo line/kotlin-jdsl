@@ -40,7 +40,7 @@ bookRepository.findPage(pageable) {
 ## Spring Batch
 
 Spring Batch provides `JpaPagingItemReader` and `JpaCursorItemReader` for querying data with JPQL.
-Kotlin JDSL provides `KotlinJdslQueryProvider` so that a JPQL query created in DSL can be executed on it.
+Kotlin JDSL provides `KotlinJdslQueryProvider` so that a JPQL query created in DSL can be executed on them.
 
 ```kotlin
 @Auwoired
