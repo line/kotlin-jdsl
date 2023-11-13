@@ -76,10 +76,12 @@ internal class DefaultJpqlWriter private constructor(
 
     override fun writeParam(value: Any?) {
         internal.writeParam(value)
+        nodes.add(Node.String())
     }
 
     override fun writeParam(name: String, value: Any?) {
         internal.writeParam(name, value)
+        nodes.add(Node.String())
     }
 
     fun getQuery(): String {
