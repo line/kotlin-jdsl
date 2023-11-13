@@ -186,6 +186,115 @@ class DefaultJpqlWriterTest : WithAssertions {
     }
 
     @Test
+    fun `writeParentheses() prints a param inside parentheses, when there is the param with a value`() {
+        // when
+        sut.writeParentheses {
+            sut.writeParam(paramValue1)
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        println(actualParam)
+        println(actualQuery)
+        // then
+        assertThat(actualParam).containsEntry("param1", paramValue1)
+        assertThat(actualQuery).isEqualTo("(:param1)")
+    }
+
+    @Test
+    fun `writeParentheses() prints a param inside parentheses, when there is the param with a name and a value`() {
+        // when
+        sut.writeParentheses {
+            sut.writeParam("param1", paramValue1)
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        println(actualParam)
+        println(actualQuery)
+        // then
+        assertThat(actualParam).containsEntry("param1", paramValue1)
+        assertThat(actualQuery).isEqualTo("(:param1)")
+    }
+
+    @Test
+    fun `writeParentheses() prints all params inside parentheses, when there are params with a value`() {
+        // when
+        sut.writeParentheses {
+            sut.writeParam(paramValue1)
+            sut.writeParam(paramValue2)
+            sut.writeParam(paramValue3)
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        println(actualParam)
+        println(actualQuery)
+        // then
+        assertThat(actualParam).containsAllEntriesOf(
+            mapOf(
+                "param1" to paramValue1,
+                "param2" to paramValue2,
+                "param3" to paramValue3,
+            ),
+        )
+        assertThat(actualQuery).isEqualTo("(:param1:param2:param3)")
+    }
+
+    @Test
+    fun `writeParentheses() prints all params inside parentheses, when there are the params with a name and a value`() {
+        // when
+        sut.writeParentheses {
+            sut.writeParam("param1", paramValue1)
+            sut.writeParam("param2", paramValue2)
+            sut.writeParam("param3", paramValue3)
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        println(actualParam)
+        println(actualQuery)
+        // then
+        assertThat(actualParam).containsAllEntriesOf(
+            mapOf(
+                "param1" to paramValue1,
+                "param2" to paramValue2,
+                "param3" to paramValue3,
+            ),
+        )
+        assertThat(actualQuery).isEqualTo("(:param1:param2:param3)")
+    }
+
+    @Test
+    fun `writeParentheses() prints all params inside parentheses, when there are the params`() {
+        // when
+        sut.writeParentheses {
+            sut.writeParam(paramValue1)
+            sut.writeParam("param2", paramValue2)
+            sut.writeParam("param3", paramValue3)
+        }
+
+        val actualParam = sut.getParams()
+        val actualQuery = sut.getQuery()
+
+        println(actualParam)
+        println(actualQuery)
+        // then
+        assertThat(actualParam).containsAllEntriesOf(
+            mapOf(
+                "param1" to paramValue1,
+                "param2" to paramValue2,
+                "param3" to paramValue3,
+            ),
+        )
+        assertThat(actualQuery).isEqualTo("(:param1:param2:param3)")
+    }
+
+    @Test
     fun writeParam() {
         // when
         sut.writeParam(paramValue1)
