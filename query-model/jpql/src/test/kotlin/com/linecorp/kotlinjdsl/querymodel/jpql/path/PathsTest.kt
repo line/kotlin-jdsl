@@ -50,7 +50,7 @@ class PathsTest : WithAssertions {
     }
 
     @Test
-    fun `path() with an entity`() {
+    fun `path() with an entity and a property`() {
         // when
         val actual = Paths.path(
             entity1,
@@ -84,7 +84,7 @@ class PathsTest : WithAssertions {
     }
 
     @Test
-    fun `path() with a path`() {
+    fun `path() with a path and a property`() {
         // when
         val actual = Paths.path(
             path1,

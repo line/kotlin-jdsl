@@ -11,7 +11,7 @@ class JakartaJpqlIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun `introspect() returns name of entity annotation, when entity annotation has name`() {
+    fun `introspect() returns the name of the entity annotation, when the entity annotation has name`() {
         // given
         val type = EntityClass1::class
 
@@ -23,7 +23,7 @@ class JakartaJpqlIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun `introspect() returns name of class, when entity annotation does not have name`() {
+    fun `introspect() returns the name of the class, when the entity annotation does not have name`() {
         // given
         val type = EntityClass2::class
 

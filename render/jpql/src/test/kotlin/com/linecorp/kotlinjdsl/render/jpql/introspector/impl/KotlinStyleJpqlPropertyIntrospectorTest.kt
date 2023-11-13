@@ -9,7 +9,7 @@ class KotlinStyleJpqlPropertyIntrospectorTest : WithAssertions {
     private val sut = KotlinStyleJpqlPropertyIntrospector()
 
     @Test
-    fun `introspect() returns property name, when property is KProperty1`() {
+    fun `introspect() returns the property name, when the property is KProperty1`() {
         // given
         val property = EntityClass1::property1
 
@@ -21,7 +21,7 @@ class KotlinStyleJpqlPropertyIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun `introspect() returns property name with prefix removed, when getter name starts with get`() {
+    fun `introspect() returns the property name without prefix, when the getter name starts with get`() {
         // given
         val property = EntityClass1::getProperty2
 
@@ -33,7 +33,7 @@ class KotlinStyleJpqlPropertyIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun `introspect() returns property name as is, when getter name starts with is`() {
+    fun `introspect() returns the property name with is, when the getter name starts with is`() {
         // given
         val property = EntityClass1::isProperty3
 
@@ -45,7 +45,7 @@ class KotlinStyleJpqlPropertyIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun `introspect() returns property name as is, when getter name does not start with get or is`() {
+    fun `introspect() returns the getter name, when the getter name does not start with get or is`() {
         // given
         val property = EntityClass1::someProperty
 
@@ -57,7 +57,7 @@ class KotlinStyleJpqlPropertyIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun `introspect() returns null, when property is not KProperty1 or KFunction1`() {
+    fun `introspect() returns null, when the property is not KProperty1 or KFunction1`() {
         // given
         val property = mockkClass(KProperty0::class)
 
