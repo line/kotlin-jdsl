@@ -12,8 +12,10 @@ import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.repository.boo
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.repository.employee.EmployeeRepository
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.dao.IncorrectResultSizeDataAccessException
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.transaction.annotation.Transactional
@@ -30,6 +32,39 @@ class SelectExample : WithAssertions {
 
     @Autowired
     private lateinit var employeeRepository: EmployeeRepository
+
+    @Test
+    fun `only one author by id`() {
+        // when
+        val actual = authorRepository.findOne {
+            select(
+                path(Author::authorId),
+            ).from(
+                entity(Author::class),
+            ).where(
+                path(Author::authorId).equal(1L),
+            )
+        }
+
+        // then
+        assertThat(actual).isEqualTo(1L)
+    }
+
+    @Test
+    fun `throw if result has more than 2 rows`() {
+        // when, then
+        assertThrows<IncorrectResultSizeDataAccessException> {
+            authorRepository.findOne {
+                select(
+                    path(BookAuthor::authorId),
+                ).from(
+                    entity(BookAuthor::class),
+                ).where(
+                    path(BookAuthor::authorId).equal(1L),
+                )
+            }
+        }
+    }
 
     @Test
     fun `the most prolific author`() {

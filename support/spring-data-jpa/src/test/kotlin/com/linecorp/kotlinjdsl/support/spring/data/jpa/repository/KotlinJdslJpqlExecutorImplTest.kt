@@ -22,7 +22,9 @@ import jakarta.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.dao.IncorrectResultSizeDataAccessException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
@@ -127,6 +129,41 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         excludeRecords { updateQuery2.toQuery() }
         excludeRecords { deleteQuery1.toQuery() }
         excludeRecords { deleteQuery2.toQuery() }
+    }
+
+    @Test
+    fun findOne() {
+        // given
+        val result = listOf("1")
+        every { JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any()) } returns typedQuery1
+        every { typedQuery1.resultList } returns result
+
+        // when
+        val actual = sut.findOne(createSelectQuery1)
+
+        // then
+        assertThat(actual).isEqualTo("1")
+        verifySequence {
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, renderContext)
+            typedQuery1.resultList
+        }
+    }
+
+    @Test
+    fun `findOne() throw if result has more than 2 rows`() {
+        // given
+        val result = listOf("1", "2")
+        every { JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any()) } returns typedQuery1
+        every { typedQuery1.resultList } returns result
+
+        // when, then
+        assertThrows<IncorrectResultSizeDataAccessException> {
+            sut.findOne(createSelectQuery1)
+        }
+        verifySequence {
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, renderContext)
+            typedQuery1.resultList
+        }
     }
 
     @Test
