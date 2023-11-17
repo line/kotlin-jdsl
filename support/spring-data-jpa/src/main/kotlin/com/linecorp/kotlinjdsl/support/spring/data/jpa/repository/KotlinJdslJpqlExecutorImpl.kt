@@ -11,6 +11,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.JpqlEntityManagerUtils
 import jakarta.persistence.EntityManager
+import org.springframework.dao.IncorrectResultSizeDataAccessException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
@@ -24,6 +25,14 @@ open class KotlinJdslJpqlExecutorImpl(
     private val entityManager: EntityManager,
     private val renderContext: RenderContext,
 ) : KotlinJdslJpqlExecutor {
+    override fun <T : Any> findOne(
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): T? {
+        return findAll(Jpql, init)
+            .also { if (it.size > 1) throw IncorrectResultSizeDataAccessException(it.size) }
+            .firstOrNull()
+    }
+
     override fun <T : Any> findAll(
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {

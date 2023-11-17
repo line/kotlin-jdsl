@@ -15,6 +15,11 @@ import org.springframework.data.repository.NoRepositoryBean
 @NoRepositoryBean
 @SinceJdsl("3.0.0")
 interface KotlinJdslJpqlExecutor {
+    @SinceJdsl("3.1.0")
+    fun <T : Any> findOne(
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): T?
+
     /**
      * Returns all results of the select query.
      */

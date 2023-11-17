@@ -16,6 +16,14 @@ import org.springframework.data.repository.NoRepositoryBean
 @SinceJdsl("3.0.0")
 interface KotlinJdslJpqlExecutor {
     /**
+     * Returns one result of the select query if greather than one then throw.
+     */
+    @SinceJdsl("3.1.0")
+    fun <T : Any> findOne(
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): T?
+
+    /**
      * Returns all results of the select query.
      */
     @SinceJdsl("3.0.0")
