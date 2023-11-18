@@ -37,6 +37,12 @@ bookRepository.findPage(pageable) {
 }
 ```
 
+{% hint style="info" %}
+만약 `KotlinJdslJpqlExecutor`를 `@DataJpaTest`에서 사용하고 싶다면 `KotlinJdslAutoConfiguration`를 테스트에서 직접 import 해야 합니다.
+`@DataJpaTest`는 slice test이기 때문에 최소한의 bean만 생성합니다. 그리고 이 bean에는 `KotlinJdslAutoConfiguration`이 포함되어 있지 않습니다.
+그래서 `@DataJpaTest`에서 Kotlin JDSL의 기능을 사용하고 싶다면 테스트에서 `KotlinJdslAutoConfiguration`를 직접 import 해야 합니다.
+{% endhint %}
+
 ## Spring Batch
 
 SpringBatch는 JPQL로 쿼리를 할 수 있도록 `JpaPagingItemReader`와 `JpaCursorItemReader`를 제공합니다.
