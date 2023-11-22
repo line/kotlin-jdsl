@@ -32,6 +32,10 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTimes
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrim
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimBoth
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimLeading
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimTrailing
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
@@ -58,6 +62,7 @@ class ExpressionsTest : WithAssertions {
     private val char1: Char = 'a'
     private val string1: String = "string1"
 
+    private val charExpression1: Expression<Char> = Expressions.value('c')
     private val stringExpression1: Expression<String> = Expressions.value("string1")
     private val stringExpression2: Expression<String> = Expressions.value("string2")
     private val intExpression1: Expression<Int> = Expressions.value(100)
@@ -595,6 +600,74 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlPathType(
             path1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun trim() {
+        // when
+        val actual = Expressions.trim(
+            charExpression1,
+            stringExpression1,
+        )
+
+        // then
+        val expected = JpqlTrim(
+            charExpression1,
+            stringExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun trimLeading() {
+        // when
+        val actual = Expressions.trimLeading(
+            charExpression1,
+            stringExpression1,
+        )
+
+        // then
+        val expected = JpqlTrimLeading(
+            charExpression1,
+            stringExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun trimTrailing() {
+        // when
+        val actual = Expressions.trimTrailing(
+            charExpression1,
+            stringExpression1,
+        )
+
+        // then
+        val expected = JpqlTrimTrailing(
+            charExpression1,
+            stringExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun trimBoth() {
+        // when
+        val actual = Expressions.trimBoth(
+            charExpression1,
+            stringExpression1,
+        )
+
+        // then
+        val expected = JpqlTrimBoth(
+            charExpression1,
+            stringExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)

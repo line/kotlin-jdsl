@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlIntrospectorModifier
 import com.linecorp.kotlinjdsl.render.jpql.introspector.JpqlRenderIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.JakartaJpqlIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.JavaxJpqlIntrospector
+import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.KotlinStyleJpqlPropertyIntrospector
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerModifier
@@ -94,6 +95,10 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSortSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubquerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSumSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTimesSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTrimBothSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTrimLeadingSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTrimSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTrimTrailingSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlUpdateQuerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlUpperSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlValueSerializer
@@ -246,6 +251,8 @@ private class DefaultModule : JpqlRenderModule {
             context.appendIntrospector(JakartaJpqlIntrospector())
         }
 
+        context.appendIntrospector(KotlinStyleJpqlPropertyIntrospector())
+
         context.addAllSerializer(
             JpqlAliasedExpressionSerializer(),
             JpqlAndSerializer(),
@@ -329,6 +336,10 @@ private class DefaultModule : JpqlRenderModule {
             JpqlSubquerySerializer(),
             JpqlSumSerializer(),
             JpqlTimesSerializer(),
+            JpqlTrimBothSerializer(),
+            JpqlTrimLeadingSerializer(),
+            JpqlTrimSerializer(),
+            JpqlTrimTrailingSerializer(),
             JpqlUpdateQuerySerializer(),
             JpqlUpperSerializer(),
             JpqlValueSerializer(),

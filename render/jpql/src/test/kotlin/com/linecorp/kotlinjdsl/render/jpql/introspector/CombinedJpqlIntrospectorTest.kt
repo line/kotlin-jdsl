@@ -9,6 +9,8 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import kotlin.reflect.KCallable
+import kotlin.reflect.KClass
 
 @ExtendWith(MockKExtension::class)
 class CombinedJpqlIntrospectorTest : WithAssertions {
@@ -24,6 +26,10 @@ class CombinedJpqlIntrospectorTest : WithAssertions {
         override val name: String = "entityName1"
     }
 
+    private val propertyDescription1 = object : JpqlPropertyDescription {
+        override val name: String = "propertyName1"
+    }
+
     @BeforeEach
     fun setUp() {
         sut = CombinedJpqlIntrospector(
@@ -33,9 +39,9 @@ class CombinedJpqlIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun `introspect() return the description of the primary, when the primary returns non null`() {
+    fun `introspect(type) return the description of the primary, when the primary returns non null`() {
         // given
-        every { introspector1.introspect(any()) } returns entityDescription1
+        every { introspector1.introspect(any<KClass<*>>()) } returns entityDescription1
 
         // when
         val actual = sut.introspect(Book::class)
@@ -49,10 +55,10 @@ class CombinedJpqlIntrospectorTest : WithAssertions {
     }
 
     @Test
-    fun `introspect() return the description of the secondary, when the primary returns null`() {
+    fun `introspect(type) return the description of the secondary, when the primary returns null`() {
         // given
-        every { introspector1.introspect(any()) } returns null
-        every { introspector2.introspect(any()) } returns entityDescription1
+        every { introspector1.introspect(any<KClass<*>>()) } returns null
+        every { introspector2.introspect(any<KClass<*>>()) } returns entityDescription1
 
         // when
         val actual = sut.introspect(Book::class)
@@ -63,6 +69,40 @@ class CombinedJpqlIntrospectorTest : WithAssertions {
         verifySequence {
             introspector1.introspect(Book::class)
             introspector2.introspect(Book::class)
+        }
+    }
+
+    @Test
+    fun `introspect(property) return the description of the primary, when the primary returns non null`() {
+        // given
+        every { introspector1.introspect(any<KCallable<*>>()) } returns propertyDescription1
+
+        // when
+        val actual = sut.introspect(Book::title)
+
+        // then
+        assertThat(actual).isEqualTo(propertyDescription1)
+
+        verifySequence {
+            introspector1.introspect(Book::title)
+        }
+    }
+
+    @Test
+    fun `introspect(property) return the description of the secondary, when the primary returns null`() {
+        // given
+        every { introspector1.introspect(any<KCallable<*>>()) } returns null
+        every { introspector2.introspect(any<KCallable<*>>()) } returns propertyDescription1
+
+        // when
+        val actual = sut.introspect(Book::title)
+
+        // then
+        assertThat(actual).isEqualTo(propertyDescription1)
+
+        verifySequence {
+            introspector1.introspect(Book::title)
+            introspector2.introspect(Book::title)
         }
     }
 }

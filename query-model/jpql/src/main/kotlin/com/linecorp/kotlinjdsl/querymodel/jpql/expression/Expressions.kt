@@ -30,6 +30,10 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTimes
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrim
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimBoth
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimLeading
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimTrailing
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
@@ -414,6 +418,58 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun type(path: Path<*>): Expression<KClass<*>> {
         return JpqlPathType(path)
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the both sides of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @SinceJdsl("3.1.0")
+    fun trim(
+        character: Expression<Char>? = null,
+        value: Expression<String>,
+    ): Expression<String> {
+        return JpqlTrim(character, value)
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the leading side of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @SinceJdsl("3.1.0")
+    fun trimLeading(
+        character: Expression<Char>? = null,
+        value: Expression<String>,
+    ): Expression<String> {
+        return JpqlTrimLeading(character, value)
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the trailing side of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @SinceJdsl("3.1.0")
+    fun trimTrailing(
+        character: Expression<Char>? = null,
+        value: Expression<String>,
+    ): Expression<String> {
+        return JpqlTrimTrailing(character, value)
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the both sides of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @SinceJdsl("3.1.0")
+    fun trimBoth(
+        character: Expression<Char>? = null,
+        value: Expression<String>,
+    ): Expression<String> {
+        return JpqlTrimBoth(character, value)
     }
 
     /**

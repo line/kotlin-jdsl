@@ -5,7 +5,7 @@
 Kotlin JDSL supports Spring Boot AutoConfigure.
 If you have Spring Boot and `com.linecorp.kotlin-jdsl:spring-data-jpa-support` or `com.linecorp.kotlin-jdsl:spring-batch-support` dependency together, the `JpqlRenderContext` bean is created by AutoConfiguration.
 
-If you declare your `JpqlSerializer` as a bean, it will be included with the `JpqlRenderContext` bean.
+If you declare your `JpqlSerializer` or `JpqlIntrospector` as a bean, it will be included with the `JpqlRenderContext` bean.
 
 ## Spring Data Repository
 
@@ -47,7 +47,7 @@ So if you want to use the features of Kotlin JDSL in `@DataJpaTest`, you need to
 ## Spring Batch
 
 Spring Batch provides `JpaPagingItemReader` and `JpaCursorItemReader` for querying data with JPQL.
-Kotlin JDSL provides `KotlinJdslQueryProvider` so that a JPQL query created in DSL can be executed on it.
+Kotlin JDSL provides `KotlinJdslQueryProvider` so that a JPQL query created in DSL can be executed on them.
 
 ```kotlin
 @Auwoired

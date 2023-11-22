@@ -19,6 +19,7 @@ import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
+import kotlin.reflect.KClass
 
 @JpqlSerializerTest
 class JpqlEntityTreatSerializerTest : WithAssertions {
@@ -58,7 +59,7 @@ class JpqlEntityTreatSerializerTest : WithAssertions {
         clause: JpqlRenderClause,
     ) {
         // given
-        every { introspector.introspect(any()) } returns entityDescription1
+        every { introspector.introspect(any<KClass<*>>()) } returns entityDescription1
 
         val part = Entities.treat(
             entity1,
@@ -93,7 +94,7 @@ class JpqlEntityTreatSerializerTest : WithAssertions {
         clause: JpqlRenderClause,
     ) {
         // given
-        every { introspector.introspect(any()) } returns entityDescription1
+        every { introspector.introspect(any<KClass<*>>()) } returns entityDescription1
 
         val part = Entities.treat(
             entity1,
