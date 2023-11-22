@@ -8,10 +8,10 @@ import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.TrimFromStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseThenFirstStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseValueWhenFirstStepDsl
-import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimBothDsl
-import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimDsl
-import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimLeadingDsl
-import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimTrailingDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimBothFromStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimFromStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimLeadingFromStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimTrailingFromStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.join.AssociationJoinOnStep
 import com.linecorp.kotlinjdsl.dsl.jpql.join.JoinOnStep
 import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.AssociationFetchJoinDsl
@@ -1116,7 +1116,7 @@ open class Jpql : JpqlDsl {
     @LowPriorityInOverloadResolution
     @SinceJdsl("3.1.0")
     fun trim(character: Char? = null): TrimFromStep {
-        return TrimDsl(character?.let { Expressions.value(it) })
+        return TrimFromStepDsl(character?.let { Expressions.value(it) })
     }
 
     /**
@@ -1126,7 +1126,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.1.0")
     fun trim(character: Expressionable<Char>? = null): TrimFromStep {
-        return TrimDsl(character?.let { it.toExpression() })
+        return TrimFromStepDsl(character?.toExpression())
     }
 
     /**
@@ -1137,7 +1137,7 @@ open class Jpql : JpqlDsl {
     @LowPriorityInOverloadResolution
     @SinceJdsl("3.1.0")
     fun trimLeading(character: Char? = null): TrimFromStep {
-        return TrimLeadingDsl(character?.let { Expressions.value(it) })
+        return TrimLeadingFromStepDsl(character?.let { Expressions.value(it) })
     }
 
     /**
@@ -1147,7 +1147,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.1.0")
     fun trimLeading(character: Expressionable<Char>? = null): TrimFromStep {
-        return TrimLeadingDsl(character?.let { it.toExpression() })
+        return TrimLeadingFromStepDsl(character?.toExpression())
     }
 
     /**
@@ -1158,7 +1158,7 @@ open class Jpql : JpqlDsl {
     @LowPriorityInOverloadResolution
     @SinceJdsl("3.1.0")
     fun trimTrailing(character: Char? = null): TrimFromStep {
-        return TrimTrailingDsl(character?.let { Expressions.value(it) })
+        return TrimTrailingFromStepDsl(character?.let { Expressions.value(it) })
     }
 
     /**
@@ -1168,7 +1168,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.1.0")
     fun trimTrailing(character: Expressionable<Char>? = null): TrimFromStep {
-        return TrimTrailingDsl(character?.let { it.toExpression() })
+        return TrimTrailingFromStepDsl(character?.toExpression())
     }
 
     /**
@@ -1179,7 +1179,7 @@ open class Jpql : JpqlDsl {
     @LowPriorityInOverloadResolution
     @SinceJdsl("3.1.0")
     fun trimBoth(character: Char? = null): TrimFromStep {
-        return TrimBothDsl(character?.let { Expressions.value(it) })
+        return TrimBothFromStepDsl(character?.let { Expressions.value(it) })
     }
 
     /**
@@ -1189,7 +1189,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.1.0")
     fun trimBoth(character: Expressionable<Char>? = null): TrimFromStep {
-        return TrimBothDsl(character?.let { it.toExpression() })
+        return TrimBothFromStepDsl(character?.toExpression())
     }
 
     /**
