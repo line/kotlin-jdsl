@@ -5,8 +5,13 @@ import com.linecorp.kotlinjdsl.dsl.jpql.delete.DeleteQueryWhereStep
 import com.linecorp.kotlinjdsl.dsl.jpql.delete.impl.DeleteQueryDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseThenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.TrimFromStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseThenFirstStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseValueWhenFirstStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimBothDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimLeadingDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimTrailingDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.join.AssociationJoinOnStep
 import com.linecorp.kotlinjdsl.dsl.jpql.join.JoinOnStep
 import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.AssociationFetchJoinDsl
@@ -40,6 +45,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.internal.Exact
+import kotlin.internal.LowPriorityInOverloadResolution
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction1
 import kotlin.reflect.KProperty1
@@ -1082,6 +1088,108 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun type(path: Pathable<*>): Expression<KClass<*>> {
         return Expressions.type(path.toPath())
+    }
+
+    /**
+     * Creates an expression that represents a string with the whitespaces all trimmed
+     * from the both sides of the string.
+     */
+    @SinceJdsl("3.1.0")
+    fun trim(value: String): Expression<String> {
+        return Expressions.trim(value = Expressions.value(value))
+    }
+
+    /**
+     * Creates an expression that represents a string with the whitespaces all trimmed
+     * from the both sides of the string.
+     */
+    @SinceJdsl("3.1.0")
+    fun trim(value: Expressionable<String>): Expression<String> {
+        return Expressions.trim(value = value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the both sides of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @LowPriorityInOverloadResolution
+    @SinceJdsl("3.1.0")
+    fun trim(character: Char? = null): TrimFromStep {
+        return TrimDsl(character?.let { Expressions.value(it) })
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the both sides of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @SinceJdsl("3.1.0")
+    fun trim(character: Expressionable<Char>? = null): TrimFromStep {
+        return TrimDsl(character?.let { it.toExpression() })
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the leading side of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @LowPriorityInOverloadResolution
+    @SinceJdsl("3.1.0")
+    fun trimLeading(character: Char? = null): TrimFromStep {
+        return TrimLeadingDsl(character?.let { Expressions.value(it) })
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the leading side of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @SinceJdsl("3.1.0")
+    fun trimLeading(character: Expressionable<Char>? = null): TrimFromStep {
+        return TrimLeadingDsl(character?.let { it.toExpression() })
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the trailing side of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @LowPriorityInOverloadResolution
+    @SinceJdsl("3.1.0")
+    fun trimTrailing(character: Char? = null): TrimFromStep {
+        return TrimTrailingDsl(character?.let { Expressions.value(it) })
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the trailing side of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @SinceJdsl("3.1.0")
+    fun trimTrailing(character: Expressionable<Char>? = null): TrimFromStep {
+        return TrimTrailingDsl(character?.let { it.toExpression() })
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the both sides of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @LowPriorityInOverloadResolution
+    @SinceJdsl("3.1.0")
+    fun trimBoth(character: Char? = null): TrimFromStep {
+        return TrimBothDsl(character?.let { Expressions.value(it) })
+    }
+
+    /**
+     * Creates an expression that represents a string with the specified characters all trimmed
+     * from the both sides of the string.
+     * If the character is not specified, it will be assumed to be whitespace.
+     */
+    @SinceJdsl("3.1.0")
+    fun trimBoth(character: Expressionable<Char>? = null): TrimFromStep {
+        return TrimBothDsl(character?.let { it.toExpression() })
     }
 
     /**
