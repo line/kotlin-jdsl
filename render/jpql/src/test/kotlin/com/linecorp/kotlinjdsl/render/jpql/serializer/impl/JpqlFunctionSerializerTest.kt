@@ -59,7 +59,9 @@ class JpqlFunctionSerializerTest : WithAssertions {
         verifySequence {
             writer.write("FUNCTION")
             writer.writeParentheses(any())
+            writer.write("'")
             writer.write(functionName1)
+            writer.write("'")
             writer.write(",")
             writer.write(" ")
             writer.writeEach(expressions, ", ", "", "", any())
@@ -86,7 +88,9 @@ class JpqlFunctionSerializerTest : WithAssertions {
         verifySequence {
             writer.write("FUNCTION")
             writer.writeParentheses(any())
+            writer.write("'")
             writer.write(functionName1)
+            writer.write("'")
         }
     }
 }

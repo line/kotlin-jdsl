@@ -21,7 +21,9 @@ class JpqlFunctionSerializer : JpqlSerializer<JpqlFunction<*>> {
         writer.write("FUNCTION")
 
         writer.writeParentheses {
+            writer.write("'")
             writer.write(part.name)
+            writer.write("'")
 
             if (IterableUtils.isNotEmpty(part.args)) {
                 writer.write(",")
