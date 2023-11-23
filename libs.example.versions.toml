@@ -2,7 +2,7 @@
 kotlin = "1.9.21"
 
 spring-boot3 = "3.2.0"
-spring-boot2 = "2.7.17"
+spring-boot2 = "2.7.18"
 
 [libraries]
 # kotlin
