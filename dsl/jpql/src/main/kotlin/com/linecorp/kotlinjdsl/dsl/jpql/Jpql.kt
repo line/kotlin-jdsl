@@ -1091,6 +1091,60 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents a substring of the specified length from the start position of the string.
+     * If the length is not specified, it is returned from the start position of the string to the end of the string.
+     * The first position of a string is 1.
+     */
+    @SinceJdsl("3.2.0")
+    fun substring(
+        value: String,
+        start: Int,
+        length: Int? = null,
+    ): Expression<String> {
+        return Expressions.substring(
+            Expressions.value(value),
+            Expressions.value(start),
+            length?.let { Expressions.value(length) },
+        )
+    }
+
+    /**
+     * Creates an expression that represents a substring of the specified length from the start position of the string.
+     * If the length is not specified, it is returned from the start position of the string to the end of the string.
+     * The first position of a string is 1.
+     */
+    @SinceJdsl("3.2.0")
+    fun substring(
+        value: Expressionable<String>,
+        start: Int,
+        length: Int? = null,
+    ): Expression<String> {
+        return Expressions.substring(
+            value.toExpression(),
+            Expressions.value(start),
+            length?.let { Expressions.value(length) },
+        )
+    }
+
+    /**
+     * Creates an expression that represents a substring of the specified length from the start position of the string.
+     * If the length is not specified, it is returned from the start position of the string to the end of the string.
+     * The first position of a string is 1.
+     */
+    @SinceJdsl("3.2.0")
+    fun substring(
+        value: Expressionable<String>,
+        start: Expressionable<Int>,
+        length: Expressionable<Int>? = null,
+    ): Expression<String> {
+        return Expressions.substring(
+            value.toExpression(),
+            start.toExpression(),
+            length?.toExpression(),
+        )
+    }
+
+    /**
      * Creates an expression that represents a string with the whitespaces all trimmed
      * from the both sides of the string.
      */
