@@ -30,6 +30,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTimes
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrim
@@ -600,6 +601,25 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlPathType(
             path1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun substring() {
+        // when
+        val actual = Expressions.substring(
+            stringExpression1,
+            intExpression1,
+            intExpression2,
+        )
+
+        // then
+        val expected = JpqlSubstring(
+            stringExpression1,
+            intExpression1,
+            intExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)

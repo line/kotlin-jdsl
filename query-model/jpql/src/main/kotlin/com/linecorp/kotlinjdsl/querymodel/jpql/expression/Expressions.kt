@@ -28,6 +28,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTimes
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrim
@@ -418,6 +419,20 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun type(path: Path<*>): Expression<KClass<*>> {
         return JpqlPathType(path)
+    }
+
+    /**
+     * Creates an expression that represents a substring of the specified length from the start position of the string.
+     * If the length is not specified, it is returned from the start position of the string to the end of the string.
+     * The first position of a string is 1.
+     */
+    @SinceJdsl("3.2.0")
+    fun substring(
+        value: Expression<String>,
+        start: Expression<Int>,
+        length: Expression<Int>? = null,
+    ): Expression<String> {
+        return JpqlSubstring(value, start, length)
     }
 
     /**
