@@ -10,7 +10,7 @@ kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime",
 
 # log
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.9" }
-logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
+logback = { module = "ch.qos.logback:logback-classic", version = "1.4.12" }
 
 # jpa
 javax-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
