@@ -11,7 +11,7 @@ object EntityManagerFactoryTestUtils {
 
 private val entityManagerFactory = Persistence.createEntityManagerFactory("example").also {
     val thread = Thread {
-        it.close()
+        if (it.isOpen) it.close()
 
         println("EntityManagerFactory is closed")
     }

@@ -22,7 +22,7 @@ private val entityManagerFactory = Persistence.createEntityManagerFactory(
     ),
 ).also {
     val thread = Thread {
-        it.close()
+        if (it.isOpen) it.close()
 
         println("EntityManagerFactory is closed")
     }

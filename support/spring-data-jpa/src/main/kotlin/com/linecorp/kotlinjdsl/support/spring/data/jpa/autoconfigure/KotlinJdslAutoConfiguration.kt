@@ -9,13 +9,15 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutorImpl
 import jakarta.persistence.EntityManager
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.ComponentScan
 
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnClass(EntityManager::class, JpqlRenderContext::class)
+@ComponentScan(basePackageClasses = [KotlinJdslAutoConfiguration::class])
 @SinceJdsl("3.0.0")
 open class KotlinJdslAutoConfiguration {
     @Bean
@@ -51,13 +53,5 @@ open class KotlinJdslAutoConfiguration {
             entityManager = entityManager,
             renderContext = renderContext,
         )
-    }
-
-    @Bean
-    @SinceJdsl("3.0.0")
-    open fun kotlinJdslJpaRepositoryFactoryBeanPostProcessor(
-        kotlinJdslJpqlExecutor: KotlinJdslJpqlExecutor,
-    ): KotlinJdslJpaRepositoryFactoryBeanPostProcessor {
-        return KotlinJdslJpaRepositoryFactoryBeanPostProcessor(kotlinJdslJpqlExecutor)
     }
 }
