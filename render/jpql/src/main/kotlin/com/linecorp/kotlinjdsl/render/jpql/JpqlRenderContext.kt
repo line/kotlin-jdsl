@@ -20,6 +20,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlBetweenSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseValueSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseWhenSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCoalesceSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlConcatSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCountSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCustomExpressionSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDeleteQuerySerializer
@@ -262,6 +263,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlCaseValueSerializer(),
             JpqlCaseWhenSerializer(),
             JpqlCoalesceSerializer(),
+            JpqlConcatSerializer(),
             JpqlCountSerializer(),
             JpqlCustomExpressionSerializer(),
             JpqlDeleteQuerySerializer(),
