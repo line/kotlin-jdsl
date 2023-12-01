@@ -1091,6 +1091,38 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the concatenation of two or more string values.
+     */
+    @SinceJdsl("3.2.0")
+    fun concat(
+        value1: String?,
+        value2: String?,
+        vararg others: String?,
+    ): Expression<String> {
+        return Expressions.concat(
+            Expressions.value(value1),
+            Expressions.value(value2),
+            others.map { Expressions.value(it) },
+        )
+    }
+
+    /**
+     * Creates an expression that represents the concatenation of two or more string values.
+     */
+    @SinceJdsl("3.2.0")
+    fun concat(
+        value1: Expressionable<String>,
+        value2: Expressionable<String>,
+        vararg others: Expressionable<String>,
+    ): Expression<String> {
+        return Expressions.concat(
+            value1.toExpression(),
+            value2.toExpression(),
+            others.map { it.toExpression() },
+        )
+    }
+
+    /**
      * Creates an expression that represents a substring of the specified length from the start position of the string.
      * If the length is not specified, it is returned from the start position of the string to the end of the string.
      * The first position of a string is 1.
