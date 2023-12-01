@@ -4,7 +4,7 @@ The JPQL supports select, update, and delete statements. Kotlin JDSL provides a 
 
 ## Select statement
 
-Calling `select()` in `jpql()` allows you to build a select statement.
+Call `select()` in `jpql()` to build a select statement.
 
 ```kotlin
 val query = jpql {
@@ -28,9 +28,9 @@ val query = jpql {
 
 ### Select clause
 
-To build a select clause in the select statement, you can use `select()` and pass [`Expression`](expressions.md) to project.
+Use `select()` and pass [`Expression`](expressions.md) to build a select clause in the select statement.
 If you pass only one `Expression` to `select()`, it will infer a return type from `Expression`.
-However, if you pass more than one `Expression`, it cannot infer the type, so you need to specify the type.
+However, if you pass more than one `Expression`, you need to specify the type as it cannot infer the type.
 
 ```kotlin
 // It can infer the result type.
@@ -45,7 +45,7 @@ select<CustomEntity>(path(Author::authorId), path(Author::name))
 
 #### DTO projection
 
-Specifying a DTO class and passing parameters of the constructor to `selectNew()` allows you to build a DTO projection.
+Specify a DTO class and pass parameters of the constructor to `selectNew()` to build a DTO projection.
 
 ```kotlin
 data class Row(
@@ -61,7 +61,7 @@ selectNew<Row>(
 
 ### From clause
 
-To build a from clause in the select statement, you can use `from()` and pass [Entity](entities.md) and [Join](statements.md#join) to specify the entities to select from.
+Use `from()` and pass [Entity](entities.md) and [Join](statements.md#join) to specify the entities for selection when building a from clause in the select statement.
 
 ```kotlin
 from(
@@ -72,8 +72,8 @@ from(
 
 #### Join
 
-To combining the entities to select from, you can use `join()` and `fetchJoin()`.
-There are two types of `join()`: Join and Association Join.
+Use `join()` and `fetchJoin()` to combine the entities for selection.
+There are two types of `join()`: Join and Association Join
 This is distinguished by whether `join()` is used between two unrelated entities or between two related entities.
 
 ```kotlin
@@ -116,7 +116,7 @@ from(
 )
 ```
 
-Calling `as()` after `join()` allows you to alias the entity being joined.
+Call `as()` after `join()` to alias the entity being joined.
 This can be useful if you use multiple entities with the same type in a from clause.
 
 ```kotlin
@@ -128,9 +128,9 @@ from(
 
 ### Where clause
 
-To build a where clause in the select statement, you can use `where()` and pass [Predicate](predicates.md) to restrict the data.
-You can use `whereAnd()` as a shortened form of `where()` and `and()`.
-You can also use `whereOr()` as a shortened form of `where()` and `or()`.
+Use `where()` and pass [Predicate](predicates.md) to restrict the data when building a where clause in the select statement.
+You can use `whereAnd()` as a short form of `where()` and `and()`.
+You can also use `whereOr()` as a short form of `where()` and `or()`.
 
 ```kotlin
 where(
@@ -143,7 +143,7 @@ where(
 
 ### Group by clause
 
-To build a group by clause in the select statement, you can use `groupBy()` and pass [Expression](expressions.md) to create unique groups of data.
+Use `groupBy()` and pass [Expression](expressions.md) to create unique groups of data when building a group by clause in the select statement.
 
 ```kotlin
 groupBy(
@@ -153,9 +153,9 @@ groupBy(
 
 ### Having clause
 
-To build a having clause in the select statement, you can use `having()` and pass [Expression](expressions.md) to further restrict the data.
-You can use `havingAnd()` as a shortened form of `having()` and `and()`.
-You can also use `havingOr()` as a shortened form of `having()` and `or()`.
+Use `having()` and pass [Expression](expressions.md) to further restrict the data when building a having clause in the select statement.
+You can use `havingAnd()` as a short form of `having()` and `and()`.
+You can also use `havingOr()` as a short form of `having()` and `or()`.
 
 ```kotlin
 having(
@@ -165,7 +165,7 @@ having(
 
 ### Order by clause
 
-To build an order by clause in the select statement, you can use `orderBy()` and pass [Sort](sorts.md) to return data in the declared order.
+Use `orderBy()` and pass [Sort](sorts.md) to return data in the declared order when building an order by clause in the select statement.
 
 ```kotlin
 orderBy(
@@ -175,7 +175,7 @@ orderBy(
 
 ## Update statement
 
-Calling `update()` in `jpql()` allows you to build an update statement.
+Call `update()` in `jpql()` to build an update statement.
 
 ```kotlin
 val query = jpql {
@@ -195,7 +195,7 @@ val query = jpql {
 
 ### Update clause
 
-To build an update clause in the update statement, you can use `update()` and pass [Entity](entities.md) to specify the entity to modify.
+Use `update()` and pass [Entity](entities.md) to specify the entity to modify when building an update clause in the update statement.
 
 ```kotlin
 update(
@@ -205,7 +205,7 @@ update(
 
 ### Set clause
 
-To build a set clause in the update statement, you can use `set()` and pass [Expression](expressions.md) to assign values.
+Use `set()` and pass [Expression](expressions.md) to assign values when building a set clause in the update statement.
 You can use multiple assignments by adding `set()` after `set()`.
 
 ```kotlin
@@ -220,9 +220,9 @@ set(
 
 ### Where clause
 
-To build a where clause in the update statement, you can use `where()` and pass [Predicate](predicates.md) to restrict the data.
-You can use `whereAnd()` as a shortened form of `where()` and `and()`.
-You can also use `whereOr()` as a shortened form of `where()` and `or()`.
+Use `where()` and pass [Predicate](predicates.md) to restrict the data when building a where clause in the update statement.
+You can use `whereAnd()` as a short form of `where()` and `and()`.
+You can also use `whereOr()` as a short form of `where()` and `or()`.
 
 ```kotlin
 where(
@@ -235,7 +235,7 @@ where(
 
 ## Delete statement
 
-Calling `deleteFrom()` in `jpql()` allows you to build a delete statement.
+Call `deleteFrom()` in `jpql()` to build a delete statement.
 
 ```kotlin
 val query = jpql {
@@ -249,7 +249,7 @@ val query = jpql {
 
 ### Delete from clause
 
-To build a delete from clause in the delete statement, you can use `deleteFrom()` and pass [Entity](entities.md) to specify the entity to delete.
+Use `deleteFrom()` and pass [Entity](entities.md) to specify the entity to delete when building a delete from clause in the delete statement.
 
 ```kotlin
 deleteFrom(
@@ -259,9 +259,9 @@ deleteFrom(
 
 ### Where clause
 
-To build a where clause in the delete statement, you can use `where()` and pass [Predicate](predicates.md) to restrict the data.
-You can use `whereAnd()` as a shortened form of `where()` and `and()`.
-You can also use `whereOr()` as a shortened form of `where()` and `or()`.
+Use `where()` and pass [Predicate](predicates.md) to restrict the data when building a where clause in the delete statement.
+You can use `whereAnd()` as a short form of `where()` and `and()`.
+You can also use `whereOr()` as a short form of `where()` and `or()`.
 
 ```kotlin
 where(

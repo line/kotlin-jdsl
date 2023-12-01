@@ -4,7 +4,7 @@
 
 ### MySQL
 
-Kotlin JDSL provides a Mysql-specific DSL that makes it easy to build MySQL queries.
+Kotlin JDSL provides a MySQL-specific DSL that makes it easy to build MySQL queries.
 
 ### Oracle
 
@@ -12,7 +12,7 @@ Kotlin JDSL provides an Oracle-specific DSL that makes it easy to build Oracle q
 
 ### OpenSearch
 
-Kotlin JDSL provides a OpenSearch-specific DSL that makes it easy to build OpenSearch queries.
+Kotlin JDSL provides an OpenSearch-specific DSL that makes it easy to build OpenSearch queries.
 
 ## Support
 

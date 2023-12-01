@@ -1,6 +1,7 @@
 # Entities
 
-Kotlin JDSL has `Entity` interface to represent an entity in JPQL. To build `Entity`, you can use `entity()`.
+Kotlin JDSL has the `Entity` interface to represent an entity in JPQL.
+Use `entity()` to build `Entity`.
 
 ```kotlin
 entity(Book::class)
@@ -8,8 +9,9 @@ entity(Book::class)
 
 ## Alias
 
-`Entity` has an alias. If you don't specify an alias in `entity()`, Kotlin JDSL generates an alias from the class name.
-`Entity` is identified by an alias, so if you use more than one `Entity` with the same type, you need to alias them to distinguish them.
+All `Entity` has an alias.
+If you don't specify an alias in `entity()`, Kotlin JDSL automatically generates an alias from the class name.
+`Entity` is identified by its alias. If you use more than one `Entity` with the same type, you need to alias them to identify each `Entity`.
 
 ```kotlin
 entity(Book::class)
@@ -21,7 +23,7 @@ entity(Book::class, alias = "book2")
 
 ## Expression
 
-`Entity` can be used as [`Expression`](expressions.md), such as in a [select clause](statements.md#select-clause) and [predicate](predicates.md).
+`Entity` can be used as [`Expression`](expressions.md) in a [select clause](statements.md#select-clause) or [predicate](predicates.md).
 
 ```kotlin
 // SELECT b FROM Book AS b WHERE b.isbn.value = :param1
@@ -38,7 +40,7 @@ jpql {
 
 ## Treat
 
-To cast type of `Entity` to subclass, you can use `treat()`.
+Use `treat()` to typecast `Entity` to subclass.
 
 ```kotlin
 entity(Employee::class).treat(FullTimeEmployee::class)

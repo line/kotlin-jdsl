@@ -1,12 +1,12 @@
 # Expressions
 
-Kotlin JDSL has `Expression` interface to represent an expression in JPQL.
+Kotlin JDSL has the `Expression` interface to represent an expression in JPQL.
 
 ## Alias
 
-Calling `as()` on `Expression` allows you to alias `Expression`.
-You can create a reference of `Expression` using expression().
-The reference is identified by an alias and references `Expression` with the same alias.
+Call `as()` in `Expression` to alias `Expression`.
+You can create a reference of `Expression` using `expression()`.
+References are identified by an alias, and you can reference `Expression` with the same alias.
 This allows you to alias `Expression` or reference the aliased `Expression` in other clauses.
 
 ```kotlin
@@ -31,13 +31,13 @@ select(
 )
 ```
 
-### Type Cast
+### Type cast
 
-In some cases, you may want to change the type of `Expression` you want to use.
-For this, Kotlin JDSL provides unsafe type casting through `as()`.
+In some cases, you may want to change the type of `Expression`.
+To this end, Kotlin JDSL provides unsafe type casting through `as()`.
 
 {% hint style="info" %}
-This is a shortened form of `as Expression<T>`, so it may not work as expected.
+This is a short form of `as Expression<T>`, so it may not work as expected.
 {% endhint %}
 
 ```kotlin
@@ -46,7 +46,7 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 
 ## Arithmetic operations
 
-To build arithmetic operations, you can use following functions:
+Use the following functions to build arithmetic operations:
 
 * \+ (plus)
 * \- (minus)
@@ -69,8 +69,8 @@ div(path(Book::price), path(Book::salePrice))
 
 ### Parentheses
 
-Calling arithmetic operators using a normal function instead of an extension function allows you to order the operators using parentheses.
-In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
+Call arithmetic operators using a normal function instead of an extension function to add parentheses for the order of operations.
+As for extension functions, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
 // normal function: (Book.price - Book.salePrice) * (100)
@@ -85,12 +85,12 @@ path(Book::price).minus(path(Book::salePrice)).times(BigDecimal.valueOf(100))
 
 ## Values
 
-To build value, you can use `value()`.
+Use `value()` to build a value.
 All values built by `value()` are interpreted as query parameters.
 These query parameters cannot be overridden.
 
 {% hint style="info" %}
-If KClass is passed to `value()`, it is considered [Entity](entities.md).
+If KClass is passed to `value()`, it is recognized as [Entity](entities.md).
 {% endhint %}
 
 ```kotlin
@@ -106,7 +106,8 @@ select(
 
 ### Params
 
-Calling `param()` instead of `value()` allows you to build a query parameter that can be overridden.
+Use `param()` instead of `value()` to build query parameters.
+Parameters created with `param()` can be overridden.
 
 ```kotlin
 val context = JpqlRenderContext()
@@ -130,11 +131,11 @@ entityManager.createQuery(query, queryParams, context)
 
 ### Literals
 
-Calling `xxxLiteral()` instead of `value()` allows you to build a literal in query.
+Call `xxxLiteral()` instead of `value()` to build a literal in queries.
 
 {% hint style="info" %}
-When printing a string literal, if the string includes '(single quote), the '(single quote) is changed to ''(two single quotes).
-For example: 'literal''s'.
+When printing a string literal with single quotation marks, the single quotation mark (') is replaced with the two single quotation marks ('').
+It will look like 'literal''s'.
 {% endhint %}
 
 | Type    | Function       | Rendered                     |
@@ -150,7 +151,7 @@ For example: 'literal''s'.
 
 ## Aggregation functions
 
-To build aggregation functions operations, you can use following functions:
+Use the following functions to build aggregate functions:
 
 * COUNT (count)
 * MIN (min)
@@ -174,7 +175,7 @@ sumDistinct(path(Book::price))
 
 ### Sum
 
-Depending on the type of the parameter, `sum()` returns a different type.
+`sum()` returns a different type, depending on the type of the parameter.
 
 | Type       | Return Type |
 |------------|-------------|
@@ -187,7 +188,7 @@ Depending on the type of the parameter, `sum()` returns a different type.
 
 ## Functions
 
-Kotlin JDSL provides functions to support built-in functions in JPA.
+Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 
 ### String functions
 
@@ -232,7 +233,7 @@ Kotlin JDSL provides functions to support built-in functions in JPA.
 
 ### Database function
 
-Calling `function()` allows you to build predefined database functions and user-defined database functions.
+Call `function()` to create predefined database functions and user-defined database functions.
 
 ```kotlin
 function(String::class, "myFunction", path(Book::isbn))
@@ -240,7 +241,7 @@ function(String::class, "myFunction", path(Book::isbn))
 
 ## Cases
 
-To build a case, you can use `caseWhen()` and `caseValue()`.
+Use `caseWhen()` and `caseValue()` to build cases.
 
 ```kotlin
 caseWhen(path(Book::price).lt(BigDecimal.valueOf(100))).then("0")
@@ -257,8 +258,7 @@ caseValue(path(Book::price))
 
 ### Coalesce
 
-To build coalesce, you can use `coalesce()`.
-`coalesce()` returns the first non-null value in the parameters, or null if there are no non-null values in the parameters.
+Use `coalesce()` to build coalesce.
 
 ```kotlin
 coalesce(path(Employee::nickname), path(Employee::name))
@@ -266,7 +266,7 @@ coalesce(path(Employee::nickname), path(Employee::name))
 
 ### NullIf
 
-To build nullIf, you can use `nullIf()`. `nullIf()` returns null if value1 = value2 is true, otherwise returns value1.
+Use `nullIf()` to build nullIf.
 
 ```kotlin
 nullIf(path(Book::price), BigDecimal.ZERO)
@@ -274,7 +274,7 @@ nullIf(path(Book::price), BigDecimal.ZERO)
 
 ## New
 
-To build DTO projection, you can use `new()`.
+Use `new()` to build DTO projections.
 
 ```kotlin
 data class Row(
@@ -291,7 +291,7 @@ new(
 
 ## Type
 
-To build type operator, you can use `type()`.
+Use `type()` to build type operators.
 
 ```kotlin
 select(
@@ -305,10 +305,10 @@ select(
 
 ## Custom expression
 
-Calling `customExpression()` allows you to build a custom expression.
+Call `customExpression()` to build a custom expression.
 
 ```kotlin
 customExpression(String::class, "CAST({0} AS VARCHAR)", path(Book::price))
 ```
 
-If you use a lot of `customExpression()`, you can create [your own DSL](custom-dsl.md).
+If you frequently use `customExpression()`, you can create [your own DSL](custom-dsl.md).

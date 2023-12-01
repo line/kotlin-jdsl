@@ -1,17 +1,17 @@
 # Predicates
 
-Kotlin JDSL has `Predicate` interface to represent a conditional expression in JPQL.
+Kotlin JDSL has the `Predicate` interface to represent a conditional expression in JPQL.
 
 ## Logical operators
 
-To build logical operations, you can use following functions:
+Use the following functions to build logical operations:
 
 * AND (and)
 * OR (or)
 * NOT (not)
 
 {% hint style="info" %}
-If there is no `Predicate` in `and()` and `or()`, `and()` will be interpreted as `1 = 1` and `or()` will be interpreted as `0 = 1`.
+If all `Predicate` passed to `and()` and `or()` is null or empty, `and()` will be interpreted as `1 = 1` and `or()` will be interpreted as `0 = 1`.
 So be careful when creating a dynamic query.
 {% endhint %}
 
@@ -27,8 +27,8 @@ not(path(Employee::name).eq("Employee01"))
 
 ### Parentheses
 
-Calling logical operators using a normal function instead of an extension function allows you to order the operators using parentheses.
-In an extended function, Kotlin JDSL cannot add parentheses because the order is ambiguous.
+Call logical operators using a normal function instead of an extension function to add parentheses for the order of operations.
+As for extension functions, Kotlin JDSL cannot add parentheses because the order is ambiguous.
 
 ```kotlin
 // normal function: (Employee.name = 'Employee01' AND Employee.nickname = 'E01') or (Employee.name = 'Employee02' AND Employee.nickname = 'E02')
@@ -43,14 +43,14 @@ path(Employee::name).eq("Employee01").and(path(Employee::nickname).eq("E01")).or
 
 ## Comparison operators
 
-To build comparison operations, you can use following functions:
+Use the following functions to build comparison operators:
 
-* \= (equal or eq)
-* <> (notEqual or ne)
+* = (equal or eq)
+* \<> (notEqual or ne)
 * \> (greaterThan or gt)
 * \>= (greaterThanOrEqualTo or ge)
-* < (lessThan or lt)
-* <= (lessThanOrEqualTo or le)
+* \< (lessThan or lt)
+* \<= (lessThanOrEqualTo or le)
 
 ```kotlin
 path(Book::price).equal(BigDecimal.valueOf(100))
@@ -74,7 +74,7 @@ path(Book::price).le(BigDecimal.valueOf(100))
 
 ### All or Any
 
-Appending `all` and `any` to the end of the function name allows you to use All and Any operators on a subquery.
+Append `all` and `any` at the end of the function name to use All and Any operators on subqueries.
 
 ```kotlin
 val query = jpql {
@@ -99,7 +99,7 @@ val query = jpql {
 
 ## Null
 
-To build null comparison operations, you can use `isNull()` and `isNotNull()`.
+Use `isNull()` and `isNotNull()` to build null comparison operations.
 
 ```kotlin
 path(Employee::nickname).isNull()
@@ -109,7 +109,7 @@ path(Employee::nickname).isNotNull()
 
 ## Like
 
-To build like comparison operations, you can use `like()` and `notLike()`.
+Use `like()` and `notLike()` to build like comparison operations.
 
 ```kotlin
 path(Employee::nickname).like("E%")
@@ -121,7 +121,7 @@ path(Employee::nickname).notLike("E_", escape = '_')
 
 ## Between
 
-To build between comparison operations, you can use `between()` and `notBetween()`.
+Use `between()` and `notBetween()` to build between comparison operations.
 
 ```kotlin
 path(Employee::price).between(BigDecimal.valueOf(100), BigDecimal.valueOf(200))
@@ -131,7 +131,7 @@ path(Employee::price).notBetween(BigDecimal.valueOf(100), BigDecimal.valueOf(200
 
 ## In
 
-To build in comparison operations, you can use `in()` and `notIn()`.
+Use `in()` and `notIn()` to build in comparison operations.
 
 ```kotlin
 path(Employee::price).`in`(BigDecimal.valueOf(100), BigDecimal.valueOf(200))
@@ -141,7 +141,7 @@ path(Employee::price).notIn(BigDecimal.valueOf(100), BigDecimal.valueOf(200))
 
 ## Exists
 
-To build exists operations, you can use `exists()` and `notExists()`.
+Use `exists()` and `notExists()` to build exists operations.
 
 ```kotlin
 exists(subquery)
@@ -151,8 +151,7 @@ notExists(subquery)
 
 ## Empty
 
-To build empty operations, you can use `isEmpty()` and `isNotEmpty()`.
-These test if the collection is empty.
+Use `isEmpty()` and `isNotEmpty()` to build empty operations.
 
 ```kotlin
 path(Employee::departments).isEmpty()

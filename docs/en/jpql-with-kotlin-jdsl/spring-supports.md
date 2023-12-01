@@ -3,7 +3,7 @@
 ## Spring Boot AutoConfigure
 
 Kotlin JDSL supports Spring Boot AutoConfigure.
-If you have Spring Boot and `com.linecorp.kotlin-jdsl:spring-data-jpa-support` or `com.linecorp.kotlin-jdsl:spring-batch-support` dependency together, the `JpqlRenderContext` bean is created by AutoConfiguration.
+If your project has both Spring Boot and `com.linecorp.kotlin-jdsl:spring-data-jpa-support` or `com.linecorp.kotlin-jdsl:spring-batch-support` dependencies, AutoConfiguration automatically creates the `JpqlRenderContext` bean.
 
 If you declare your `JpqlSerializer` or `JpqlIntrospector` as a bean, it will be included with the `JpqlRenderContext` bean.
 
@@ -38,7 +38,7 @@ bookRepository.findPage(pageable) {
 ```
 
 {% hint style="info" %}
-If you want to use `KotlinJdslJpqlExecutor` in `@DataJpaTest`, you need to import `KotlinJdslAutoConfiguration` directly in the test.
+If you want to use `KotlinJdslJpqlExecutor` in `@DataJpaTest`, you need to import `KotlinJdslAutoConfiguration` in the test.
 Since `@DataJpaTest` is a slice test, it only creates minimal beans.
 And the minimal bean does not include `KotlinJdslAutoConfiguration`.
 So if you want to use the features of Kotlin JDSL in `@DataJpaTest`, you need to import `KotlinJdslAutoConfiguration` directly in your test.
@@ -47,7 +47,7 @@ So if you want to use the features of Kotlin JDSL in `@DataJpaTest`, you need to
 ## Spring Batch
 
 Spring Batch provides `JpaPagingItemReader` and `JpaCursorItemReader` for querying data with JPQL.
-Kotlin JDSL provides `KotlinJdslQueryProvider` so that a JPQL query created in DSL can be executed on them.
+Kotlin JDSL provides `KotlinJdslQueryProvider` so that a JPQL query created in DSL can be executed in it.
 
 ```kotlin
 @Auwoired
