@@ -50,7 +50,7 @@ agroal-pool = { module = "io.agroal:agroal-pool", version = "2.2" }
 h2 = { module = "com.h2database:h2", version = "2.2.224" }
 
 [plugins]
-kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.9" }
+kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.10" }
 kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
