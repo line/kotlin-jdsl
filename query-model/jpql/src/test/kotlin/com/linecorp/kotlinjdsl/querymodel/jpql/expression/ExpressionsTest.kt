@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
@@ -30,6 +31,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTimes
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrim
@@ -65,6 +67,7 @@ class ExpressionsTest : WithAssertions {
     private val charExpression1: Expression<Char> = Expressions.value('c')
     private val stringExpression1: Expression<String> = Expressions.value("string1")
     private val stringExpression2: Expression<String> = Expressions.value("string2")
+    private val stringExpression3: Expression<String> = Expressions.value("string3")
     private val intExpression1: Expression<Int> = Expressions.value(100)
     private val intExpression2: Expression<Int> = Expressions.value(200)
     private val intExpression3: Expression<Int> = Expressions.value(300)
@@ -600,6 +603,46 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlPathType(
             path1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun concat() {
+        // when
+        val actual = Expressions.concat(
+            stringExpression1,
+            stringExpression2,
+            listOf(stringExpression3),
+        )
+
+        // then
+        val expected = JpqlConcat(
+            listOf(
+                stringExpression1,
+                stringExpression2,
+                stringExpression3,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun substring() {
+        // when
+        val actual = Expressions.substring(
+            stringExpression1,
+            intExpression1,
+            intExpression2,
+        )
+
+        // then
+        val expected = JpqlSubstring(
+            stringExpression1,
+            intExpression1,
+            intExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)

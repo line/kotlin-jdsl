@@ -1,16 +1,16 @@
 [versions]
-kotlin = "1.9.20"
+kotlin = "1.9.21"
 
-spring-boot3 = "3.1.5"
-spring-boot2 = "2.7.17"
+spring-boot3 = "3.2.0"
+spring-boot2 = "2.7.18"
 
 [libraries]
 # kotlin
-kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version = "0.4.9" }
+kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version = "0.4.10" }
 
 # log
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.9" }
-logback = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
+logback = { module = "ch.qos.logback:logback-classic", version = "1.4.14" }
 
 # jpa
 javax-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
@@ -19,7 +19,7 @@ jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-ap
 # spring boot
 spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot3" }
 spring-boot3-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot3" }
-spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.9.0" }
+spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.9.1" }
 spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot3" }
 
 spring-boot2-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot2" }
@@ -28,16 +28,16 @@ spring-boot2-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-star
 spring-boot2-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot2" }
 
 # spring
-spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "5.0.3" }
-spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", version = "4.3.9" }
+spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "5.1.0" }
+spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", version = "4.3.10" }
 
 # hibernate
 hibernate5-core = { module = "org.hibernate:hibernate-core", version = "5.6.15.Final" }
-hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.3.1.Final" }
+hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.4.0.Final" }
 
 # hibernate-reactive
 hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
-hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.0.6.Final" }
+hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.2.0.Final" }
 
 # eclipse-link
 eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.13" }
@@ -50,7 +50,7 @@ agroal-pool = { module = "io.agroal:agroal-pool", version = "2.2" }
 h2 = { module = "com.h2database:h2", version = "2.2.224" }
 
 [plugins]
-kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.9" }
+kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.10" }
 kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

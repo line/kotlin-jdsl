@@ -1091,6 +1091,92 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the concatenation of two or more string values.
+     */
+    @SinceJdsl("3.2.0")
+    fun concat(
+        value1: String?,
+        value2: String?,
+        vararg others: String?,
+    ): Expression<String> {
+        return Expressions.concat(
+            Expressions.value(value1),
+            Expressions.value(value2),
+            others.map { Expressions.value(it) },
+        )
+    }
+
+    /**
+     * Creates an expression that represents the concatenation of two or more string values.
+     */
+    @SinceJdsl("3.2.0")
+    fun concat(
+        value1: Expressionable<String>,
+        value2: Expressionable<String>,
+        vararg others: Expressionable<String>,
+    ): Expression<String> {
+        return Expressions.concat(
+            value1.toExpression(),
+            value2.toExpression(),
+            others.map { it.toExpression() },
+        )
+    }
+
+    /**
+     * Creates an expression that represents a substring of the specified length from the start position of the string.
+     * If the length is not specified, it is returned from the start position of the string to the end of the string.
+     * The first position of a string is 1.
+     */
+    @SinceJdsl("3.2.0")
+    fun substring(
+        value: String,
+        start: Int,
+        length: Int? = null,
+    ): Expression<String> {
+        return Expressions.substring(
+            Expressions.value(value),
+            Expressions.value(start),
+            length?.let { Expressions.value(length) },
+        )
+    }
+
+    /**
+     * Creates an expression that represents a substring of the specified length from the start position of the string.
+     * If the length is not specified, it is returned from the start position of the string to the end of the string.
+     * The first position of a string is 1.
+     */
+    @SinceJdsl("3.2.0")
+    fun substring(
+        value: Expressionable<String>,
+        start: Int,
+        length: Int? = null,
+    ): Expression<String> {
+        return Expressions.substring(
+            value.toExpression(),
+            Expressions.value(start),
+            length?.let { Expressions.value(length) },
+        )
+    }
+
+    /**
+     * Creates an expression that represents a substring of the specified length from the start position of the string.
+     * If the length is not specified, it is returned from the start position of the string to the end of the string.
+     * The first position of a string is 1.
+     */
+    @SinceJdsl("3.2.0")
+    fun substring(
+        value: Expressionable<String>,
+        start: Expressionable<Int>,
+        length: Expressionable<Int>? = null,
+    ): Expression<String> {
+        return Expressions.substring(
+            value.toExpression(),
+            start.toExpression(),
+            length?.toExpression(),
+        )
+    }
+
+    /**
      * Creates an expression that represents a string with the whitespaces all trimmed
      * from the both sides of the string.
      */

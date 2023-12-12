@@ -20,6 +20,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlBetweenSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseValueSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseWhenSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCoalesceSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlConcatSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCountSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCustomExpressionSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDeleteQuerySerializer
@@ -93,6 +94,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPredicateParenthe
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQuerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSortSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubquerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubstringSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSumSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTimesSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTrimBothSerializer
@@ -261,6 +263,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlCaseValueSerializer(),
             JpqlCaseWhenSerializer(),
             JpqlCoalesceSerializer(),
+            JpqlConcatSerializer(),
             JpqlCountSerializer(),
             JpqlCustomExpressionSerializer(),
             JpqlDeleteQuerySerializer(),
@@ -334,6 +337,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlSelectQuerySerializer(),
             JpqlSortSerializer(),
             JpqlSubquerySerializer(),
+            JpqlSubstringSerializer(),
             JpqlSumSerializer(),
             JpqlTimesSerializer(),
             JpqlTrimBothSerializer(),
