@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 
 spring-boot3 = "3.2.0"
 spring-boot2 = "2.7.18"
