@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 plugins {
     alias(exampleLibs.plugins.spring.boot2)
     alias(exampleLibs.plugins.kotlin.noarg)
@@ -22,6 +24,11 @@ dependencies {
 
 kotlin {
     jvmToolchain(8)
+
+    compilerOptions {
+        apiVersion = KotlinVersion.KOTLIN_1_9
+        languageVersion = KotlinVersion.KOTLIN_1_9
+    }
 }
 
 noArg {

@@ -21,17 +21,23 @@ sealed class JpqlRenderStatement : AbstractRenderContextElement(Key) {
     open fun isDelete(): Boolean = false
 
     @SinceJdsl("3.0.0")
-    data object Select : JpqlRenderStatement() {
+    object Select : JpqlRenderStatement() {
         override fun isSelect(): Boolean = true
+
+        override fun toString(): String = "Select"
     }
 
     @SinceJdsl("3.0.0")
-    data object Update : JpqlRenderStatement() {
+    object Update : JpqlRenderStatement() {
         override fun isUpdate(): Boolean = true
+
+        override fun toString(): String = "Update"
     }
 
     @SinceJdsl("3.0.0")
-    data object Delete : JpqlRenderStatement() {
+    object Delete : JpqlRenderStatement() {
         override fun isDelete(): Boolean = true
+
+        override fun toString(): String = "Delete"
     }
 }

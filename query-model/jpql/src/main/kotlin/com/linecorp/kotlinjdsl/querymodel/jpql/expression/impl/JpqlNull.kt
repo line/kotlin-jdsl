@@ -4,4 +4,6 @@ import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 
 @Internal
-data object JpqlNull : Expression<Any>
+object JpqlNull : Expression<Any> {
+    override fun toString() = "JpqlNull"
+}

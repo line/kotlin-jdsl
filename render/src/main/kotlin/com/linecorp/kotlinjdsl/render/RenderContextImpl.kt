@@ -8,11 +8,13 @@ abstract class AbstractRenderContextElement(
 ) : RenderContext.Element
 
 @SinceJdsl("3.0.0")
-data object EmptyRenderContext : RenderContext {
+object EmptyRenderContext : RenderContext {
     override fun <E : RenderContext.Element> get(key: RenderContext.Key<E>): E? = null
     override fun <R> fold(initial: R, operation: (R, RenderContext.Element) -> R): R = initial
     override fun plus(context: RenderContext): RenderContext = context
     override fun minusKey(key: RenderContext.Key<*>): RenderContext = this
+
+    override fun toString(): String = "EmptyRenderContext"
 }
 
 internal class CombinedRenderContext(

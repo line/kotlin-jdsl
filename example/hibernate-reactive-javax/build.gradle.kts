@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 plugins {
     alias(exampleLibs.plugins.kotlin.noarg)
     alias(exampleLibs.plugins.kotlin.allopen)
@@ -22,6 +24,11 @@ dependencies {
 
 kotlin {
     jvmToolchain(11)
+
+    compilerOptions {
+        apiVersion = KotlinVersion.KOTLIN_1_9
+        languageVersion = KotlinVersion.KOTLIN_1_9
+    }
 }
 
 noArg {
