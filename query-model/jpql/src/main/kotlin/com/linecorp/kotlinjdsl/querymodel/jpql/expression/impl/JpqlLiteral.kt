@@ -56,5 +56,7 @@ sealed interface JpqlLiteral<T : Any> : Expression<T> {
         val enum: T,
     ) : JpqlLiteral<T>
 
-    data object NullLiteral : JpqlLiteral<Any>
+    object NullLiteral : JpqlLiteral<Any> {
+        override fun toString(): String = "NullLiteral"
+    }
 }

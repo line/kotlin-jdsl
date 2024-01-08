@@ -39,47 +39,65 @@ sealed class JpqlRenderClause : AbstractRenderContextElement(Key) {
     open fun isOrderBy(): Boolean = false
 
     @SinceJdsl("3.0.0")
-    data object Select : JpqlRenderClause() {
+    object Select : JpqlRenderClause() {
         override fun isSelect(): Boolean = true
+
+        override fun toString(): String = "Select"
     }
 
     @SinceJdsl("3.0.0")
-    data object Update : JpqlRenderClause() {
+    object Update : JpqlRenderClause() {
         override fun isUpdate(): Boolean = true
+
+        override fun toString(): String = "Update"
     }
 
     @SinceJdsl("3.0.0")
-    data object DeleteFrom : JpqlRenderClause() {
+    object DeleteFrom : JpqlRenderClause() {
         override fun isDeleteFrom(): Boolean = true
+
+        override fun toString(): String = "DeleteFrom"
     }
 
     @SinceJdsl("3.0.0")
-    data object Set : JpqlRenderClause() {
+    object Set : JpqlRenderClause() {
         override fun isSet(): Boolean = true
+
+        override fun toString(): String = "Set"
     }
 
     @SinceJdsl("3.0.0")
-    data object From : JpqlRenderClause() {
+    object From : JpqlRenderClause() {
         override fun isFrom(): Boolean = true
+
+        override fun toString(): String = "From"
     }
 
     @SinceJdsl("3.0.0")
-    data object Where : JpqlRenderClause() {
+    object Where : JpqlRenderClause() {
         override fun isWhere(): Boolean = true
+
+        override fun toString(): String = "Where"
     }
 
     @SinceJdsl("3.0.0")
-    data object Having : JpqlRenderClause() {
+    object Having : JpqlRenderClause() {
         override fun isHaving(): Boolean = true
+
+        override fun toString(): String = "Having"
     }
 
     @SinceJdsl("3.0.0")
-    data object GroupBy : JpqlRenderClause() {
+    object GroupBy : JpqlRenderClause() {
         override fun isGroupBy(): Boolean = true
+
+        override fun toString(): String = "GroupBy"
     }
 
     @SinceJdsl("3.0.0")
-    data object OrderBy : JpqlRenderClause() {
+    object OrderBy : JpqlRenderClause() {
         override fun isOrderBy(): Boolean = true
+
+        override fun toString(): String = "OrderBy"
     }
 }
