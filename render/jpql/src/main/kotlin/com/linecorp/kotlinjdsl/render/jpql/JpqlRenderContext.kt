@@ -23,6 +23,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCoalesceSerialize
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlConcatSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCountSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCustomExpressionSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCustomPredicateSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDeleteQuerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDerivedEntitySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDivideSerializer
@@ -36,7 +37,8 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExistsSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpressionParenthesesSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpressionSerializer
-import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlFunctionSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlFunctionExpressionSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlFunctionPredicateSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanAllSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanAnySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanOrEqualToAllSerializer
@@ -266,6 +268,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlConcatSerializer(),
             JpqlCountSerializer(),
             JpqlCustomExpressionSerializer(),
+            JpqlCustomPredicateSerializer(),
             JpqlDeleteQuerySerializer(),
             JpqlDerivedEntitySerializer(),
             JpqlDivideSerializer(),
@@ -279,7 +282,8 @@ private class DefaultModule : JpqlRenderModule {
             JpqlExistsSerializer(),
             JpqlExpressionParenthesesSerializer(),
             JpqlExpressionSerializer(),
-            JpqlFunctionSerializer(),
+            JpqlFunctionExpressionSerializer(),
+            JpqlFunctionPredicateSerializer(),
             JpqlGreaterThanAllSerializer(),
             JpqlGreaterThanAnySerializer(),
             JpqlGreaterThanOrEqualToAllSerializer(),

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 plugins {
     alias(exampleLibs.plugins.kotlin.benchmark)
     alias(exampleLibs.plugins.kotlin.allopen)
@@ -11,6 +13,15 @@ dependencies {
     implementation(exampleLibs.logback)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
+}
+
+kotlin {
+    jvmToolchain(17)
+
+    compilerOptions {
+        apiVersion = KotlinVersion.KOTLIN_1_9
+        languageVersion = KotlinVersion.KOTLIN_1_9
+    }
 }
 
 allOpen {

@@ -11,8 +11,8 @@ class H2DBConnectionPoolConfiguration : DefaultSqlClientPoolConfiguration() {
     private lateinit var password: String
 
     override fun configure(configuration: MutableMap<Any?, Any?>) {
-        user = ConfigurationHelper.getString(Settings.USER, configuration)
-        password = ConfigurationHelper.getString(Settings.PASS, configuration)
+        user = ConfigurationHelper.getString(Settings.JAKARTA_JDBC_USER, configuration)
+        password = ConfigurationHelper.getString(Settings.JAKARTA_JDBC_PASSWORD, configuration)
 
         super.configure(configuration)
     }

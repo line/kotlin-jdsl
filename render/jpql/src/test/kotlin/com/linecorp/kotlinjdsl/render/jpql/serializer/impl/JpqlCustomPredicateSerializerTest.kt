@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlCustomPredicate
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -14,8 +14,8 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
-class JpqlCustomExpressionSerializerTest : WithAssertions {
-    private val sut = JpqlCustomExpressionSerializer()
+class JpqlCustomPredicateSerializerTest : WithAssertions {
+    private val sut = JpqlCustomPredicateSerializer()
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -32,14 +32,13 @@ class JpqlCustomExpressionSerializerTest : WithAssertions {
         val actual = sut.handledType()
 
         // then
-        assertThat(actual).isEqualTo(JpqlCustomExpression::class)
+        assertThat(actual).isEqualTo(JpqlCustomPredicate::class)
     }
 
     @Test
     fun serialize() {
         // given
-        val part = Expressions.customExpression(
-            String::class,
+        val part = Predicates.customPredicate(
             "TEST({0}, {1})",
             listOf(
                 expression1,
@@ -49,7 +48,7 @@ class JpqlCustomExpressionSerializerTest : WithAssertions {
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlCustomExpression<*>, writer, context)
+        sut.serialize(part as JpqlCustomPredicate, writer, context)
 
         // then
         verifySequence {
@@ -64,8 +63,7 @@ class JpqlCustomExpressionSerializerTest : WithAssertions {
     @Test
     fun `serialize() draws the same expression, when the argument number is the same`() {
         // given
-        val part = Expressions.customExpression(
-            String::class,
+        val part = Predicates.customPredicate(
             "TEST({0}, {0})",
             listOf(
                 expression1,
@@ -74,7 +72,7 @@ class JpqlCustomExpressionSerializerTest : WithAssertions {
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlCustomExpression<*>, writer, context)
+        sut.serialize(part as JpqlCustomPredicate, writer, context)
 
         // then
         verifySequence {
@@ -89,15 +87,14 @@ class JpqlCustomExpressionSerializerTest : WithAssertions {
     @Test
     fun `serialize() draws only the template, when there are no the argument numbers`() {
         // given
-        val part = Expressions.customExpression(
-            String::class,
+        val part = Predicates.customPredicate(
             "TEST()",
             emptyList(),
         )
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlCustomExpression<*>, writer, context)
+        sut.serialize(part as JpqlCustomPredicate, writer, context)
 
         // then
         verifySequence {
@@ -108,8 +105,7 @@ class JpqlCustomExpressionSerializerTest : WithAssertions {
     @Test
     fun `serialize() draws well, even if there are no parentheses`() {
         // given
-        val part = Expressions.customExpression(
-            String::class,
+        val part = Predicates.customPredicate(
             "{0} = {0}",
             listOf(
                 expression1,
@@ -118,7 +114,7 @@ class JpqlCustomExpressionSerializerTest : WithAssertions {
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlCustomExpression<*>, writer, context)
+        sut.serialize(part as JpqlCustomPredicate, writer, context)
 
         // then
         verifySequence {

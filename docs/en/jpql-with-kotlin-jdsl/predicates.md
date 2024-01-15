@@ -158,3 +158,26 @@ path(Employee::departments).isEmpty()
 
 path(Employee::departments).isNotEmpty()
 ```
+
+## Database function
+
+Call `function()` with `KClass<Boolean>` to create predefined database functions and user-defined database functions.
+
+```kotlin
+function(Boolean::class, "myFunction", path(Book::isbn))
+```
+
+{% hint style="info" %}
+You may need to register information about the function you want to use with the JPA Provider.
+For example, if you are using Hibernate, you need to register a `FunctionContributor`.
+{% endhint %}
+
+## Custom predicate
+
+Call `customPredicate()` to build a custom predicate.
+
+```kotlin
+customPredicate("{0} MEMBER OF {1}", value(author), path(Book::authors))
+```
+
+If you frequently use `customPredicate()`, you can create [your own DSL](custom-dsl.md).

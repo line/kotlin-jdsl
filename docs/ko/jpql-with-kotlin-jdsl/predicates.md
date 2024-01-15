@@ -158,3 +158,26 @@ path(Employee::departments).isEmpty()
 
 path(Employee::departments).isNotEmpty()
 ```
+
+## Database function
+
+DB 함수나 사용자 정의 함수를 만들기 위해, `KClass<Boolean>`과 함께 `function()`을 사용할 수 있습니다.
+
+```kotlin
+function(Boolean::class, "myFunction", path(Book::isbn))
+```
+
+{% hint style="info" %}
+사용할 함수의 정보를 JPA 제공자에 등록할 필요가 있을 수 있습니다.
+예를 들어 Hibernate를 사용하고 있다면 `FunctionContributor`를 반드시 등록해야 합니다.
+{% endhint %}
+
+## Custom predicate
+
+커스텀 predicate를 만들기 위해, `customPredicate()`을 사용할 수 있습니다.
+
+```kotlin
+customPredicate("{0} MEMBER OF {1}", value(author), path(Book::authors))
+```
+
+만약 `customPredicate()`을 많이 사용한다면 [나만의 DSL](custom-dsl.md)을 만드는 것을 고려해보세요.

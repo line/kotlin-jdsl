@@ -7,10 +7,12 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlAnd
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlBetween
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlCustomPredicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqual
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqualAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqualAny
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlExists
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlFunctionPredicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThan
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanAny
@@ -47,6 +49,9 @@ import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
 class PredicatesTest : WithAssertions {
+    private val name1 = "name1"
+    private val template1 = "template1"
+
     private val stringExpression1 = Expressions.value("string1")
     private val stringExpression2 = Expressions.value("string2")
 
@@ -713,6 +718,40 @@ class PredicatesTest : WithAssertions {
         // then
         val expected = JpqlNotExists(
             subquery = subquery1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun function() {
+        // when
+        val actual = Predicates.function(
+            name = name1,
+            args = listOf(stringExpression1, stringExpression2),
+        )
+
+        // then
+        val expected = JpqlFunctionPredicate(
+            name = name1,
+            args = listOf(stringExpression1, stringExpression2),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun customPredicate() {
+        // when
+        val actual = Predicates.customPredicate(
+            template = template1,
+            args = listOf(stringExpression1, stringExpression2),
+        )
+
+        // then
+        val expected = JpqlCustomPredicate(
+            template = template1,
+            args = listOf(stringExpression1, stringExpression2),
         )
 
         assertThat(actual).isEqualTo(expected)

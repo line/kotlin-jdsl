@@ -14,7 +14,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
@@ -548,7 +548,7 @@ object Expressions {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> function(type: KClass<T>, name: String, args: Iterable<Expression<*>>): Expression<T> {
-        return JpqlFunction(type, name, args)
+        return JpqlFunctionExpression(type, name, args)
     }
 
     /**
@@ -563,7 +563,7 @@ object Expressions {
      *
      * Examples:
      * ```
-     * customExpression(String::class, "CAST({0} AS VARCHAR)", 100)
+     * Expressions.customExpression(String::class, "CAST({0} AS VARCHAR)", listOf(Paths.path(User::age)))
      * ```
      */
     @SinceJdsl("3.0.0")

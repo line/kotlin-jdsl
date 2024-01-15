@@ -239,6 +239,11 @@ Call `function()` to create predefined database functions and user-defined datab
 function(String::class, "myFunction", path(Book::isbn))
 ```
 
+{% hint style="info" %}
+You may need to register information about the function you want to use with the JPA Provider.
+For example, if you are using Hibernate, you need to register a `FunctionContributor`.
+{% endhint %}
+
 ## Cases
 
 Use `caseWhen()` and `caseValue()` to build cases.

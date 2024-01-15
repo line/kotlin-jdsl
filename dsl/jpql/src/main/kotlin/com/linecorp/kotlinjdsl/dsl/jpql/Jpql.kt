@@ -1383,6 +1383,7 @@ open class Jpql : JpqlDsl {
     /**
      * Creates an expression that represents predefined database functions and user-defined database functions.
      */
+    @LowPriorityInOverloadResolution
     @SinceJdsl("3.0.0")
     fun <T : Any> function(type: KClass<T>, name: String, vararg args: Any): Expression<T> {
         return Expressions.function(type, name, args.map { Expressions.value(it) })
@@ -1411,6 +1412,7 @@ open class Jpql : JpqlDsl {
      * customExpression(String::class, "CAST({0} AS VARCHAR)", 100)
      * ```
      */
+    @LowPriorityInOverloadResolution
     @SinceJdsl("3.0.0")
     fun <T : Any> customExpression(type: KClass<T>, template: String, vararg args: Any): Expression<T> {
         return Expressions.customExpression(type, template, args.map { Expressions.value(it) })
@@ -2703,6 +2705,66 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> notExists(subquery: Subquery<T>): Predicate {
         return Predicates.notExists(subquery)
+    }
+
+    /**
+     * Creates a predicate that represents predefined database functions and user-defined database functions.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    @LowPriorityInOverloadResolution
+    @SinceJdsl("3.0.0")
+    fun function(type: KClass<Boolean>, name: String, vararg args: Any): Predicate {
+        return Predicates.function(name, args.map { Expressions.value(it) })
+    }
+
+    /**
+     * Creates a predicate that represents predefined database functions and user-defined database functions.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    @SinceJdsl("3.0.0")
+    fun function(type: KClass<Boolean>, name: String, vararg args: Expressionable<*>): Predicate {
+        return Predicates.function(name, args.map { it.toExpression() })
+    }
+
+    /**
+     * Creates a predicate that represents the user-defined predicate.
+     *
+     * The template for the user-defined predicate can have placeholders.
+     * Placeholders in template are replaced with the expression in args, matching with index.
+     *
+     * ```
+     * Placeholder: { ArgumentIndex }
+     * ```
+     *
+     * Examples:
+     * ```
+     * customPredicate("{0} MEMBER OF {1}", value(author), path(Book::authors))
+     * ```
+     */
+    @LowPriorityInOverloadResolution
+    @SinceJdsl("3.3.0")
+    fun customPredicate(template: String, vararg args: Any): Predicate {
+        return Predicates.customPredicate(template, args.map { Expressions.value(it) })
+    }
+
+    /**
+     * Creates a predicate that represents the user-defined predicate.
+     *
+     * The template for the user-defined predicate can have placeholders.
+     * Placeholders in template are replaced with the expression in args, matching with index.
+     *
+     * ```
+     * Placeholder: { ArgumentIndex }
+     * ```
+     *
+     * Examples:
+     * ```
+     * customPredicate("{0} MEMBER OF {1}", value(author), path(Book::authors))
+     * ```
+     */
+    @SinceJdsl("3.3.0")
+    fun customPredicate(template: String, vararg args: Expressionable<*>): Predicate {
+        return Predicates.customPredicate(template, args.map { it.toExpression() })
     }
 
     /**
