@@ -1,7 +1,8 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlFunctionPredicate
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
@@ -12,8 +13,8 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
-class JpqlFunctionSerializerTest : WithAssertions {
-    private val sut = JpqlFunctionSerializer()
+class JpqlFunctionPredicateSerializerTest : WithAssertions {
+    private val sut = JpqlFunctionPredicateSerializer()
 
     @MockK
     private lateinit var writer: JpqlWriter
@@ -33,7 +34,7 @@ class JpqlFunctionSerializerTest : WithAssertions {
         val actual = sut.handledType()
 
         // then
-        assertThat(actual).isEqualTo(JpqlFunction::class)
+        assertThat(actual).isEqualTo(JpqlFunctionPredicate::class)
     }
 
     @Test
@@ -45,15 +46,14 @@ class JpqlFunctionSerializerTest : WithAssertions {
             expression3,
         )
 
-        val part = Expressions.function(
-            String::class,
+        val part = Predicates.function(
             functionName1,
             expressions,
         )
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlFunction<*>, writer, context)
+        sut.serialize(part as JpqlFunctionPredicate, writer, context)
 
         // then
         verifySequence {
@@ -74,15 +74,14 @@ class JpqlFunctionSerializerTest : WithAssertions {
     @Test
     fun `serialize() draws only the function name, when the args is empty`() {
         // given
-        val part = Expressions.function(
-            String::class,
+        val part = Predicates.function(
             functionName1,
             emptyList(),
         )
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlFunction<*>, writer, context)
+        sut.serialize(part as JpqlFunctionPredicate, writer, context)
 
         // then
         verifySequence {

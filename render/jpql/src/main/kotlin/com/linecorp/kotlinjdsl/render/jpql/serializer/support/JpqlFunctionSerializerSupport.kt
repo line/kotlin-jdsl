@@ -1,35 +1,29 @@
-package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
+package com.linecorp.kotlinjdsl.render.jpql.serializer.support
 
 import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.iterable.IterableUtils
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
-import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import kotlin.reflect.KClass
 
 @Internal
-class JpqlFunctionSerializer : JpqlSerializer<JpqlFunction<*>> {
-    override fun handledType(): KClass<JpqlFunction<*>> {
-        return JpqlFunction::class
-    }
-
-    override fun serialize(part: JpqlFunction<*>, writer: JpqlWriter, context: RenderContext) {
+open class JpqlFunctionSerializerSupport {
+    protected fun serialize(name: String, args: Iterable<Expression<*>>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         writer.write("FUNCTION")
 
         writer.writeParentheses {
             writer.write("'")
-            writer.write(part.name)
+            writer.write(name)
             writer.write("'")
 
-            if (IterableUtils.isNotEmpty(part.args)) {
+            if (IterableUtils.isNotEmpty(args)) {
                 writer.write(",")
                 writer.write(" ")
 
-                writer.writeEach(part.args, separator = ", ") {
+                writer.writeEach(args, separator = ", ") {
                     delegate.serialize(it, writer, context)
                 }
             }

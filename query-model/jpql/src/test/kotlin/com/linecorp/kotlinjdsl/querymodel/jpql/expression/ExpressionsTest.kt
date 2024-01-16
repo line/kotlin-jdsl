@@ -16,7 +16,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunction
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
@@ -784,7 +784,7 @@ class ExpressionsTest : WithAssertions {
         )
 
         // then
-        val expected = JpqlFunction(
+        val expected = JpqlFunctionExpression(
             type = Class1::class,
             name = name1,
             args = listOf(intExpression1, intExpression2),

@@ -237,6 +237,11 @@ DB 함수나 사용자 정의 함수를 만들기 위해, `function()`을 사용
 function(String::class, "myFunction", path(Book::isbn))
 ```
 
+{% hint style="info" %}
+사용할 함수의 정보를 JPA 제공자에 등록할 필요가 있을 수 있습니다.
+예를 들어 Hibernate를 사용하고 있다면 `FunctionContributor`를 반드시 등록해야 합니다.
+{% endhint %}
+
 ## Cases
 
 case를 만들기 위해, `caseWhen()`과 `caseValue()`를 사용할 수 있습니다.

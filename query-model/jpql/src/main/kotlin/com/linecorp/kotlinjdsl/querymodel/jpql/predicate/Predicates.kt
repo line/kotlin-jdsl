@@ -7,10 +7,12 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlAnd
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlBetween
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlCustomPredicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqual
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqualAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlEqualAny
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlExists
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlFunctionPredicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThan
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlGreaterThanAny
@@ -333,6 +335,37 @@ object Predicates {
     @SinceJdsl("3.0.0")
     fun <T : Any> notExists(subquery: Subquery<T>): Predicate {
         return JpqlNotExists(subquery)
+    }
+
+    /**
+     * Creates a predicate that represents predefined database functions and user-defined database functions.
+     */
+    @SinceJdsl("3.0.0")
+    fun function(name: String, args: Iterable<Expression<*>>): Predicate {
+        return JpqlFunctionPredicate(name, args)
+    }
+
+    /**
+     * Creates a predicate that represents the user-defined predicate.
+     *
+     * The template for the user-defined predicate can have placeholders.
+     * Placeholders in template are replaced with the expression in args, matching with index.
+     *
+     * ```
+     * Placeholder: { ArgumentIndex }
+     * ```
+     *
+     * Examples:
+     * ```
+     * Predicates.customPredicate("{0} MEMBER OF {1}", Expressions.value(author), Paths.path(Book::authors))
+     * ```
+     */
+    @SinceJdsl("3.3.0")
+    fun customPredicate(
+        template: String,
+        args: Iterable<Expression<*>>,
+    ): Predicate {
+        return JpqlCustomPredicate(template, args)
     }
 
     /**
