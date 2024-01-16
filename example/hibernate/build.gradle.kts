@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
-    alias(exampleLibs.plugins.kotlin.noarg)
-    alias(exampleLibs.plugins.kotlin.allopen)
-    alias(exampleLibs.plugins.kotlin.jpa)
+    alias(libs.plugins.kotlin.noarg)
+    alias(libs.plugins.kotlin.allopen)
+    alias(libs.plugins.kotlin.jpa)
 }
 
 dependencies {

@@ -7,8 +7,18 @@
     <persistence-unit name="example">
         <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
 
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.author.Author</class>
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.book.Book</class>
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.book.BookAuthor</class>
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.book.BookPublisher</class>
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.department.Department</class>
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.employee.Employee</class>
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.employee.EmployeeDepartment</class>
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.employee.FullTimeEmployee</class>
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.employee.PartTimeEmployee</class>
+        <class>com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity.publisher.Publisher</class>
+
         <properties>
-            <property name="packagesToScan" value="com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.entity"/>
             <property name="hibernate.vertx.pool.class" value="com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.configuration.H2DBConnectionPool"/>
             <property name="hibernate.vertx.pool.configuration_class" value="com.linecorp.kotlinjdsl.example.hibernate.reactive.jakarta.jpql.configuration.H2DBConnectionPoolConfiguration"/>
 
