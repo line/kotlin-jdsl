@@ -187,7 +187,15 @@ For example, you can use `JpqlRenderContext` to execute the query:
 ```kotlin
 val context = JpqlRenderContext()
 
-val jpaQuery: Query = entityManager.createQuery(query, context)
+val renderer = JpqlRenderer()
+
+val rendered = renderer.render(query, context)
+
+val jpaQuery: Query = entityManager.createQuery(rendered.query).apply {
+    rendered.params.forEach { (name, value) ->
+        setParameter(name, value)
+    }
+}
 
 val result = jpaQuery.resultList
 ```
@@ -195,5 +203,24 @@ val result = jpaQuery.resultList
 `RenderContext` has elements for rendering the query as String.
 Kotlin JDSL provides `JpqlRenderContext` as the default `RenderContext` for the JPQL.
 
+`JpqlRenderer` renders the query as String using the `RenderContext`.
+This returns `JpqlRendered`, which has the `query` rendered as String and the `parameters` contained in the query.
+This has no state, so you can reuse the object of this and access it from multiple threads.
+
+{% hint style="info" %}
 Creating `RenderContext` is expensive, so the Kotlin JDSL recommends creating it once and reusing it afterward.
 Since `RenderContext` is immutable, you can access `RenderContext` from multiple threads.
+{% endhint %}
+
+{% hint style="info" %}
+[Kotlin JDSL Support](#Support-dependencies) provides extension functions for `EntityManager` to simplify the above process.
+Using them, you can execute queries as simple as:
+
+```kotlin
+val context = JpqlRenderContext()
+
+val jpaQuery: Query = entityManager.createQuery(query, context)
+
+val result = jpaQuery.resultList
+```
+{% endhint %}

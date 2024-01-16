@@ -188,7 +188,15 @@ val query = jpql {
 ```kotlin
 val context = JpqlRenderContext()
 
-val jpaQuery: Query = entityManager.createQuery(query, context)
+val renderer = JpqlRenderer()
+
+val rendered = renderer.render(query, context)
+
+val jpaQuery: Query = entityManager.createQuery(rendered.query).apply {
+    rendered.params.forEach { (name, value) ->
+        setParameter(name, value)
+    }
+}
 
 val result = jpaQuery.resultList
 ```
@@ -196,5 +204,24 @@ val result = jpaQuery.resultList
 `RenderContext`는 쿼리를 String으로 랜더링할 수 있는 요소들을 가지고 있습니다.
 Kotlin JDSL은 `RenderContext`의 default 구현체로 `JpqlRenderContext`를 제공합니다.
 
+`JpqlRenderer`는 `RenderContext`를 이용해 쿼리를 String으로 랜더링합니다.
+`JpqlRenderer`는 String으로 랜더링된 `query`와 쿼리에 포함된 `parameters`를 가지고 있는 `JpqlRendered`를 반환합니다.
+`JpqlRenderer`는 상태를 가지지 않기 때문에 객체의 재사용이 가능하며 멀티 쓰레드 환경에서 사용하기에 안전합니다.
+
+{% hint style="info" %}
 `RenderContext`를 만드는 비용은 비싸기 때문에 한번만 만들고 이를 재활용하는 것을 추천드립니다.
 `RenderContext`는 immutable 객체로 멀티 쓰레드 환경에서 사용하기에 안전합니다.
+{% endhint %}
+
+{% hint style="info" %}
+[Kotlin JDSL Support](#Support-dependencies)는 위 실행 과정을 간략화 시킨 `EntityManager`의 extension function들을 제공합니다.
+이를 이용해 쿼리를 쉽게 실행할 수 있습니다.
+
+```kotlin
+val context = JpqlRenderContext()
+
+val jpaQuery: Query = entityManager.createQuery(query, context)
+
+val result = jpaQuery.resultList
+```
+{% endhint %}
