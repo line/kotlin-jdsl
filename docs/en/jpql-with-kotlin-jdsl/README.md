@@ -99,8 +99,8 @@ The following dependencies are the minimum requirement for all Kotlin JDSL appli
 
 ```kotlin
 dependencies {
-    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.3.0")
-    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.3.0")
+    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.4.0-SNAPSHOT")
+    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.4.0-SNAPSHOT")
 }
 ```
 
@@ -110,8 +110,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.linecorp.kotlin-jdsl:jpql-dsl:3.3.0'
-    implementation 'com.linecorp.kotlin-jdsl:jpql-render:3.3.0'
+    implementation 'com.linecorp.kotlin-jdsl:jpql-dsl:3.4.0-SNAPSHOT'
+    implementation 'com.linecorp.kotlin-jdsl:jpql-render:3.4.0-SNAPSHOT'
 }
 ```
 
@@ -125,12 +125,12 @@ dependencies {
     <dependency>
         <groupId>com.linecorp.kotlin-jdsl</groupId>
         <artifactId>jpql-dsl</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.0-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>com.linecorp.kotlin-jdsl</groupId>
         <artifactId>jpql-render</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
