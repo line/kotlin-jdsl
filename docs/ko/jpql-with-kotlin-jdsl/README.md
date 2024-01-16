@@ -214,7 +214,7 @@ Kotlin JDSL은 `RenderContext`의 default 구현체로 `JpqlRenderContext`를 �
 {% endhint %}
 
 {% hint style="info" %}
-[Kotlin JDSL Support](#Support-dependencies)는 위 실행 과정을 간략화 시킨 `EntityManager`의 extension function들을 제공합니다.
+[Kotlin JDSL Support](#support-dependencies)는 위 실행 과정을 간략화 시킨 `EntityManager`의 extension function들을 제공합니다.
 이를 이용해 쿼리를 쉽게 실행할 수 있습니다.
 
 ```kotlin

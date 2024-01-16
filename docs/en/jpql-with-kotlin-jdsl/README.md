@@ -213,7 +213,7 @@ Since `RenderContext` is immutable, you can access `RenderContext` from multiple
 {% endhint %}
 
 {% hint style="info" %}
-[Kotlin JDSL Support](#Support-dependencies) provides extension functions for `EntityManager` to simplify the above process.
+[Kotlin JDSL Support](#support-dependencies) provides extension functions for `EntityManager` to simplify the above process.
 Using them, you can execute queries as simple as:
 
 ```kotlin
