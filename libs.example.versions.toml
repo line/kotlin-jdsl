@@ -1,13 +1,8 @@
 [versions]
-kotlin = "1.9.22"
-
 spring-boot3 = "3.2.1"
 spring-boot2 = "2.7.18"
 
 [libraries]
-# kotlin
-kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version = "0.4.10" }
-
 # log
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.11" }
 logback = { module = "ch.qos.logback:logback-classic", version = "1.4.14" }
@@ -50,12 +45,5 @@ agroal-pool = { module = "io.agroal:agroal-pool", version = "2.2" }
 h2 = { module = "com.h2database:h2", version = "2.2.224" }
 
 [plugins]
-kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.10" }
-kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
-kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
-kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
-
 spring-boot3 = { id = "org.springframework.boot", version.ref = "spring-boot3" }
 spring-boot2 = { id = "org.springframework.boot", version.ref = "spring-boot2" }

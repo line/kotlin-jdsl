@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
-    alias(exampleLibs.plugins.kotlin.benchmark)
-    alias(exampleLibs.plugins.kotlin.allopen)
-    alias(exampleLibs.plugins.kotlin.spring)
-    alias(exampleLibs.plugins.kotlin.jpa)
+    alias(libs.plugins.kotlin.benchmark)
+    alias(libs.plugins.kotlin.allopen)
+    alias(libs.plugins.kotlin.spring)
+    alias(libs.plugins.kotlin.jpa)
 }
 
 dependencies {
-    implementation(exampleLibs.kotlin.benchmark)
+    implementation(libs.kotlin.benchmark)
     implementation(exampleLibs.jakarta.persistence.api)
     implementation(exampleLibs.logback)
     implementation(projects.jpqlDsl)
