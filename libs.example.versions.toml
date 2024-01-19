@@ -1,5 +1,5 @@
 [versions]
-spring-boot3 = "3.2.1"
+spring-boot3 = "3.2.2"
 spring-boot2 = "2.7.18"
 
 [libraries]
