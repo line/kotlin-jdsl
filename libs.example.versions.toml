@@ -28,7 +28,7 @@ spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", v
 
 # hibernate
 hibernate5-core = { module = "org.hibernate:hibernate-core", version = "5.6.15.Final" }
-hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.4.1.Final" }
+hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.4.2.Final" }
 
 # hibernate-reactive
 hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
