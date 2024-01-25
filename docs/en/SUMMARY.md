@@ -13,3 +13,7 @@
   * [Spring supports](jpql-with-kotlin-jdsl/spring-supports.md)
   * [Migration 2.X to 3.X](jpql-with-kotlin-jdsl/migration-2.x-to-3.x.md)
 * [Kotlin JDSL Roadmap](kotlin-jdsl-roadmap.md)
+
+## FAQ
+
+* [How can I see the generated query?](faq/how-can-i-see-the-generated-query.md)
