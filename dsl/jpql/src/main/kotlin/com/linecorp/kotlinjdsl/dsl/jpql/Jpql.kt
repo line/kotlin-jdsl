@@ -1908,7 +1908,7 @@ open class Jpql : JpqlDsl {
      *
      * This is the same as ```(predicate1) OR (predicate2)```.
      *
-     * If predicates is empty, then it represents `1 = 1`.
+     * If predicates is empty, then it represents `0 = 1`.
      */
     @SinceJdsl("3.0.0")
     fun or(vararg predicates: Predicatable?): Predicate {
