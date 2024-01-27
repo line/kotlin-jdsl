@@ -537,6 +537,56 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the mod of values.
+     * The values are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) % (value2)```.
+     */
+    @JvmName("modWithParentheses")
+    @SinceJdsl("3.3.2")
+    fun <T : Number, S : T?> mod(value1: Expressionable<@Exact T>, value2: S): Expression<T> {
+        return Expressions.mod(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(Expressions.value(value2)),
+        )
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     * The values are each enclosed in parentheses.
+     *
+     * This is the same as ```(value1) % (value2)```.
+     */
+    @JvmName("modWithParentheses")
+    @SinceJdsl("3.3.2")
+    fun <T : Number, S : T> mod(value1: Expressionable<@Exact T>, value2: Expressionable<S>): Expression<T> {
+        return Expressions.mod(
+            Expressions.parentheses(value1.toExpression()),
+            Expressions.parentheses(value2.toExpression()),
+        )
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     *
+     * This is the same as ```value1 % value2```.
+     */
+    @SinceJdsl("3.3.2")
+    fun <T : Number, S : T?> Expressionable<@Exact T>.mod(value: S): Expression<T> {
+        return Expressions.mod(this.toExpression(), Expressions.value(value))
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     *
+     * This is the same as ```value1 % value2```.
+     */
+    @SinceJdsl("3.3.2")
+    fun <T : Number, S : T> Expressionable<@Exact T>.mod(value: Expressionable<S>): Expression<T> {
+        return Expressions.mod(this.toExpression(), value.toExpression())
+    }
+
+    /**
      * Creates an expression that represents the count of non-null values.
      *
      * If there are no matching rows, it returns 0.

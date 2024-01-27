@@ -22,6 +22,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMinus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMod
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNew
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
@@ -204,6 +205,16 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> div(value1: Expression<T>, value2: Expression<S>): Expression<T> {
         return JpqlDivide(value1, value2)
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     *
+     * This is the same as ```value1 % value2```.
+     */
+    @SinceJdsl("3.3.2")
+    fun <T : Number, S : T> mod(value1: Expression<T>, value2: Expression<S>): Expression<T> {
+        return JpqlMod(value1, value2)
     }
 
     /**
