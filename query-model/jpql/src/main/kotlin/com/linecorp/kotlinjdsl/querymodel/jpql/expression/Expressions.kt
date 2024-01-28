@@ -170,7 +170,7 @@ object Expressions {
     /**
      * Creates an expression that represents the absolute value.
      */
-    @SinceJdsl("3.3.2")
+    @SinceJdsl("3.4.0")
     fun <T : Number> abs(value: Expression<T>): Expression<T> {
         return JpqlAbs(value)
     }
