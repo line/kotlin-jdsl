@@ -13,6 +13,7 @@ import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.KotlinStyleJpqlProp
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerModifier
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAbsSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAliasedExpressionSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAndSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAvgSerializer
@@ -258,6 +259,7 @@ private class DefaultModule : JpqlRenderModule {
         context.appendIntrospector(KotlinStyleJpqlPropertyIntrospector())
 
         context.addAllSerializer(
+            JpqlAbsSerializer(),
             JpqlAliasedExpressionSerializer(),
             JpqlAndSerializer(),
             JpqlAvgSerializer(),
