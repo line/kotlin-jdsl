@@ -153,6 +153,7 @@ It will look like 'literal''s'.
 
 Use the following functions to build aggregate functions:
 
+* ABS (abs)
 * COUNT (count)
 * MIN (min)
 * MAX (max)
@@ -160,6 +161,8 @@ Use the following functions to build aggregate functions:
 * SUM (sum)
 
 ```kotlin
+abs(path(Book::price))
+
 count(path(Book::price))
 countDistinct(path(Book::price))
 
@@ -206,7 +209,6 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 
 | Function | DSL function |
 |----------|--------------|
-| ABS      | not yet      |
 | CEILING  | not yet      |
 | EXP      | not yet      |
 | FLOOR    | not yet      |

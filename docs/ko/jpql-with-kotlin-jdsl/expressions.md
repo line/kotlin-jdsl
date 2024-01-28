@@ -48,12 +48,15 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 
 산술 연사자를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
 
+* abs
 * \+ (plus)
 * \- (minus)
 * \* (times)
 * / (div)
 
 ```kotlin
+abs(path(Book::price))
+
 path(Book::price).plus(path(Book::salePrice))
 plus(path(Book::price), path(Book::salePrice))
 
@@ -204,7 +207,6 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 
 | Function | DSL function |
 |----------|--------------|
-| ABS      | not yet      |
 | CEILING  | not yet      |
 | EXP      | not yet      |
 | FLOOR    | not yet      |
