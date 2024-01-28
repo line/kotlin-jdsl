@@ -48,12 +48,15 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 
 Use the following functions to build arithmetic operations:
 
+* abs
 * \+ (plus)
 * \- (minus)
 * \* (times)
 * / (div)
 
 ```kotlin
+abs(path(Book::price))
+
 path(Book::price).plus(path(Book::salePrice))
 plus(path(Book::price), path(Book::salePrice))
 
@@ -153,7 +156,6 @@ It will look like 'literal''s'.
 
 Use the following functions to build aggregate functions:
 
-* ABS (abs)
 * COUNT (count)
 * MIN (min)
 * MAX (max)
@@ -161,8 +163,6 @@ Use the following functions to build aggregate functions:
 * SUM (sum)
 
 ```kotlin
-abs(path(Book::price))
-
 count(path(Book::price))
 countDistinct(path(Book::price))
 
