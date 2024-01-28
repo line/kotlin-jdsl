@@ -337,6 +337,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the square root of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> sqrt(expr: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.sqrt(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that represents the square root of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sqrt(value: Expressionable<T>): Expression<Double> {
+        return Expressions.sqrt(value.toExpression())
+    }
+
+    /**
      * Creates an expression that represents the plus of values.
      * The values are each enclosed in parentheses.
      *

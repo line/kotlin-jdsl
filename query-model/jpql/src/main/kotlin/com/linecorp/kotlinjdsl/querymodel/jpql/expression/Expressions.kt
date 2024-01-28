@@ -30,6 +30,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
@@ -174,6 +175,14 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> abs(value: Expression<T>): Expression<T> {
         return JpqlAbs(value)
+    }
+
+    /**
+     * Creates an expression that represents the square root of the value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sqrt(value: Expression<T>): Expression<Double> {
+        return JpqlSqrt(value)
     }
 
     /**
