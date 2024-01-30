@@ -48,15 +48,12 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 
 Use the following functions to build arithmetic operations:
 
-* abs
 * \+ (plus)
 * \- (minus)
 * \* (times)
 * / (div)
 
 ```kotlin
-abs(path(Book::price))
-
 path(Book::price).plus(path(Book::salePrice))
 plus(path(Book::price), path(Book::salePrice))
 
@@ -206,6 +203,14 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 | LOCATE    | support      |
 
 ### Arithmetic functions
+
+Use the following functions to build arithmetic functions:
+
+* abs
+
+```kotlin
+abs(path(Book::price))
+```
 
 | Function | DSL function |
 |----------|--------------|

@@ -46,17 +46,14 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 
 ## Arithmetic operations
 
-산술 연사자를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
+산술 연산자를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
 
-* abs
 * \+ (plus)
 * \- (minus)
 * \* (times)
 * / (div)
 
 ```kotlin
-abs(path(Book::price))
-
 path(Book::price).plus(path(Book::salePrice))
 plus(path(Book::price), path(Book::salePrice))
 
@@ -204,6 +201,14 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 | LOCATE    | support      |
 
 ### Arithmetic functions
+
+산술 함수를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
+
+* abs
+
+```kotlin
+abs(path(Book::price))
+```
 
 | Function | DSL function |
 |----------|--------------|
