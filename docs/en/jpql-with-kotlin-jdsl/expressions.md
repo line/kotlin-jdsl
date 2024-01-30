@@ -203,6 +203,11 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 | LOCATE    | support      |
 
 ### Arithmetic functions
+* round
+
+```kotlin
+round(path(Book::price), Expressions.value(Int::class))
+```
 
 | Function | DSL function |
 |----------|--------------|
@@ -213,7 +218,6 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 | LN       | not yet      |
 | MOD      | not yet      |
 | POWER    | not yet      |
-| ROUND    | not yet      |
 | SIGN     | not yet      |
 | SQRT     | not yet      |
 | SIZE     | not yet      |

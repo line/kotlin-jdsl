@@ -201,6 +201,11 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 | LOCATE    | support      |
 
 ### Arithmetic functions
+* round
+
+```kotlin
+round(path(Book::price), Expressions.value(Int::class))
+```
 
 | Function | DSL function |
 |----------|--------------|
@@ -211,7 +216,6 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 | LN       | not yet      |
 | MOD      | not yet      |
 | POWER    | not yet      |
-| ROUND    | not yet      |
 | SIGN     | not yet      |
 | SQRT     | not yet      |
 | SIZE     | not yet      |
