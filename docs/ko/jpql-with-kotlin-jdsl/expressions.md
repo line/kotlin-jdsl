@@ -191,33 +191,46 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 
 ### String functions
 
-| Function  | DSL function |
-|-----------|--------------|
-| CONCAT    | support      |
-| SUBSTRING | support      |
-| TRIM      | support      |
-| LOWER     | support      |
-| UPPER     | support      |
-| LENGTH    | support      |
-| LOCATE    | support      |
+* CONCAT (concat)
+* SUBSTRING (substring)
+* TRIM (trim)
+* LOWER (lower)
+* UPPER (upper)
+* LENGTH (length)
+* LOCATE (locate)
+
+```kotlin
+concat(path(Book::title), literal(":"), path(Book::imageUrl))
+
+substring(path(Book::title), 4)
+
+trim(path(Book::title))
+trim('B').from(path(Book::title))
+
+lower(path(Book::title))
+
+upper(path(Book::title))
+
+length(path(Book::title))
+
+locate("Book", path(Book::title))
+```
 
 ### Arithmetic functions
 
 산술 함수를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
 
-
-* ceiling
-* abs
+* ABS (abs)
+* CEILING (ceiling)
 
 ```kotlin
 abs(path(Book::price))
+
 ceiling(path(Book::price))
 ```
 
 | Function | DSL function |
 |----------|--------------|
-| ABS      | not yet      |
-| CEILING  | not yet      |
 | EXP      | not yet      |
 | FLOOR    | not yet      |
 | LN       | not yet      |
