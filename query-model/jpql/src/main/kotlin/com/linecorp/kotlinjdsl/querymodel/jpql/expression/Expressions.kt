@@ -188,6 +188,14 @@ object Expressions {
     }
 
     /**
+     * Creates an expression that is enclosed in ceiling
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ceiling(value: Expression<T>): Expression<Number> {
+        return JpqlCeiling(value)
+    }
+
+    /**
      * Creates an expression that represents the times of values.
      *
      * This is the same as ```value1 * value2```.
@@ -635,11 +643,5 @@ object Expressions {
         return JpqlExpressionParentheses(expr)
     }
 
-    /**
-     * Creates an expression that is enclosed in ceiling
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> ceiling(expr: Expression<T>): Expression<Number> {
-        return JpqlCeiling(expr)
-    }
+
 }
