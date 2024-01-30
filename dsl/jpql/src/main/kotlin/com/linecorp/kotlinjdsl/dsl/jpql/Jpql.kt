@@ -367,6 +367,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the rounding of the specified property's value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> round(expr: KProperty1<T, @Exact V>, scale: Expression<Int>): Expression<Double> {
+        return Expressions.round(Paths.path(expr), scale.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the specified property's value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expressionable<T>, scale: Expressionable<Int>): Expression<Double> {
+        return Expressions.round(value.toExpression(), scale.toExpression())
+    }
+
+    /**
      * Creates an expression that represents the plus of values.
      *
      * This is the same as ```value1 + value2```.
