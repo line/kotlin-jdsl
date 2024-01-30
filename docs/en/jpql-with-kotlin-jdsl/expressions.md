@@ -210,14 +210,15 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 Use the following functions to build arithmetic functions:
 
 * ceiling
+* abs
 
 ```kotlin
+abs(path(Book::price))
 ceiling(path(Book::price))
 ```
 
 | Function | DSL function |
 |----------|--------------|
-| ABS      | not yet      |
 | EXP      | not yet      |
 | FLOOR    | not yet      |
 | LN       | not yet      |
