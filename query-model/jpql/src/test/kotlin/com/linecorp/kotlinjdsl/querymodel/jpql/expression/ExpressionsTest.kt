@@ -896,7 +896,7 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlCeiling(
-            doubleExpression1
+            doubleExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
