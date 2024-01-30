@@ -437,7 +437,7 @@ open class Jpql : JpqlDsl {
     }
 
     @SinceJdsl("3.4.0")
-    fun <T: Number> ceiling(value: Expressionable<T>): Expression<Number> {
+    fun <T : Number> ceiling(value: Expressionable<T>): Expression<Number> {
         return Expressions.ceiling(value.toExpression())
     }
 

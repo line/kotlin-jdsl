@@ -639,7 +639,7 @@ object Expressions {
      * Creates an expression that is enclosed in ceiling
      */
     @SinceJdsl("3.4.0")
-    fun <T: Number> ceiling(expr: Expression<T>): Expression<Number> {
+    fun <T : Number> ceiling(expr: Expression<T>): Expression<Number> {
         return JpqlCeiling(expr)
     }
 }
