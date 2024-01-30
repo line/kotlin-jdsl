@@ -436,6 +436,11 @@ open class Jpql : JpqlDsl {
         return Expressions.minus(this.toExpression(), value.toExpression())
     }
 
+    @SinceJdsl("3.4.0")
+    fun <T: Number> ceiling(value: Expressionable<T>): Expression<Number> {
+        return Expressions.ceiling(value.toExpression())
+    }
+
     /**
      * Creates an expression that represents the times of values.
      * The values are each enclosed in parentheses.

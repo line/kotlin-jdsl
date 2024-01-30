@@ -6,6 +6,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpres
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCeiling
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
@@ -632,5 +633,13 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling
+     */
+    @SinceJdsl("3.4.0")
+    fun <T: Number> ceiling(expr: Expression<T>): Expression<Number> {
+        return JpqlCeiling(expr)
     }
 }
