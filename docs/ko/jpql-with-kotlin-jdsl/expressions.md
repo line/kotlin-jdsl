@@ -191,15 +191,15 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 
 ### String functions
 
-| Function   | DSL function |
-|------------|--------------|
-| CONCAT     | support      |
-| SUBSTRING  | support      |
-| TRIM       | support      |
-| LOWER      | support      |
-| UPPER      | support      |
-| LENGTH     | support      |
-| LOCATE     | support      |
+| Function  | DSL function |
+|-----------|--------------|
+| CONCAT    | support      |
+| SUBSTRING | support      |
+| TRIM      | support      |
+| LOWER     | support      |
+| UPPER     | support      |
+| LENGTH    | support      |
+| LOCATE    | support      |
 
 ### Arithmetic functions
 
