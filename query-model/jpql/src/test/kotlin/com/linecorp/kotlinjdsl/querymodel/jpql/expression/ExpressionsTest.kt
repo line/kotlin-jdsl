@@ -4,10 +4,12 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.BookAuthorType
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.employee.Employee
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAbs
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCeiling
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
@@ -272,6 +274,19 @@ class ExpressionsTest : WithAssertions {
         val expected = JpqlParam(
             name = name1,
             value = string1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun abs() {
+        // when
+        val actual = Expressions.abs(intExpression1)
+
+        // then
+        val expected = JpqlAbs<Int>(
+            intExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -898,6 +913,19 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlExpressionParentheses(
             intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun ceiling() {
+        // when
+        val actual = Expressions.ceiling(doubleExpression1)
+
+        // then
+        val expected = JpqlCeiling(
+            doubleExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)

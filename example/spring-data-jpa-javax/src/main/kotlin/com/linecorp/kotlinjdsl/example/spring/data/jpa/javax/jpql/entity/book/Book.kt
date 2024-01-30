@@ -10,14 +10,12 @@ import javax.persistence.Column
 import javax.persistence.Embedded
 import javax.persistence.EmbeddedId
 import javax.persistence.Entity
-import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.Table
 
 @Entity
 @Table(name = "book")
 class Book(
-    @Id
     @EmbeddedId
     @AttributeOverride(name = "value", column = Column(name = "isbn"))
     val isbn: Isbn,

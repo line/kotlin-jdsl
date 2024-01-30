@@ -2,10 +2,12 @@ package com.linecorp.kotlinjdsl.querymodel.jpql.expression
 
 import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAbs
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCeiling
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
@@ -168,6 +170,14 @@ object Expressions {
     }
 
     /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> abs(value: Expression<T>): Expression<T> {
+        return JpqlAbs(value)
+    }
+
+    /**
      * Creates an expression that represents the plus of values.
      *
      * This is the same as ```value1 + value2```.
@@ -185,6 +195,14 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> minus(value1: Expression<T>, value2: Expression<S>): Expression<T> {
         return JpqlMinus(value1, value2)
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ceiling(value: Expression<T>): Expression<T> {
+        return JpqlCeiling(value)
     }
 
     /**
