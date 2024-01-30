@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpres
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCeiling
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
@@ -897,6 +898,19 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlExpressionParentheses(
             intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun ceiling() {
+        // when
+        val actual = Expressions.ceiling(doubleExpression1)
+
+        // then
+        val expected = JpqlCeiling(
+            doubleExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)

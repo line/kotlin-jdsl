@@ -171,6 +171,8 @@ minDistinct(path(Book::price))
 
 sum(path(Book::price))
 sumDistinct(path(Book::price))
+
+ceiling(path(Book::price))
 ```
 
 ### Sum
@@ -202,19 +204,21 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 | LENGTH    | support      |
 | LOCATE    | support      |
 
+
 ### Arithmetic functions
 
 Use the following functions to build arithmetic functions:
 
+* ceiling
 * abs
 
 ```kotlin
 abs(path(Book::price))
+ceiling(path(Book::price))
 ```
 
 | Function | DSL function |
 |----------|--------------|
-| CEILING  | not yet      |
 | EXP      | not yet      |
 | FLOOR    | not yet      |
 | LN       | not yet      |
