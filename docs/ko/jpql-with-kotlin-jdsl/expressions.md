@@ -200,7 +200,6 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 | UPPER      | support      |
 | LENGTH     | support      |
 | LOCATE     | support      |
-| CEILING    | support      |
 
 ### Arithmetic functions
 

@@ -8,7 +8,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
-import kotlin.math.ceil
 
 class CeilingDslTest : WithAssertions {
     private val expression1 = Paths.path(Book::price)
@@ -41,7 +40,7 @@ class CeilingDslTest : WithAssertions {
 
         // then
         val expected = Expressions.ceiling(
-            value = expression1
+            value = expression1,
         )
 
         assertThat(actual).isEqualTo(expected)
