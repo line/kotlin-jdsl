@@ -18,10 +18,12 @@ class JpqlRoundSerializer : JpqlSerializer<JpqlRound<*>>{
         val delegate = context.getValue(JpqlRenderSerializer)
 
         writer.write("ROUND")
-        writer.write(" ")
-        delegate.serialize(part.value, writer, context)
 
-        writer.write(", ")
-        delegate.serialize(part.scale, writer, context)
+        writer.writeParentheses {
+            delegate.serialize(part.value, writer, context)
+
+            writer.write(", ")
+            delegate.serialize(part.scale, writer, context)
+        }
     }
 }

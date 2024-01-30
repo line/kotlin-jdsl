@@ -49,7 +49,7 @@ class JpqlRoundSerializerTest {
         // then
         verifySequence {
             writer.write("ROUND")
-            writer.write(" ")
+            writer.writeParentheses(any())
             serializer.serialize(expression1, writer, context)
             writer.write(", ")
             serializer.serialize(expression2, writer, context)
