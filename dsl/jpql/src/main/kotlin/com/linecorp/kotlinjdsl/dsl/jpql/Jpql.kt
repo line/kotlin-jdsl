@@ -537,6 +537,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> abs(expr: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.abs(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> abs(expr: Expressionable<T>): Expression<T> {
+        return Expressions.abs(expr.toExpression())
+    }
+
+    /**
      * Creates an expression that represents the count of non-null values.
      *
      * If there are no matching rows, it returns 0.

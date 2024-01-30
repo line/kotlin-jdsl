@@ -2,6 +2,7 @@ package com.linecorp.kotlinjdsl.querymodel.jpql.expression
 
 import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAbs
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
@@ -164,6 +165,14 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T> param(name: String, value: @Exact T): Expression<T & Any> {
         return JpqlParam(name, value)
+    }
+
+    /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> abs(value: Expression<T>): Expression<T> {
+        return JpqlAbs(value)
     }
 
     /**
