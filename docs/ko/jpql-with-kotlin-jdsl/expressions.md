@@ -52,6 +52,7 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 * \- (minus)
 * \* (times)
 * / (div)
+* ceiling
 
 ```kotlin
 path(Book::price).plus(path(Book::salePrice))
@@ -65,6 +66,8 @@ times(path(Book::price), path(Book::salePrice))
 
 path(Book::price).div(path(Book::salePrice))
 div(path(Book::price), path(Book::salePrice))
+
+ceiling(path(Book::price))
 ```
 
 ### Parentheses
