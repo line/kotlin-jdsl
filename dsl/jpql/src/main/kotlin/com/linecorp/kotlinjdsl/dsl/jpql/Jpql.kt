@@ -437,22 +437,6 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that is enclosed in ceiling
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> ceiling(value: Expressionable<T>): Expression<T> {
-        return Expressions.ceiling(value.toExpression())
-    }
-
-    /**
-     * Creates an expression that is enclosed in ceiling
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> ceiling(expr: KProperty1<T, @Exact V>): Expression<V> {
-        return Expressions.ceiling(Paths.path(expr))
-    }
-
-    /**
      * Creates an expression that represents the times of values.
      * The values are each enclosed in parentheses.
      *
@@ -566,6 +550,22 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.4.0")
     fun <T : Number> abs(expr: Expressionable<T>): Expression<T> {
         return Expressions.abs(expr.toExpression())
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ceiling(value: Expressionable<T>): Expression<T> {
+        return Expressions.ceiling(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> ceiling(expr: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.ceiling(Paths.path(expr))
     }
 
     /**
