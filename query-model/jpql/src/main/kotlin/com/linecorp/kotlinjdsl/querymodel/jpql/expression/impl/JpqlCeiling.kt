@@ -9,4 +9,4 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 @Internal
 data class JpqlCeiling<T : Number> internal constructor(
     val value: Expression<T>,
-) : Expression<Number>
+) : Expression<T>

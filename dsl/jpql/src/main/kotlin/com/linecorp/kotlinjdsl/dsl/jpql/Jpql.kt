@@ -436,9 +436,20 @@ open class Jpql : JpqlDsl {
         return Expressions.minus(this.toExpression(), value.toExpression())
     }
 
+    /**
+     * Creates an expression that is enclosed in ceiling
+     */
     @SinceJdsl("3.4.0")
-    fun <T : Number> ceiling(value: Expressionable<T>): Expression<Number> {
+    fun <T : Number> ceiling(value: Expressionable<T>): Expression<T> {
         return Expressions.ceiling(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> ceiling(expr: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.ceiling(Paths.path(expr))
     }
 
     /**

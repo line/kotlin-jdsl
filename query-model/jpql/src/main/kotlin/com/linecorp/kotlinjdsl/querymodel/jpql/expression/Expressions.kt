@@ -191,7 +191,7 @@ object Expressions {
      * Creates an expression that is enclosed in ceiling
      */
     @SinceJdsl("3.4.0")
-    fun <T : Number> ceiling(value: Expression<T>): Expression<Number> {
+    fun <T : Number> ceiling(value: Expression<T>): Expression<T> {
         return JpqlCeiling(value)
     }
 
@@ -642,6 +642,4 @@ object Expressions {
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
     }
-
-
 }
