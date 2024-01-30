@@ -267,6 +267,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlBetweenSerializer(),
             JpqlCaseValueSerializer(),
             JpqlCaseWhenSerializer(),
+            JpqlCeilingSerializer(),
             JpqlCoalesceSerializer(),
             JpqlConcatSerializer(),
             JpqlCountSerializer(),
@@ -354,7 +355,6 @@ private class DefaultModule : JpqlRenderModule {
             JpqlUpdateQuerySerializer(),
             JpqlUpperSerializer(),
             JpqlValueSerializer(),
-            JpqlCeilingSerializer(),
         )
     }
 }
