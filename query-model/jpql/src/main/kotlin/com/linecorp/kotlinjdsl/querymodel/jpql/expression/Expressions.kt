@@ -248,10 +248,10 @@ object Expressions {
     }
 
     /**
-     * Creates an expression that represents the rounding of the specified property's value to a specified scale.
+     * Creates an expression that represents the rounding of the specified value to a specified scale.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<Double> {
+    fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
         return JpqlRound(value, scale)
     }
 
