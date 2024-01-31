@@ -41,6 +41,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimLeading
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimTrailing
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
@@ -271,6 +272,14 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Number> avg(distinct: Boolean, expr: Expression<T>): Expression<Double> {
         return JpqlAvg(distinct, expr)
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the specified value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
+        return JpqlRound(value, scale)
     }
 
     /**
