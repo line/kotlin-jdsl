@@ -18,6 +18,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFloor
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
@@ -356,6 +357,19 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlCeiling(
+            doubleExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun floor() {
+        // when
+        val actual = Expressions.floor(doubleExpression1)
+
+        // then
+        val expected = JpqlFloor(
             doubleExpression1,
         )
 

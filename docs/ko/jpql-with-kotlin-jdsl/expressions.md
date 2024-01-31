@@ -221,6 +221,7 @@ locate("Book", path(Book::title))
 
 * ABS (abs)
 * CEILING (ceiling)
+* FLOOR (floor)
 * ROUND (round)
 * SQRT (sqrt)
 
@@ -228,6 +229,8 @@ locate("Book", path(Book::title))
 abs(path(Book::price))
 
 ceiling(path(Book::price))
+
+floor(path(Book::price))
 
 round(path(Book::price), 2)
 

@@ -16,6 +16,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFloor
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
@@ -224,6 +225,14 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> ceiling(value: Expression<T>): Expression<T> {
         return JpqlCeiling(value)
+    }
+
+    /**
+     * Creates an expression that is enclosed in floor.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> floor(value: Expression<T>): Expression<T> {
+        return JpqlFloor(value)
     }
 
     /**

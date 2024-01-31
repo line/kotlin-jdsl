@@ -225,6 +225,7 @@ Use the following functions to build arithmetic functions:
 
 * ABS (abs)
 * CEILING (ceiling)
+* FLOOR (floor)
 * ROUND (round)
 * SQRT (sqrt)
 
@@ -232,6 +233,8 @@ Use the following functions to build arithmetic functions:
 abs(path(Book::price))
 
 ceiling(path(Book::price))
+
+floor(path(Book::price))
 
 round(path(Book::price), 2)
 
