@@ -9,7 +9,7 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
 @Internal
-class JpqlRoundSerializer : JpqlSerializer<JpqlRound<*>>{
+class JpqlRoundSerializer : JpqlSerializer<JpqlRound<*>> {
     override fun handledType(): KClass<JpqlRound<*>> {
         return JpqlRound::class
     }
@@ -22,7 +22,9 @@ class JpqlRoundSerializer : JpqlSerializer<JpqlRound<*>>{
         writer.writeParentheses {
             delegate.serialize(part.value, writer, context)
 
-            writer.write(", ")
+            writer.write(",")
+            writer.write(" ")
+
             delegate.serialize(part.scale, writer, context)
         }
     }

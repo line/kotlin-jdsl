@@ -10,81 +10,66 @@ import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
 class RoundDslTest : WithAssertions {
-    private val expression1 = Paths.path(Book::salePrice)
-    private val intExpression1: Expression<Int> = Expressions.value(3)
-    private val doubleExpression1: Expression<Double> = Expressions.value(3.0)
-    private val int1 = 3
-    private val double1 = 3.0
+    private val bigDecimalExpression1 = Paths.path(Book::price)
+    private val intExpression1 = Expressions.value(2)
+
+    private val int1 = 2
 
     @Test
-    fun `round() with a BigDecimalExpression`() {
+    fun `round() with a property`() {
         // when
-        val expression = queryPart {
-            round(expression1, intExpression1)
+        val expression1 = queryPart {
+            round(Book::price, int1)
         }.toExpression()
 
-        val actual: Expression<BigDecimal> = expression // for type check
-
-        // then
-        val expected = Expressions.round(
-            value = expression1,
-            scale = intExpression1,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `round() with a BigDecimalProperty`() {
-        // when
-        val expression = queryPart {
-            round(Book::price, Expressions.value(int1))
+        val expression2 = queryPart {
+            round(Book::price, intExpression1)
         }.toExpression()
 
-        val actual: Expression<BigDecimal> = expression // for type check
+        val actual1: Expression<BigDecimal> = expression1 // for type check
+        val actual2: Expression<BigDecimal> = expression2 // for type check
 
         // then
-        val expected = Expressions.round(
+        val expected1 = Expressions.round(
             value = Paths.path(Book::price),
             scale = Expressions.value(int1),
         )
 
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `round() with a DoubleExpression`() {
-        // when
-        val expression = queryPart {
-            round(doubleExpression1, intExpression1)
-        }.toExpression()
-
-        val actual: Expression<Double> = expression // for type check
-
-        // then
-        val expected = Expressions.round(
-            value = doubleExpression1,
+        val expected2 = Expressions.round(
+            value = Paths.path(Book::price),
             scale = intExpression1,
         )
 
-        assertThat(actual).isEqualTo(expected)
+        assertThat(actual1).isEqualTo(expected1)
+        assertThat(actual2).isEqualTo(expected2)
     }
 
     @Test
-    fun `round() with a DoubleProperty`() {
+    fun `round() with a expression`() {
         // when
-        val expression = queryPart {
-            round(Expressions.value(double1), Expressions.value(int1))
+        val expression1 = queryPart {
+            round(bigDecimalExpression1, int1)
         }.toExpression()
 
-        val actual: Expression<Double> = expression // for type check
+        val expression2 = queryPart {
+            round(bigDecimalExpression1, intExpression1)
+        }.toExpression()
+
+        val actual1: Expression<BigDecimal> = expression1 // for type check
+        val actual2: Expression<BigDecimal> = expression2 // for type check
 
         // then
-        val expected = Expressions.round(
-            value = Expressions.value(double1),
+        val expected1 = Expressions.round(
+            value = bigDecimalExpression1,
             scale = Expressions.value(int1),
         )
 
-        assertThat(actual).isEqualTo(expected)
+        val expected2 = Expressions.round(
+            value = bigDecimalExpression1,
+            scale = intExpression1,
+        )
+
+        assertThat(actual1).isEqualTo(expected1)
+        assertThat(actual2).isEqualTo(expected2)
     }
 }

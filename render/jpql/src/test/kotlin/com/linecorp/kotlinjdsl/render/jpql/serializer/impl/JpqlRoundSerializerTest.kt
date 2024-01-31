@@ -34,12 +34,13 @@ class JpqlRoundSerializerTest {
         // then
         assertThat(actual).isEqualTo(JpqlRound::class)
     }
+
     @Test
     fun serialize() {
         // given
         val part = Expressions.round(
             value = expression1,
-            scale = expression2
+            scale = expression2,
         )
         val context = TestRenderContext(serializer)
 
@@ -51,7 +52,8 @@ class JpqlRoundSerializerTest {
             writer.write("ROUND")
             writer.writeParentheses(any())
             serializer.serialize(expression1, writer, context)
-            writer.write(", ")
+            writer.write(",")
+            writer.write(" ")
             serializer.serialize(expression2, writer, context)
         }
     }

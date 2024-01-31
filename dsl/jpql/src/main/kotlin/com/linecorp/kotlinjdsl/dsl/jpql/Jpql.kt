@@ -583,7 +583,23 @@ open class Jpql : JpqlDsl {
     fun <T : Number> sqrt(value: Expressionable<T>): Expression<Double> {
         return Expressions.sqrt(value.toExpression())
     }
-    
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> round(expr: KProperty1<T, @Exact V>, scale: Int): Expression<V> {
+        return Expressions.round(Paths.path(expr), Expressions.value(scale))
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expressionable<T>, scale: Int): Expression<T> {
+        return Expressions.round(value.toExpression(), Expressions.value(scale))
+    }
+
     /**
      * Creates an expression that represents the rounding of the value to a specified scale.
      */

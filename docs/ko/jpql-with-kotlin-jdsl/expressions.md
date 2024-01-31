@@ -216,17 +216,13 @@ locate("Book", path(Book::title))
 ```
 
 ### Arithmetic functions
-* round
-
-```kotlin
-round(path(Book::price), Expressions.value(Int::class))
-```
 
 산술 함수를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
 
 * ABS (abs)
 * CEILING (ceiling)
 * SQRT (sqrt)
+* ROUND (round)
 
 ```kotlin
 abs(path(Book::price))
@@ -234,6 +230,8 @@ abs(path(Book::price))
 ceiling(path(Book::price))
 
 sqrt(path(Book::price))
+
+round(path(Book::price), 2)
 ```
 
 | Function | DSL function |
