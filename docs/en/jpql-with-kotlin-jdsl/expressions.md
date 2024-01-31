@@ -226,6 +226,8 @@ Use the following functions to build arithmetic functions:
 * ABS (abs)
 * CEILING (ceiling)
 * FLOOR (floor)
+* ROUND (round)
+* SQRT (sqrt)
 
 ```kotlin
 abs(path(Book::price))
@@ -233,6 +235,10 @@ abs(path(Book::price))
 ceiling(path(Book::price))
 
 floor(path(Book::price))
+
+round(path(Book::price), 2)
+
+sqrt(path(Book::price))
 ```
 
 | Function | DSL function |
@@ -242,9 +248,7 @@ floor(path(Book::price))
 | LN       | not yet      |
 | MOD      | not yet      |
 | POWER    | not yet      |
-| ROUND    | not yet      |
 | SIGN     | not yet      |
-| SQRT     | not yet      |
 | SIZE     | not yet      |
 | INDEX    | not yet      |
 

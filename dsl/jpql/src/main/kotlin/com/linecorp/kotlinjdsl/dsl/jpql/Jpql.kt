@@ -553,7 +553,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that is enclosed in ceiling
+     * Creates an expression that is enclosed in ceiling.
      */
     @SinceJdsl("3.4.0")
     fun <T : Any, V : Number> ceiling(expr: KProperty1<T, @Exact V>): Expression<V> {
@@ -561,7 +561,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that is enclosed in ceiling
+     * Creates an expression that is enclosed in ceiling.
      */
     @SinceJdsl("3.4.0")
     fun <T : Number> ceiling(value: Expressionable<T>): Expression<T> {
@@ -569,7 +569,7 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that is enclosed in floor
+     * Creates an expression that is enclosed in floor.
      */
     @SinceJdsl("3.4.0")
     fun <T : Any, V : Number> floor(expr: KProperty1<T, @Exact V>): Expression<V> {
@@ -577,11 +577,59 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that is enclosed in floor
+     * Creates an expression that is enclosed in floor.
      */
     @SinceJdsl("3.4.0")
     fun <T : Number> floor(value: Expressionable<T>): Expression<T> {
         return Expressions.floor(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> round(expr: KProperty1<T, @Exact V>, scale: Int): Expression<V> {
+        return Expressions.round(Paths.path(expr), Expressions.value(scale))
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expressionable<T>, scale: Int): Expression<T> {
+        return Expressions.round(value.toExpression(), Expressions.value(scale))
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> round(expr: KProperty1<T, @Exact V>, scale: Expression<Int>): Expression<V> {
+        return Expressions.round(Paths.path(expr), scale.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expressionable<T>, scale: Expressionable<Int>): Expression<T> {
+        return Expressions.round(value.toExpression(), scale.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the square root of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> sqrt(expr: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.sqrt(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that represents the square root of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sqrt(value: Expressionable<T>): Expression<Double> {
+        return Expressions.sqrt(value.toExpression())
     }
 
     /**
