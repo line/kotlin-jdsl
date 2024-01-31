@@ -20,6 +20,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFloor
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLn
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
@@ -233,6 +234,14 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> floor(value: Expression<T>): Expression<T> {
         return JpqlFloor(value)
+    }
+
+    /**
+     * Creates an expression that represents the natural logarithm of the value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ln(value: Expression<T>): Expression<Double> {
+        return JpqlLn(value)
     }
 
     /**
