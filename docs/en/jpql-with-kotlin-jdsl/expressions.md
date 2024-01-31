@@ -225,11 +225,14 @@ Use the following functions to build arithmetic functions:
 
 * ABS (abs)
 * CEILING (ceiling)
+* SQRT (sqrt)
 
 ```kotlin
 abs(path(Book::price))
 
 ceiling(path(Book::price))
+
+sqrt(path(Book::price))
 ```
 
 | Function | DSL function |
@@ -241,7 +244,6 @@ ceiling(path(Book::price))
 | POWER    | not yet      |
 | ROUND    | not yet      |
 | SIGN     | not yet      |
-| SQRT     | not yet      |
 | SIZE     | not yet      |
 | INDEX    | not yet      |
 

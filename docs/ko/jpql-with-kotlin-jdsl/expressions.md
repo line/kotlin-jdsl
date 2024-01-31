@@ -52,7 +52,6 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 * \- (minus)
 * \* (times)
 * / (div)
-* ceiling
 
 ```kotlin
 path(Book::price).plus(path(Book::salePrice))
@@ -222,11 +221,14 @@ locate("Book", path(Book::title))
 
 * ABS (abs)
 * CEILING (ceiling)
+* SQRT (sqrt)
 
 ```kotlin
 abs(path(Book::price))
 
 ceiling(path(Book::price))
+
+sqrt(path(Book::price))
 ```
 
 | Function | DSL function |
@@ -238,7 +240,6 @@ ceiling(path(Book::price))
 | POWER    | not yet      |
 | ROUND    | not yet      |
 | SIGN     | not yet      |
-| SQRT     | not yet      |
 | SIZE     | not yet      |
 | INDEX    | not yet      |
 

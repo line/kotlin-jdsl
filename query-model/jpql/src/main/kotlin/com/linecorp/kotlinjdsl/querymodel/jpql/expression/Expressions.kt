@@ -30,6 +30,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
@@ -169,14 +170,6 @@ object Expressions {
     }
 
     /**
-     * Creates an expression that represents the absolute value.
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> abs(value: Expression<T>): Expression<T> {
-        return JpqlAbs(value)
-    }
-
-    /**
      * Creates an expression that represents the plus of values.
      *
      * This is the same as ```value1 + value2```.
@@ -197,14 +190,6 @@ object Expressions {
     }
 
     /**
-     * Creates an expression that is enclosed in ceiling
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> ceiling(value: Expression<T>): Expression<T> {
-        return JpqlCeiling(value)
-    }
-
-    /**
      * Creates an expression that represents the times of values.
      *
      * This is the same as ```value1 * value2```.
@@ -222,6 +207,30 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> div(value1: Expression<T>, value2: Expression<S>): Expression<T> {
         return JpqlDivide(value1, value2)
+    }
+
+    /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> abs(value: Expression<T>): Expression<T> {
+        return JpqlAbs(value)
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ceiling(value: Expression<T>): Expression<T> {
+        return JpqlCeiling(value)
+    }
+
+    /**
+     * Creates an expression that represents the square root of the value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sqrt(value: Expression<T>): Expression<Double> {
+        return JpqlSqrt(value)
     }
 
     /**

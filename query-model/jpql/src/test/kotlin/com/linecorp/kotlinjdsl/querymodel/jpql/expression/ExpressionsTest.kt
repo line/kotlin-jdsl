@@ -32,6 +32,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
@@ -279,19 +280,6 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
-    fun abs() {
-        // when
-        val actual = Expressions.abs(intExpression1)
-
-        // then
-        val expected = JpqlAbs<Int>(
-            intExpression1,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
     fun plus() {
         // when
         val actual = Expressions.plus(intExpression1, intExpression2)
@@ -342,6 +330,45 @@ class ExpressionsTest : WithAssertions {
         val expected = JpqlDivide<Int>(
             intExpression1,
             intExpression2,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun abs() {
+        // when
+        val actual = Expressions.abs(intExpression1)
+
+        // then
+        val expected = JpqlAbs<Int>(
+            intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun ceiling() {
+        // when
+        val actual = Expressions.ceiling(doubleExpression1)
+
+        // then
+        val expected = JpqlCeiling(
+            doubleExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun sqrt() {
+        // when
+        val actual = Expressions.sqrt(intExpression1)
+
+        // then
+        val expected = JpqlSqrt(
+            intExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -898,19 +925,6 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlExpressionParentheses(
             intExpression1,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun ceiling() {
-        // when
-        val actual = Expressions.ceiling(doubleExpression1)
-
-        // then
-        val expected = JpqlCeiling(
-            doubleExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
