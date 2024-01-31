@@ -98,6 +98,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPlusSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPredicateParenthesesSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRoundSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQuerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSignSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSortSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSqrtSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubquerySerializer
@@ -348,6 +349,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlPredicateParenthesesSerializer(),
             JpqlRoundSerializer(),
             JpqlSelectQuerySerializer(),
+            JpqlSignSerializer(),
             JpqlSortSerializer(),
             JpqlSqrtSerializer(),
             JpqlSubquerySerializer(),
