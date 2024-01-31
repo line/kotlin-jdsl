@@ -46,7 +46,7 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 
 ## Arithmetic operations
 
-산술 연사자를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
+산술 연산자를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
 
 * \+ (plus)
 * \- (minus)
@@ -190,15 +190,30 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 
 ### String functions
 
-| Function  | DSL function |
-|-----------|--------------|
-| CONCAT    | support      |
-| SUBSTRING | support      |
-| TRIM      | support      |
-| LOWER     | support      |
-| UPPER     | support      |
-| LENGTH    | support      |
-| LOCATE    | support      |
+* CONCAT (concat)
+* SUBSTRING (substring)
+* TRIM (trim)
+* LOWER (lower)
+* UPPER (upper)
+* LENGTH (length)
+* LOCATE (locate)
+
+```kotlin
+concat(path(Book::title), literal(":"), path(Book::imageUrl))
+
+substring(path(Book::title), 4)
+
+trim(path(Book::title))
+trim('B').from(path(Book::title))
+
+lower(path(Book::title))
+
+upper(path(Book::title))
+
+length(path(Book::title))
+
+locate("Book", path(Book::title))
+```
 
 ### Arithmetic functions
 * round
@@ -207,17 +222,28 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 round(path(Book::price), Expressions.value(Int::class))
 ```
 
+산술 함수를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
+
+* ABS (abs)
+* CEILING (ceiling)
+* SQRT (sqrt)
+
+```kotlin
+abs(path(Book::price))
+
+ceiling(path(Book::price))
+
+sqrt(path(Book::price))
+```
+
 | Function | DSL function |
 |----------|--------------|
-| ABS      | not yet      |
-| CEILING  | not yet      |
 | EXP      | not yet      |
 | FLOOR    | not yet      |
 | LN       | not yet      |
 | MOD      | not yet      |
 | POWER    | not yet      |
 | SIGN     | not yet      |
-| SQRT     | not yet      |
 | SIZE     | not yet      |
 | INDEX    | not yet      |
 

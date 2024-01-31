@@ -4,10 +4,12 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.BookAuthorType
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.employee.Employee
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAbs
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCeiling
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
@@ -31,6 +33,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
@@ -334,14 +337,39 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
-    fun `round() with doubleExpression`() {
+    fun abs() {
         // when
-        val actual = Expressions.round(doubleExpression1, intExpression1)
+        val actual = Expressions.abs(intExpression1)
 
         // then
-        val expected = JpqlRound(
+        val expected = JpqlAbs<Int>(
+            intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun ceiling() {
+        // when
+        val actual = Expressions.ceiling(doubleExpression1)
+
+        // then
+        val expected = JpqlCeiling(
             doubleExpression1,
-            intExpression1
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun sqrt() {
+        // when
+        val actual = Expressions.sqrt(intExpression1)
+
+        // then
+        val expected = JpqlSqrt(
+            intExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -355,6 +383,20 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlRound(
             bigDecimalExpression1,
+            intExpression1
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `round() with doubleExpression`() {
+        // when
+        val actual = Expressions.round(doubleExpression1, intExpression1)
+
+        // then
+        val expected = JpqlRound(
+            doubleExpression1,
             intExpression1
         )
 

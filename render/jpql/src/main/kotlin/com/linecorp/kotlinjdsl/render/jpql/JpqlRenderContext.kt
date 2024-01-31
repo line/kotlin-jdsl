@@ -13,12 +13,14 @@ import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.KotlinStyleJpqlProp
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerModifier
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAbsSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAliasedExpressionSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAndSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAvgSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlBetweenSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseValueSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseWhenSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCeilingSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCoalesceSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlConcatSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCountSerializer
@@ -96,6 +98,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPredicateParenthe
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRoundSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQuerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSortSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSqrtSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubquerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubstringSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSumSerializer
@@ -259,12 +262,14 @@ private class DefaultModule : JpqlRenderModule {
         context.appendIntrospector(KotlinStyleJpqlPropertyIntrospector())
 
         context.addAllSerializer(
+            JpqlAbsSerializer(),
             JpqlAliasedExpressionSerializer(),
             JpqlAndSerializer(),
             JpqlAvgSerializer(),
             JpqlBetweenSerializer(),
             JpqlCaseValueSerializer(),
             JpqlCaseWhenSerializer(),
+            JpqlCeilingSerializer(),
             JpqlCoalesceSerializer(),
             JpqlConcatSerializer(),
             JpqlCountSerializer(),
@@ -342,6 +347,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlRoundSerializer(),
             JpqlSelectQuerySerializer(),
             JpqlSortSerializer(),
+            JpqlSqrtSerializer(),
             JpqlSubquerySerializer(),
             JpqlSubstringSerializer(),
             JpqlSumSerializer(),

@@ -537,6 +537,54 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> abs(expr: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.abs(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> abs(expr: Expressionable<T>): Expression<T> {
+        return Expressions.abs(expr.toExpression())
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> ceiling(expr: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.ceiling(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ceiling(value: Expressionable<T>): Expression<T> {
+        return Expressions.ceiling(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the square root of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> sqrt(expr: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.sqrt(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that represents the square root of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sqrt(value: Expressionable<T>): Expression<Double> {
+        return Expressions.sqrt(value.toExpression())
+    }
+    
+    /**
      * Creates an expression that represents the rounding of the value to a specified scale.
      */
     @SinceJdsl("3.4.0")
