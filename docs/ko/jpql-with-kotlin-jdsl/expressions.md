@@ -221,17 +221,17 @@ locate("Book", path(Book::title))
 
 * ABS (abs)
 * CEILING (ceiling)
-* SQRT (sqrt)
 * ROUND (round)
+* SQRT (sqrt)
 
 ```kotlin
 abs(path(Book::price))
 
 ceiling(path(Book::price))
 
-sqrt(path(Book::price))
-
 round(path(Book::price), 2)
+
+sqrt(path(Book::price))
 ```
 
 | Function | DSL function |

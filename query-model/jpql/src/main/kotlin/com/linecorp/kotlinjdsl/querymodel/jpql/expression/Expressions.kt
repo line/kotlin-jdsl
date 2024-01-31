@@ -227,6 +227,14 @@ object Expressions {
     }
 
     /**
+     * Creates an expression that represents the rounding of the specified value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
+        return JpqlRound(value, scale)
+    }
+
+    /**
      * Creates an expression that represents the square root of the value.
      */
     @SinceJdsl("3.4.0")
@@ -272,14 +280,6 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Number> avg(distinct: Boolean, expr: Expression<T>): Expression<Double> {
         return JpqlAvg(distinct, expr)
-    }
-
-    /**
-     * Creates an expression that represents the rounding of the specified value to a specified scale.
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
-        return JpqlRound(value, scale)
     }
 
     /**

@@ -363,19 +363,6 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
-    fun sqrt() {
-        // when
-        val actual = Expressions.sqrt(intExpression1)
-
-        // then
-        val expected = JpqlSqrt(
-            intExpression1,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
     fun round() {
         // when
         val actual = Expressions.round(bigDecimalExpression1, intExpression1)
@@ -383,6 +370,19 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlRound(
             bigDecimalExpression1,
+            intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun sqrt() {
+        // when
+        val actual = Expressions.sqrt(intExpression1)
+
+        // then
+        val expected = JpqlSqrt(
             intExpression1,
         )
 
