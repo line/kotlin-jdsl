@@ -10,5 +10,5 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 data class JpqlRound<T: Number> internal constructor(
     val value: Expression<T>,
     val scale: Expression<Int>,
-) : Expression<Double> {
+) : Expression<T> {
 }
