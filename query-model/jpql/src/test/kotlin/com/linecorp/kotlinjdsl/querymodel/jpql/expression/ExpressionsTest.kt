@@ -333,6 +333,34 @@ class ExpressionsTest : WithAssertions {
         assertThat(actual).isEqualTo(expected)
     }
 
+    @Test
+    fun `round() with doubleExpression`() {
+        // when
+        val actual = Expressions.round(doubleExpression1, intExpression1)
+
+        // then
+        val expected = JpqlRound(
+            doubleExpression1,
+            intExpression1
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `round() with BigDecimalExpression`() {
+        // when
+        val actual = Expressions.round(bigDecimalExpression1, intExpression1)
+
+        // then
+        val expected = JpqlRound(
+            bigDecimalExpression1,
+            intExpression1
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
     @ParameterizedTest
     @ValueSource(booleans = [true, false])
     fun count(distinct: Boolean) {
@@ -388,20 +416,6 @@ class ExpressionsTest : WithAssertions {
         val expected = JpqlAvg(
             distinct,
             intExpression1,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun round() {
-        // when
-        val actual = Expressions.round(doubleExpression1, intExpression1)
-
-        // then
-        val expected = JpqlRound(
-            doubleExpression1,
-            intExpression1
         )
 
         assertThat(actual).isEqualTo(expected)
