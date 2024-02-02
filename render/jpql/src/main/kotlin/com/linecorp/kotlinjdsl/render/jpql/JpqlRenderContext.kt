@@ -22,6 +22,8 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseWhenSerialize
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCoalesceSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlConcatSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCountSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCurrentDateSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCurrentTimeSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCustomExpressionSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCustomPredicateSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDeleteQuerySerializer
@@ -267,6 +269,8 @@ private class DefaultModule : JpqlRenderModule {
             JpqlCoalesceSerializer(),
             JpqlConcatSerializer(),
             JpqlCountSerializer(),
+            JpqlCurrentDateSerializer(),
+            JpqlCurrentTimeSerializer(),
             JpqlCustomExpressionSerializer(),
             JpqlCustomPredicateSerializer(),
             JpqlDeleteQuerySerializer(),

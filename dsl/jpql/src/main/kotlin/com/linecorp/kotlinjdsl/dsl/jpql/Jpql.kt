@@ -44,6 +44,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.time.LocalDate
+import java.time.LocalTime
 import kotlin.internal.Exact
 import kotlin.internal.LowPriorityInOverloadResolution
 import kotlin.reflect.KClass
@@ -484,6 +486,26 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.times(value: Expressionable<S>): Expression<T> {
         return Expressions.times(this.toExpression(), value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents  the current date.
+     *
+     * This is the same as ```CURRENT_DATE```.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentDate(): Expression<LocalDate> {
+        return Expressions.currentDate()
+    }
+
+    /**
+     * Creates an expression that represents  the current time.
+     *
+     * This is the same as ```CURRENT_TIME```.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentTime(): Expression<LocalTime> {
+        return Expressions.currentTime()
     }
 
     /**
