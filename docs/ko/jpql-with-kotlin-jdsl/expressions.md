@@ -221,8 +221,8 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 
 | Function           | DSL function |
 |--------------------|--------------|
-| CURRENT\_DATE      | not yet      |
-| CURRENT\_TIME      | not yet      |
+| CURRENT\_DATE      | support      |
+| CURRENT\_TIME      | support      |
 | CURRENT\_TIMESTAMP | not yet      |
 | LOCAL DATE         | not yet      |
 | LOCAL TIME         | not yet      |
