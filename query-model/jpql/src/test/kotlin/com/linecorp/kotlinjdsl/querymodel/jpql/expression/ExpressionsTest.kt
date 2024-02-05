@@ -35,6 +35,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSign
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
@@ -398,6 +399,19 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlRound(
             bigDecimalExpression1,
+            intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun sign() {
+        // when
+        val actual = Expressions.sign(intExpression1)
+
+        // then
+        val expected = JpqlSign(
             intExpression1,
         )
 

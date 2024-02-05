@@ -33,6 +33,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSign
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
@@ -250,6 +251,14 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
         return JpqlRound(value, scale)
+    }
+
+    /**
+     * Creates an expression that represents the sign of a numeric value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sign(value: Expression<T>): Expression<Int> {
+        return JpqlSign(value)
     }
 
     /**

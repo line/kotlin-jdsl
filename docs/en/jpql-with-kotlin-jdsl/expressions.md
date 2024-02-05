@@ -228,6 +228,7 @@ Use the following functions to build arithmetic functions:
 * EXP (exp)
 * FLOOR (floor)
 * ROUND (round)
+* SIGN (sign)
 * SQRT (sqrt)
 
 ```kotlin
@@ -241,6 +242,8 @@ floor(path(Book::price))
 
 round(path(Book::price), 2)
 
+sign(path(Book::price))
+
 sqrt(path(Book::price))
 ```
 
@@ -250,7 +253,6 @@ sqrt(path(Book::price))
 | LN       | not yet      |
 | MOD      | not yet      |
 | POWER    | not yet      |
-| SIGN     | not yet      |
 | SIZE     | not yet      |
 | INDEX    | not yet      |
 

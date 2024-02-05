@@ -633,6 +633,30 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the sign of value.
+     *
+     * - If value is positive, it returns 1.
+     * - If value is negative, it returns -1.
+     * - If value is zero, it returns 0.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> sign(expr: KProperty1<T, @Exact V>): Expression<Int> {
+        return Expressions.sign(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that represents the sign of value.
+     *
+     * - If value is positive, it returns 1.
+     * - If value is negative, it returns -1.
+     * - If value is zero, it returns 0.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sign(value: Expressionable<T>): Expression<Int> {
+        return Expressions.sign(value.toExpression())
+    }
+
+    /**
      * Creates an expression that represents the square root of value.
      */
     @SinceJdsl("3.4.0")
