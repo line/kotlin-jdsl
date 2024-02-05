@@ -229,6 +229,7 @@ locate("Book", path(Book::title))
 * ROUND (round)
 * SIGN (sign)
 * SQRT (sqrt)
+* SIZE (size)
 
 ```kotlin
 abs(path(Book::price))
@@ -246,13 +247,14 @@ round(path(Book::price), 2)
 sign(path(Book::price))
 
 sqrt(path(Book::price))
+
+size(path(Book::authors))
 ```
 
 | Function | DSL function |
 |----------|--------------|
 | MOD      | not yet      |
 | POWER    | not yet      |
-| SIZE     | not yet      |
 | INDEX    | not yet      |
 
 ### Datetime functions
