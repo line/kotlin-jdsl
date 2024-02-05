@@ -569,6 +569,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the exponential value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> exp(expr: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.exp(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that represents the exponential value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> exp(value: Expressionable<T>): Expression<Double> {
+        return Expressions.exp(value.toExpression())
+    }
+
+    /**
      * Creates an expression that is enclosed in floor.
      */
     @SinceJdsl("3.4.0")

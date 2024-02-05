@@ -14,6 +14,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExp
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFloor
@@ -226,6 +227,14 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> ceiling(value: Expression<T>): Expression<T> {
         return JpqlCeiling(value)
+    }
+
+    /**
+     * Creates an expression that represents the exponential value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> exp(value: Expression<T>): Expression<Double> {
+        return JpqlExp(value)
     }
 
     /**
