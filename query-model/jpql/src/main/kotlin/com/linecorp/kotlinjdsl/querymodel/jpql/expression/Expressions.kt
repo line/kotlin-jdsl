@@ -37,6 +37,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSign
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSize
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
@@ -280,6 +281,14 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> sqrt(value: Expression<T>): Expression<Double> {
         return JpqlSqrt(value)
+    }
+
+    /**
+     * Creates an expression that represents the number of elements of the collection.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any> size(path: Path<T>): Expression<Int> {
+        return JpqlSize(path)
     }
 
     /**
