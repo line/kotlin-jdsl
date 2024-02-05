@@ -601,6 +601,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the natural logarithm of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> ln(expr: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.ln(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that represents the natural logarithm of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ln(value: Expressionable<T>): Expression<Double> {
+        return Expressions.ln(value.toExpression())
+    }
+
+    /**
      * Creates an expression that represents the rounding of the value to a specified scale.
      */
     @SinceJdsl("3.4.0")

@@ -23,6 +23,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFloor
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLn
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
@@ -385,6 +386,19 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlFloor(
+            doubleExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun ln() {
+        // when
+        val actual = Expressions.ln(doubleExpression1)
+
+        // then
+        val expected = JpqlLn(
             doubleExpression1,
         )
 

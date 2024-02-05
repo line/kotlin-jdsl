@@ -227,6 +227,7 @@ Use the following functions to build arithmetic functions:
 * CEILING (ceiling)
 * EXP (exp)
 * FLOOR (floor)
+* LN (ln)
 * ROUND (round)
 * SIGN (sign)
 * SQRT (sqrt)
@@ -240,6 +241,8 @@ exp(path(Book::price))
 
 floor(path(Book::price))
 
+ln(path(Book::price))
+
 round(path(Book::price), 2)
 
 sign(path(Book::price))
@@ -249,8 +252,6 @@ sqrt(path(Book::price))
 
 | Function | DSL function |
 |----------|--------------|
-| FLOOR    | not yet      |
-| LN       | not yet      |
 | MOD      | not yet      |
 | POWER    | not yet      |
 | SIZE     | not yet      |
