@@ -1,8 +1,7 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions.currentDate
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrent
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentDate
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
@@ -26,27 +25,26 @@ class JpqlCurrentDateSerializerTest : WithAssertions {
     private val expression = currentDate()
 
     @Test
-    fun handledType() { // when
+    fun handledType() {
+        // when
         val actual = sut.handledType()
 
         // then
-        assertThat(actual).isEqualTo(JpqlCurrent.CurrentDate::class)
+        assertThat(actual).isEqualTo(JpqlCurrentDate::class)
     }
 
     @Test
     fun serialize() {
         // given
-        val part = Expressions.currentDate()
+        val part = currentDate()
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlCurrent.CurrentDate, writer, context)
+        sut.serialize(part as JpqlCurrentDate, writer, context)
 
         // then
         verifySequence {
             writer.write("CURRENT_DATE")
-            writer.writeParentheses(any())
-            serializer.serialize(expression, writer, context)
         }
     }
 }

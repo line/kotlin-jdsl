@@ -9,7 +9,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrent
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentDate
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
@@ -45,8 +46,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.time.LocalDate
-import java.time.LocalTime
+import java.sql.Date
+import java.sql.Time
 import kotlin.internal.Exact
 import kotlin.reflect.KClass
 
@@ -641,15 +642,15 @@ object Expressions {
      * Creates an expression that represents the current date.
      */
     @SinceJdsl("3.4.0")
-    fun currentDate(): Expression<LocalDate> {
-        return JpqlCurrent.CurrentDate
+    fun currentDate(): Expression<Date> {
+        return JpqlCurrentDate
     }
 
     /**
      * Creates an expression that represents the current time.
      */
     @SinceJdsl("3.4.0")
-    fun currentTime(): Expression<LocalTime> {
-        return JpqlCurrent.CurrentTime
+    fun currentTime(): Expression<Time> {
+        return JpqlCurrentTime
     }
 }
