@@ -11,7 +11,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrent
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentDate
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
@@ -325,7 +326,7 @@ class ExpressionsTest : WithAssertions {
         val actual = Expressions.currentDate()
 
         // then
-        val expected = JpqlCurrent.CurrentDate
+        val expected = JpqlCurrentDate
 
         assertThat(actual).isEqualTo(expected)
     }
@@ -336,7 +337,7 @@ class ExpressionsTest : WithAssertions {
         val actual = Expressions.currentTime()
 
         // then
-        val expected = JpqlCurrent.CurrentTime
+        val expected = JpqlCurrentTime
 
         assertThat(actual).isEqualTo(expected)
     }
