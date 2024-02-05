@@ -37,6 +37,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualAllSerialize
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualAnySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExistsSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpressionParenthesesSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpressionSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlFloorSerializer
@@ -289,6 +290,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlExistsSerializer(),
             JpqlExpressionParenthesesSerializer(),
             JpqlExpressionSerializer(),
+            JpqlExpSerializer(),
             JpqlFloorSerializer(),
             JpqlFunctionExpressionSerializer(),
             JpqlFunctionPredicateSerializer(),

@@ -221,6 +221,7 @@ locate("Book", path(Book::title))
 
 * ABS (abs)
 * CEILING (ceiling)
+* EXP (exp)
 * FLOOR (floor)
 * ROUND (round)
 * SQRT (sqrt)
@@ -229,6 +230,8 @@ locate("Book", path(Book::title))
 abs(path(Book::price))
 
 ceiling(path(Book::price))
+
+exp(path(Book::price))
 
 floor(path(Book::price))
 
@@ -239,7 +242,6 @@ sqrt(path(Book::price))
 
 | Function | DSL function |
 |----------|--------------|
-| EXP      | not yet      |
 | FLOOR    | not yet      |
 | LN       | not yet      |
 | MOD      | not yet      |
