@@ -9,7 +9,7 @@ import java.sql.Time
 
 class CurrentTimeDslTest : WithAssertions {
     @Test
-    fun `currentTime()`() {
+    fun currentTime() {
         // when
         val expression = queryPart {
             currentTime()

@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions.currentTime
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentTime
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -22,8 +22,6 @@ class JpqlCurrentTimeSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
-    private val expression = currentTime()
-
     @Test
     fun handledType() {
         // when
@@ -36,7 +34,7 @@ class JpqlCurrentTimeSerializerTest : WithAssertions {
     @Test
     fun serialize() {
         // given
-        val part = currentTime()
+        val part = Expressions.currentTime()
         val context = TestRenderContext(serializer)
 
         // when

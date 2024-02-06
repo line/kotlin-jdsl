@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions.currentDate
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentDate
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -22,8 +22,6 @@ class JpqlCurrentDateSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
-    private val expression = currentDate()
-
     @Test
     fun handledType() {
         // when
@@ -36,7 +34,7 @@ class JpqlCurrentDateSerializerTest : WithAssertions {
     @Test
     fun serialize() {
         // given
-        val part = currentDate()
+        val part = Expressions.currentDate()
         val context = TestRenderContext(serializer)
 
         // when
