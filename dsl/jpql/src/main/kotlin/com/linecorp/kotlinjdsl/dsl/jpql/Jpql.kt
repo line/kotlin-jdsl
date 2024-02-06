@@ -47,6 +47,7 @@ import java.math.BigInteger
 import java.sql.Date
 import java.sql.Time
 import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlin.internal.Exact
 import kotlin.internal.LowPriorityInOverloadResolution
 import kotlin.reflect.KClass
@@ -3112,5 +3113,15 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> deleteFrom(entity: Entityable<T>): DeleteQueryWhereStep<T> {
         return DeleteQueryDsl(entity.toEntity())
+    }
+
+    /**
+     * Creates an expression that represents the local datetime.
+     *
+     * This is the same as ```LOCAL DATETIME```.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDateTime(): Expression<LocalDateTime> {
+        return Expressions.localDateTime()
     }
 }
