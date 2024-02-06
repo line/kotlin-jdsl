@@ -273,7 +273,7 @@ currentTime()
 | CURRENT\_TIMESTAMP | not yet      |
 | LOCAL DATE         | not yet      |
 | LOCAL TIME         | not yet      |
-| LOCAL DATETIME     | not yet      |
+| LOCAL DATETIME     | support      |
 | EXTRACT            | not yet      |
 
 ### Database function
