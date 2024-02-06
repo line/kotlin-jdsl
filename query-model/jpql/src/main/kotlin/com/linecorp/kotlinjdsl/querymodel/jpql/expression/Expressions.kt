@@ -287,7 +287,7 @@ object Expressions {
      * Creates an expression that represents the number of elements of the collection.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any> size(path: Path<T>): Expression<Int> {
+    fun <T, S : Collection<T>> size(path: Path<S>): Expression<Int> {
         return JpqlSize(path)
     }
 

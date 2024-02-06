@@ -43,7 +43,7 @@ class JpqlSizeSerializerTest : WithAssertions {
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlSize, writer, context)
+        sut.serialize(part as JpqlSize<*, *>, writer, context)
 
         // then
         verifySequence {

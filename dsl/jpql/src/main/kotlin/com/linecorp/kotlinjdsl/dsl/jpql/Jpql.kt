@@ -694,7 +694,7 @@ open class Jpql : JpqlDsl {
      * Creates an expression that the number of elements of the collection.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V> size(expr: KProperty1<T, @Exact V>): Expression<Int> {
+    fun <T : Any, V, S : Collection<V>> size(expr: KProperty1<T, @Exact S>): Expression<Int> {
         return Expressions.size(Paths.path(expr))
     }
 
@@ -702,7 +702,7 @@ open class Jpql : JpqlDsl {
      * Creates an expression that the number of elements of the collection.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any> size(path: Pathable<T>): Expression<Int> {
+    fun <T, S : Collection<T>> size(path: Pathable<S>): Expression<Int> {
         return Expressions.size(path.toPath())
     }
 

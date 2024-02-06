@@ -9,12 +9,12 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
 @Internal
-class JpqlSizeSerializer : JpqlSerializer<JpqlSize> {
-    override fun handledType(): KClass<JpqlSize> {
+class JpqlSizeSerializer : JpqlSerializer<JpqlSize<*, *>> {
+    override fun handledType(): KClass<JpqlSize<*, *>> {
         return JpqlSize::class
     }
 
-    override fun serialize(part: JpqlSize, writer: JpqlWriter, context: RenderContext) {
+    override fun serialize(part: JpqlSize<*, *>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         writer.write("SIZE")

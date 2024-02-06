@@ -1,7 +1,6 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
 import com.linecorp.kotlinjdsl.dsl.jpql.entity.employee.Employee
-import com.linecorp.kotlinjdsl.dsl.jpql.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
@@ -10,7 +9,7 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 class SizeDslTest : WithAssertions {
-    private val path1 = Paths.path(EmployeeDepartment::employee)
+    private val path1 = Paths.path(Employee::departments)
 
     @Test
     fun `size() with property`() {
