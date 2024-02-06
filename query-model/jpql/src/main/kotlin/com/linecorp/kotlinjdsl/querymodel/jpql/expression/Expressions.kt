@@ -38,12 +38,14 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimLeading
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimTrailing
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.LocalDateTimeExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.time.LocalDateTime
 import kotlin.internal.Exact
 import kotlin.reflect.KClass
 
@@ -147,6 +149,14 @@ object Expressions {
     fun <T : Any> nullLiteral(): Expression<T> {
         @Suppress("UNCHECKED_CAST")
         return JpqlLiteral.NullLiteral as Expression<T>
+    }
+
+    /**
+     * Create a LOCAL DATETIME Expression by LocalDateTime.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDateTime(): Expression<LocalDateTime> {
+        return LocalDateTimeExpression
     }
 
     /**

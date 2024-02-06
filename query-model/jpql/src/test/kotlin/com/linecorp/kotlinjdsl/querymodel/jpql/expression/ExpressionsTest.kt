@@ -40,6 +40,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimLeading
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimTrailing
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.LocalDateTimeExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
@@ -884,6 +885,17 @@ class ExpressionsTest : WithAssertions {
         val expected = JpqlExpressionParentheses(
             intExpression1,
         )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `localDateTime to support LOCAL DATETIME in jpql`() {
+        // when
+        val actual = Expressions.localDateTime()
+
+        // then
+        val expected = LocalDateTimeExpression.toExpression()
 
         assertThat(actual).isEqualTo(expected)
     }

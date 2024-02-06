@@ -44,6 +44,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.time.LocalDateTime
 import kotlin.internal.Exact
 import kotlin.internal.LowPriorityInOverloadResolution
 import kotlin.reflect.KClass
@@ -164,6 +165,14 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> nullLiteral(): Expression<T> {
         return Expressions.nullLiteral()
+    }
+
+    /**
+     * Creates a datetime expression with the localDateTime.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDateTime(): Expression<LocalDateTime> {
+        return Expressions.localDateTime()
     }
 
     /**
