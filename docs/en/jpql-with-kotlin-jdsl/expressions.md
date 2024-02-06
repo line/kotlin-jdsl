@@ -228,8 +228,8 @@ locate("Book", path(Book::title))
 * LN (ln)
 * ROUND (round)
 * SIGN (sign)
-* SQRT (sqrt)
 * SIZE (size)
+* SQRT (sqrt)
 
 ```kotlin
 abs(path(Book::price))
@@ -246,9 +246,9 @@ round(path(Book::price), 2)
 
 sign(path(Book::price))
 
-sqrt(path(Book::price))
-
 size(path(Book::authors))
+
+sqrt(path(Book::price))
 ```
 
 | Function | DSL function |
