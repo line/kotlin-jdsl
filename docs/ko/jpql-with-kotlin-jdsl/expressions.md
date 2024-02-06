@@ -217,8 +217,6 @@ locate("Book", path(Book::title))
 
 ### Arithmetic functions
 
-산술 함수를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
-
 * ABS (abs)
 * CEILING (ceiling)
 * EXP (exp)
@@ -255,10 +253,17 @@ sqrt(path(Book::price))
 
 ### Datetime functions
 
+* CURRENT\_DATE (currentDate)
+* CURRENT\_TIME (currentTime)
+
+```kotlin
+currentDate()
+
+currentTime()
+```
+
 | Function           | DSL function |
 |--------------------|--------------|
-| CURRENT\_DATE      | support      |
-| CURRENT\_TIME      | support      |
 | CURRENT\_TIMESTAMP | not yet      |
 | LOCAL DATE         | not yet      |
 | LOCAL TIME         | not yet      |
