@@ -9,7 +9,7 @@ import java.sql.Date
 
 class CurrentDateDslTest : WithAssertions {
     @Test
-    fun `currentDate()`() {
+    fun currentDate() {
         // when
         val expression = queryPart {
             currentDate()
