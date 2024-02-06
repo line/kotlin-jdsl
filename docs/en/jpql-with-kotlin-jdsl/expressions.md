@@ -261,8 +261,8 @@ sqrt(path(Book::price))
 
 | Function           | DSL function |
 |--------------------|--------------|
-| CURRENT\_DATE      | not yet      |
-| CURRENT\_TIME      | not yet      |
+| CURRENT\_DATE      | support      |
+| CURRENT\_TIME      | support      |
 | CURRENT\_TIMESTAMP | not yet      |
 | LOCAL DATE         | not yet      |
 | LOCAL TIME         | not yet      |
