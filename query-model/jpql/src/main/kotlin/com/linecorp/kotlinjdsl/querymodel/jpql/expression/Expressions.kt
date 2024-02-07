@@ -24,6 +24,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpre
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLn
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalDateTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
@@ -49,7 +50,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimLeading
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimTrailing
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.LocalDateTimeExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
@@ -738,10 +738,10 @@ object Expressions {
     }
 
     /**
-     * Create a LOCAL DATETIME Expression by LocalDateTime.
+     * Creates an expression that represents the local datetime in jpql.
      */
     @SinceJdsl("3.4.0")
     fun localDateTime(): Expression<LocalDateTime> {
-        return LocalDateTimeExpression
+        return JpqlLocalDateTime
     }
 }
