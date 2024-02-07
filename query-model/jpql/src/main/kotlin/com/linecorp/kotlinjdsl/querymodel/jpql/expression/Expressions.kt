@@ -165,14 +165,6 @@ object Expressions {
     }
 
     /**
-     * Create a LOCAL DATETIME Expression by LocalDateTime.
-     */
-    @SinceJdsl("3.4.0")
-    fun localDateTime(): Expression<LocalDateTime> {
-        return LocalDateTimeExpression
-    }
-
-    /**
      * Creates a parameter expression with the name.
      */
     @SinceJdsl("3.0.0")
@@ -743,5 +735,13 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun currentTime(): Expression<Time> {
         return JpqlCurrentTime
+    }
+
+    /**
+     * Create a LOCAL DATETIME Expression by LocalDateTime.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDateTime(): Expression<LocalDateTime> {
+        return LocalDateTimeExpression
     }
 }
