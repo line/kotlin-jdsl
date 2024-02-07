@@ -226,7 +226,7 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 | CURRENT\_TIMESTAMP | not yet      |
 | LOCAL DATE         | not yet      |
 | LOCAL TIME         | not yet      |
-| LOCAL DATETIME     | support      |
+| LOCAL DATETIME     | not yet      |
 | EXTRACT            | not yet      |
 
 ### Database function

@@ -1,5 +1,6 @@
-package com.linecorp.kotlinjdsl.dsl.jpql
+package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import org.assertj.core.api.Assertions.assertThat
@@ -9,7 +10,7 @@ import java.time.LocalDateTime
 class LocalDateTimeExpressionDslTest {
 
     @Test
-    fun `localDateTime to support LOCAL DATETIME in jpql`() {
+    fun localDateTime() {
         // when
         val expression = queryPart {
             localDateTime()
