@@ -225,6 +225,7 @@ locate("Book", path(Book::title))
 * CEILING (ceiling)
 * EXP (exp)
 * FLOOR (floor)
+* INDEX (index)
 * LN (ln)
 * ROUND (round)
 * SIGN (sign)
@@ -239,6 +240,8 @@ ceiling(path(Book::price))
 exp(path(Book::price))
 
 floor(path(Book::price))
+
+index(path(Book::authors))
 
 ln(path(Book::price))
 
@@ -255,7 +258,6 @@ sqrt(path(Book::price))
 |----------|--------------|
 | MOD      | not yet      |
 | POWER    | not yet      |
-| INDEX    | not yet      |
 
 ### Datetime functions
 
