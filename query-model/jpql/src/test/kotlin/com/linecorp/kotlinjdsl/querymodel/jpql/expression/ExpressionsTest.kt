@@ -39,6 +39,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSign
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSize
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
@@ -91,6 +92,7 @@ class ExpressionsTest : WithAssertions {
     private val entity1 = Entities.entity(Employee::class)
 
     private val path1 = Paths.path(Employee::employeeId)
+    private val path2 = Paths.path(Employee::departments)
 
     private val predicate1 = Predicates.equal(Paths.path(Book::price), Expressions.value(BigDecimal.valueOf(100)))
     private val predicate2 = Predicates.equal(Paths.path(Book::price), Expressions.value(BigDecimal.valueOf(200)))
@@ -464,6 +466,19 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlSqrt(
             intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun size() {
+        // when
+        val actual = Expressions.size(path2)
+
+        // then
+        val expected = JpqlSize(
+            path2,
         )
 
         assertThat(actual).isEqualTo(expected)

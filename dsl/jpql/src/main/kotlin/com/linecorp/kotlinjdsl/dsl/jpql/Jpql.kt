@@ -691,6 +691,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that the number of elements of the collection.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V, S : Collection<V>> size(expr: KProperty1<T, @Exact S>): Expression<Int> {
+        return Expressions.size(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that the number of elements of the collection.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T, S : Collection<T>> size(path: Pathable<S>): Expression<Int> {
+        return Expressions.size(path.toPath())
+    }
+
+    /**
      * Creates an expression that represents the count of non-null values.
      *
      * If there are no matching rows, it returns 0.
