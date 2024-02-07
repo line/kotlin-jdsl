@@ -422,11 +422,11 @@ class ExpressionsTest : WithAssertions {
     @Test
     fun index() {
         // when
-        val actual = Expressions.index(intExpression1)
+        val actual = Expressions.index(path2)
 
         // then
         val expected = JpqlIndex(
-            intExpression1,
+            path2,
         )
 
         assertThat(actual).isEqualTo(expected)
