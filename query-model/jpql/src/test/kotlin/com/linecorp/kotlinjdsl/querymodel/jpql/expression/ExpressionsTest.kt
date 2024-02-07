@@ -19,6 +19,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionPar
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalDateTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
@@ -40,7 +41,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimLeading
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimTrailing
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.LocalDateTimeExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
@@ -895,7 +895,7 @@ class ExpressionsTest : WithAssertions {
         val actual = Expressions.localDateTime()
 
         // then
-        val expected = LocalDateTimeExpression.toExpression()
+        val expected = JpqlLocalDateTime.toExpression()
 
         assertThat(actual).isEqualTo(expected)
     }

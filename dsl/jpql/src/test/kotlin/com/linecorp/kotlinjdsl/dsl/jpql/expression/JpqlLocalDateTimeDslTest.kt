@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
-class LocalDateTimeExpressionDslTest {
+class JpqlLocalDateTimeDslTest {
 
     @Test
     fun localDateTime() {

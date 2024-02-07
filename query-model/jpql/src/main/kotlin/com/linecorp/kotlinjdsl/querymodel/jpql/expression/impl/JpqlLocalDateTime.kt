@@ -5,4 +5,4 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import java.time.LocalDateTime
 
 @Internal
-object LocalDateTimeExpression : Expression<LocalDateTime>
+object JpqlLocalDateTime : Expression<LocalDateTime>
