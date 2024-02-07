@@ -603,6 +603,22 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the index of the value in an ordered list.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V, S : Collection<V>> index(expr: KProperty1<T, @Exact S>): Expression<Int> {
+        return Expressions.index(Paths.path(expr))
+    }
+
+    /**
+     * Creates an expression that represents the index of the value in an ordered list.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T, S : Collection<T>> index(path: Pathable<S>): Expression<Int> {
+        return Expressions.index(path.toPath())
+    }
+
+    /**
      * Creates an expression that represents the natural logarithm of value.
      */
     @SinceJdsl("3.4.0")

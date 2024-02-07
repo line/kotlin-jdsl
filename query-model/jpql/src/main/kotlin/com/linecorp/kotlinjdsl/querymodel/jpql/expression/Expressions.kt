@@ -51,6 +51,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIndex
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import java.math.BigDecimal
@@ -249,6 +250,14 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> floor(value: Expression<T>): Expression<T> {
         return JpqlFloor(value)
+    }
+
+    /**
+     * Creates an expression that represents the index of the value in an ordered list.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T, S : Collection<T>> index(path: Path<S>): Expression<Int> {
+        return JpqlIndex(path)
     }
 
     /**
