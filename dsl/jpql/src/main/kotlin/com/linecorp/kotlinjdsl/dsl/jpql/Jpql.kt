@@ -614,8 +614,8 @@ open class Jpql : JpqlDsl {
      * Creates an expression that represents the index of the value in an ordered list.
      */
     @SinceJdsl("3.4.0")
-    fun <T, S : Collection<T>> index(path: Pathable<S>): Expression<Int> {
-        return Expressions.index(path.toPath())
+    fun <T : Any> index(expr: Expressionable<T>): Expression<Int> {
+        return Expressions.index(expr.toExpression())
     }
 
     /**

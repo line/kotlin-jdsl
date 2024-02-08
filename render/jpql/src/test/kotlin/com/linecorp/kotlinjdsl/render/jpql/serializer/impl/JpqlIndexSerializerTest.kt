@@ -43,7 +43,7 @@ class JpqlIndexSerializerTest : WithAssertions {
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlIndex<*, *>, writer, context)
+        sut.serialize(part as JpqlIndex<*>, writer, context)
 
         // then
         verifySequence {

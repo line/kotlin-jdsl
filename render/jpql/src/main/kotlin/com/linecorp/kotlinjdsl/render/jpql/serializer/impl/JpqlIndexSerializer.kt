@@ -9,12 +9,12 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
 @Internal
-class JpqlIndexSerializer : JpqlSerializer<JpqlIndex<*, *>> {
-    override fun handledType(): KClass<JpqlIndex<*, *>> {
+class JpqlIndexSerializer : JpqlSerializer<JpqlIndex<*>> {
+    override fun handledType(): KClass<JpqlIndex<*>> {
         return JpqlIndex::class
     }
 
-    override fun serialize(part: JpqlIndex<*, *>, writer: JpqlWriter, context: RenderContext) {
+    override fun serialize(part: JpqlIndex<*>, writer: JpqlWriter, context: RenderContext) {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         writer.write("INDEX")
