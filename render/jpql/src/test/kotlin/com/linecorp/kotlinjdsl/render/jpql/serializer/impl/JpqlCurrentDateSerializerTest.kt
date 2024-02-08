@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
 class JpqlCurrentDateSerializerTest : WithAssertions {
-
     private val sut = JpqlCurrentDateSerializer()
 
     @MockK
