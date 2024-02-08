@@ -2,7 +2,7 @@
 
 ## Requirements
 
-At least Java 8 and Kotlin 1.9 are required to build and run an application with Kotlin JDSL.
+At least Java 8 and Kotlin 1.7 are required to build and run an application with Kotlin JDSL.
 
 ## Configure the repositories
 

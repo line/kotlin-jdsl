@@ -16,7 +16,7 @@ classes and Kotlin's built-in functions without an annotation processor, and eas
 ## Requirements
 
 - Java 8 or later if you are a user.
-- Kotlin 1.9 or later if you are a user.
+- Kotlin 1.7 or later if you are a user.
 
 ## How to reach us
 

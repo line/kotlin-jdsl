@@ -2,7 +2,7 @@
 
 ## Requirements
 
-Kotlin JDSL을 사용하기 위해서는 Java 8 (혹은 그 이상) and Kotlin 1.9 (그 이상)이 요구됩니다.
+Kotlin JDSL을 사용하기 위해서는 Java 8 (혹은 그 이상) and Kotlin 1.7 (그 이상)이 요구됩니다.
 
 ## Configure the repositories
 
