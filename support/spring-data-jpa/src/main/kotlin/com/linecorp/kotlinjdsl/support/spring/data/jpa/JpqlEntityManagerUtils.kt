@@ -15,7 +15,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.domain.SliceImpl
-import org.springframework.data.jpa.repository.query.QueryUtilsAdaptor
+import org.springframework.data.jpa.repository.query.QueryEnhancerFactoryAdaptor
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
 import kotlin.reflect.KClass
 
@@ -141,7 +141,9 @@ internal object JpqlEntityManagerUtils {
         pageable: Pageable,
         resultClass: KClass<T>,
     ): List<T?> {
-        val sortedQuery = QueryUtilsAdaptor.applySorting(rendered.query, pageable.sort)
+        val queryEnhancer = QueryEnhancerFactoryAdaptor.forQuery(rendered.query)
+
+        val sortedQuery = queryEnhancer.applySorting(pageable.sort)
 
         val jpaQuery = entityManager.createQuery(sortedQuery, resultClass.java).apply {
             setParams(this, rendered.params)
@@ -161,8 +163,10 @@ internal object JpqlEntityManagerUtils {
         pageable: Pageable,
         resultClass: KClass<T>,
     ): Page<T?> {
-        val sortedQuery = QueryUtilsAdaptor.applySorting(rendered.query, pageable.sort)
-        val countQuery = QueryUtilsAdaptor.createCountQueryFor(rendered.query, null, false)
+        val queryEnhancer = QueryEnhancerFactoryAdaptor.forQuery(rendered.query)
+
+        val sortedQuery = queryEnhancer.applySorting(pageable.sort)
+        val countQuery = queryEnhancer.createCountQueryFor()
 
         val sortedJpaQuery = entityManager.createQuery(sortedQuery, resultClass.java).apply {
             setParams(this, rendered.params)
@@ -194,7 +198,9 @@ internal object JpqlEntityManagerUtils {
         pageable: Pageable,
         resultClass: KClass<T>,
     ): Slice<T?> {
-        val sortedQuery = QueryUtilsAdaptor.applySorting(rendered.query, pageable.sort)
+        val queryEnhancer = QueryEnhancerFactoryAdaptor.forQuery(rendered.query)
+
+        val sortedQuery = queryEnhancer.applySorting(pageable.sort)
 
         val jpaQuery = entityManager.createQuery(sortedQuery, resultClass.java).apply {
             setParams(this, rendered.params)
