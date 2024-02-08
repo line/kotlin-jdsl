@@ -47,8 +47,6 @@ class JpqlJpqlLocalDateTimeSerializerTest {
         // then
         verifySequence {
             writer.write("LOCAL DATETIME")
-            writer.writeParentheses(any())
-            serializer.serialize(part, writer, context)
         }
     }
 }
