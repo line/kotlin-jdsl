@@ -226,7 +226,7 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 | CURRENT\_DATE      | not yet      |
 | CURRENT\_TIME      | not yet      |
 | CURRENT\_TIMESTAMP | not yet      |
-| LOCAL DATE         | not yet      |
+| LOCAL DATE         | support      |
 | LOCAL TIME         | not yet      |
 | LOCAL DATETIME     | not yet      |
 | EXTRACT            | not yet      |
