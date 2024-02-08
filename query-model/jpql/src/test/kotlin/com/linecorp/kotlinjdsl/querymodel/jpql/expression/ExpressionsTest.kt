@@ -1042,7 +1042,7 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
-    fun `localDateTime to support LOCAL DATETIME in jpql`() {
+    fun localDateTime() {
         // when
         val actual = Expressions.localDateTime()
 

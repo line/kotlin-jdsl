@@ -738,7 +738,7 @@ object Expressions {
     }
 
     /**
-     * Creates an expression that represents the local datetime in jpql.
+     * Creates an expression that represents the local datetime.
      */
     @SinceJdsl("3.4.0")
     fun localDateTime(): Expression<LocalDateTime> {
