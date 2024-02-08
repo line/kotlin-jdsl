@@ -267,7 +267,7 @@ currentTime()
 | Function           | DSL function |
 |--------------------|--------------|
 | CURRENT\_TIMESTAMP | not yet      |
-| LOCAL DATE         | not yet      |
+| LOCAL DATE         | support      |
 | LOCAL TIME         | not yet      |
 | LOCAL DATETIME     | not yet      |
 | EXTRACT            | not yet      |

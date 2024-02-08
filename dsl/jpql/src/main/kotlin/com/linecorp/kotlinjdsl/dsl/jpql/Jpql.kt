@@ -46,6 +46,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.sql.Date
 import java.sql.Time
+import java.time.LocalDate
 import kotlin.internal.Exact
 import kotlin.internal.LowPriorityInOverloadResolution
 import kotlin.reflect.KClass
@@ -1568,6 +1569,16 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.4.0")
     fun currentTime(): Expression<Time> {
         return Expressions.currentTime()
+    }
+
+    /**
+     * Creates an expression that represents the local date.
+     *
+     * This is the same as ```LOCAL DATE```.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDate(): Expression<LocalDate> {
+        return Expressions.localDate()
     }
 
     /**
