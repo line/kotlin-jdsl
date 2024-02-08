@@ -171,6 +171,8 @@ minDistinct(path(Book::price))
 
 sum(path(Book::price))
 sumDistinct(path(Book::price))
+
+ceiling(path(Book::price))
 ```
 
 ### Sum
@@ -192,39 +194,82 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 
 ### String functions
 
-| Function  | DSL function |
-|-----------|--------------|
-| CONCAT    | support      |
-| SUBSTRING | support      |
-| TRIM      | support      |
-| LOWER     | support      |
-| UPPER     | support      |
-| LENGTH    | support      |
-| LOCATE    | support      |
+* CONCAT (concat)
+* SUBSTRING (substring)
+* TRIM (trim)
+* LOWER (lower)
+* UPPER (upper)
+* LENGTH (length)
+* LOCATE (locate)
+
+```kotlin
+concat(path(Book::title), literal(":"), path(Book::imageUrl))
+
+substring(path(Book::title), 4)
+
+trim(path(Book::title))
+trim('B').from(path(Book::title))
+
+lower(path(Book::title))
+
+upper(path(Book::title))
+
+length(path(Book::title))
+
+locate("Book", path(Book::title))
+```
 
 ### Arithmetic functions
 
+* ABS (abs)
+* CEILING (ceiling)
+* EXP (exp)
+* FLOOR (floor)
+* LN (ln)
+* ROUND (round)
+* SIGN (sign)
+* SIZE (size)
+* SQRT (sqrt)
+
+```kotlin
+abs(path(Book::price))
+
+ceiling(path(Book::price))
+
+exp(path(Book::price))
+
+floor(path(Book::price))
+
+ln(path(Book::price))
+
+round(path(Book::price), 2)
+
+sign(path(Book::price))
+
+size(path(Book::authors))
+
+sqrt(path(Book::price))
+```
+
 | Function | DSL function |
 |----------|--------------|
-| ABS      | not yet      |
-| CEILING  | not yet      |
-| EXP      | not yet      |
-| FLOOR    | not yet      |
-| LN       | not yet      |
 | MOD      | not yet      |
 | POWER    | not yet      |
-| ROUND    | not yet      |
-| SIGN     | not yet      |
-| SQRT     | not yet      |
-| SIZE     | not yet      |
 | INDEX    | not yet      |
 
 ### Datetime functions
 
+* CURRENT\_DATE (currentDate)
+* CURRENT\_TIME (currentTime)
+
+```kotlin
+currentDate()
+
+currentTime()
+```
+
 | Function           | DSL function |
 |--------------------|--------------|
-| CURRENT\_DATE      | not yet      |
-| CURRENT\_TIME      | not yet      |
 | CURRENT\_TIMESTAMP | not yet      |
 | LOCAL DATE         | support      |
 | LOCAL TIME         | not yet      |

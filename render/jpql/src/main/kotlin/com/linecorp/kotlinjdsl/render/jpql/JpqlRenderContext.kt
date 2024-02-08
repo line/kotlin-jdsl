@@ -13,15 +13,19 @@ import com.linecorp.kotlinjdsl.render.jpql.introspector.impl.KotlinStyleJpqlProp
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerModifier
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAbsSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAliasedExpressionSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAndSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAvgSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlBetweenSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseValueSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseWhenSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCeilingSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCoalesceSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlConcatSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCountSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCurrentDateSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCurrentTimeSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCustomExpressionSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCustomPredicateSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlDeleteQuerySerializer
@@ -35,8 +39,10 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualAllSerialize
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualAnySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlEqualSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExistsSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpressionParenthesesSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlExpressionSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlFloorSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlFunctionExpressionSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlFunctionPredicateSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanAllSerializer
@@ -69,6 +75,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanOrEqualTo
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLikeSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLiteralSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLnSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLocalDateSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLocateSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLowerSerializer
@@ -94,8 +101,12 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPathTreatSerializ
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPathTypeSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPlusSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPredicateParenthesesSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRoundSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQuerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSignSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSizeSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSortSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSqrtSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubquerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSubstringSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSumSerializer
@@ -259,15 +270,19 @@ private class DefaultModule : JpqlRenderModule {
         context.appendIntrospector(KotlinStyleJpqlPropertyIntrospector())
 
         context.addAllSerializer(
+            JpqlAbsSerializer(),
             JpqlAliasedExpressionSerializer(),
             JpqlAndSerializer(),
             JpqlAvgSerializer(),
             JpqlBetweenSerializer(),
             JpqlCaseValueSerializer(),
             JpqlCaseWhenSerializer(),
+            JpqlCeilingSerializer(),
             JpqlCoalesceSerializer(),
             JpqlConcatSerializer(),
             JpqlCountSerializer(),
+            JpqlCurrentDateSerializer(),
+            JpqlCurrentTimeSerializer(),
             JpqlCustomExpressionSerializer(),
             JpqlCustomPredicateSerializer(),
             JpqlDeleteQuerySerializer(),
@@ -283,6 +298,8 @@ private class DefaultModule : JpqlRenderModule {
             JpqlExistsSerializer(),
             JpqlExpressionParenthesesSerializer(),
             JpqlExpressionSerializer(),
+            JpqlExpSerializer(),
+            JpqlFloorSerializer(),
             JpqlFunctionExpressionSerializer(),
             JpqlFunctionPredicateSerializer(),
             JpqlGreaterThanAllSerializer(),
@@ -315,6 +332,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlLessThanSerializer(),
             JpqlLikeSerializer(),
             JpqlLiteralSerializer(),
+            JpqlLnSerializer(),
             JpqlLocalDateSerializer(),
             JpqlLocateSerializer(),
             JpqlLowerSerializer(),
@@ -340,8 +358,12 @@ private class DefaultModule : JpqlRenderModule {
             JpqlPathTypeSerializer(),
             JpqlPlusSerializer(),
             JpqlPredicateParenthesesSerializer(),
+            JpqlRoundSerializer(),
             JpqlSelectQuerySerializer(),
+            JpqlSignSerializer(),
+            JpqlSizeSerializer(),
             JpqlSortSerializer(),
+            JpqlSqrtSerializer(),
             JpqlSubquerySerializer(),
             JpqlSubstringSerializer(),
             JpqlSumSerializer(),

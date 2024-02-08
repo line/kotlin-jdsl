@@ -2,21 +2,28 @@ package com.linecorp.kotlinjdsl.querymodel.jpql.expression
 
 import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entity
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAbs
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCeiling
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentDate
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExp
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFloor
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLn
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalDate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
@@ -29,6 +36,10 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSign
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSize
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
@@ -45,6 +56,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.sql.Date
+import java.sql.Time
 import java.time.LocalDate
 import kotlin.internal.Exact
 import kotlin.reflect.KClass
@@ -206,6 +219,78 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> div(value1: Expression<T>, value2: Expression<S>): Expression<T> {
         return JpqlDivide(value1, value2)
+    }
+
+    /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> abs(value: Expression<T>): Expression<T> {
+        return JpqlAbs(value)
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ceiling(value: Expression<T>): Expression<T> {
+        return JpqlCeiling(value)
+    }
+
+    /**
+     * Creates an expression that represents the exponential value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> exp(value: Expression<T>): Expression<Double> {
+        return JpqlExp(value)
+    }
+
+    /**
+     * Creates an expression that is enclosed in floor.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> floor(value: Expression<T>): Expression<T> {
+        return JpqlFloor(value)
+    }
+
+    /**
+     * Creates an expression that represents the natural logarithm of the value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ln(value: Expression<T>): Expression<Double> {
+        return JpqlLn(value)
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the specified value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
+        return JpqlRound(value, scale)
+    }
+
+    /**
+     * Creates an expression that represents the sign of a numeric value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sign(value: Expression<T>): Expression<Int> {
+        return JpqlSign(value)
+    }
+
+    /**
+     * Creates an expression that represents the square root of the value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sqrt(value: Expression<T>): Expression<Double> {
+        return JpqlSqrt(value)
+    }
+
+    /**
+     * Creates an expression that represents the number of elements of the collection.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T, S : Collection<T>> size(path: Path<S>): Expression<Int> {
+        return JpqlSize(path)
     }
 
     /**
@@ -642,5 +727,21 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
+    }
+
+    /**
+     * Creates an expression that represents the current date.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentDate(): Expression<Date> {
+        return JpqlCurrentDate
+    }
+
+    /**
+     * Creates an expression that represents the current time.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentTime(): Expression<Time> {
+        return JpqlCurrentTime
     }
 }
