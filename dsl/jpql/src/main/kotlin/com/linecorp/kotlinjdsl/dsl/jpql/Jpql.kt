@@ -620,38 +620,6 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that represents the rounding of the value to a specified scale.
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> round(expr: KProperty1<T, @Exact V>, scale: Int): Expression<V> {
-        return Expressions.round(Paths.path(expr), Expressions.value(scale))
-    }
-
-    /**
-     * Creates an expression that represents the rounding of the value to a specified scale.
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> round(value: Expressionable<T>, scale: Int): Expression<T> {
-        return Expressions.round(value.toExpression(), Expressions.value(scale))
-    }
-
-    /**
-     * Creates an expression that represents the rounding of the value to a specified scale.
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> round(expr: KProperty1<T, @Exact V>, scale: Expression<Int>): Expression<V> {
-        return Expressions.round(Paths.path(expr), scale.toExpression())
-    }
-
-    /**
-     * Creates an expression that represents the rounding of the value to a specified scale.
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> round(value: Expressionable<T>, scale: Expressionable<Int>): Expression<T> {
-        return Expressions.round(value.toExpression(), scale.toExpression())
-    }
-
-    /**
      * Creates an expression that represents the sign of value.
      *
      * - If value is positive, it returns 1.
@@ -692,6 +660,38 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> round(expr: KProperty1<T, @Exact V>, scale: Int): Expression<V> {
+        return Expressions.round(Paths.path(expr), Expressions.value(scale))
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expressionable<T>, scale: Int): Expression<T> {
+        return Expressions.round(value.toExpression(), Expressions.value(scale))
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> round(expr: KProperty1<T, @Exact V>, scale: Expression<Int>): Expression<V> {
+        return Expressions.round(Paths.path(expr), scale.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expressionable<T>, scale: Expressionable<Int>): Expression<T> {
+        return Expressions.round(value.toExpression(), scale.toExpression())
+    }
+
+    /**
      * Creates an expression that the number of elements of the collection.
      */
     @SinceJdsl("3.4.0")
@@ -705,6 +705,36 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.4.0")
     fun <T, S : Collection<T>> size(path: Pathable<S>): Expression<Int> {
         return Expressions.size(path.toPath())
+    }
+
+    /**
+     * Creates an expression that represents the current date.
+     *
+     * This is the same as ```CURRENT_DATE```.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentDate(): Expression<Date> {
+        return Expressions.currentDate()
+    }
+
+    /**
+     * Creates an expression that represents the current time.
+     *
+     * This is the same as ```CURRENT_TIME```.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentTime(): Expression<Time> {
+        return Expressions.currentTime()
+    }
+
+    /**
+     * Creates an expression that represents the local date.
+     *
+     * This is the same as ```LOCAL DATE```.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDate(): Expression<LocalDate> {
+        return Expressions.localDate()
     }
 
     /**
@@ -1549,36 +1579,6 @@ open class Jpql : JpqlDsl {
             string.toExpression(),
             start?.toExpression(),
         )
-    }
-
-    /**
-     * Creates an expression that represents the current date.
-     *
-     * This is the same as ```CURRENT_DATE```.
-     */
-    @SinceJdsl("3.4.0")
-    fun currentDate(): Expression<Date> {
-        return Expressions.currentDate()
-    }
-
-    /**
-     * Creates an expression that represents the current time.
-     *
-     * This is the same as ```CURRENT_TIME```.
-     */
-    @SinceJdsl("3.4.0")
-    fun currentTime(): Expression<Time> {
-        return Expressions.currentTime()
-    }
-
-    /**
-     * Creates an expression that represents the local date.
-     *
-     * This is the same as ```LOCAL DATE```.
-     */
-    @SinceJdsl("3.4.0")
-    fun localDate(): Expression<LocalDate> {
-        return Expressions.localDate()
     }
 
     /**

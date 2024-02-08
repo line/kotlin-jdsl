@@ -332,28 +332,6 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
-    fun currentDate() {
-        // when
-        val actual = Expressions.currentDate()
-
-        // then
-        val expected = JpqlCurrentDate
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun currentTime() {
-        // when
-        val actual = Expressions.currentTime()
-
-        // then
-        val expected = JpqlCurrentTime
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
     fun div() {
         // when
         val actual = Expressions.div(intExpression1, intExpression2)
@@ -433,20 +411,6 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
-    fun round() {
-        // when
-        val actual = Expressions.round(bigDecimalExpression1, intExpression1)
-
-        // then
-        val expected = JpqlRound(
-            bigDecimalExpression1,
-            intExpression1,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
     fun sign() {
         // when
         val actual = Expressions.sign(intExpression1)
@@ -473,6 +437,20 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
+    fun round() {
+        // when
+        val actual = Expressions.round(bigDecimalExpression1, intExpression1)
+
+        // then
+        val expected = JpqlRound(
+            bigDecimalExpression1,
+            intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
     fun size() {
         // when
         val actual = Expressions.size(path2)
@@ -481,6 +459,39 @@ class ExpressionsTest : WithAssertions {
         val expected = JpqlSize(
             path2,
         )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun currentDate() {
+        // when
+        val actual = Expressions.currentDate()
+
+        // then
+        val expected = JpqlCurrentDate
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun currentTime() {
+        // when
+        val actual = Expressions.currentTime()
+
+        // then
+        val expected = JpqlCurrentTime
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun localDate() {
+        // when
+        val actual = Expressions.localDate()
+
+        // then
+        val expected = JpqlLocalDate
 
         assertThat(actual).isEqualTo(expected)
     }
@@ -923,17 +934,6 @@ class ExpressionsTest : WithAssertions {
             string = stringExpression2,
             start = intExpression1,
         )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun localDate() {
-        // when
-        val actual = Expressions.localDate()
-
-        // then
-        val expected = JpqlLocalDate
 
         assertThat(actual).isEqualTo(expected)
     }

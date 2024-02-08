@@ -226,10 +226,10 @@ locate("Book", path(Book::title))
 * EXP (exp)
 * FLOOR (floor)
 * LN (ln)
-* ROUND (round)
 * SIGN (sign)
-* SIZE (size)
 * SQRT (sqrt)
+* ROUND (round)
+* SIZE (size)
 
 ```kotlin
 abs(path(Book::price))
@@ -242,13 +242,13 @@ floor(path(Book::price))
 
 ln(path(Book::price))
 
-round(path(Book::price), 2)
-
 sign(path(Book::price))
 
-size(path(Book::authors))
-
 sqrt(path(Book::price))
+
+round(path(Book::price), 2)
+
+size(path(Book::authors))
 ```
 
 | Function | DSL function |
@@ -261,17 +261,19 @@ sqrt(path(Book::price))
 
 * CURRENT\_DATE (currentDate)
 * CURRENT\_TIME (currentTime)
+* LOCAL DATE (localDate)
 
 ```kotlin
 currentDate()
 
 currentTime()
+
+localDate()
 ```
 
 | Function           | DSL function |
 |--------------------|--------------|
 | CURRENT\_TIMESTAMP | not yet      |
-| LOCAL DATE         | support      |
 | LOCAL TIME         | not yet      |
 | LOCAL DATETIME     | not yet      |
 | EXTRACT            | not yet      |

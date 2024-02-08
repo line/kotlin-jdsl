@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class LocalDateDslTest {
-
     @Test
     fun localDate() {
         // when

@@ -262,14 +262,6 @@ object Expressions {
     }
 
     /**
-     * Creates an expression that represents the rounding of the specified value to a specified scale.
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
-        return JpqlRound(value, scale)
-    }
-
-    /**
      * Creates an expression that represents the sign of a numeric value.
      */
     @SinceJdsl("3.4.0")
@@ -286,11 +278,43 @@ object Expressions {
     }
 
     /**
+     * Creates an expression that represents the rounding of the specified value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
+        return JpqlRound(value, scale)
+    }
+
+    /**
      * Creates an expression that represents the number of elements of the collection.
      */
     @SinceJdsl("3.4.0")
     fun <T, S : Collection<T>> size(path: Path<S>): Expression<Int> {
         return JpqlSize(path)
+    }
+
+    /**
+     * Creates an expression that represents the current date.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentDate(): Expression<Date> {
+        return JpqlCurrentDate
+    }
+
+    /**
+     * Creates an expression that represents the current time.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentTime(): Expression<Time> {
+        return JpqlCurrentTime
+    }
+
+    /**
+     * Creates an expression that represents the local date.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDate(): Expression<LocalDate> {
+        return JpqlLocalDate
     }
 
     /**
@@ -631,14 +655,6 @@ object Expressions {
     }
 
     /**
-     * Creates an expression that represents the local date.
-     */
-    @SinceJdsl("3.4.0")
-    fun localDate(): Expression<LocalDate> {
-        return JpqlLocalDate
-    }
-
-    /**
      * Creates an expression that represents predefined database functions and user-defined database functions.
      */
     @SinceJdsl("3.0.0")
@@ -727,21 +743,5 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
-    }
-
-    /**
-     * Creates an expression that represents the current date.
-     */
-    @SinceJdsl("3.4.0")
-    fun currentDate(): Expression<Date> {
-        return JpqlCurrentDate
-    }
-
-    /**
-     * Creates an expression that represents the current time.
-     */
-    @SinceJdsl("3.4.0")
-    fun currentTime(): Expression<Time> {
-        return JpqlCurrentTime
     }
 }
