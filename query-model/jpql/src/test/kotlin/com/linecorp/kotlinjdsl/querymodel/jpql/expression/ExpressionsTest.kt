@@ -19,7 +19,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionPar
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalDateTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
@@ -885,17 +884,6 @@ class ExpressionsTest : WithAssertions {
         val expected = JpqlExpressionParentheses(
             intExpression1,
         )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun localDateTime() {
-        // when
-        val actual = Expressions.localDateTime()
-
-        // then
-        val expected = JpqlLocalDateTime.toExpression()
 
         assertThat(actual).isEqualTo(expected)
     }
