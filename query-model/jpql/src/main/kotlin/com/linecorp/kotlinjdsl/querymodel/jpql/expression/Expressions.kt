@@ -17,6 +17,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionPar
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
@@ -44,6 +45,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.time.LocalTime
 import kotlin.internal.Exact
 import kotlin.reflect.KClass
 
@@ -310,6 +312,14 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun sum(distinct: Boolean, expr: Expression<BigDecimal>): Expression<BigDecimal> {
         return JpqlSum.BigDecimalSum(distinct, expr)
+    }
+
+    /**
+     * Creates an expression that represents the local time.
+     */
+    @SinceJdsl("3.0.0")
+    fun localTime(): Expression<LocalTime> {
+        return JpqlLocalTime
     }
 
     /**
