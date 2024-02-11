@@ -517,6 +517,11 @@ open class Jpql : JpqlDsl {
         )
     }
 
+    /**
+     * Creates an expression that represents the local time.
+     *
+     * This is the same as ```LOCAL TIME```.
+     */
     @SinceJdsl("3.0.0")
     fun localTime(): Expression<LocalTime> {
         return Expressions.localTime()
