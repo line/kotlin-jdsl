@@ -316,6 +316,8 @@ object Expressions {
 
     /**
      * Creates an expression that represents the local time.
+     *
+     * Matches ```LOCAL TIME```.
      */
     @SinceJdsl("3.0.0")
     fun localTime(): Expression<LocalTime> {
