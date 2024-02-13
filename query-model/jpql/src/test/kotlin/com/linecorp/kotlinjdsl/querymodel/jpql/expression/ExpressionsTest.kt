@@ -54,6 +54,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIndex
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sorts
 import org.assertj.core.api.WithAssertions
@@ -392,6 +393,19 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlFloor(
             doubleExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun index() {
+        // when
+        val actual = Expressions.index(path2)
+
+        // then
+        val expected = JpqlIndex(
+            path2,
         )
 
         assertThat(actual).isEqualTo(expected)

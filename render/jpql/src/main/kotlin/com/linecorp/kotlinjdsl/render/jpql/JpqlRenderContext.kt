@@ -53,6 +53,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanOrEqua
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInSubquerySerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlIndexSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInnerAssociationFetchJoinSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInnerAssociationJoinSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInnerFetchJoinSerializer
@@ -308,6 +309,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlGreaterThanOrEqualToAnySerializer(),
             JpqlGreaterThanOrEqualToSerializer(),
             JpqlGreaterThanSerializer(),
+            JpqlIndexSerializer(),
             JpqlInnerAssociationFetchJoinSerializer(),
             JpqlInnerAssociationJoinSerializer(),
             JpqlInnerFetchJoinSerializer(),
