@@ -9,7 +9,6 @@ import kotlin.reflect.KClass
 
 @Internal
 class JpqlLocalDateTimeSerializer : JpqlSerializer<JpqlLocalDateTime> {
-
     override fun handledType(): KClass<JpqlLocalDateTime> {
         return JpqlLocalDateTime::class
     }

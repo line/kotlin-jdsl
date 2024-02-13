@@ -511,6 +511,17 @@ class ExpressionsTest : WithAssertions {
         assertThat(actual).isEqualTo(expected)
     }
 
+    @Test
+    fun localDateTime() {
+        // when
+        val actual = Expressions.localDateTime()
+
+        // then
+        val expected = JpqlLocalDateTime
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
     @ParameterizedTest
     @ValueSource(booleans = [true, false])
     fun count(distinct: Boolean) {
@@ -1063,17 +1074,6 @@ class ExpressionsTest : WithAssertions {
         val expected = JpqlExpressionParentheses(
             intExpression1,
         )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun localDateTime() {
-        // when
-        val actual = Expressions.localDateTime()
-
-        // then
-        val expected = JpqlLocalDateTime.toExpression()
 
         assertThat(actual).isEqualTo(expected)
     }

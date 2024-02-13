@@ -306,6 +306,8 @@ object Expressions {
 
     /**
      * Creates an expression that represents the current date.
+     *
+     * This is the same as ```CURRENT_DATE```.
      */
     @SinceJdsl("3.4.0")
     fun currentDate(): Expression<Date> {
@@ -314,6 +316,8 @@ object Expressions {
 
     /**
      * Creates an expression that represents the current time.
+     *
+     * This is the same as ```CURRENT_TIME```.
      */
     @SinceJdsl("3.4.0")
     fun currentTime(): Expression<Time> {
@@ -322,10 +326,22 @@ object Expressions {
 
     /**
      * Creates an expression that represents the local date.
+     *
+     * This is the same as ```LOCAL DATE```
      */
     @SinceJdsl("3.4.0")
     fun localDate(): Expression<LocalDate> {
         return JpqlLocalDate
+    }
+
+    /**
+     * Creates an expression that represents the local datetime.
+     *
+     * This is the same as ```LOCAL DATETIME```.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDateTime(): Expression<LocalDateTime> {
+        return JpqlLocalDateTime
     }
 
     /**
@@ -754,13 +770,5 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
-    }
-
-    /**
-     * Creates an expression that represents the local datetime in jpql.
-     */
-    @SinceJdsl("3.4.0")
-    fun localDateTime(): Expression<LocalDateTime> {
-        return JpqlLocalDateTime
     }
 }

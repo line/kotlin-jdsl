@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 class JpqlLocalDateTimeDslTest {
-
     @Test
     fun localDateTime() {
         // when
