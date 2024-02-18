@@ -64,6 +64,31 @@ class KotlinJdslQueryProviderFactory(
     /**
      * Creates a [KotlinJdslQueryProvider] from a select query.
      */
+    fun <DSL : JpqlDsl, T : Any> create(
+        dsl: DSL,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): KotlinJdslQueryProvider<T> {
+        val query = jpql(dsl, init)
+
+        return KotlinJdslQueryProvider(query, emptyMap(), context)
+    }
+
+    /**
+     * Creates a [KotlinJdslQueryProvider] from a select query.
+     */
+    fun <DSL : JpqlDsl, T : Any> create(
+        dsl: DSL,
+        queryParams: Map<String, Any?>,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): KotlinJdslQueryProvider<T> {
+        val query = jpql(dsl, init)
+
+        return KotlinJdslQueryProvider(query, queryParams, context)
+    }
+
+    /**
+     * Creates a [KotlinJdslQueryProvider] from a select query.
+     */
     fun <T : Any> create(
         query: SelectQuery<T>,
     ): KotlinJdslQueryProvider<T> {
