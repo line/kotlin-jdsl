@@ -9,9 +9,12 @@ You can use them to create your own functions.
 You can also create your own `Model` that implements [`Expression`](expressions.md) or [`Predicate`](predicates.md) and create a function to return this Model.
 You can implement [`JpqlSerializer`](custom-dsl.md#serializer) to let Kotlin JDSL to render `Model` to String.
 
-{% hint style="info" %}
-You need to implement `JpqlDsl.Constructor` as a companion object so that `jpql()` can recognize the DSL.
-{% endhint %}
+There are two ways to pass your own DSL to `jpql()`.
+The first is to implement `JpqlDsl.Constructor` as a companion object to create a DSL object, and the second is to create a DSL instance.
+
+### JpqlDsl.Constructor
+
+With this way, you don't need to create an instance and a new instance is automatically created for each query creation.
 
 ```kotlin
 class MyJpql : Jpql() {
@@ -35,6 +38,34 @@ val query = jpql(MyJpql) {
         entity(Book::class)
     ).where(
         myFunction("test").regexLike(".*")
+    )
+}
+```
+
+### Jpql Instance
+
+With this way, you can reuse a single instance for query creation and utilize dependency injection.
+
+```kotlin
+class MyJpql(
+    private val encryptor: Encryptor,
+) : Jpql() {
+    fun Path<String>.equalToEncrypted(value: String): Predicate {
+        val encrypted = encryptor.encrypt(value)
+        return this.eq(encrypted)
+    }
+}
+
+val encryptor = Encryptor()
+val instance = MyJpql(encryptor)
+
+val query = jpql(instance) {
+    select(
+        entity(Book::class)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::title).equalToEncrypted("plain")
     )
 }
 ```
