@@ -48,6 +48,7 @@ import java.sql.Date
 import java.sql.Time
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import kotlin.internal.Exact
 import kotlin.internal.LowPriorityInOverloadResolution
 import kotlin.reflect.KClass
@@ -752,6 +753,16 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.4.0")
     fun localDate(): Expression<LocalDate> {
         return Expressions.localDate()
+    }
+
+    /**
+     * Creates an expression that represents the local time.
+     *
+     * This is the same as ```LOCAL TIME```.
+     */
+    @SinceJdsl("3.4.0")
+    fun localTime(): Expression<LocalTime> {
+        return Expressions.localTime()
     }
 
     /**

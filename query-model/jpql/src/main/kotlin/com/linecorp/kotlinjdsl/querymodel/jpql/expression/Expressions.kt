@@ -26,6 +26,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLn
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalDate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalDateTime
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
@@ -62,6 +63,7 @@ import java.sql.Date
 import java.sql.Time
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import kotlin.internal.Exact
 import kotlin.reflect.KClass
 
@@ -332,6 +334,16 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun localDate(): Expression<LocalDate> {
         return JpqlLocalDate
+    }
+
+    /**
+     * Creates an expression that represents the local time.
+     *
+     * Matches ```LOCAL TIME```.
+     */
+    @SinceJdsl("3.4.0")
+    fun localTime(): Expression<LocalTime> {
+        return JpqlLocalTime
     }
 
     /**
