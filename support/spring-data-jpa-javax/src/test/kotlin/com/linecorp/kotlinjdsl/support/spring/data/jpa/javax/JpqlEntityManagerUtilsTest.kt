@@ -20,7 +20,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.SliceImpl
-import org.springframework.data.jpa.repository.query.QueryUtilsAdaptor
+import org.springframework.data.jpa.repository.query.QueryEnhancer
+import org.springframework.data.jpa.repository.query.QueryEnhancerFactoryAdaptor
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
 import java.util.function.LongSupplier
 import javax.persistence.EntityManager
@@ -36,6 +37,9 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
     @MockK
     private lateinit var context: RenderContext
+
+    @MockK
+    private lateinit var queryEnhancer: QueryEnhancer
 
     @MockK
     private lateinit var selectQuery1: SelectQuery<String>
@@ -69,7 +73,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     @Suppress("UnusedEquals")
     fun setUp() {
         mockkObject(JpqlRendererHolder)
-        mockkObject(QueryUtilsAdaptor)
+        mockkObject(QueryEnhancerFactoryAdaptor)
         mockkObject(PageableExecutionUtilsAdaptor)
 
         every { JpqlRendererHolder.get() } returns renderer
@@ -233,7 +237,8 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
         every { renderer.render(any(), any()) } returns rendered1
         every { selectQuery1.returnType } returns String::class
-        every { QueryUtilsAdaptor.applySorting(any(), any()) } returns sortedQuery1
+        every { QueryEnhancerFactoryAdaptor.forQuery(any()) } returns queryEnhancer
+        every { queryEnhancer.applySorting(any()) } returns sortedQuery1
         every { entityManager.createQuery(any<String>(), any<Class<*>>()) } returns stringTypedQuery1
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
         every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
@@ -250,7 +255,8 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
             renderer.render(selectQuery1, context)
             selectQuery1.returnType
 
-            QueryUtilsAdaptor.applySorting(rendered1.query, pageable1.sort)
+            QueryEnhancerFactoryAdaptor.forQuery(rendered1.query)
+            queryEnhancer.applySorting(pageable1.sort)
 
             entityManager.createQuery(sortedQuery1, String::class.java)
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
@@ -273,8 +279,9 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
         every { renderer.render(any(), any()) } returns rendered1
         every { selectQuery1.returnType } returns String::class
-        every { QueryUtilsAdaptor.applySorting(any(), any()) } returns sortedQuery1
-        every { QueryUtilsAdaptor.createCountQueryFor(any(), any(), any()) } returns countQuery1
+        every { QueryEnhancerFactoryAdaptor.forQuery(any()) } returns queryEnhancer
+        every { queryEnhancer.applySorting(any()) } returns sortedQuery1
+        every { queryEnhancer.createCountQueryFor() } returns countQuery1
         every {
             entityManager.createQuery(any<String>(), any<Class<*>>())
         } returns stringTypedQuery1 andThen longTypedQuery1
@@ -300,8 +307,9 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
             renderer.render(selectQuery1, context)
             selectQuery1.returnType
 
-            QueryUtilsAdaptor.applySorting(rendered1.query, pageable1.sort)
-            QueryUtilsAdaptor.createCountQueryFor(rendered1.query, null, false)
+            QueryEnhancerFactoryAdaptor.forQuery(rendered1.query)
+            queryEnhancer.applySorting(pageable1.sort)
+            queryEnhancer.createCountQueryFor()
 
             entityManager.createQuery(sortedQuery1, String::class.java)
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
@@ -329,7 +337,8 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
         every { renderer.render(any(), any()) } returns rendered1
         every { selectQuery1.returnType } returns String::class
-        every { QueryUtilsAdaptor.applySorting(any(), any()) } returns sortedQuery1
+        every { QueryEnhancerFactoryAdaptor.forQuery(any()) } returns queryEnhancer
+        every { queryEnhancer.applySorting(any()) } returns sortedQuery1
         every { entityManager.createQuery(any<String>(), any<Class<*>>()) } returns stringTypedQuery1
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
         every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
@@ -346,7 +355,8 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
             renderer.render(selectQuery1, context)
             selectQuery1.returnType
 
-            QueryUtilsAdaptor.applySorting(rendered1.query, pageable1.sort)
+            QueryEnhancerFactoryAdaptor.forQuery(rendered1.query)
+            queryEnhancer.applySorting(pageable1.sort)
 
             entityManager.createQuery(sortedQuery1, String::class.java)
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)

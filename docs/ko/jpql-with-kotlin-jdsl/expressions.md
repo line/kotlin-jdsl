@@ -46,7 +46,7 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 
 ## Arithmetic operations
 
-산술 연사자를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
+산술 연산자를 만들기 위해서는 다음 함수들을 사용할 수 있습니다.
 
 * \+ (plus)
 * \- (minus)
@@ -190,44 +190,92 @@ Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 �
 
 ### String functions
 
-| Function  | DSL function |
-|-----------|--------------|
-| CONCAT    | support      |
-| SUBSTRING | support      |
-| TRIM      | support      |
-| LOWER     | support      |
-| UPPER     | support      |
-| LENGTH    | support      |
-| LOCATE    | support      |
+* CONCAT (concat)
+* SUBSTRING (substring)
+* TRIM (trim)
+* LOWER (lower)
+* UPPER (upper)
+* LENGTH (length)
+* LOCATE (locate)
+
+```kotlin
+concat(path(Book::title), literal(":"), path(Book::imageUrl))
+
+substring(path(Book::title), 4)
+
+trim(path(Book::title))
+trim('B').from(path(Book::title))
+
+lower(path(Book::title))
+
+upper(path(Book::title))
+
+length(path(Book::title))
+
+locate("Book", path(Book::title))
+```
 
 ### Arithmetic functions
 
+* ABS (abs)
+* CEILING (ceiling)
+* EXP (exp)
+* FLOOR (floor)
+* INDEX (index)
+* LN (ln)
+* SIGN (sign)
+* SQRT (sqrt)
+* ROUND (round)
+* SIZE (size)
+
+```kotlin
+abs(path(Book::price))
+
+ceiling(path(Book::price))
+
+exp(path(Book::price))
+
+floor(path(Book::price))
+
+index(path(Book::authors))
+
+ln(path(Book::price))
+
+sign(path(Book::price))
+
+sqrt(path(Book::price))
+
+round(path(Book::price), 2)
+
+size(path(Book::authors))
+```
+
 | Function | DSL function |
 |----------|--------------|
-| ABS      | not yet      |
-| CEILING  | not yet      |
-| EXP      | not yet      |
-| FLOOR    | not yet      |
-| LN       | not yet      |
 | MOD      | not yet      |
 | POWER    | not yet      |
-| ROUND    | not yet      |
-| SIGN     | not yet      |
-| SQRT     | not yet      |
-| SIZE     | not yet      |
-| INDEX    | not yet      |
 
 ### Datetime functions
 
+* CURRENT\_DATE (currentDate)
+* CURRENT\_TIME (currentTime)
+* LOCAL DATE (localDate)
+* LOCAL DATETIME (localDateTime)
+
+```kotlin
+currentDate()
+
+currentTime()
+
+localDate()
+
+localDateTime()
+```
+
 | Function           | DSL function |
 |--------------------|--------------|
-| CURRENT\_DATE      | not yet      |
-| CURRENT\_TIME      | not yet      |
 | CURRENT\_TIMESTAMP | not yet      |
-| LOCAL DATE         | not yet      |
 | LOCAL TIME         | not yet      |
-| LOCAL DATETIME     | not yet      |
-| EXTRACT            | not yet      |
 
 ### Database function
 

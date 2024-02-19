@@ -2,7 +2,7 @@
 
 ## Requirements
 
-Kotlin JDSL을 사용하기 위해서는 Java 8 (혹은 그 이상) and Kotlin 1.9 (그 이상)이 요구됩니다.
+Kotlin JDSL을 사용하기 위해서는 Java 8 (혹은 그 이상) and Kotlin 1.7 (그 이상)이 요구됩니다.
 
 ## Configure the repositories
 
@@ -100,8 +100,8 @@ Kotlin JDSL을 실행시키기 위해서는 다음 dependency들이 필수로 �
 
 ```kotlin
 dependencies {
-    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.3.1")
-    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.3.1")
+    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.4.0-SNAPSHOT")
+    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.4.0-SNAPSHOT")
 }
 ```
 
@@ -111,8 +111,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.linecorp.kotlin-jdsl:jpql-dsl:3.3.1'
-    implementation 'com.linecorp.kotlin-jdsl:jpql-render:3.3.1'
+    implementation 'com.linecorp.kotlin-jdsl:jpql-dsl:3.4.0-SNAPSHOT'
+    implementation 'com.linecorp.kotlin-jdsl:jpql-render:3.4.0-SNAPSHOT'
 }
 ```
 
@@ -126,12 +126,12 @@ dependencies {
     <dependency>
         <groupId>com.linecorp.kotlin-jdsl</groupId>
         <artifactId>jpql-dsl</artifactId>
-        <version>3.3.1</version>
+        <version>3.4.0-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>com.linecorp.kotlin-jdsl</groupId>
         <artifactId>jpql-render</artifactId>
-        <version>3.3.1</version>
+        <version>3.4.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```

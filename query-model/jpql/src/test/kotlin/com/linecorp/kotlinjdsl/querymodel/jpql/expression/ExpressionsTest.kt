@@ -4,21 +4,30 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.book.BookAuthorType
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.employee.Employee
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAbs
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCeiling
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentDate
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExp
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFloor
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLn
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalDate
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalDateTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalTime
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
@@ -31,6 +40,10 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSign
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSize
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSqrt
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubquery
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSubstring
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSum
@@ -43,6 +56,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
+import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIndex
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sorts
 import org.assertj.core.api.WithAssertions
@@ -82,6 +96,7 @@ class ExpressionsTest : WithAssertions {
     private val entity1 = Entities.entity(Employee::class)
 
     private val path1 = Paths.path(Employee::employeeId)
+    private val path2 = Paths.path(Employee::departments)
 
     private val predicate1 = Predicates.equal(Paths.path(Book::price), Expressions.value(BigDecimal.valueOf(100)))
     private val predicate2 = Predicates.equal(Paths.path(Book::price), Expressions.value(BigDecimal.valueOf(200)))
@@ -334,12 +349,187 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
+    fun abs() {
+        // when
+        val actual = Expressions.abs(intExpression1)
+
+        // then
+        val expected = JpqlAbs<Int>(
+            intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun ceiling() {
+        // when
+        val actual = Expressions.ceiling(doubleExpression1)
+
+        // then
+        val expected = JpqlCeiling(
+            doubleExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun exp() {
+        // when
+        val actual = Expressions.exp(doubleExpression1)
+
+        // then
+        val expected = JpqlExp(
+            doubleExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun floor() {
+        // when
+        val actual = Expressions.floor(doubleExpression1)
+
+        // then
+        val expected = JpqlFloor(
+            doubleExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun index() {
+        // when
+        val actual = Expressions.index(path2)
+
+        // then
+        val expected = JpqlIndex(
+            path2,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun ln() {
+        // when
+        val actual = Expressions.ln(doubleExpression1)
+
+        // then
+        val expected = JpqlLn(
+            doubleExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun sign() {
+        // when
+        val actual = Expressions.sign(intExpression1)
+
+        // then
+        val expected = JpqlSign(
+            intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun sqrt() {
+        // when
+        val actual = Expressions.sqrt(intExpression1)
+
+        // then
+        val expected = JpqlSqrt(
+            intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun round() {
+        // when
+        val actual = Expressions.round(bigDecimalExpression1, intExpression1)
+
+        // then
+        val expected = JpqlRound(
+            bigDecimalExpression1,
+            intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun size() {
+        // when
+        val actual = Expressions.size(path2)
+
+        // then
+        val expected = JpqlSize(
+            path2,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun currentDate() {
+        // when
+        val actual = Expressions.currentDate()
+
+        // then
+        val expected = JpqlCurrentDate
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun currentTime() {
+        // when
+        val actual = Expressions.currentTime()
+
+        // then
+        val expected = JpqlCurrentTime
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun localDate() {
+        // when
+        val actual = Expressions.localDate()
+
+        // then
+        val expected = JpqlLocalDate
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
     fun localTime() {
         // when
         val actual = Expressions.localTime()
 
         // then
         val expected = JpqlLocalTime
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun localDateTime() {
+        // when
+        val actual = Expressions.localDateTime()
+
+        // then
+        val expected = JpqlLocalDateTime
+
 
         assertThat(actual).isEqualTo(expected)
     }
