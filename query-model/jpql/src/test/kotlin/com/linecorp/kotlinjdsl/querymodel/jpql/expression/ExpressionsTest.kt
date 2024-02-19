@@ -512,6 +512,7 @@ class ExpressionsTest : WithAssertions {
         assertThat(actual).isEqualTo(expected)
     }
 
+    @Test
     fun localTime() {
         // when
         val actual = Expressions.localTime()
@@ -529,7 +530,6 @@ class ExpressionsTest : WithAssertions {
 
         // then
         val expected = JpqlLocalDateTime
-
 
         assertThat(actual).isEqualTo(expected)
     }

@@ -329,7 +329,7 @@ object Expressions {
     /**
      * Creates an expression that represents the local date.
      *
-     * This is the same as ```LOCAL DATE```
+     * This is the same as ```LOCAL DATE```.
      */
     @SinceJdsl("3.4.0")
     fun localDate(): Expression<LocalDate> {
@@ -339,7 +339,7 @@ object Expressions {
     /**
      * Creates an expression that represents the local time.
      *
-     * Matches ```LOCAL TIME```.
+     * This is the same as ```LOCAL TIME```.
      */
     @SinceJdsl("3.4.0")
     fun localTime(): Expression<LocalTime> {

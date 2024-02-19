@@ -260,6 +260,7 @@ size(path(Book::authors))
 * CURRENT\_DATE (currentDate)
 * CURRENT\_TIME (currentTime)
 * LOCAL DATE (localDate)
+* LOCAL TIME (localTime)
 * LOCAL DATETIME (localDateTime)
 
 ```kotlin
@@ -269,13 +270,14 @@ currentTime()
 
 localDate()
 
+localTime()
+
 localDateTime()
 ```
 
 | Function           | DSL function |
 |--------------------|--------------|
 | CURRENT\_TIMESTAMP | not yet      |
-| LOCAL TIME         | not yet      |
 
 ### Database function
 

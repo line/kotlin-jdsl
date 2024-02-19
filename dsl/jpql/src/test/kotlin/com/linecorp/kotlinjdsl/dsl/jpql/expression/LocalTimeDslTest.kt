@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import java.time.LocalTime
 
 class LocalTimeDslTest {
-
     @Test
     fun localTime() {
         // when
@@ -16,7 +15,7 @@ class LocalTimeDslTest {
             localTime()
         }.toExpression()
 
-        val actual: Expression<LocalTime> = expression
+        val actual: Expression<LocalTime> = expression // for type check
 
         // then
         val expected = Expressions.localTime()
