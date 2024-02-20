@@ -52,6 +52,7 @@ avg(path(FullTimeEmployee::annualSalary)(EmployeeSalary::value)).`as`(BigDecimal
 * \- (minus)
 * \* (times)
 * / (div)
+* % (mod)
 
 ```kotlin
 path(Book::price).plus(path(Book::salePrice))
