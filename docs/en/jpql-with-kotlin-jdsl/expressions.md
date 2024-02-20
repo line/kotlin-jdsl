@@ -52,6 +52,7 @@ Use the following functions to build arithmetic operations:
 * \- (minus)
 * \* (times)
 * / (div)
+* % (mod)
 
 ```kotlin
 path(Book::price).plus(path(Book::salePrice))
