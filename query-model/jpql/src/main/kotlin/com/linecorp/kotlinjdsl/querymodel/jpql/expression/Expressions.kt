@@ -13,6 +13,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCount
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentDate
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentTime
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCurrentTimestamp
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCustomExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlDivide
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlEntityType
@@ -61,6 +62,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.sql.Date
 import java.sql.Time
+import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -324,6 +326,16 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun currentTime(): Expression<Time> {
         return JpqlCurrentTime
+    }
+
+    /**
+     * Creates an expression that represents the current timestamp(datetime).
+     *
+     * This is the same as ```CURRENT_TIMESTAMP```.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentTimestamp(): Expression<Timestamp> {
+        return JpqlCurrentTimestamp
     }
 
     /**

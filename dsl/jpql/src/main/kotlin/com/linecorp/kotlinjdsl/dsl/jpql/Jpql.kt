@@ -46,6 +46,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.sql.Date
 import java.sql.Time
+import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -743,6 +744,16 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.4.0")
     fun currentTime(): Expression<Time> {
         return Expressions.currentTime()
+    }
+
+    /**
+     * Creates an expression that represents the current timestamp(datetime).
+     *
+     * This is the same as ```CURRENT_TIMESTAMP```.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentTimestamp(): Expression<Timestamp> {
+        return Expressions.currentTimestamp()
     }
 
     /**

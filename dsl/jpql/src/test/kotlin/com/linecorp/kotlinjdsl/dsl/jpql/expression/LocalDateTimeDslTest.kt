@@ -1,12 +1,13 @@
-package com.linecorp.kotlinjdsl.dsl.jpql
+package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
+import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
-class JpqlLocalDateTimeDslTest {
+class LocalDateTimeDslTest {
     @Test
     fun localDateTime() {
         // when
