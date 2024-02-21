@@ -302,7 +302,7 @@ object Expressions {
     }
 
     /**
-     * Creates an expression that represents the modulo of values.
+     * Creates an expression that represents the mod of values.
      */
     @SinceJdsl("3.4.0")
     fun mod(value1: Expression<Int>, value2: Expression<Int>): Expression<Int> {
