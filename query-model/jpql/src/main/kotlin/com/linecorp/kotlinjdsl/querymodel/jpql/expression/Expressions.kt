@@ -39,6 +39,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSign
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSize
@@ -274,6 +275,14 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> ln(value: Expression<T>): Expression<Double> {
         return JpqlLn(value)
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the specified value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> power(value: Expression<T>, scale: Expression<Int>): Expression<T> {
+        return JpqlPower(value, scale)
     }
 
     /**

@@ -104,6 +104,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPathPropertySeria
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPathTreatSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPathTypeSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPlusSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPowerSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPredicateParenthesesSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRoundSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQuerySerializer
@@ -368,6 +369,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlPredicateParenthesesSerializer(),
             JpqlRoundSerializer(),
             JpqlSelectQuerySerializer(),
+            JpqlPowerSerializer(),
             JpqlSignSerializer(),
             JpqlSizeSerializer(),
             JpqlSortSerializer(),

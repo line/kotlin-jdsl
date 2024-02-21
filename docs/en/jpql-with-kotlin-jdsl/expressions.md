@@ -227,6 +227,7 @@ locate("Book", path(Book::title))
 * FLOOR (floor)
 * INDEX (index)
 * LN (ln)
+* POWER (power)
 * SIGN (sign)
 * SQRT (sqrt)
 * ROUND (round)
@@ -244,6 +245,8 @@ floor(path(Book::price))
 index(path(Book::authors))
 
 ln(path(Book::price))
+
+power(path(Book::verticalLength), 2)
 
 sign(path(Book::price))
 

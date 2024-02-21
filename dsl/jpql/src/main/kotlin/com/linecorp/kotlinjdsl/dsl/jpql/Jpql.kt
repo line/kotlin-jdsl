@@ -639,6 +639,35 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> power(expr: KProperty1<T, @Exact V>, scale: Int): Expression<V> {
+        return Expressions.round(Paths.path(expr), Expressions.value(scale))
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> power(value: Expressionable<T>, scale: Int): Expression<T> {
+        return Expressions.round(value.toExpression(), Expressions.value(scale))
+    }
+
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> power(expr: KProperty1<T, @Exact V>, scale: Expression<Int>): Expression<V> {
+        return Expressions.round(Paths.path(expr), scale.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> power(value: Expressionable<T>, scale: Expressionable<Int>): Expression<T> {
+        return Expressions.round(value.toExpression(), scale.toExpression())
+    }
+
+    /**
      * Creates an expression that represents the sign of value.
      *
      * - If value is positive, it returns 1.
