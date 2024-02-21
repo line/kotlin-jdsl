@@ -7,7 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
  * Expression that calculates the mod of a integer [value1] to a specified integer [value2].
  */
 @Internal
-data class JpqlMod<T : Int> internal constructor(
-    val value1: Expression<T>,
+data class JpqlMod internal constructor(
+    val value1: Expression<Int>,
     val value2: Expression<Int>,
-) : Expression<T>
+) : Expression<Int>
