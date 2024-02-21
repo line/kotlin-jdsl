@@ -711,6 +711,38 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun mod(value1: Expressionable<Int>, value2: Expressionable<Int>): Expression<Int> {
+        return Expressions.mod(value1.toExpression(), value2.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Int> mod(expr: KProperty1<T, @Exact V>, value: Int): Expression<Int> {
+        return Expressions.mod(Paths.path(expr), Expressions.value(value))
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun mod(value1: Expressionable<Int>, value2: Int): Expression<Int> {
+        return Expressions.mod(value1.toExpression(), Expressions.value(value2))
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Int> mod(expr: KProperty1<T, @Exact V>, value: Expression<Int>): Expression<Int> {
+        return Expressions.mod(Paths.path(expr), value.toExpression())
+    }
+
+    /**
      * Creates an expression that the number of elements of the collection.
      */
     @SinceJdsl("3.4.0")

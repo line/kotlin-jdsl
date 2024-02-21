@@ -45,7 +45,7 @@ class JpqlModSerializerTest {
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlMod<*>, writer, context)
+        sut.serialize(part as JpqlMod, writer, context)
 
         // then
         verifySequence {
