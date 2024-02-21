@@ -471,12 +471,12 @@ class ExpressionsTest : WithAssertions {
     @Test
     fun mod() {
         // when
-        val actual = Expressions.mod(intExpression2, intExpression1)
+        val actual = Expressions.mod(intExpression1, intExpression2)
 
         // then
         val expected = JpqlMod(
-            intExpression2,
             intExpression1,
+            intExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)
