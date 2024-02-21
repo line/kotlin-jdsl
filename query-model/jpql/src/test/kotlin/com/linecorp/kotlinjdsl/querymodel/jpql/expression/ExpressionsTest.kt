@@ -35,6 +35,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMinus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMod
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNew
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
@@ -477,6 +478,20 @@ class ExpressionsTest : WithAssertions {
         val expected = JpqlRound(
             bigDecimalExpression1,
             intExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun mod() {
+        // when
+        val actual = Expressions.mod(intExpression1, intExpression2)
+
+        // then
+        val expected = JpqlMod(
+            intExpression1,
+            intExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)
