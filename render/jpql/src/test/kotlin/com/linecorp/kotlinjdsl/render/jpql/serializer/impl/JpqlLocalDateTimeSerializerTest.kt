@@ -12,7 +12,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
-class JpqlJpqlLocalDateTimeSerializerTest {
+class JpqlLocalDateTimeSerializerTest {
     private val sut = JpqlLocalDateTimeSerializer()
 
     @MockK
@@ -22,7 +22,7 @@ class JpqlJpqlLocalDateTimeSerializerTest {
     private lateinit var serializer: JpqlRenderSerializer
 
     @Test
-    fun handle() {
+    fun handledType() {
         // when
         val actual = sut.handledType()
 
@@ -33,11 +33,11 @@ class JpqlJpqlLocalDateTimeSerializerTest {
     @Test
     fun serialize() {
         // given
-        val part = Expressions.localDateTime() as JpqlLocalDateTime
+        val part = Expressions.localDateTime()
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part, writer, context)
+        sut.serialize(part as JpqlLocalDateTime, writer, context)
 
         // then
         verifySequence {
