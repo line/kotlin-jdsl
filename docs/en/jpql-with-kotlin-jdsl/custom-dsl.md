@@ -52,7 +52,7 @@ class MyJpql(
 ) : Jpql() {
     fun Path<String>.equalToEncrypted(value: String): Predicate {
         val encrypted = encryptor.encrypt(value)
-        return this.eq(encrypted)
+        return this.equal(encrypted)
     }
 }
 
