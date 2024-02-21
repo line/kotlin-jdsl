@@ -259,6 +259,7 @@ size(path(Book::authors))
 
 * CURRENT\_DATE (currentDate)
 * CURRENT\_TIME (currentTime)
+* CURRENT\_TIMESTAMP (currentTimestamp)
 * LOCAL DATE (localDate)
 * LOCAL TIME (localTime)
 * LOCAL DATETIME (localDateTime)
@@ -268,16 +269,14 @@ currentDate()
 
 currentTime()
 
+currentTimestamp()
+
 localDate()
 
 localTime()
 
 localDateTime()
 ```
-
-| Function           | DSL function |
-|--------------------|--------------|
-| CURRENT\_TIMESTAMP | not yet      |
 
 ### Database function
 

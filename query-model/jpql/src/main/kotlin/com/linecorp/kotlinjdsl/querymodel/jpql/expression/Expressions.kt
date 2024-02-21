@@ -329,7 +329,7 @@ object Expressions {
     }
 
     /**
-     * Creates an expression that represents the current timestamp(datetime).
+     * Creates an expression that represents the current timestamp.
      *
      * This is the same as ```CURRENT_TIMESTAMP```.
      */
