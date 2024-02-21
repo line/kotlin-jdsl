@@ -21,6 +21,11 @@ class JpqlPowerSerializer : JpqlSerializer<JpqlPower<*>> {
 
         writer.writeParentheses {
             delegate.serialize(part.base, writer, context)
+
+            writer.write(",")
+            writer.write(" ")
+
+            delegate.serialize(part.exponent, writer, context)
         }
     }
 }
