@@ -6,16 +6,13 @@ import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.runs
 import io.mockk.verifySequence
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
-class JpqlJpqlLocalDateTimeSerializerTest {
+class JpqlLocalDateTimeSerializerTest {
     private val sut = JpqlLocalDateTimeSerializer()
 
     @MockK
@@ -25,7 +22,7 @@ class JpqlJpqlLocalDateTimeSerializerTest {
     private lateinit var serializer: JpqlRenderSerializer
 
     @Test
-    fun handle() {
+    fun handledType() {
         // when
         val actual = sut.handledType()
 
@@ -36,13 +33,11 @@ class JpqlJpqlLocalDateTimeSerializerTest {
     @Test
     fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-
-        val part = Expressions.localDateTime() as JpqlLocalDateTime
+        val part = Expressions.localDateTime()
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part, writer, context)
+        sut.serialize(part as JpqlLocalDateTime, writer, context)
 
         // then
         verifySequence {

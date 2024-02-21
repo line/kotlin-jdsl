@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -32,11 +33,11 @@ class JpqlNullSerializerTest : WithAssertions {
     @Test
     fun serialize() {
         // given
-        val part = JpqlNull
+        val part = Expressions.nullValue<Any>()
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part, writer, context)
+        sut.serialize(part as JpqlNull, writer, context)
 
         // then
         verifySequence {
