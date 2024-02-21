@@ -223,6 +223,7 @@ locate("Book", path(Book::title))
 * FLOOR (floor)
 * INDEX (index)
 * LN (ln)
+* MOD (mod)
 * POWER (power)
 * SIGN (sign)
 * SQRT (sqrt)
@@ -242,6 +243,8 @@ index(path(Book::authors))
 
 ln(path(Book::price))
 
+mod(path(Employee::age), 3)
+
 power(path(Book::verticalLength), 2)
 
 sign(path(Book::price))
@@ -252,10 +255,6 @@ round(path(Book::price), 2)
 
 size(path(Book::authors))
 ```
-
-| Function | DSL function |
-|----------|--------------|
-| MOD      | not yet      |
 
 ### Datetime functions
 
