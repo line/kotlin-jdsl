@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.dsl.jpql.expression
 
-import com.linecorp.kotlinjdsl.dsl.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.dsl.jpql.entity.employee.Employee
 import com.linecorp.kotlinjdsl.dsl.jpql.queryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
@@ -9,7 +9,7 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 class PowerDslTest : WithAssertions {
-    private val intPath1 = Paths.path(Book::verticalLength)
+    private val intPath1 = Paths.path(Employee::age)
     private val intExpression1 = Expressions.value(2)
     private val int1 = 2
 
@@ -17,11 +17,11 @@ class PowerDslTest : WithAssertions {
     fun `power() with a property`() {
         // when
         val expression1 = queryPart {
-            power(Book::verticalLength, int1)
+            power(Employee::age, int1)
         }.toExpression()
 
         val expression2 = queryPart {
-            round(Book::verticalLength, intExpression1)
+            round(Employee::age, intExpression1)
         }.toExpression()
 
         val actual1: Expression<Int> = expression1 // for type check
@@ -29,12 +29,12 @@ class PowerDslTest : WithAssertions {
 
         // then
         val expected1 = Expressions.round(
-            value = Paths.path(Book::verticalLength),
+            value = Paths.path(Employee::age),
             scale = Expressions.value(int1),
         )
 
         val expected2 = Expressions.round(
-            value = Paths.path(Book::verticalLength),
+            value = Paths.path(Employee::age),
             scale = intExpression1,
         )
 

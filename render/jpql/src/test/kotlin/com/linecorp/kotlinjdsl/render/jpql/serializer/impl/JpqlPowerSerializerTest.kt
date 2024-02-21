@@ -4,7 +4,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPower
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.render.TestRenderContext
-import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.render.jpql.entity.employee.Employee
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
@@ -23,7 +23,7 @@ class JpqlPowerSerializerTest {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
-    private val expression1 = Paths.path(Book::verticalLength)
+    private val expression1 = Paths.path(Employee::age)
     private val expression2 = Expressions.value(2)
 
     @Test
