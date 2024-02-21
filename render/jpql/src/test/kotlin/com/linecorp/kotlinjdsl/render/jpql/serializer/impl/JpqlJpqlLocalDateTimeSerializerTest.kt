@@ -6,10 +6,7 @@ import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.runs
 import io.mockk.verifySequence
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -36,8 +33,6 @@ class JpqlJpqlLocalDateTimeSerializerTest {
     @Test
     fun serialize() {
         // given
-        every { writer.write(any<String>()) } just runs
-
         val part = Expressions.localDateTime() as JpqlLocalDateTime
         val context = TestRenderContext(serializer)
 
