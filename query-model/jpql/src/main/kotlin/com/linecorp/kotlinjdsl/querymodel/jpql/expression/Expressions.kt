@@ -33,6 +33,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMax
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMin
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMinus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlModulo
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNew
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNull
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
@@ -298,6 +299,14 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
         return JpqlRound(value, scale)
+    }
+
+    /**
+     * Creates an expression that represents the modulo of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Int> mod(value1: Expression<T>, value2: Expression<Int>): Expression<T> {
+        return JpqlModulo(value1, value2)
     }
 
     /**

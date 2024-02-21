@@ -252,6 +252,8 @@ sqrt(path(Book::price))
 round(path(Book::price), 2)
 
 size(path(Book::authors))
+
+mod(path(Employee::age), 3)
 ```
 
 | Function | DSL function |

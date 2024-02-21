@@ -9,6 +9,7 @@ class FullTimeEmployee(
     phone: String,
     address: EmployeeAddress,
     departments: MutableSet<EmployeeDepartment>,
+    age: Int,
     val annualSalary: BigDecimal,
 ) : Employee(
     employeeId = employeeId,
@@ -17,4 +18,5 @@ class FullTimeEmployee(
     phone = phone,
     address = address,
     departments = departments,
+    age = age,
 )
