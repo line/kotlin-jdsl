@@ -245,6 +245,8 @@ index(path(Book::authors))
 
 ln(path(Book::price))
 
+mod(path(Employee::age), 3)
+
 sign(path(Book::price))
 
 sqrt(path(Book::price))
@@ -252,13 +254,10 @@ sqrt(path(Book::price))
 round(path(Book::price), 2)
 
 size(path(Book::authors))
-
-mod(path(Employee::age), 3)
 ```
 
 | Function | DSL function |
 |----------|--------------|
-| MOD      | not yet      |
 | POWER    | not yet      |
 
 ### Datetime functions

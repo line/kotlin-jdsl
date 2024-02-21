@@ -9,8 +9,8 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 class ModDslTest : WithAssertions {
-    private val path = Paths.path(Employee::age)
-    private val intExpression1 = Expressions.value(2)
+    private val intExpression1 = Paths.path(Employee::age)
+    private val intExpression2 = Expressions.value(2)
 
     private val int1 = 2
 
@@ -47,11 +47,11 @@ class ModDslTest : WithAssertions {
     fun `mod() with a expression`() {
         // when
         val expression1 = queryPart {
-            mod(path, int1)
+            mod(intExpression1, int1)
         }.toExpression()
 
         val expression2 = queryPart {
-            mod(path, intExpression1)
+            mod(intExpression1, intExpression2)
         }.toExpression()
 
         val actual1: Expression<Int> = expression1 // for type check
@@ -59,13 +59,13 @@ class ModDslTest : WithAssertions {
 
         // then
         val expected1 = Expressions.mod(
-            value1 = path,
+            value1 = intExpression1,
             value2 = Expressions.value(int1),
         )
 
         val expected2 = Expressions.mod(
-            value1 = path,
-            value2 = intExpression1,
+            value1 = intExpression1,
+            value2 = intExpression2,
         )
 
         assertThat(actual1).isEqualTo(expected1)
