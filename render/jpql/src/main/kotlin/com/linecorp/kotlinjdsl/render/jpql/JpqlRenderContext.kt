@@ -86,6 +86,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLowerSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlMaxSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlMinSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlMinusSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlModSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNewSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotBetweenSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlNotEqualAllSerializer
@@ -367,6 +368,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlPlusSerializer(),
             JpqlPredicateParenthesesSerializer(),
             JpqlRoundSerializer(),
+            JpqlModSerializer(),
             JpqlSelectQuerySerializer(),
             JpqlSignSerializer(),
             JpqlSizeSerializer(),

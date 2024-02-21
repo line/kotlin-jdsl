@@ -9,7 +9,7 @@ import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import kotlin.reflect.KClass
 
 @Internal
-class JpqlModuloSerializer : JpqlSerializer<JpqlMod<*>> {
+class JpqlModSerializer : JpqlSerializer<JpqlMod<*>> {
     override fun handledType(): KClass<JpqlMod<*>> {
         return JpqlMod::class
     }

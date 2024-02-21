@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
 class JpqlModSerializerTest {
-    private val sut = JpqlModuloSerializer()
+    private val sut = JpqlModSerializer()
 
     @MockK
     private lateinit var writer: JpqlWriter
