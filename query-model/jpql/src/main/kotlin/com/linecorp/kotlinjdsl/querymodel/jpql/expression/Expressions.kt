@@ -305,7 +305,7 @@ object Expressions {
      * Creates an expression that represents the modulo of values.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Int> mod(value1: Expression<T>, value2: Expression<Int>): Expression<T> {
+    fun mod(value1: Expression<Int>, value2: Expression<Int>): Expression<Int> {
         return JpqlModulo(value1, value2)
     }
 
