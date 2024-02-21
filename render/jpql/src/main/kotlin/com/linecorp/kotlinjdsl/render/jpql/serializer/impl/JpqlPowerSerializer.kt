@@ -20,7 +20,7 @@ class JpqlPowerSerializer : JpqlSerializer<JpqlPower<*>> {
         writer.write("POWER")
 
         writer.writeParentheses {
-            delegate.serialize(part.value, writer, context)
+            delegate.serialize(part.base, writer, context)
         }
     }
 }

@@ -671,32 +671,35 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that represents the rounding of the value to a specified scale.
+     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> power(expr: KProperty1<T, @Exact V>, scale: Int): Expression<V> {
-        return Expressions.round(Paths.path(expr), Expressions.value(scale))
+    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Int): Expression<V> {
+        return Expressions.round(Paths.path(base), Expressions.value(exponent))
     }
 
     /**
-     * Creates an expression that represents the rounding of the value to a specified scale.
+     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
      */
     @SinceJdsl("3.4.0")
-    fun <T : Number> power(value: Expressionable<T>, scale: Int): Expression<T> {
-        return Expressions.round(value.toExpression(), Expressions.value(scale))
-    }
-
-    @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> power(expr: KProperty1<T, @Exact V>, scale: Expression<Int>): Expression<V> {
-        return Expressions.round(Paths.path(expr), scale.toExpression())
+    fun <T : Number> power(base: Expressionable<T>, exponent: Int): Expression<T> {
+        return Expressions.round(base.toExpression(), Expressions.value(exponent))
     }
 
     /**
-     * Creates an expression that represents the rounding of the value to a specified scale.
+     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
      */
     @SinceJdsl("3.4.0")
-    fun <T : Number> power(value: Expressionable<T>, scale: Expressionable<Int>): Expression<T> {
-        return Expressions.round(value.toExpression(), scale.toExpression())
+    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Expression<Int>): Expression<V> {
+        return Expressions.round(Paths.path(base), exponent.toExpression())
+    }
+
+    /**
+     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> power(base: Expressionable<T>, exponent: Expressionable<Int>): Expression<T> {
+        return Expressions.round(base.toExpression(), exponent.toExpression())
     }
 
     /**

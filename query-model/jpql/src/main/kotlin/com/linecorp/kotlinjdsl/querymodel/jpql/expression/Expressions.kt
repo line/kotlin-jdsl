@@ -279,11 +279,11 @@ object Expressions {
     }
 
     /**
-     * Creates an expression that represents the rounding of the specified value to a specified scale.
+     * Creates expression that calculates the powering of a numeric [base] to a specified [exponent].
      */
     @SinceJdsl("3.4.0")
-    fun <T : Number> power(value: Expression<T>, scale: Expression<Int>): Expression<T> {
-        return JpqlPower(value, scale)
+    fun <T : Number> power(base: Expression<T>, exponent: Expression<Int>): Expression<T> {
+        return JpqlPower(base, exponent)
     }
 
     /**
