@@ -1,7 +1,7 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlModulo
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlMod
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.entity.employee.Employee
@@ -14,7 +14,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 @JpqlSerializerTest
-class JpqlModuloSerializerTest {
+class JpqlModSerializerTest {
     private val sut = JpqlModuloSerializer()
 
     @MockK
@@ -32,7 +32,7 @@ class JpqlModuloSerializerTest {
         val actual = sut.handledType()
 
         // then
-        assertThat(actual).isEqualTo(JpqlModulo::class)
+        assertThat(actual).isEqualTo(JpqlMod::class)
     }
 
     @Test
@@ -45,7 +45,7 @@ class JpqlModuloSerializerTest {
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlModulo<*>, writer, context)
+        sut.serialize(part as JpqlMod<*>, writer, context)
 
         // then
         verifySequence {
