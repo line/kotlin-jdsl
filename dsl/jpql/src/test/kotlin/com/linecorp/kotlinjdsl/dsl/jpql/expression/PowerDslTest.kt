@@ -9,33 +9,33 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 
 class PowerDslTest : WithAssertions {
-    private val intPath1 = Paths.path(Employee::age)
-    private val intExpression1 = Expressions.value(2)
-    private val int1 = 2
+    private val baseExpression = Paths.path(Employee::age)
+    private val exponentExpression = Expressions.value(2)
+    private val exponentPrimitive = 2
 
     @Test
     fun `power() with a property`() {
         // when
         val expression1 = queryPart {
-            power(Employee::age, int1)
+            power(Employee::age, exponentPrimitive)
         }.toExpression()
 
         val expression2 = queryPart {
-            round(Employee::age, intExpression1)
+            power(Employee::age, exponentExpression)
         }.toExpression()
 
         val actual1: Expression<Int> = expression1 // for type check
         val actual2: Expression<Int> = expression2 // for type check
 
         // then
-        val expected1 = Expressions.round(
-            value = Paths.path(Employee::age),
-            scale = Expressions.value(int1),
+        val expected1 = Expressions.power(
+            base = Paths.path(Employee::age),
+            exponent = Expressions.value(exponentPrimitive),
         )
 
-        val expected2 = Expressions.round(
-            value = Paths.path(Employee::age),
-            scale = intExpression1,
+        val expected2 = Expressions.power(
+            base = Paths.path(Employee::age),
+            exponent = exponentExpression,
         )
 
         assertThat(actual1).isEqualTo(expected1)
@@ -46,25 +46,25 @@ class PowerDslTest : WithAssertions {
     fun `power() with a expression`() {
         // when
         val expression1 = queryPart {
-            round(intPath1, int1)
+            power(baseExpression, exponentPrimitive)
         }.toExpression()
 
         val expression2 = queryPart {
-            round(intPath1, intExpression1)
+            power(baseExpression, exponentExpression)
         }.toExpression()
 
         val actual1: Expression<Int> = expression1 // for type check
         val actual2: Expression<Int> = expression2 // for type check
 
         // then
-        val expected1 = Expressions.round(
-            value = intPath1,
-            scale = Expressions.value(int1),
+        val expected1 = Expressions.power(
+            base = baseExpression,
+            exponent = Expressions.value(exponentPrimitive),
         )
 
-        val expected2 = Expressions.round(
-            value = intPath1,
-            scale = intExpression1,
+        val expected2 = Expressions.power(
+            base = baseExpression,
+            exponent = exponentExpression,
         )
 
         assertThat(actual1).isEqualTo(expected1)

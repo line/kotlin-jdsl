@@ -675,7 +675,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.4.0")
     fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Int): Expression<V> {
-        return Expressions.round(Paths.path(base), Expressions.value(exponent))
+        return Expressions.power(Paths.path(base), Expressions.value(exponent))
     }
 
     /**
@@ -683,7 +683,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.4.0")
     fun <T : Number> power(base: Expressionable<T>, exponent: Int): Expression<T> {
-        return Expressions.round(base.toExpression(), Expressions.value(exponent))
+        return Expressions.power(base.toExpression(), Expressions.value(exponent))
     }
 
     /**
@@ -691,7 +691,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.4.0")
     fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Expression<Int>): Expression<V> {
-        return Expressions.round(Paths.path(base), exponent.toExpression())
+        return Expressions.power(Paths.path(base), exponent.toExpression())
     }
 
     /**
@@ -699,7 +699,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.4.0")
     fun <T : Number> power(base: Expressionable<T>, exponent: Expressionable<Int>): Expression<T> {
-        return Expressions.round(base.toExpression(), exponent.toExpression())
+        return Expressions.power(base.toExpression(), exponent.toExpression())
     }
 
     /**
