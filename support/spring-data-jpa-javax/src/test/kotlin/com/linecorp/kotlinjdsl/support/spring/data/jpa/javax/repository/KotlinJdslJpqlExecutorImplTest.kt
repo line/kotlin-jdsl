@@ -45,10 +45,16 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     private lateinit var createSelectQuery2: MyJpql.() -> JpqlQueryable<SelectQuery<String>>
 
     @MockK
+    private lateinit var createSelectQuery3: MyJpqlObject.() -> JpqlQueryable<SelectQuery<String>>
+
+    @MockK
     private lateinit var createUpdateQuery1: Jpql.() -> JpqlQueryable<UpdateQuery<String>>
 
     @MockK
     private lateinit var createUpdateQuery2: MyJpql.() -> JpqlQueryable<UpdateQuery<String>>
+
+    @MockK
+    private lateinit var createUpdateQuery3: MyJpqlObject.() -> JpqlQueryable<UpdateQuery<String>>
 
     @MockK
     private lateinit var createDeleteQuery1: Jpql.() -> JpqlQueryable<DeleteQuery<String>>
@@ -57,10 +63,16 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     private lateinit var createDeleteQuery2: MyJpql.() -> JpqlQueryable<DeleteQuery<String>>
 
     @MockK
+    private lateinit var createDeleteQuery3: MyJpqlObject.() -> JpqlQueryable<DeleteQuery<String>>
+
+    @MockK
     private lateinit var selectQuery1: SelectQuery<String>
 
     @MockK
     private lateinit var selectQuery2: SelectQuery<String>
+
+    @MockK
+    private lateinit var selectQuery3: SelectQuery<String>
 
     @MockK
     private lateinit var updateQuery1: UpdateQuery<String>
@@ -69,16 +81,25 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     private lateinit var updateQuery2: UpdateQuery<String>
 
     @MockK
+    private lateinit var updateQuery3: UpdateQuery<String>
+
+    @MockK
     private lateinit var deleteQuery1: DeleteQuery<String>
 
     @MockK
     private lateinit var deleteQuery2: DeleteQuery<String>
 
     @MockK
+    private lateinit var deleteQuery3: DeleteQuery<String>
+
+    @MockK
     private lateinit var typedQuery1: TypedQuery<String>
 
     @MockK
     private lateinit var typedQuery2: TypedQuery<String>
+
+    @MockK
+    private lateinit var typedQuery3: TypedQuery<String>
 
     @MockK
     private lateinit var query1: Query
@@ -98,35 +119,58 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         }
     }
 
+    private object MyJpqlObject : Jpql() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            return javaClass == other?.javaClass
+        }
+
+        override fun hashCode(): Int {
+            return javaClass.hashCode()
+        }
+    }
+
     @BeforeEach
     fun setUp() {
         mockkObject(JpqlEntityManagerUtils)
 
         every { createSelectQuery1.invoke(any()) } returns selectQuery1
         every { createSelectQuery2.invoke(any()) } returns selectQuery2
+        every { createSelectQuery3.invoke(any()) } returns selectQuery3
         every { createUpdateQuery1.invoke(any()) } returns updateQuery1
         every { createUpdateQuery2.invoke(any()) } returns updateQuery2
+        every { createUpdateQuery3.invoke(any()) } returns updateQuery3
         every { createDeleteQuery1.invoke(any()) } returns deleteQuery1
         every { createDeleteQuery2.invoke(any()) } returns deleteQuery2
+        every { createDeleteQuery3.invoke(any()) } returns deleteQuery3
         every { selectQuery1.toQuery() } returns selectQuery1
         every { selectQuery2.toQuery() } returns selectQuery2
+        every { selectQuery3.toQuery() } returns selectQuery3
         every { updateQuery1.toQuery() } returns updateQuery1
         every { updateQuery2.toQuery() } returns updateQuery2
+        every { updateQuery3.toQuery() } returns updateQuery3
         every { deleteQuery1.toQuery() } returns deleteQuery1
         every { deleteQuery2.toQuery() } returns deleteQuery2
+        every { deleteQuery3.toQuery() } returns deleteQuery3
 
         excludeRecords { createSelectQuery1.invoke(any()) }
         excludeRecords { createSelectQuery2.invoke(any()) }
+        excludeRecords { createSelectQuery3.invoke(any()) }
         excludeRecords { createUpdateQuery1.invoke(any()) }
         excludeRecords { createUpdateQuery2.invoke(any()) }
+        excludeRecords { createUpdateQuery3.invoke(any()) }
         excludeRecords { createDeleteQuery1.invoke(any()) }
         excludeRecords { createDeleteQuery2.invoke(any()) }
+        excludeRecords { createDeleteQuery3.invoke(any()) }
         excludeRecords { selectQuery1.toQuery() }
         excludeRecords { selectQuery2.toQuery() }
+        excludeRecords { selectQuery3.toQuery() }
         excludeRecords { updateQuery1.toQuery() }
         excludeRecords { updateQuery2.toQuery() }
+        excludeRecords { updateQuery3.toQuery() }
         excludeRecords { deleteQuery1.toQuery() }
         excludeRecords { deleteQuery2.toQuery() }
+        excludeRecords { deleteQuery3.toQuery() }
     }
 
     @Test
@@ -170,6 +214,26 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     }
 
     @Test
+    fun `findAll() with a dsl object`() {
+        // given
+        val list1 = listOf("1", "2", "3")
+
+        every { JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any()) } returns typedQuery3
+        every { typedQuery3.resultList } returns list1
+
+        // when
+        val actual = sut.findAll(MyJpqlObject, createSelectQuery3)
+
+        // then
+        assertThat(actual).isEqualTo(list1)
+
+        verifySequence {
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery3, renderContext)
+            typedQuery3.resultList
+        }
+    }
+
+    @Test
     fun `findAll() with a pageable`() {
         // given
         val pageable1 = PageRequest.of(0, 10)
@@ -204,6 +268,25 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
         verifySequence {
             JpqlEntityManagerUtils.queryForList(entityManager, selectQuery2, pageable1, renderContext)
+        }
+    }
+
+    @Test
+    fun `findAll() with a dsl object and a pageable`() {
+        // given
+        val pageable1 = PageRequest.of(0, 10)
+        val list1 = listOf("1", "2", "3")
+
+        every { JpqlEntityManagerUtils.queryForList(any(), any<SelectQuery<String>>(), any(), any()) } returns list1
+
+        // when
+        val actual = sut.findAll(MyJpqlObject, pageable1, createSelectQuery3)
+
+        // then
+        assertThat(actual).isEqualTo(list1)
+
+        verifySequence {
+            JpqlEntityManagerUtils.queryForList(entityManager, selectQuery3, pageable1, renderContext)
         }
     }
 
@@ -246,6 +329,25 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     }
 
     @Test
+    fun `findPage() with a dsl object`() {
+        // given
+        val pageable1 = PageRequest.of(0, 10)
+        val page1: Page<String?> = mockk()
+
+        every { JpqlEntityManagerUtils.queryForPage(any(), any<SelectQuery<String>>(), any(), any()) } returns page1
+
+        // when
+        val actual = sut.findPage(MyJpqlObject, pageable1, createSelectQuery3)
+
+        // then
+        assertThat(actual).isEqualTo(page1)
+
+        verifySequence {
+            JpqlEntityManagerUtils.queryForPage(entityManager, selectQuery3, pageable1, renderContext)
+        }
+    }
+
+    @Test
     fun findSlice() {
         // given
         val pageable1 = PageRequest.of(0, 10)
@@ -284,6 +386,25 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     }
 
     @Test
+    fun `findSlice() with a dsl object`() {
+        // given
+        val pageable1 = PageRequest.of(0, 10)
+        val slice1: Slice<String?> = mockk()
+
+        every { JpqlEntityManagerUtils.queryForSlice(any(), any<SelectQuery<String>>(), any(), any()) } returns slice1
+
+        // when
+        val actual = sut.findSlice(MyJpqlObject, pageable1, createSelectQuery3)
+
+        // then
+        assertThat(actual).isEqualTo(slice1)
+
+        verifySequence {
+            JpqlEntityManagerUtils.queryForSlice(entityManager, selectQuery3, pageable1, renderContext)
+        }
+    }
+
+    @Test
     fun update() {
         // given
         every { JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any()) } returns query1
@@ -318,6 +439,23 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     }
 
     @Test
+    fun `update() with a dsl object`() {
+        // given
+        every { JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any()) } returns query1
+        every { query1.executeUpdate() } returns 1
+
+        // when
+        val actual = sut.update(MyJpqlObject, createUpdateQuery3)
+
+        // then
+        assertThat(actual).isEqualTo(1)
+
+        verifySequence {
+            JpqlEntityManagerUtils.createQuery(entityManager, updateQuery3, renderContext)
+        }
+    }
+
+    @Test
     fun delete() {
         // given
         every { JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any()) } returns query1
@@ -348,6 +486,23 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
         verifySequence {
             JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery2, renderContext)
+        }
+    }
+
+    @Test
+    fun `delete() with a dsl object`() {
+        // given
+        every { JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any()) } returns query1
+        every { query1.executeUpdate() } returns 1
+
+        // when
+        val actual = sut.delete(MyJpqlObject, createDeleteQuery3)
+
+        // then
+        assertThat(actual).isEqualTo(1)
+
+        verifySequence {
+            JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery3, renderContext)
         }
     }
 }

@@ -73,6 +73,14 @@ inline fun <DSL : JpqlDsl, Q : JpqlQuery<Q>> jpql(dsl: JpqlDsl.Constructor<DSL>,
 }
 
 /**
+ * Builds new JPQL query using provided JpqlDsl instance.
+ */
+@SinceJdsl("3.4.0")
+inline fun <DSL : JpqlDsl, Q : JpqlQuery<Q>> jpql(jpql: DSL, init: DSL.() -> JpqlQueryable<Q>): Q {
+    return jpql.init().toQuery()
+}
+
+/**
  * Default implementation of DSL for building a JPQL query.
  */
 @SinceJdsl("3.0.0")

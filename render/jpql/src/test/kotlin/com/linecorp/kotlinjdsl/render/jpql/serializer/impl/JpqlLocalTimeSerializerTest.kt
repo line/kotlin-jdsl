@@ -1,5 +1,6 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLocalTime
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
@@ -21,7 +22,7 @@ class JpqlLocalTimeSerializerTest {
     private lateinit var serializer: JpqlRenderSerializer
 
     @Test
-    fun handle() {
+    fun handledType() {
         // when
         val actual = sut.handledType()
 
@@ -32,11 +33,11 @@ class JpqlLocalTimeSerializerTest {
     @Test
     fun serialize() {
         // given
-        val part = JpqlLocalTime
+        val part = Expressions.localTime()
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part, writer, context)
+        sut.serialize(part as JpqlLocalTime, writer, context)
 
         // then
         verifySequence {

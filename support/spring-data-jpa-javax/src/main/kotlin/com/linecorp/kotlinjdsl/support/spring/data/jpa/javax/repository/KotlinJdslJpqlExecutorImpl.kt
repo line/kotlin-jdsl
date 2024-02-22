@@ -40,6 +40,13 @@ open class KotlinJdslJpqlExecutorImpl(
         return jpaQuery.resultList
     }
 
+    override fun <T : Any, DSL : JpqlDsl> findAll(dsl: DSL, init: DSL.() -> JpqlQueryable<SelectQuery<T>>): List<T?> {
+        val query: SelectQuery<T> = jpql(dsl, init)
+        val jpaQuery = JpqlEntityManagerUtils.createQuery(entityManager, query, renderContext)
+
+        return jpaQuery.resultList
+    }
+
     override fun <T : Any> findAll(
         pageable: Pageable,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
@@ -49,6 +56,16 @@ open class KotlinJdslJpqlExecutorImpl(
 
     override fun <T : Any, DSL : JpqlDsl> findAll(
         dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): List<T?> {
+        val query: SelectQuery<T> = jpql(dsl, init)
+
+        return JpqlEntityManagerUtils.queryForList(entityManager, query, pageable, renderContext)
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> findAll(
+        dsl: DSL,
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
@@ -74,6 +91,16 @@ open class KotlinJdslJpqlExecutorImpl(
         return JpqlEntityManagerUtils.queryForPage(entityManager, query, pageable, renderContext)
     }
 
+    override fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: DSL,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Page<T?> {
+        val query: SelectQuery<T> = jpql(dsl, init)
+
+        return JpqlEntityManagerUtils.queryForPage(entityManager, query, pageable, renderContext)
+    }
+
     override fun <T : Any> findSlice(
         pageable: Pageable,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
@@ -91,6 +118,15 @@ open class KotlinJdslJpqlExecutorImpl(
         return JpqlEntityManagerUtils.queryForSlice(entityManager, query, pageable, renderContext)
     }
 
+    override fun <T : Any, DSL : JpqlDsl> findSlice(
+        dsl: DSL,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Slice<T?> {
+        val query: SelectQuery<T> = jpql(dsl, init)
+
+        return JpqlEntityManagerUtils.queryForSlice(entityManager, query, pageable, renderContext)
+    }
     override fun <T : Any> update(
         init: Jpql.() -> JpqlQueryable<UpdateQuery<T>>,
     ): Int {
@@ -107,6 +143,16 @@ open class KotlinJdslJpqlExecutorImpl(
         return jpaQuery.executeUpdate()
     }
 
+    override fun <T : Any, DSL : JpqlDsl> update(
+        dsl: DSL,
+        init: DSL.() -> JpqlQueryable<UpdateQuery<T>>,
+    ): Int {
+        val query: UpdateQuery<T> = jpql(dsl, init)
+        val jpaQuery = JpqlEntityManagerUtils.createQuery(entityManager, query, renderContext)
+
+        return jpaQuery.executeUpdate()
+    }
+
     override fun <T : Any> delete(
         init: Jpql.() -> JpqlQueryable<DeleteQuery<T>>,
     ): Int {
@@ -115,6 +161,16 @@ open class KotlinJdslJpqlExecutorImpl(
 
     override fun <T : Any, DSL : JpqlDsl> delete(
         dsl: JpqlDsl.Constructor<DSL>,
+        init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
+    ): Int {
+        val query: DeleteQuery<T> = jpql(dsl, init)
+        val jpaQuery = JpqlEntityManagerUtils.createQuery(entityManager, query, renderContext)
+
+        return jpaQuery.executeUpdate()
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> delete(
+        dsl: DSL,
         init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
     ): Int {
         val query: DeleteQuery<T> = jpql(dsl, init)
