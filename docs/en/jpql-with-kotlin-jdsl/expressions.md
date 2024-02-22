@@ -249,7 +249,7 @@ ln(path(Book::price))
 
 mod(path(Employee::age), 3)
 
-power(path(Book::verticalLength), 2)
+power(path(Employee::age), 2)
 
 sign(path(Book::price))
 
