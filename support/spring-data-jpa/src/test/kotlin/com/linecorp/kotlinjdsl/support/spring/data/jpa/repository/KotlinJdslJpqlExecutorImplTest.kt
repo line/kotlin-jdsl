@@ -7,16 +7,17 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
+import com.linecorp.kotlinjdsl.support.spring.data.jpa.EnhancedTypedQuery
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.JpqlEntityManagerUtils
 import io.mockk.every
 import io.mockk.excludeRecords
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.verifySequence
 import jakarta.persistence.EntityManager
+import jakarta.persistence.LockModeType
 import jakarta.persistence.Query
 import jakarta.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
@@ -25,7 +26,14 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Slice
+import org.springframework.data.domain.SliceImpl
+import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.repository.support.CrudMethodMetadata
+import org.springframework.data.jpa.repository.support.QueryHints
+import org.springframework.data.support.PageableExecutionUtilsAdaptor
+import java.util.function.BiConsumer
+import java.util.function.LongSupplier
+import kotlin.reflect.KClass
 
 @ExtendWith(MockKExtension::class)
 class KotlinJdslJpqlExecutorImplTest : WithAssertions {
@@ -37,6 +45,9 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
     @MockK
     private lateinit var renderContext: RenderContext
+
+    @MockK
+    private lateinit var metadata: CrudMethodMetadata
 
     @MockK
     private lateinit var createSelectQuery1: Jpql.() -> JpqlQueryable<SelectQuery<String>>
@@ -93,16 +104,90 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     private lateinit var deleteQuery3: DeleteQuery<String>
 
     @MockK
-    private lateinit var typedQuery1: TypedQuery<String>
+    private lateinit var stringTypedQuery1: TypedQuery<String>
 
     @MockK
-    private lateinit var typedQuery2: TypedQuery<String>
+    private lateinit var stringTypedQuery2: TypedQuery<String>
 
     @MockK
-    private lateinit var typedQuery3: TypedQuery<String>
+    private lateinit var stringTypedQuery3: TypedQuery<String>
+
+    @MockK
+    private lateinit var longTypedQuery1: TypedQuery<Long>
+
+    @MockK
+    private lateinit var longTypedQuery2: TypedQuery<Long>
+
+    @MockK
+    private lateinit var longTypedQuery3: TypedQuery<Long>
 
     @MockK
     private lateinit var query1: Query
+
+    @MockK
+    private lateinit var query2: Query
+
+    @MockK
+    private lateinit var query3: Query
+
+    @MockK
+    private lateinit var page1: Page<String>
+
+    private val lockModeType1 = LockModeType.READ
+
+    private val queryHint1 = "queryHintName1" to "queryHintValue1"
+    private val queryHint2 = "queryHintName2" to "queryHintValue2"
+    private val queryHint3 = "queryHintName3" to "queryHintValue3"
+
+    private val queryHints1 = object : QueryHints {
+        override fun withFetchGraphs(em: EntityManager): QueryHints = throw UnsupportedOperationException()
+        override fun forCounts(): QueryHints = throw UnsupportedOperationException()
+
+        override fun forEach(action: BiConsumer<String, Any>) {
+            listOf(
+                queryHint1,
+                queryHint2,
+                queryHint3,
+            ).forEach { (name, value) ->
+                action.accept(name, value)
+            }
+        }
+    }
+
+    private val queryHintForCount1 = "queryHintForCountName1" to "queryHintForCountValue1"
+    private val queryHintForCount2 = "queryHintForCountName2" to "queryHintForCountValue2"
+    private val queryHintForCount3 = "queryHintForCountName3" to "queryHintForCountValue3"
+
+    private val queryHintsForCount1 = object : QueryHints {
+        override fun withFetchGraphs(em: EntityManager): QueryHints = throw UnsupportedOperationException()
+        override fun forCounts(): QueryHints = throw UnsupportedOperationException()
+
+        override fun forEach(action: BiConsumer<String, Any>) {
+            listOf(
+                queryHintForCount1,
+                queryHintForCount2,
+                queryHintForCount3,
+            ).forEach { (name, value) ->
+                action.accept(name, value)
+            }
+        }
+    }
+
+    private val sort1 = Sort.by("property1")
+    private val pageable1 = PageRequest.of(1, 10, sort1)
+
+    private val list1 = listOf("1", "2", "3")
+    private val counts1 = listOf(1L, 1L, 1L)
+
+    private val enhancedTypedQuery1: EnhancedTypedQuery<String> by lazy(LazyThreadSafetyMode.NONE) {
+        EnhancedTypedQuery(stringTypedQuery1) { longTypedQuery1 }
+    }
+    private val enhancedTypedQuery2: EnhancedTypedQuery<String> by lazy(LazyThreadSafetyMode.NONE) {
+        EnhancedTypedQuery(stringTypedQuery2) { longTypedQuery2 }
+    }
+    private val enhancedTypedQuery3: EnhancedTypedQuery<String> by lazy(LazyThreadSafetyMode.NONE) {
+        EnhancedTypedQuery(stringTypedQuery3) { longTypedQuery3 }
+    }
 
     private class MyJpql : Jpql() {
         companion object Constructor : JpqlDsl.Constructor<MyJpql> {
@@ -133,6 +218,7 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     @BeforeEach
     fun setUp() {
         mockkObject(JpqlEntityManagerUtils)
+        mockkObject(PageableExecutionUtilsAdaptor)
 
         every { createSelectQuery1.invoke(any()) } returns selectQuery1
         every { createSelectQuery2.invoke(any()) } returns selectQuery2
@@ -176,10 +262,15 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     @Test
     fun findAll() {
         // given
-        val list1 = listOf("1", "2", "3")
-
-        every { JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any()) } returns typedQuery1
-        every { typedQuery1.resultList } returns list1
+        every { selectQuery1.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any<KClass<*>>(), any())
+        } returns stringTypedQuery1
+        every { stringTypedQuery1.setLockMode(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setHint(any(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultList } returns list1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.findAll(createSelectQuery1)
@@ -188,18 +279,30 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         assertThat(actual).isEqualTo(list1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, renderContext)
-            typedQuery1.resultList
+            selectQuery1.returnType
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, String::class, renderContext)
+            metadata.lockModeType
+            stringTypedQuery1.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery1.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery1.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery1.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery1.resultList
         }
     }
 
     @Test
     fun `findAll() with a dsl`() {
         // given
-        val list1 = listOf("1", "2", "3")
-
-        every { JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any()) } returns typedQuery2
-        every { typedQuery2.resultList } returns list1
+        every { selectQuery2.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any<KClass<*>>(), any())
+        } returns stringTypedQuery2
+        every { stringTypedQuery2.setLockMode(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setHint(any(), any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.resultList } returns list1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.findAll(MyJpql, createSelectQuery2)
@@ -208,18 +311,30 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         assertThat(actual).isEqualTo(list1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery2, renderContext)
-            typedQuery2.resultList
+            selectQuery2.returnType
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery2, String::class, renderContext)
+            metadata.lockModeType
+            stringTypedQuery2.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery2.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery2.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery2.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery2.resultList
         }
     }
 
     @Test
     fun `findAll() with a dsl object`() {
         // given
-        val list1 = listOf("1", "2", "3")
-
-        every { JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any()) } returns typedQuery3
-        every { typedQuery3.resultList } returns list1
+        every { selectQuery3.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any<KClass<*>>(), any())
+        } returns stringTypedQuery3
+        every { stringTypedQuery3.setLockMode(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setHint(any(), any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.resultList } returns list1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.findAll(MyJpqlObject, createSelectQuery3)
@@ -228,18 +343,34 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         assertThat(actual).isEqualTo(list1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery3, renderContext)
-            typedQuery3.resultList
+            selectQuery3.returnType
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery3, String::class, renderContext)
+            metadata.lockModeType
+            stringTypedQuery3.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery3.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery3.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery3.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery3.resultList
         }
     }
 
     @Test
     fun `findAll() with a pageable`() {
         // given
-        val pageable1 = PageRequest.of(0, 10)
-        val list1 = listOf("1", "2", "3")
-
-        every { JpqlEntityManagerUtils.queryForList(any(), any<SelectQuery<String>>(), any(), any()) } returns list1
+        every { selectQuery1.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery1
+        every { stringTypedQuery1.setLockMode(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setHint(any(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultList } returns list1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.findAll(pageable1, createSelectQuery1)
@@ -248,17 +379,36 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         assertThat(actual).isEqualTo(list1)
 
         verifySequence {
-            JpqlEntityManagerUtils.queryForList(entityManager, selectQuery1, pageable1, renderContext)
+            selectQuery1.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery1, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery1.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery1.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery1.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery1.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery1.firstResult = pageable1.offset.toInt()
+            stringTypedQuery1.maxResults = pageable1.pageSize
+            stringTypedQuery1.resultList
         }
     }
 
     @Test
     fun `findAll() with a dsl and a pageable`() {
         // given
-        val pageable1 = PageRequest.of(0, 10)
-        val list1 = listOf("1", "2", "3")
-
-        every { JpqlEntityManagerUtils.queryForList(any(), any<SelectQuery<String>>(), any(), any()) } returns list1
+        every { selectQuery2.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery2
+        every { stringTypedQuery2.setLockMode(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setHint(any(), any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setFirstResult(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setMaxResults(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.resultList } returns list1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.findAll(MyJpql, pageable1, createSelectQuery2)
@@ -267,17 +417,36 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         assertThat(actual).isEqualTo(list1)
 
         verifySequence {
-            JpqlEntityManagerUtils.queryForList(entityManager, selectQuery2, pageable1, renderContext)
+            selectQuery2.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery2, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery2.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery2.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery2.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery2.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery2.firstResult = pageable1.offset.toInt()
+            stringTypedQuery2.maxResults = pageable1.pageSize
+            stringTypedQuery2.resultList
         }
     }
 
     @Test
     fun `findAll() with a dsl object and a pageable`() {
         // given
-        val pageable1 = PageRequest.of(0, 10)
-        val list1 = listOf("1", "2", "3")
-
-        every { JpqlEntityManagerUtils.queryForList(any(), any<SelectQuery<String>>(), any(), any()) } returns list1
+        every { selectQuery3.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery3
+        every { stringTypedQuery3.setLockMode(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setHint(any(), any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setFirstResult(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setMaxResults(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.resultList } returns list1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.findAll(MyJpqlObject, pageable1, createSelectQuery3)
@@ -286,17 +455,45 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         assertThat(actual).isEqualTo(list1)
 
         verifySequence {
-            JpqlEntityManagerUtils.queryForList(entityManager, selectQuery3, pageable1, renderContext)
+            selectQuery3.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery3, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery3.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery3.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery3.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery3.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery3.firstResult = pageable1.offset.toInt()
+            stringTypedQuery3.maxResults = pageable1.pageSize
+            stringTypedQuery3.resultList
         }
     }
 
     @Test
     fun findPage() {
         // given
-        val pageable1 = PageRequest.of(0, 10)
-        val page1: Page<String?> = mockk()
+        every { selectQuery1.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery1
+        every { stringTypedQuery1.setLockMode(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setHint(any(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultList } returns list1
+        every { longTypedQuery1.setHint(any(), any()) } returns longTypedQuery1
+        every { longTypedQuery1.setFirstResult(any()) } returns longTypedQuery1
+        every { longTypedQuery1.resultList } returns counts1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+        every { metadata.queryHintsForCount } returns queryHintsForCount1
+        every { PageableExecutionUtilsAdaptor.getPage<String>(any(), any(), any()) } answers {
+            lastArg<LongSupplier>().asLong
 
-        every { JpqlEntityManagerUtils.queryForPage(any(), any<SelectQuery<String>>(), any(), any()) } returns page1
+            page1
+        }
 
         // when
         val actual = sut.findPage(pageable1, createSelectQuery1)
@@ -305,17 +502,51 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         assertThat(actual).isEqualTo(page1)
 
         verifySequence {
-            JpqlEntityManagerUtils.queryForPage(entityManager, selectQuery1, pageable1, renderContext)
+            selectQuery1.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery1, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery1.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery1.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery1.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery1.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery1.firstResult = pageable1.offset.toInt()
+            stringTypedQuery1.maxResults = pageable1.pageSize
+            stringTypedQuery1.resultList
+            PageableExecutionUtilsAdaptor.getPage(list1, pageable1, any())
+            metadata.queryHintsForCount
+            longTypedQuery1.setHint(queryHintForCount1.first, queryHintForCount1.second)
+            longTypedQuery1.setHint(queryHintForCount2.first, queryHintForCount2.second)
+            longTypedQuery1.setHint(queryHintForCount3.first, queryHintForCount3.second)
+            longTypedQuery1.resultList
         }
     }
 
     @Test
     fun `findPage() with a dsl`() {
         // given
-        val pageable1 = PageRequest.of(0, 10)
-        val page1: Page<String?> = mockk()
+        every { selectQuery2.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery2
+        every { stringTypedQuery2.setLockMode(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setHint(any(), any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setFirstResult(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setMaxResults(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.resultList } returns list1
+        every { longTypedQuery2.setHint(any(), any()) } returns longTypedQuery2
+        every { longTypedQuery2.setFirstResult(any()) } returns longTypedQuery2
+        every { longTypedQuery2.resultList } returns counts1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+        every { metadata.queryHintsForCount } returns queryHintsForCount1
+        every { PageableExecutionUtilsAdaptor.getPage<String>(any(), any(), any()) } answers {
+            lastArg<LongSupplier>().asLong
 
-        every { JpqlEntityManagerUtils.queryForPage(any(), any<SelectQuery<String>>(), any(), any()) } returns page1
+            page1
+        }
 
         // when
         val actual = sut.findPage(MyJpql, pageable1, createSelectQuery2)
@@ -324,17 +555,51 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         assertThat(actual).isEqualTo(page1)
 
         verifySequence {
-            JpqlEntityManagerUtils.queryForPage(entityManager, selectQuery2, pageable1, renderContext)
+            selectQuery2.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery2, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery2.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery2.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery2.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery2.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery2.firstResult = pageable1.offset.toInt()
+            stringTypedQuery2.maxResults = pageable1.pageSize
+            stringTypedQuery2.resultList
+            PageableExecutionUtilsAdaptor.getPage(list1, pageable1, any())
+            metadata.queryHintsForCount
+            longTypedQuery2.setHint(queryHintForCount1.first, queryHintForCount1.second)
+            longTypedQuery2.setHint(queryHintForCount2.first, queryHintForCount2.second)
+            longTypedQuery2.setHint(queryHintForCount3.first, queryHintForCount3.second)
+            longTypedQuery2.resultList
         }
     }
 
     @Test
     fun `findPage() with a dsl object`() {
         // given
-        val pageable1 = PageRequest.of(0, 10)
-        val page1: Page<String?> = mockk()
+        every { selectQuery3.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery3
+        every { stringTypedQuery3.setLockMode(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setHint(any(), any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setFirstResult(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setMaxResults(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.resultList } returns list1
+        every { longTypedQuery3.setHint(any(), any()) } returns longTypedQuery3
+        every { longTypedQuery3.setFirstResult(any()) } returns longTypedQuery3
+        every { longTypedQuery3.resultList } returns counts1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+        every { metadata.queryHintsForCount } returns queryHintsForCount1
+        every { PageableExecutionUtilsAdaptor.getPage<String>(any(), any(), any()) } answers {
+            lastArg<LongSupplier>().asLong
 
-        every { JpqlEntityManagerUtils.queryForPage(any(), any<SelectQuery<String>>(), any(), any()) } returns page1
+            page1
+        }
 
         // when
         val actual = sut.findPage(MyJpqlObject, pageable1, createSelectQuery3)
@@ -343,64 +608,146 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         assertThat(actual).isEqualTo(page1)
 
         verifySequence {
-            JpqlEntityManagerUtils.queryForPage(entityManager, selectQuery3, pageable1, renderContext)
+            selectQuery3.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery3, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery3.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery3.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery3.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery3.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery3.firstResult = pageable1.offset.toInt()
+            stringTypedQuery3.maxResults = pageable1.pageSize
+            stringTypedQuery3.resultList
+            PageableExecutionUtilsAdaptor.getPage(list1, pageable1, any())
+            metadata.queryHintsForCount
+            longTypedQuery3.setHint(queryHintForCount1.first, queryHintForCount1.second)
+            longTypedQuery3.setHint(queryHintForCount2.first, queryHintForCount2.second)
+            longTypedQuery3.setHint(queryHintForCount3.first, queryHintForCount3.second)
+            longTypedQuery3.resultList
         }
     }
 
     @Test
     fun findSlice() {
         // given
-        val pageable1 = PageRequest.of(0, 10)
-        val slice: Slice<String?> = mockk()
+        val pageable1 = PageRequest.of(1, 3, sort1)
+        val list1 = listOf("1", "2", "3", "4")
 
-        every { JpqlEntityManagerUtils.queryForSlice(any(), any<SelectQuery<String>>(), any(), any()) } returns slice
+        every { selectQuery1.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery1
+        every { stringTypedQuery1.setLockMode(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setHint(any(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultList } returns list1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.findSlice(pageable1, createSelectQuery1)
 
         // then
-        assertThat(actual).isEqualTo(slice)
+        assertThat(actual).isEqualTo(SliceImpl(list1.dropLast(1), pageable1, true))
 
         verifySequence {
-            JpqlEntityManagerUtils.queryForSlice(entityManager, selectQuery1, pageable1, renderContext)
+            selectQuery1.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery1, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery1.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery1.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery1.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery1.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery1.firstResult = pageable1.offset.toInt()
+            stringTypedQuery1.maxResults = pageable1.pageSize + 1
+            stringTypedQuery1.resultList
         }
     }
 
     @Test
     fun `findSlice() with a dsl`() {
         // given
-        val pageable1 = PageRequest.of(0, 10)
-        val slice1: Slice<String?> = mockk()
+        val pageable1 = PageRequest.of(1, 3, sort1)
+        val list1 = listOf("1", "2", "3", "4")
 
-        every { JpqlEntityManagerUtils.queryForSlice(any(), any<SelectQuery<String>>(), any(), any()) } returns slice1
+        every { selectQuery2.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery2
+        every { stringTypedQuery2.setLockMode(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setHint(any(), any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setFirstResult(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setMaxResults(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.resultList } returns list1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.findSlice(MyJpql, pageable1, createSelectQuery2)
 
         // then
-        assertThat(actual).isEqualTo(slice1)
+        assertThat(actual).isEqualTo(SliceImpl(list1.dropLast(1), pageable1, true))
 
         verifySequence {
-            JpqlEntityManagerUtils.queryForSlice(entityManager, selectQuery2, pageable1, renderContext)
+            selectQuery2.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery2, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery2.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery2.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery2.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery2.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery2.firstResult = pageable1.offset.toInt()
+            stringTypedQuery2.maxResults = pageable1.pageSize + 1
+            stringTypedQuery2.resultList
         }
     }
 
     @Test
     fun `findSlice() with a dsl object`() {
         // given
-        val pageable1 = PageRequest.of(0, 10)
-        val slice1: Slice<String?> = mockk()
+        val pageable1 = PageRequest.of(1, 3, sort1)
+        val list1 = listOf("1", "2", "3", "4")
 
-        every { JpqlEntityManagerUtils.queryForSlice(any(), any<SelectQuery<String>>(), any(), any()) } returns slice1
+        every { selectQuery3.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery3
+        every { stringTypedQuery3.setLockMode(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setHint(any(), any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setFirstResult(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setMaxResults(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.resultList } returns list1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.findSlice(MyJpqlObject, pageable1, createSelectQuery3)
 
         // then
-        assertThat(actual).isEqualTo(slice1)
+        assertThat(actual).isEqualTo(SliceImpl(list1.dropLast(1), pageable1, true))
 
         verifySequence {
-            JpqlEntityManagerUtils.queryForSlice(entityManager, selectQuery3, pageable1, renderContext)
+            selectQuery3.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery3, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery3.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery3.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery3.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery3.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery3.firstResult = pageable1.offset.toInt()
+            stringTypedQuery3.maxResults = pageable1.pageSize + 1
+            stringTypedQuery3.resultList
         }
     }
 
@@ -408,7 +755,11 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     fun update() {
         // given
         every { JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any()) } returns query1
+        every { query1.setLockMode(any()) } returns query1
+        every { query1.setHint(any(), any()) } returns query1
         every { query1.executeUpdate() } returns 1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.update(createUpdateQuery1)
@@ -418,14 +769,25 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
         verifySequence {
             JpqlEntityManagerUtils.createQuery(entityManager, updateQuery1, renderContext)
+            metadata.lockModeType
+            query1.setLockMode(lockModeType1)
+            metadata.queryHints
+            query1.setHint(queryHint1.first, queryHint1.second)
+            query1.setHint(queryHint2.first, queryHint2.second)
+            query1.setHint(queryHint3.first, queryHint3.second)
+            query1.executeUpdate()
         }
     }
 
     @Test
     fun `update() with a dsl`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any()) } returns query1
-        every { query1.executeUpdate() } returns 1
+        every { JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any()) } returns query2
+        every { query2.setLockMode(any()) } returns query2
+        every { query2.setHint(any(), any()) } returns query2
+        every { query2.executeUpdate() } returns 1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.update(MyJpql, createUpdateQuery2)
@@ -435,14 +797,25 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
         verifySequence {
             JpqlEntityManagerUtils.createQuery(entityManager, updateQuery2, renderContext)
+            metadata.lockModeType
+            query2.setLockMode(lockModeType1)
+            metadata.queryHints
+            query2.setHint(queryHint1.first, queryHint1.second)
+            query2.setHint(queryHint2.first, queryHint2.second)
+            query2.setHint(queryHint3.first, queryHint3.second)
+            query2.executeUpdate()
         }
     }
 
     @Test
     fun `update() with a dsl object`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any()) } returns query1
-        every { query1.executeUpdate() } returns 1
+        every { JpqlEntityManagerUtils.createQuery(any(), any<UpdateQuery<String>>(), any()) } returns query3
+        every { query3.setLockMode(any()) } returns query3
+        every { query3.setHint(any(), any()) } returns query3
+        every { query3.executeUpdate() } returns 1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.update(MyJpqlObject, createUpdateQuery3)
@@ -452,6 +825,13 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
         verifySequence {
             JpqlEntityManagerUtils.createQuery(entityManager, updateQuery3, renderContext)
+            metadata.lockModeType
+            query3.setLockMode(lockModeType1)
+            metadata.queryHints
+            query3.setHint(queryHint1.first, queryHint1.second)
+            query3.setHint(queryHint2.first, queryHint2.second)
+            query3.setHint(queryHint3.first, queryHint3.second)
+            query3.executeUpdate()
         }
     }
 
@@ -459,7 +839,11 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     fun delete() {
         // given
         every { JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any()) } returns query1
+        every { query1.setLockMode(any()) } returns query1
+        every { query1.setHint(any(), any()) } returns query1
         every { query1.executeUpdate() } returns 1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.delete(createDeleteQuery1)
@@ -469,14 +853,25 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
         verifySequence {
             JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery1, renderContext)
+            metadata.lockModeType
+            query1.setLockMode(lockModeType1)
+            metadata.queryHints
+            query1.setHint(queryHint1.first, queryHint1.second)
+            query1.setHint(queryHint2.first, queryHint2.second)
+            query1.setHint(queryHint3.first, queryHint3.second)
+            query1.executeUpdate()
         }
     }
 
     @Test
     fun `delete() with a dsl`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any()) } returns query1
-        every { query1.executeUpdate() } returns 1
+        every { JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any()) } returns query2
+        every { query2.setLockMode(any()) } returns query2
+        every { query2.setHint(any(), any()) } returns query2
+        every { query2.executeUpdate() } returns 1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.delete(MyJpql, createDeleteQuery2)
@@ -486,14 +881,25 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
         verifySequence {
             JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery2, renderContext)
+            metadata.lockModeType
+            query2.setLockMode(lockModeType1)
+            metadata.queryHints
+            query2.setHint(queryHint1.first, queryHint1.second)
+            query2.setHint(queryHint2.first, queryHint2.second)
+            query2.setHint(queryHint3.first, queryHint3.second)
+            query2.executeUpdate()
         }
     }
 
     @Test
     fun `delete() with a dsl object`() {
         // given
-        every { JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any()) } returns query1
-        every { query1.executeUpdate() } returns 1
+        every { JpqlEntityManagerUtils.createQuery(any(), any<DeleteQuery<String>>(), any()) } returns query3
+        every { query3.setLockMode(any()) } returns query3
+        every { query3.setHint(any(), any()) } returns query3
+        every { query3.executeUpdate() } returns 1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
 
         // when
         val actual = sut.delete(MyJpqlObject, createDeleteQuery3)
@@ -503,6 +909,13 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
         verifySequence {
             JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery3, renderContext)
+            metadata.lockModeType
+            query3.setLockMode(lockModeType1)
+            metadata.queryHints
+            query3.setHint(queryHint1.first, queryHint1.second)
+            query3.setHint(queryHint2.first, queryHint2.second)
+            query3.setHint(queryHint3.first, queryHint3.second)
+            query3.executeUpdate()
         }
     }
 }
