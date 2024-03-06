@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
+import org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessorAdaptor
 import javax.persistence.EntityManager
 
 @AutoConfiguration
@@ -48,10 +49,12 @@ open class KotlinJdslAutoConfiguration {
         renderContexts: List<RenderContext>,
     ): KotlinJdslJpqlExecutor {
         val renderContext = renderContexts.reversed().reduce { acc, renderContext -> acc + renderContext }
+        val metadata = CrudMethodMetadataPostProcessorAdaptor().getCrudMethodMetadata()
 
         return KotlinJdslJpqlExecutorImpl(
             entityManager = entityManager,
             renderContext = renderContext,
+            metadata = metadata,
         )
     }
 }

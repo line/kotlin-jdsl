@@ -15,6 +15,7 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import kotlin.reflect.KClass
 
 @ExtendWith(MockKExtension::class)
 class KotlinJdslQueryProviderTest : WithAssertions {
@@ -46,8 +47,9 @@ class KotlinJdslQueryProviderTest : WithAssertions {
     @Test
     fun createQuery() {
         // given
+        every { query1.returnType } returns String::class
         every {
-            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any<KClass<*>>(), any())
         } returns stringTypedQuery1
 
         // when
@@ -57,10 +59,12 @@ class KotlinJdslQueryProviderTest : WithAssertions {
         assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
+            query1.returnType
             JpqlEntityManagerUtils.createQuery(
                 entityManager = entityManager,
                 query = query1,
                 queryParams = queryParams1,
+                String::class,
                 context = context,
             )
         }
