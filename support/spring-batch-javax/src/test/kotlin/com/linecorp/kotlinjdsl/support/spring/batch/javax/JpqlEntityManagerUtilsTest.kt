@@ -59,20 +59,18 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any(), any()) } returns rendered1
-        every { selectQuery1.returnType } returns String::class
         every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
         val actual = JpqlEntityManagerUtils
-            .createQuery(entityManager, selectQuery1, mapOf(queryParam1, queryParam2), context)
+            .createQuery(entityManager, selectQuery1, mapOf(queryParam1, queryParam2), String::class, context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
             renderer.render(selectQuery1, mapOf(queryParam1, queryParam2), context)
-            selectQuery1.returnType
             entityManager.createQuery(rendered1.query, String::class.java)
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
