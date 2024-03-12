@@ -42,6 +42,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlNullIf
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPower
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSign
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSize
@@ -423,6 +424,20 @@ class ExpressionsTest : WithAssertions {
         // then
         val expected = JpqlLn(
             doubleExpression1,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun power() {
+        // when
+        val actual = Expressions.power(doubleExpression1, intExpression1)
+
+        // then
+        val expected = JpqlPower(
+            doubleExpression1,
+            intExpression1,
         )
 
         assertThat(actual).isEqualTo(expected)
