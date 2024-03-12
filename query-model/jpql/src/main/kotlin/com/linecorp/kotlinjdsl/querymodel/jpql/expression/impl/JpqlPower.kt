@@ -9,5 +9,5 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 @Internal
 data class JpqlPower<T : Number> internal constructor(
     val base: Expression<T>,
-    val exponent: Expression<Int>,
-) : Expression<T>
+    val exponent: Expression<T>,
+) : Expression<Double>

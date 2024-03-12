@@ -647,42 +647,10 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that represents the mod of values.
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Any> mod(expr: KProperty1<T, Int>, value: Int): Expression<Int> {
-        return Expressions.mod(Paths.path(expr), Expressions.value(value))
-    }
-
-    /**
-     * Creates an expression that represents the mod of values.
-     */
-    @SinceJdsl("3.4.0")
-    fun mod(value1: Expressionable<Int>, value2: Int): Expression<Int> {
-        return Expressions.mod(value1.toExpression(), Expressions.value(value2))
-    }
-
-    /**
-     * Creates an expression that represents the mod of values.
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Any> mod(expr: KProperty1<T, Int>, value: Expression<Int>): Expression<Int> {
-        return Expressions.mod(Paths.path(expr), value.toExpression())
-    }
-
-    /**
-     * Creates an expression that represents the mod of values.
-     */
-    @SinceJdsl("3.4.0")
-    fun mod(value1: Expressionable<Int>, value2: Expressionable<Int>): Expression<Int> {
-        return Expressions.mod(value1.toExpression(), value2.toExpression())
-    }
-
-    /**
      * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Int): Expression<V> {
+    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Number): Expression<Double> {
         return Expressions.power(Paths.path(base), Expressions.value(exponent))
     }
 
@@ -690,15 +658,7 @@ open class Jpql : JpqlDsl {
      * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
      */
     @SinceJdsl("3.4.0")
-    fun <T : Number> power(base: Expressionable<T>, exponent: Int): Expression<T> {
-        return Expressions.power(base.toExpression(), Expressions.value(exponent))
-    }
-
-    /**
-     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Expression<Int>): Expression<V> {
+    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Expressionable<V>): Expression<Double> {
         return Expressions.power(Paths.path(base), exponent.toExpression())
     }
 
@@ -706,7 +666,15 @@ open class Jpql : JpqlDsl {
      * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
      */
     @SinceJdsl("3.4.0")
-    fun <T : Number> power(base: Expressionable<T>, exponent: Expressionable<Int>): Expression<T> {
+    fun <T : Number> power(base: Expressionable<T>, exponent: T): Expression<Double> {
+        return Expressions.power(base.toExpression(), Expressions.value(exponent))
+    }
+
+    /**
+     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> power(base: Expressionable<T>, exponent: Expressionable<T>): Expression<Double> {
         return Expressions.power(base.toExpression(), exponent.toExpression())
     }
 
@@ -780,6 +748,38 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.4.0")
     fun <T : Number> round(value: Expressionable<T>, scale: Expressionable<Int>): Expression<T> {
         return Expressions.round(value.toExpression(), scale.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any> mod(expr: KProperty1<T, Int>, value: Int): Expression<Int> {
+        return Expressions.mod(Paths.path(expr), Expressions.value(value))
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun mod(value1: Expressionable<Int>, value2: Int): Expression<Int> {
+        return Expressions.mod(value1.toExpression(), Expressions.value(value2))
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any> mod(expr: KProperty1<T, Int>, value: Expression<Int>): Expression<Int> {
+        return Expressions.mod(Paths.path(expr), value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun mod(value1: Expressionable<Int>, value2: Expressionable<Int>): Expression<Int> {
+        return Expressions.mod(value1.toExpression(), value2.toExpression())
     }
 
     /**

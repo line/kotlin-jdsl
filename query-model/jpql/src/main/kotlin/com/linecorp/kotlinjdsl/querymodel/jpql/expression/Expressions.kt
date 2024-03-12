@@ -282,7 +282,7 @@ object Expressions {
      * Creates expression that calculates the powering of a numeric [base] to a specified [exponent].
      */
     @SinceJdsl("3.4.0")
-    fun <T : Number> power(base: Expression<T>, exponent: Expression<Int>): Expression<T> {
+    fun <T : Number> power(base: Expression<T>, exponent: Expression<T>): Expression<Double> {
         return JpqlPower(base, exponent)
     }
 
