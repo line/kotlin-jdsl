@@ -647,38 +647,6 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Number): Expression<Double> {
-        return Expressions.power(Paths.path(base), Expressions.value(exponent))
-    }
-
-    /**
-     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Expressionable<V>): Expression<Double> {
-        return Expressions.power(Paths.path(base), exponent.toExpression())
-    }
-
-    /**
-     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> power(base: Expressionable<T>, exponent: T): Expression<Double> {
-        return Expressions.power(base.toExpression(), Expressions.value(exponent))
-    }
-
-    /**
-     * Create expression that calculates the powering of a numeric [base] to a specified [exponent].
-     */
-    @SinceJdsl("3.4.0")
-    fun <T : Number> power(base: Expressionable<T>, exponent: Expressionable<T>): Expression<Double> {
-        return Expressions.power(base.toExpression(), exponent.toExpression())
-    }
-
-    /**
      * Creates an expression that represents the sign of value.
      *
      * - If value is positive, it returns 1.
@@ -780,6 +748,38 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.4.0")
     fun mod(value1: Expressionable<Int>, value2: Expressionable<Int>): Expression<Int> {
         return Expressions.mod(value1.toExpression(), value2.toExpression())
+    }
+
+    /**
+     * Create an expression that represents the power of [base] and [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Number): Expression<Double> {
+        return Expressions.power(Paths.path(base), Expressions.value(exponent))
+    }
+
+    /**
+     * Create an expression that represents the power of [base] and [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> power(base: Expressionable<T>, exponent: T): Expression<Double> {
+        return Expressions.power(base.toExpression(), Expressions.value(exponent))
+    }
+
+    /**
+     * Create an expression that represents the power of [base] and [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Expressionable<V>): Expression<Double> {
+        return Expressions.power(Paths.path(base), exponent.toExpression())
+    }
+
+    /**
+     * Create an expression that represents the power of [base] and [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> power(base: Expressionable<T>, exponent: Expressionable<T>): Expression<Double> {
+        return Expressions.power(base.toExpression(), exponent.toExpression())
     }
 
     /**
