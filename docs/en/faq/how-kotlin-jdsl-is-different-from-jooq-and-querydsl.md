@@ -2,21 +2,22 @@
 
 Unlike jOOq and QueryDSL, Kotlin JDSL does not generate a `Metadata Model (code generation) for writing queries.
 
-If you use code generation, you'll have to do the following.
+If you use code generation, you'll have to do the following:
 
 ```
-Modify tables / entities →
-Compilation errors due to code and metacode mismatch →
-Temporarily change all code associated with the modified code, e.g. by commenting it out, to make it compile.
-Regenerate code
-Remove the temporary code that was processed to pass compilation and replace it with working code.
+Modify tables and entities →
+Entity modification causes compile errors →
+Run Manven or Gradle task to regenerate the metadate →
+Write query based on modified entity
 ```
 
-In addition, JPQL uses a string-based query writing method, so it can pass compilation but may cause errors when running the web application.
+Then you might think about trying JPQL yourself, but that might not be a good idea.
 
-However, Line-JDSL allows you to write queries based on pure code rather than using string-based writing and code generation.
+JPQL uses a string-based way of writing queries, which makes it impossible to detect errors at compile time.
 
-This means that as soon as you modify an entity or field name, it is reflected in the query code and can be compiled and executed.
+However, the Kotlin JDSL uses code generation and pure code-based query construction rather than string-based construction.
+
+This means that as soon as you modify an entity or field name, it is reflected in the query code, and the above inconvenience does not exist.
 
 It also adopts an ORM-based object-oriented query like JPQL, which supports specifications such as polymorphism and fetch joins.
 

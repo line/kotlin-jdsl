@@ -4,7 +4,7 @@ Kotlin JDSL은 DSL를 통해 생성된 쿼리 및 파라미터를 debug 로그�
 
 로그에 포함된 파라미터의 경우 `toString` 함수로 출력되기 때문에 만약 `toString` 함수가 오버라이드 되지 않았다면 식별에 어려움이 있을 수 있습니다.
 
-```
+```kotlin
 select(
     path(Book::isbn),
 ).from(
