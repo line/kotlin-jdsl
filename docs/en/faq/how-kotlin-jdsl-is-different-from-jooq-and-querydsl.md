@@ -1,13 +1,13 @@
 # How is Kotlin JDSL different from jOOQ and QueryDSL?
 
-Unlike jOOq and QueryDSL, Kotlin JDSL does not generate a `Metadata Model (code generation) for writing queries.
+Unlike jOOQ and QueryDSL, Kotlin JDSL does not generate a `Metadata Model (code generation) for writing queries.
 
 If you use code generation, you'll have to do the following:
 
 ```
 Modify tables and entities →
 Entity modification causes compile errors →
-Run Manven or Gradle task to regenerate the metadate →
+Run Maven or Gradle task to regenerate the metadata model →
 Write query based on modified entity
 ```
 
@@ -19,7 +19,7 @@ However, the Kotlin JDSL uses code generation and pure code-based query construc
 
 This means that as soon as you modify an entity or field name, it is reflected in the query code, and the above inconvenience does not exist.
 
-It also adopts an ORM-based object-oriented query like JPQL, which supports specifications such as polymorphism and fetch joins.
+It also adopts an ORM-based, object-oriented query approach like JPQL, which supports specifications such as polymorphism and fetch joins.
 
 Therefore, the way we write queries also relies on object names and fields to query, rather than querying the table/column itself.
 
