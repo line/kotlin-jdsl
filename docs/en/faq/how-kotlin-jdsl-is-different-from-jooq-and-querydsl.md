@@ -2,13 +2,18 @@
 
 Unlike jOOQ and QueryDSL, Kotlin JDSL does not generate a `Metadata Model (code generation) for writing queries.
 
-If you use code generation, you'll have to do the following:
+There are several disadvantages to using the code generation approach
+
+1. increases project initial setup complexity
+2. adds metadata generation to the normal build process
+
+As an example of #2, you'll have to do the following:
 
 ```
-Modify tables and entities →
-Entity modification causes compile errors →
-Run Maven or Gradle task to regenerate the metadata model →
-Write query based on modified entity
+1. Modify tables and entities
+2. Entity modification causes compile errors
+3. Run Maven or Gradle task to regenerate the metadata model
+4. Write query based on modified entity
 ```
 
 Then you might think about trying JPQL yourself, but that might not be a good idea.
@@ -22,14 +27,3 @@ This means that as soon as you modify an entity or field name, it is reflected i
 It also adopts an ORM-based, object-oriented query approach like JPQL, which supports specifications such as polymorphism and fetch joins.
 
 Therefore, the way we write queries also relies on object names and fields to query, rather than querying the table/column itself.
-
-Below is a table comparing the differences between Kotlin JDSL, QueryDSL, and jOOQ.
-
-
-
-|                      | Kotlin JDSL | QueryDSL                                       | jOOQ                                           |
-|----------------------|-------------|------------------------------------------------|------------------------------------------------|
-| Code Generation      | ❌           | ✅                                              | ✅                                              | ✅ |
-| How to write queries | JPQL        | SQL, SQL, JPQL                                 | SQL                                            |
-| Language support     | Kotlin      | All JVM languages including Java, Kotlin, etc. | All JVM languages including Java, Kotlin, etc. |
-| Type Stability       | ✅           | ✅                                              | ✅                                              | ✅ |
