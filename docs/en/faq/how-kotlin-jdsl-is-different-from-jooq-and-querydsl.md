@@ -7,7 +7,9 @@ There are several disadvantages to using the code generation approach
 1. increases project initial setup complexity
 2. adds metadata generation to the normal build process
 
-As an example of #2, you'll have to do the following:
+While the first drawback can be overcome with a number of plugins and references, the second is not.
+
+Code generation requires extra work between `modify entity` and `write query`, which breaks the developer's flow of thought.
 
 ```
 1. Modify tables and entities
@@ -19,6 +21,10 @@ As an example of #2, you'll have to do the following:
 Then you might think about trying JPQL yourself, but that might not be a good idea.
 
 JPQL uses a string-based way of writing queries, which makes it impossible to detect errors at compile time.
+
+For example, if you change a specific field in an entity, the JPQL string query that uses that field is not automatically corrected.
+
+Although the error can be resolved with the help of the IDE, it ends up being handled manually by the developer, which is a productivity killer.
 
 However, the Kotlin JDSL uses code generation and pure code-based query construction rather than string-based construction.
 
