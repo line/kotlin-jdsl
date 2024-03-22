@@ -17,3 +17,4 @@
 ## FAQ
 
 * [How can I see the generated query?](faq/how-can-i-see-the-generated-query.md)
+* [What is the difference between Kotlin JDSL and jOOQ and QueryDSL?](faq/what-is-the-difference-between-kotlin-jdsl-and-jooq-and-querydsl.md)
