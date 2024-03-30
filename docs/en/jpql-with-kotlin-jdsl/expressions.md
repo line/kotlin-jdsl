@@ -192,44 +192,94 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 
 ### String functions
 
-| Function  | DSL function |
-|-----------|--------------|
-| CONCAT    | support      |
-| SUBSTRING | support      |
-| TRIM      | support      |
-| LOWER     | support      |
-| UPPER     | support      |
-| LENGTH    | support      |
-| LOCATE    | support      |
+* CONCAT (concat)
+* SUBSTRING (substring)
+* TRIM (trim)
+* LOWER (lower)
+* UPPER (upper)
+* LENGTH (length)
+* LOCATE (locate)
+
+```kotlin
+concat(path(Book::title), literal(":"), path(Book::imageUrl))
+
+substring(path(Book::title), 4)
+
+trim(path(Book::title))
+trim('B').from(path(Book::title))
+
+lower(path(Book::title))
+
+upper(path(Book::title))
+
+length(path(Book::title))
+
+locate("Book", path(Book::title))
+```
 
 ### Arithmetic functions
 
-| Function | DSL function |
-|----------|--------------|
-| ABS      | not yet      |
-| CEILING  | not yet      |
-| EXP      | not yet      |
-| FLOOR    | not yet      |
-| LN       | not yet      |
-| MOD      | not yet      |
-| POWER    | not yet      |
-| ROUND    | not yet      |
-| SIGN     | not yet      |
-| SQRT     | not yet      |
-| SIZE     | not yet      |
-| INDEX    | not yet      |
+* ABS (abs)
+* CEILING (ceiling)
+* EXP (exp)
+* FLOOR (floor)
+* INDEX (index)
+* LN (ln)
+* MOD (mod)
+* POWER (power)
+* SIGN (sign)
+* SQRT (sqrt)
+* ROUND (round)
+* SIZE (size)
+
+```kotlin
+abs(path(Book::price))
+
+ceiling(path(Book::price))
+
+exp(path(Book::price))
+
+floor(path(Book::price))
+
+index(BookAuthor::class)
+
+ln(path(Book::price))
+
+mod(path(Employee::age), 3)
+
+power(path(Employee::age), 2)
+
+sign(path(Book::price))
+
+sqrt(path(Book::price))
+
+round(path(Book::price), 2)
+
+size(path(Book::authors))
+```
 
 ### Datetime functions
 
-| Function           | DSL function |
-|--------------------|--------------|
-| CURRENT\_DATE      | not yet      |
-| CURRENT\_TIME      | not yet      |
-| CURRENT\_TIMESTAMP | not yet      |
-| LOCAL DATE         | not yet      |
-| LOCAL TIME         | not yet      |
-| LOCAL DATETIME     | not yet      |
-| EXTRACT            | not yet      |
+* CURRENT\_DATE (currentDate)
+* CURRENT\_TIME (currentTime)
+* CURRENT\_TIMESTAMP (currentTimestamp)
+* LOCAL DATE (localDate)
+* LOCAL TIME (localTime)
+* LOCAL DATETIME (localDateTime)
+
+```kotlin
+currentDate()
+
+currentTime()
+
+currentTimestamp()
+
+localDate()
+
+localTime()
+
+localDateTime()
+```
 
 ### Database function
 

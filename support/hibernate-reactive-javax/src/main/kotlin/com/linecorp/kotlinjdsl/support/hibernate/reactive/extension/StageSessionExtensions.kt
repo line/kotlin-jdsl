@@ -9,26 +9,26 @@ import com.linecorp.kotlinjdsl.support.hibernate.reactive.JpqlStageSessionUtils
 import org.hibernate.reactive.stage.Stage
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
-): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, context)
+): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, query.returnType, context)
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: SelectQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)
+): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, queryParams, query.returnType, context)
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
@@ -37,7 +37,7 @@ fun <T : Any> Stage.Session.createQuery(
 ): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, context)
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
@@ -47,7 +47,7 @@ fun <T : Any> Stage.Session.createQuery(
 ): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
@@ -56,7 +56,7 @@ fun <T : Any> Stage.Session.createQuery(
 ): Stage.Query<T> = JpqlStageSessionUtils.createQuery(this, query, context)
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(

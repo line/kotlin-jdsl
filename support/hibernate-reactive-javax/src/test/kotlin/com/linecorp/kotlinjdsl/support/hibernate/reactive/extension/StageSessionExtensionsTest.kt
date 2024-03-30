@@ -15,6 +15,7 @@ import org.hibernate.reactive.stage.Stage
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import kotlin.reflect.KClass
 
 @ExtendWith(MockKExtension::class)
 class StageSessionExtensionsTest : WithAssertions {
@@ -48,8 +49,9 @@ class StageSessionExtensionsTest : WithAssertions {
     fun `createQuery() with a select query`() {
         // given
         every {
-            JpqlStageSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any())
+            JpqlStageSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any<KClass<*>>(), any())
         } returns query1
+        every { selectQuery1.returnType } returns String::class
 
         // when
         val actual = session.createQuery(selectQuery1, context)
@@ -58,7 +60,8 @@ class StageSessionExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageSessionUtils.createQuery(session, selectQuery1, context)
+            selectQuery1.returnType
+            JpqlStageSessionUtils.createQuery(session, selectQuery1, String::class, context)
         }
     }
 
@@ -66,8 +69,9 @@ class StageSessionExtensionsTest : WithAssertions {
     fun `createQuery() with a select query and query params`() {
         // given
         every {
-            JpqlStageSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
+            JpqlStageSessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any<KClass<*>>(), any())
         } returns query1
+        every { selectQuery1.returnType } returns String::class
 
         // when
         val actual = session.createQuery(selectQuery1, queryParams1, context)
@@ -76,7 +80,8 @@ class StageSessionExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageSessionUtils.createQuery(session, selectQuery1, queryParams1, context)
+            selectQuery1.returnType
+            JpqlStageSessionUtils.createQuery(session, selectQuery1, queryParams1, String::class, context)
         }
     }
 
@@ -84,7 +89,7 @@ class StageSessionExtensionsTest : WithAssertions {
     fun `createQuery() with an update query`() {
         // given
         every {
-            JpqlStageSessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any())
+            JpqlStageSessionUtils.createQuery<String>(any(), any<UpdateQuery<String>>(), any())
         } returns query1
 
         // when
@@ -94,7 +99,7 @@ class StageSessionExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageSessionUtils.createQuery(session, updateQuery1, context)
+            JpqlStageSessionUtils.createQuery<String>(session, updateQuery1, context)
         }
     }
 
@@ -102,7 +107,9 @@ class StageSessionExtensionsTest : WithAssertions {
     fun `createQuery() with an update query and query params`() {
         // given
         every {
-            JpqlStageSessionUtils.createQuery(any(), any<UpdateQuery<String>>(), any(), any())
+            JpqlStageSessionUtils.createQuery<String>(
+                any(), any<UpdateQuery<String>>(), any<Map<String, Any?>>(), any(),
+            )
         } returns query1
 
         // when
@@ -112,7 +119,7 @@ class StageSessionExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageSessionUtils.createQuery(session, updateQuery1, queryParams1, context)
+            JpqlStageSessionUtils.createQuery<String>(session, updateQuery1, queryParams1, context)
         }
     }
 
@@ -120,7 +127,7 @@ class StageSessionExtensionsTest : WithAssertions {
     fun `createQuery() with a delete query`() {
         // given
         every {
-            JpqlStageSessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any())
+            JpqlStageSessionUtils.createQuery<String>(any(), any<DeleteQuery<String>>(), any())
         } returns query1
 
         // when
@@ -130,7 +137,7 @@ class StageSessionExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageSessionUtils.createQuery(session, deleteQuery1, context)
+            JpqlStageSessionUtils.createQuery<String>(session, deleteQuery1, context)
         }
     }
 
@@ -138,7 +145,9 @@ class StageSessionExtensionsTest : WithAssertions {
     fun `createQuery() with a delete query and query params`() {
         // given
         every {
-            JpqlStageSessionUtils.createQuery(any(), any<DeleteQuery<String>>(), any(), any())
+            JpqlStageSessionUtils.createQuery<String>(
+                any(), any<DeleteQuery<String>>(), any<Map<String, Any?>>(), any(),
+            )
         } returns query1
 
         // when
@@ -148,7 +157,7 @@ class StageSessionExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(query1)
 
         verifySequence {
-            JpqlStageSessionUtils.createQuery(session, deleteQuery1, queryParams1, context)
+            JpqlStageSessionUtils.createQuery<String>(session, deleteQuery1, queryParams1, context)
         }
     }
 }

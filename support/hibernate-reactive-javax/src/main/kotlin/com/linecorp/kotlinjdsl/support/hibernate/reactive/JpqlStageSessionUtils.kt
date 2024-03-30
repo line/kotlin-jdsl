@@ -1,98 +1,77 @@
 package com.linecorp.kotlinjdsl.support.hibernate.reactive
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import org.hibernate.reactive.stage.Stage
 import kotlin.reflect.KClass
 
 internal object JpqlStageSessionUtils {
     fun <T : Any> createQuery(
         session: Stage.Session,
-        query: SelectQuery<T>,
+        query: JpqlQuery<*>,
+        returnType: KClass<T>,
         context: RenderContext,
     ): Stage.Query<T> {
         val rendered = JpqlRendererHolder.get().render(query, context)
 
-        return createQuery(session, rendered, query.returnType)
+        return createQuery(session, rendered.query, rendered.params, returnType.java)
     }
 
     fun <T : Any> createQuery(
         session: Stage.Session,
-        query: SelectQuery<T>,
+        query: JpqlQuery<*>,
+        queryParams: Map<String, Any?>,
+        returnType: KClass<T>,
+        context: RenderContext,
+    ): Stage.Query<T> {
+        val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
+
+        return createQuery(session, rendered.query, rendered.params, returnType.java)
+    }
+
+    fun <T : Any> createQuery(
+        session: Stage.Session,
+        query: JpqlQuery<*>,
+        context: RenderContext,
+    ): Stage.Query<T> {
+        val rendered = JpqlRendererHolder.get().render(query, context)
+
+        return createQuery(session, rendered.query, rendered.params)
+    }
+
+    fun <T : Any> createQuery(
+        session: Stage.Session,
+        query: JpqlQuery<*>,
         queryParams: Map<String, Any?>,
         context: RenderContext,
     ): Stage.Query<T> {
         val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
 
-        return createQuery(session, rendered, query.returnType)
-    }
-
-    fun <T : Any> createQuery(
-        session: Stage.Session,
-        query: UpdateQuery<T>,
-        context: RenderContext,
-    ): Stage.Query<T> {
-        val rendered = JpqlRendererHolder.get().render(query, context)
-
-        return createQuery(session, rendered)
-    }
-
-    fun <T : Any> createQuery(
-        session: Stage.Session,
-        query: UpdateQuery<T>,
-        queryParams: Map<String, Any?>,
-        context: RenderContext,
-    ): Stage.Query<T> {
-        val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
-
-        return createQuery(session, rendered)
-    }
-
-    fun <T : Any> createQuery(
-        session: Stage.Session,
-        query: DeleteQuery<T>,
-        context: RenderContext,
-    ): Stage.Query<T> {
-        val rendered = JpqlRendererHolder.get().render(query, context)
-
-        return createQuery(session, rendered)
-    }
-
-    fun <T : Any> createQuery(
-        session: Stage.Session,
-        query: DeleteQuery<T>,
-        queryParams: Map<String, Any?>,
-        context: RenderContext,
-    ): Stage.Query<T> {
-        val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
-
-        return createQuery(session, rendered)
+        return createQuery(session, rendered.query, rendered.params)
     }
 
     private fun <T : Any> createQuery(
         session: Stage.Session,
-        rendered: JpqlRendered,
-        resultClass: KClass<T>,
+        query: String,
+        queryParams: Map<String, Any?>,
+        returnType: Class<T>,
     ): Stage.Query<T> {
-        return session.createQuery(rendered.query, resultClass.java).apply {
-            setParams(this, rendered.params)
+        return session.createQuery(query, returnType).apply {
+            setParams(this, queryParams)
         }
     }
 
     private fun <T> createQuery(
         session: Stage.Session,
-        rendered: JpqlRendered,
+        query: String,
+        queryParams: Map<String, Any?>,
     ): Stage.Query<T> {
-        return session.createQuery<T>(rendered.query).apply {
-            setParams(this, rendered.params)
+        return session.createQuery<T>(query).apply {
+            setParams(this, queryParams)
         }
     }
 
-    private fun <T> setParams(query: Stage.Query<T>, params: JpqlRenderedParams) {
+    private fun <T> setParams(query: Stage.Query<T>, params: Map<String, Any?>) {
         params.forEach { (name, value) ->
             query.setParameter(name, value)
         }

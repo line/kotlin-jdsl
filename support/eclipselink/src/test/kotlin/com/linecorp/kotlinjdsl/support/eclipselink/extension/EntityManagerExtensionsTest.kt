@@ -17,6 +17,7 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import kotlin.reflect.KClass
 
 @ExtendWith(MockKExtension::class)
 class EntityManagerExtensionsTest : WithAssertions {
@@ -53,8 +54,9 @@ class EntityManagerExtensionsTest : WithAssertions {
     fun `createQuery() with a select query`() {
         // given
         every {
-            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any())
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any<KClass<*>>(), any())
         } returns typedQuery1
+        every { selectQuery1.returnType } returns String::class
 
         // when
         val actual = entityManager.createQuery(selectQuery1, context)
@@ -63,7 +65,8 @@ class EntityManagerExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(typedQuery1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, context)
+            selectQuery1.returnType
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, String::class, context)
         }
     }
 
@@ -71,8 +74,9 @@ class EntityManagerExtensionsTest : WithAssertions {
     fun `createQuery() with a select query and query params`() {
         // given
         every {
-            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any<KClass<*>>(), any())
         } returns typedQuery1
+        every { selectQuery1.returnType } returns String::class
 
         // when
         val actual = entityManager.createQuery(selectQuery1, queryParams1, context)
@@ -81,7 +85,8 @@ class EntityManagerExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(typedQuery1)
 
         verifySequence {
-            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, queryParams1, context)
+            selectQuery1.returnType
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, queryParams1, String::class, context)
         }
     }
 

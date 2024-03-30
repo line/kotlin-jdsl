@@ -9,26 +9,26 @@ import com.linecorp.kotlinjdsl.support.hibernate.reactive.JpqlMutinySessionUtils
 import org.hibernate.reactive.mutiny.Mutiny
 
 /**
- * Creates [Mutiny.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Mutiny.SelectionQuery] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
-): Mutiny.SelectionQuery<T> = JpqlMutinySessionUtils.createQuery(this, query, context)
+): Mutiny.SelectionQuery<T> = JpqlMutinySessionUtils.createQuery(this, query, query.returnType, context)
 
 /**
- * Creates [Mutiny.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Mutiny.SelectionQuery] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createQuery(
     query: SelectQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-): Mutiny.SelectionQuery<T> = JpqlMutinySessionUtils.createQuery(this, query, queryParams, context)
+): Mutiny.SelectionQuery<T> = JpqlMutinySessionUtils.createQuery(this, query, queryParams, query.returnType, context)
 
 /**
- * Creates [Mutiny.MutationQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Mutiny.MutationQuery] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createMutationQuery(
@@ -37,7 +37,7 @@ fun <T : Any> Mutiny.Session.createMutationQuery(
 ): Mutiny.MutationQuery = JpqlMutinySessionUtils.createMutationQuery(this, query, context)
 
 /**
- * Creates [Mutiny.MutationQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Mutiny.MutationQuery] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createMutationQuery(
@@ -47,7 +47,7 @@ fun <T : Any> Mutiny.Session.createMutationQuery(
 ): Mutiny.MutationQuery = JpqlMutinySessionUtils.createMutationQuery(this, query, queryParams, context)
 
 /**
- * Creates [Mutiny.MutationQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Mutiny.MutationQuery] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createMutationQuery(
@@ -56,7 +56,7 @@ fun <T : Any> Mutiny.Session.createMutationQuery(
 ): Mutiny.MutationQuery = JpqlMutinySessionUtils.createMutationQuery(this, query, context)
 
 /**
- * Creates [Mutiny.MutationQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Mutiny.MutationQuery] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Mutiny.Session.createMutationQuery(

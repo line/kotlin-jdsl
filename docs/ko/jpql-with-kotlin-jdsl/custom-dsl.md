@@ -9,9 +9,12 @@
 그리고 [`Expression`](expressions.md) 혹은 [`Predicate`](predicates.md)를 구현한 나만의 `Model` 클래스를 만들고, 이를 반환하는 함수를 만들 수 있습니다.
 이 경우 [`JpqlSerializer`](custom-dsl.md#serializer)를 구현하여 `Model`을 String으로 랜더링하는 방법을 Kotlin JDSL에게 알려줄 수 있습니다.
 
-{% hint style="info" %}
-`jpql()`이 DSL을 인식하기 위해서 `JpqlDsl.Constructor`를 companion object로 구현해야 합니다.
-{% endhint %}
+이렇게 만들어진 나만의 DSL을 `jpql()`에 전달하기 위한 두 가지 방법이 있습니다.
+첫 번째는 DSL 객체를 생성하는 `JpqlDsl.Constructor`를 companion object로 구현하는 것이고, 두 번째는 DSL 인스턴스를 생성하는 것입니다.
+
+### JpqlDsl.Constructor
+
+이 방법을 사용하면 클래스만 선언해 사용할 수 있으며 쿼리 생성 시마다 새로운 인스턴스를 자동으로 생성합니다.
 
 ```kotlin
 class MyJpql : Jpql() {
@@ -39,9 +42,37 @@ val query = jpql(MyJpql) {
 }
 ```
 
+### Jpql Instance
+
+이 방법을 사용하면 쿼리 생성에 하나의 인스턴스를 재활용할 수 있으며 의존성 주입을 활용할 수 있습니다.
+
+```kotlin
+class MyJpql(
+    private val encryptor: Encryptor,
+) : Jpql() {
+    fun Path<String>.equalToEncrypted(value: String): Predicate {
+        val encrypted = encryptor.encrypt(value)
+        return this.equal(encrypted)
+    }
+}
+
+val encryptor = Encryptor()
+val instance = MyJpql(encryptor)
+
+val query = jpql(instance) {
+    select(
+        entity(Book::class)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::title).equalToEncrypted("plain")
+    )
+}
+```
+
 ### Serializer
 
-나만의 `Model`을 String을 랜더링하기 위해 `JpqlSerializer`를 구현하고 이를 `RenderContext`에 추가해야 합니다.
+나만의 `Model`을 String으로 랜더링하기 위해 `JpqlSerializer`를 구현하고 이를 `RenderContext`에 추가해야 합니다.
 
 `JpqlSerializer`는 랜더링 로직을 구현할 수 있도록 `JpqlWriter`와 `RenderContext`를 제공합니다.
 `RenderContext`를 통해 `JpqlRenderSerializer`를 얻어 나의 `Model`이 가지고 있는 다른 `Model`을 랜더링할 수 있습니다.

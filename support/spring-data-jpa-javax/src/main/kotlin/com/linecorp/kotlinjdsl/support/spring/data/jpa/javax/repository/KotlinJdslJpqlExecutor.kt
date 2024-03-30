@@ -35,6 +35,15 @@ interface KotlinJdslJpqlExecutor {
     /**
      * Returns all results of the select query.
      */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, DSL : JpqlDsl> findAll(
+        dsl: DSL,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): List<T?>
+
+    /**
+     * Returns all results of the select query.
+     */
     @SinceJdsl("3.0.0")
     fun <T : Any> findAll(
         pageable: Pageable,
@@ -47,6 +56,16 @@ interface KotlinJdslJpqlExecutor {
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> findAll(
         dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): List<T?>
+
+    /**
+     * Returns all results of the select query.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, DSL : JpqlDsl> findAll(
+        dsl: DSL,
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?>
@@ -71,6 +90,16 @@ interface KotlinJdslJpqlExecutor {
     ): Page<T?>
 
     /**
+     * Returns the page of the select query.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: DSL,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Page<T?>
+
+    /**
      * Returns the slice of the select query.
      */
     @SinceJdsl("3.0.0")
@@ -85,6 +114,16 @@ interface KotlinJdslJpqlExecutor {
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> findSlice(
         dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Slice<T?>
+
+    /**
+     * Returns the slice of the select query.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, DSL : JpqlDsl> findSlice(
+        dsl: DSL,
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): Slice<T?>
@@ -111,6 +150,17 @@ interface KotlinJdslJpqlExecutor {
     ): Int
 
     /**
+     * Execute the update query.
+     *
+     * @return the number of entities updated
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, DSL : JpqlDsl> update(
+        dsl: DSL,
+        init: DSL.() -> JpqlQueryable<UpdateQuery<T>>,
+    ): Int
+
+    /**
      * Execute the delete query.
      *
      * @return the number of entities deleted
@@ -128,6 +178,17 @@ interface KotlinJdslJpqlExecutor {
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> delete(
         dsl: JpqlDsl.Constructor<DSL>,
+        init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
+    ): Int
+
+    /**
+     * Execute the delete query.
+     *
+     * @return the number of entities deleted
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, DSL : JpqlDsl> delete(
+        dsl: DSL,
         init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
     ): Int
 }

@@ -1,6 +1,6 @@
 package com.linecorp.kotlinjdsl.support.spring.batch
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
@@ -12,13 +12,14 @@ import kotlin.reflect.KClass
 internal object JpqlEntityManagerUtils {
     fun <T : Any> createQuery(
         entityManager: EntityManager,
-        query: SelectQuery<T>,
+        query: JpqlQuery<*>,
         queryParams: Map<String, Any?>,
+        returnType: KClass<T>,
         context: RenderContext,
     ): TypedQuery<T> {
         val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
 
-        return createQuery(entityManager, rendered, query.returnType)
+        return createQuery(entityManager, rendered, returnType)
     }
 
     private fun <T : Any> createQuery(

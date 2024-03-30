@@ -2,7 +2,7 @@
 
 ## Requirements
 
-At least Java 8 and Kotlin 1.9 are required to build and run an application with Kotlin JDSL.
+At least Java 8 and Kotlin 1.7 are required to build and run an application with Kotlin JDSL.
 
 ## Configure the repositories
 
@@ -99,8 +99,8 @@ The following dependencies are the minimum requirement for all Kotlin JDSL appli
 
 ```kotlin
 dependencies {
-    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.3.2")
-    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.3.2")
+    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.4.0")
+    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.4.0")
 }
 ```
 
@@ -110,8 +110,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.linecorp.kotlin-jdsl:jpql-dsl:3.3.2'
-    implementation 'com.linecorp.kotlin-jdsl:jpql-render:3.3.2'
+    implementation 'com.linecorp.kotlin-jdsl:jpql-dsl:3.4.0'
+    implementation 'com.linecorp.kotlin-jdsl:jpql-render:3.4.0'
 }
 ```
 
@@ -125,12 +125,12 @@ dependencies {
     <dependency>
         <groupId>com.linecorp.kotlin-jdsl</groupId>
         <artifactId>jpql-dsl</artifactId>
-        <version>3.3.2</version>
+        <version>3.4.0</version>
     </dependency>
     <dependency>
         <groupId>com.linecorp.kotlin-jdsl</groupId>
         <artifactId>jpql-render</artifactId>
-        <version>3.3.2</version>
+        <version>3.4.0</version>
     </dependency>
 </dependencies>
 ```

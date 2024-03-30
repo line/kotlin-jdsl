@@ -2,12 +2,8 @@
 
 package com.linecorp.kotlinjdsl.support.hibernate
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import javax.persistence.EntityManager
 import javax.persistence.Query
 import javax.persistence.TypedQuery
@@ -16,87 +12,70 @@ import kotlin.reflect.KClass
 internal object JpqlEntityManagerUtils {
     fun <T : Any> createQuery(
         entityManager: EntityManager,
-        query: SelectQuery<T>,
+        query: JpqlQuery<*>,
+        returnType: KClass<T>,
         context: RenderContext,
     ): TypedQuery<T> {
         val rendered = JpqlRendererHolder.get().render(query, context)
 
-        return createQuery(entityManager, rendered, query.returnType)
+        return createQuery(entityManager, rendered.query, rendered.params, returnType.java)
     }
 
     fun <T : Any> createQuery(
         entityManager: EntityManager,
-        query: SelectQuery<T>,
+        query: JpqlQuery<*>,
         queryParams: Map<String, Any?>,
+        returnType: KClass<T>,
         context: RenderContext,
     ): TypedQuery<T> {
         val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
 
-        return createQuery(entityManager, rendered, query.returnType)
+        return createQuery(entityManager, rendered.query, rendered.params, returnType.java)
     }
 
-    fun <T : Any> createQuery(
+    fun createQuery(
         entityManager: EntityManager,
-        query: UpdateQuery<T>,
+        query: JpqlQuery<*>,
         context: RenderContext,
     ): Query {
         val rendered = JpqlRendererHolder.get().render(query, context)
 
-        return createQuery(entityManager, rendered)
+        return createQuery(entityManager, rendered.query, rendered.params)
     }
 
-    fun <T : Any> createQuery(
+    fun createQuery(
         entityManager: EntityManager,
-        query: UpdateQuery<T>,
+        query: JpqlQuery<*>,
         queryParams: Map<String, Any?>,
         context: RenderContext,
     ): Query {
         val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
 
-        return createQuery(entityManager, rendered)
-    }
-
-    fun <T : Any> createQuery(
-        entityManager: EntityManager,
-        query: DeleteQuery<T>,
-        context: RenderContext,
-    ): Query {
-        val rendered = JpqlRendererHolder.get().render(query, context)
-
-        return createQuery(entityManager, rendered)
-    }
-
-    fun <T : Any> createQuery(
-        entityManager: EntityManager,
-        query: DeleteQuery<T>,
-        queryParams: Map<String, Any?>,
-        context: RenderContext,
-    ): Query {
-        val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
-
-        return createQuery(entityManager, rendered)
+        return createQuery(entityManager, rendered.query, rendered.params)
     }
 
     private fun <T : Any> createQuery(
         entityManager: EntityManager,
-        rendered: JpqlRendered,
-        resultClass: KClass<T>,
+        query: String,
+        queryParams: Map<String, Any?>,
+        returnType: Class<T>,
     ): TypedQuery<T> {
-        return entityManager.createQuery(rendered.query, resultClass.java).apply {
-            setParams(this, rendered.params)
+        return entityManager.createQuery(query, returnType).apply {
+            setParams(this, queryParams)
         }
     }
 
     private fun createQuery(
         entityManager: EntityManager,
-        rendered: JpqlRendered,
+        query: String,
+        queryParams: Map<String, Any?>,
     ): Query {
-        return entityManager.createQuery(rendered.query).apply {
-            setParams(this, rendered.params)
+        return entityManager.createQuery(query).apply {
+            setParams(this, queryParams)
         }
     }
 
-    private fun setParams(query: Query, params: JpqlRenderedParams) {
+    private fun setParams(query: Query, params: Map<String, Any?>) {
         params.forEach { (name, value) ->
             query.setParameter(name, value)
         }

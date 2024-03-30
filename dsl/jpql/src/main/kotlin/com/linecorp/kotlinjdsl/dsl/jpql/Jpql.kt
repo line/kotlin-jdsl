@@ -44,6 +44,12 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.sql.Date
+import java.sql.Time
+import java.sql.Timestamp
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import kotlin.internal.Exact
 import kotlin.internal.LowPriorityInOverloadResolution
 import kotlin.reflect.KClass
@@ -64,6 +70,14 @@ inline fun <Q : JpqlQuery<Q>> jpql(init: Jpql.() -> JpqlQueryable<Q>): Q {
 @SinceJdsl("3.0.0")
 inline fun <DSL : JpqlDsl, Q : JpqlQuery<Q>> jpql(dsl: JpqlDsl.Constructor<DSL>, init: DSL.() -> JpqlQueryable<Q>): Q {
     return dsl.newInstance().init().toQuery()
+}
+
+/**
+ * Builds new JPQL query using provided JpqlDsl instance.
+ */
+@SinceJdsl("3.4.0")
+inline fun <DSL : JpqlDsl, Q : JpqlQuery<Q>> jpql(jpql: DSL, init: DSL.() -> JpqlQueryable<Q>): Q {
+    return jpql.init().toQuery()
 }
 
 /**
@@ -534,6 +548,314 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Number, S : T> Expressionable<@Exact T>.div(value: Expressionable<S>): Expression<T> {
         return Expressions.div(this.toExpression(), value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> abs(value: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.abs(Paths.path(value))
+    }
+
+    /**
+     * Creates an expression that represents the absolute value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> abs(value: Expressionable<T>): Expression<T> {
+        return Expressions.abs(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> ceiling(value: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.ceiling(Paths.path(value))
+    }
+
+    /**
+     * Creates an expression that is enclosed in ceiling.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ceiling(value: Expressionable<T>): Expression<T> {
+        return Expressions.ceiling(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the exponential value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> exp(value: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.exp(Paths.path(value))
+    }
+
+    /**
+     * Creates an expression that represents the exponential value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> exp(value: Expressionable<T>): Expression<Double> {
+        return Expressions.exp(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that is enclosed in floor.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> floor(value: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.floor(Paths.path(value))
+    }
+
+    /**
+     * Creates an expression that is enclosed in floor.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> floor(value: Expressionable<T>): Expression<T> {
+        return Expressions.floor(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the index of the entity in an ordered list.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any> index(entity: KClass<T>): Expression<Int> {
+        return Expressions.index(Entities.entity(entity))
+    }
+
+    /**
+     * Creates an expression that represents the index of the entity in an ordered list.
+     */
+    @SinceJdsl("3.4.0")
+    fun index(entity: Entityable<*>): Expression<Int> {
+        return Expressions.index(entity.toEntity())
+    }
+
+    /**
+     * Creates an expression that represents the natural logarithm of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> ln(value: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.ln(Paths.path(value))
+    }
+
+    /**
+     * Creates an expression that represents the natural logarithm of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> ln(value: Expressionable<T>): Expression<Double> {
+        return Expressions.ln(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any> mod(value1: KProperty1<T, Int>, value2: Int): Expression<Int> {
+        return Expressions.mod(Paths.path(value1), Expressions.value(value2))
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any> mod(value1: KProperty1<T, Int>, value2: Expression<Int>): Expression<Int> {
+        return Expressions.mod(Paths.path(value1), value2.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun mod(value1: Expressionable<Int>, value2: Int): Expression<Int> {
+        return Expressions.mod(value1.toExpression(), Expressions.value(value2))
+    }
+
+    /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun mod(value1: Expressionable<Int>, value2: Expressionable<Int>): Expression<Int> {
+        return Expressions.mod(value1.toExpression(), value2.toExpression())
+    }
+
+    /**
+     * Create an expression that represents the power of [base] and [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Number): Expression<Double> {
+        return Expressions.power(Paths.path(base), Expressions.value(exponent))
+    }
+
+    /**
+     * Create an expression that represents the power of [base] and [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> power(base: KProperty1<T, @Exact V>, exponent: Expressionable<V>): Expression<Double> {
+        return Expressions.power(Paths.path(base), exponent.toExpression())
+    }
+
+    /**
+     * Create an expression that represents the power of [base] and [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> power(base: Expressionable<T>, exponent: T): Expression<Double> {
+        return Expressions.power(base.toExpression(), Expressions.value(exponent))
+    }
+
+    /**
+     * Create an expression that represents the power of [base] and [exponent].
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> power(base: Expressionable<T>, exponent: Expressionable<T>): Expression<Double> {
+        return Expressions.power(base.toExpression(), exponent.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the sign of value.
+     *
+     * - If value is positive, it returns 1.
+     * - If value is negative, it returns -1.
+     * - If value is zero, it returns 0.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> sign(value: KProperty1<T, @Exact V>): Expression<Int> {
+        return Expressions.sign(Paths.path(value))
+    }
+
+    /**
+     * Creates an expression that represents the sign of value.
+     *
+     * - If value is positive, it returns 1.
+     * - If value is negative, it returns -1.
+     * - If value is zero, it returns 0.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sign(value: Expressionable<T>): Expression<Int> {
+        return Expressions.sign(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the square root of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> sqrt(value: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.sqrt(Paths.path(value))
+    }
+
+    /**
+     * Creates an expression that represents the square root of value.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> sqrt(value: Expressionable<T>): Expression<Double> {
+        return Expressions.sqrt(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> round(value: KProperty1<T, @Exact V>, scale: Int): Expression<V> {
+        return Expressions.round(Paths.path(value), Expressions.value(scale))
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V : Number> round(value: KProperty1<T, @Exact V>, scale: Expression<Int>): Expression<V> {
+        return Expressions.round(Paths.path(value), scale.toExpression())
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expressionable<T>, scale: Int): Expression<T> {
+        return Expressions.round(value.toExpression(), Expressions.value(scale))
+    }
+
+    /**
+     * Creates an expression that represents the rounding of the value to a specified scale.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Number> round(value: Expressionable<T>, scale: Expressionable<Int>): Expression<T> {
+        return Expressions.round(value.toExpression(), scale.toExpression())
+    }
+
+    /**
+     * Creates an expression that the number of elements of the collection.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T : Any, V, S : Collection<V>> size(path: KProperty1<T, @Exact S>): Expression<Int> {
+        return Expressions.size(Paths.path(path))
+    }
+
+    /**
+     * Creates an expression that the number of elements of the collection.
+     */
+    @SinceJdsl("3.4.0")
+    fun <T, S : Collection<T>> size(path: Pathable<S>): Expression<Int> {
+        return Expressions.size(path.toPath())
+    }
+
+    /**
+     * Creates an expression that represents the current date.
+     *
+     * This is the same as ```CURRENT_DATE```.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentDate(): Expression<Date> {
+        return Expressions.currentDate()
+    }
+
+    /**
+     * Creates an expression that represents the current time.
+     *
+     * This is the same as ```CURRENT_TIME```.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentTime(): Expression<Time> {
+        return Expressions.currentTime()
+    }
+
+    /**
+     * Creates an expression that represents the current timestamp.
+     *
+     * This is the same as ```CURRENT_TIMESTAMP```.
+     */
+    @SinceJdsl("3.4.0")
+    fun currentTimestamp(): Expression<Timestamp> {
+        return Expressions.currentTimestamp()
+    }
+
+    /**
+     * Creates an expression that represents the local date.
+     *
+     * This is the same as ```LOCAL DATE```.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDate(): Expression<LocalDate> {
+        return Expressions.localDate()
+    }
+
+    /**
+     * Creates an expression that represents the local time.
+     *
+     * This is the same as ```LOCAL TIME```.
+     */
+    @SinceJdsl("3.4.0")
+    fun localTime(): Expression<LocalTime> {
+        return Expressions.localTime()
+    }
+
+    /**
+     * Creates an expression that represents the local datetime.
+     *
+     * This is the same as ```LOCAL DATETIME```.
+     */
+    @SinceJdsl("3.4.0")
+    fun localDateTime(): Expression<LocalDateTime> {
+        return Expressions.localDateTime()
     }
 
     /**

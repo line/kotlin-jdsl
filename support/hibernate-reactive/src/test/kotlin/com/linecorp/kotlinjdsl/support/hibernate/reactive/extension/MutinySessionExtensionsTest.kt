@@ -15,6 +15,7 @@ import org.hibernate.reactive.mutiny.Mutiny
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import kotlin.reflect.KClass
 
 @ExtendWith(MockKExtension::class)
 class MutinySessionExtensionsTest : WithAssertions {
@@ -51,8 +52,9 @@ class MutinySessionExtensionsTest : WithAssertions {
     fun `createQuery() with a select query`() {
         // given
         every {
-            JpqlMutinySessionUtils.createQuery(any(), any<SelectQuery<String>>(), any())
+            JpqlMutinySessionUtils.createQuery(any(), any<SelectQuery<String>>(), any<KClass<*>>(), any())
         } returns selectionQuery1
+        every { selectQuery1.returnType } returns String::class
 
         // when
         val actual = session.createQuery(selectQuery1, context)
@@ -61,7 +63,8 @@ class MutinySessionExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(selectionQuery1)
 
         verifySequence {
-            JpqlMutinySessionUtils.createQuery(session, selectQuery1, context)
+            selectQuery1.returnType
+            JpqlMutinySessionUtils.createQuery(session, selectQuery1, String::class, context)
         }
     }
 
@@ -69,8 +72,9 @@ class MutinySessionExtensionsTest : WithAssertions {
     fun `createQuery() with a select query and query params`() {
         // given
         every {
-            JpqlMutinySessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any())
+            JpqlMutinySessionUtils.createQuery(any(), any<SelectQuery<String>>(), any(), any<KClass<*>>(), any())
         } returns selectionQuery1
+        every { selectQuery1.returnType } returns String::class
 
         // when
         val actual = session.createQuery(selectQuery1, queryParams1, context)
@@ -79,7 +83,8 @@ class MutinySessionExtensionsTest : WithAssertions {
         assertThat(actual).isEqualTo(selectionQuery1)
 
         verifySequence {
-            JpqlMutinySessionUtils.createQuery(session, selectQuery1, queryParams1, context)
+            selectQuery1.returnType
+            JpqlMutinySessionUtils.createQuery(session, selectQuery1, queryParams1, String::class, context)
         }
     }
 
@@ -105,7 +110,9 @@ class MutinySessionExtensionsTest : WithAssertions {
     fun `createMutationQuery() with an update query and query params`() {
         // given
         every {
-            JpqlMutinySessionUtils.createMutationQuery(any(), any<UpdateQuery<String>>(), any(), any())
+            JpqlMutinySessionUtils.createMutationQuery(
+                any(), any<UpdateQuery<String>>(), any<Map<String, Any?>>(), any(),
+            )
         } returns mutationQuery1
 
         // when
@@ -141,7 +148,9 @@ class MutinySessionExtensionsTest : WithAssertions {
     fun `createMutationQuery() with a delete query and query params`() {
         // given
         every {
-            JpqlMutinySessionUtils.createMutationQuery(any(), any<DeleteQuery<String>>(), any(), any())
+            JpqlMutinySessionUtils.createMutationQuery(
+                any(), any<DeleteQuery<String>>(), any<Map<String, Any?>>(), any(),
+            )
         } returns mutationQuery1
 
         // when

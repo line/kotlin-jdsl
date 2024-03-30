@@ -11,26 +11,26 @@ import jakarta.persistence.Query
 import jakarta.persistence.TypedQuery
 
 /**
- * Creates [jakarta.persistence.TypedQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [jakarta.persistence.TypedQuery] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> EntityManager.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
-): TypedQuery<T> = JpqlEntityManagerUtils.createQuery(this, query, context)
+): TypedQuery<T> = JpqlEntityManagerUtils.createQuery(this, query, query.returnType, context)
 
 /**
- * Creates [jakarta.persistence.TypedQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [jakarta.persistence.TypedQuery] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> EntityManager.createQuery(
     query: SelectQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-): TypedQuery<T> = JpqlEntityManagerUtils.createQuery(this, query, queryParams, context)
+): TypedQuery<T> = JpqlEntityManagerUtils.createQuery(this, query, queryParams, query.returnType, context)
 
 /**
- * Creates [jakarta.persistence.Query] from the [UpdateQuery] and [RenderContext].
+ * Creates a [jakarta.persistence.Query] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> EntityManager.createQuery(
@@ -39,7 +39,7 @@ fun <T : Any> EntityManager.createQuery(
 ): Query = JpqlEntityManagerUtils.createQuery(this, query, context)
 
 /**
- * Creates [jakarta.persistence.Query] from the [UpdateQuery] and [RenderContext].
+ * Creates a [jakarta.persistence.Query] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> EntityManager.createQuery(
@@ -49,7 +49,7 @@ fun <T : Any> EntityManager.createQuery(
 ): Query = JpqlEntityManagerUtils.createQuery(this, query, queryParams, context)
 
 /**
- * Creates [jakarta.persistence.Query] from the [DeleteQuery] and [RenderContext].
+ * Creates a [jakarta.persistence.Query] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> EntityManager.createQuery(
@@ -58,7 +58,7 @@ fun <T : Any> EntityManager.createQuery(
 ): Query = JpqlEntityManagerUtils.createQuery(this, query, context)
 
 /**
- * Creates [jakarta.persistence.Query] from the [DeleteQuery] and [RenderContext].
+ * Creates a [jakarta.persistence.Query] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> EntityManager.createQuery(
