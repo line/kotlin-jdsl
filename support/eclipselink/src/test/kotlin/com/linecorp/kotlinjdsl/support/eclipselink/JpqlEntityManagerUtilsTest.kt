@@ -1,8 +1,6 @@
 package com.linecorp.kotlinjdsl.support.eclipselink
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
@@ -32,13 +30,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     private lateinit var context: RenderContext
 
     @MockK
-    private lateinit var selectQuery1: SelectQuery<String>
-
-    @MockK
-    private lateinit var updateQuery1: UpdateQuery<String>
-
-    @MockK
-    private lateinit var deleteQuery1: DeleteQuery<String>
+    private lateinit var query1: JpqlQuery<*>
 
     @MockK
     private lateinit var stringTypedQuery1: TypedQuery<String>
@@ -62,24 +54,22 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery() with a select query`() {
+    fun `createQuery() with a query and a return type`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any()) } returns rendered1
-        every { selectQuery1.returnType } returns String::class
         every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
-        val actual = JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, context)
+        val actual = JpqlEntityManagerUtils.createQuery(entityManager, query1, String::class, context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(selectQuery1, context)
-            selectQuery1.returnType
+            renderer.render(query1, context)
             entityManager.createQuery(rendered1.query, String::class.java)
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
@@ -87,25 +77,23 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery() with a select query and query params`() {
+    fun `createQuery() with a query and query params and a return type`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
         every { renderer.render(any(), any(), any()) } returns rendered1
-        every { selectQuery1.returnType } returns String::class
         every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
         val actual = JpqlEntityManagerUtils
-            .createQuery(entityManager, selectQuery1, mapOf(queryParam1, queryParam2), context)
+            .createQuery(entityManager, query1, mapOf(queryParam1, queryParam2), String::class, context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(selectQuery1, mapOf(queryParam1, queryParam2), context)
-            selectQuery1.returnType
+            renderer.render(query1, mapOf(queryParam1, queryParam2), context)
             entityManager.createQuery(rendered1.query, String::class.java)
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
@@ -113,7 +101,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery() with an update query`() {
+    fun `createQuery() with a query`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
@@ -122,13 +110,13 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
 
         // when
-        val actual = JpqlEntityManagerUtils.createQuery(entityManager, updateQuery1, context)
+        val actual = JpqlEntityManagerUtils.createQuery(entityManager, query1, context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(updateQuery1, context)
+            renderer.render(query1, context)
             entityManager.createQuery(rendered1.query)
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
@@ -136,7 +124,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun `createQuery() with an update query and query params`() {
+    fun `createQuery() with a query and query params`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
@@ -146,60 +134,13 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
         // when
         val actual = JpqlEntityManagerUtils
-            .createQuery(entityManager, updateQuery1, mapOf(queryParam1, queryParam2), context)
+            .createQuery(entityManager, query1, mapOf(queryParam1, queryParam2), context)
 
         // then
         assertThat(actual).isEqualTo(stringTypedQuery1)
 
         verifySequence {
-            renderer.render(updateQuery1, mapOf(queryParam1, queryParam2), context)
-            entityManager.createQuery(rendered1.query)
-            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
-        }
-    }
-
-    @Test
-    fun `createQuery() with a delete query`() {
-        // given
-        val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
-
-        every { renderer.render(any(), any()) } returns rendered1
-        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
-        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
-
-        // when
-        val actual = JpqlEntityManagerUtils.createQuery(entityManager, deleteQuery1, context)
-
-        // then
-        assertThat(actual).isEqualTo(stringTypedQuery1)
-
-        verifySequence {
-            renderer.render(deleteQuery1, context)
-            entityManager.createQuery(rendered1.query)
-            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
-            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
-        }
-    }
-
-    @Test
-    fun `createQuery() with a delete query and query params`() {
-        // given
-        val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
-
-        every { renderer.render(any(), any(), any()) } returns rendered1
-        every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
-        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
-
-        // when
-        val actual = JpqlEntityManagerUtils
-            .createQuery(entityManager, deleteQuery1, mapOf(queryParam1, queryParam2), context)
-
-        // then
-        assertThat(actual).isEqualTo(stringTypedQuery1)
-
-        verifySequence {
-            renderer.render(deleteQuery1, mapOf(queryParam1, queryParam2), context)
+            renderer.render(query1, mapOf(queryParam1, queryParam2), context)
             entityManager.createQuery(rendered1.query)
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)

@@ -27,7 +27,7 @@ fun <T : Any> EntityManager.createQuery(
     query: SelectQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-): Query = JpqlEntityManagerUtils.createQuery(this, query, queryParams, query.returnType, context)
+): TypedQuery<T> = JpqlEntityManagerUtils.createQuery(this, query, queryParams, query.returnType, context)
 
 /**
  * Creates a [javax.persistence.Query] from the [UpdateQuery] and [RenderContext].

@@ -9,26 +9,26 @@ import com.linecorp.kotlinjdsl.support.hibernate.reactive.JpqlStageSessionUtils
 import org.hibernate.reactive.stage.Stage
 
 /**
- * Creates [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
-): Stage.SelectionQuery<T> = JpqlStageSessionUtils.createQuery(this, query, context)
+): Stage.SelectionQuery<T> = JpqlStageSessionUtils.createQuery(this, query, query.returnType, context)
 
 /**
- * Creates [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createQuery(
     query: SelectQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-): Stage.SelectionQuery<T> = JpqlStageSessionUtils.createQuery(this, query, queryParams, context)
+): Stage.SelectionQuery<T> = JpqlStageSessionUtils.createQuery(this, query, queryParams, query.returnType, context)
 
 /**
- * Creates [Stage.MutationQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.MutationQuery] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createMutationQuery(
@@ -37,7 +37,7 @@ fun <T : Any> Stage.Session.createMutationQuery(
 ): Stage.MutationQuery = JpqlStageSessionUtils.createMutationQuery(this, query, context)
 
 /**
- * Creates [Stage.MutationQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.MutationQuery] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createMutationQuery(
@@ -47,7 +47,7 @@ fun <T : Any> Stage.Session.createMutationQuery(
 ): Stage.MutationQuery = JpqlStageSessionUtils.createMutationQuery(this, query, queryParams, context)
 
 /**
- * Creates [Stage.MutationQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.MutationQuery] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createMutationQuery(
@@ -56,7 +56,7 @@ fun <T : Any> Stage.Session.createMutationQuery(
 ): Stage.MutationQuery = JpqlStageSessionUtils.createMutationQuery(this, query, context)
 
 /**
- * Creates [Stage.MutationQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.MutationQuery] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.Session.createMutationQuery(

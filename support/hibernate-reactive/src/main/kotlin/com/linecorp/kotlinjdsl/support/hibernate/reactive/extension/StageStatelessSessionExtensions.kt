@@ -9,26 +9,27 @@ import com.linecorp.kotlinjdsl.support.hibernate.reactive.JpqlStageStatelessSess
 import org.hibernate.reactive.stage.Stage
 
 /**
- * Creates [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
     query: SelectQuery<T>,
     context: RenderContext,
-): Stage.SelectionQuery<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, context)
+): Stage.SelectionQuery<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, query.returnType, context)
 
 /**
- * Creates [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.SelectionQuery] from the [SelectQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
     query: SelectQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
-): Stage.SelectionQuery<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, queryParams, context)
+): Stage.SelectionQuery<T> =
+    JpqlStageStatelessSessionUtils.createQuery(this, query, queryParams, query.returnType, context)
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
@@ -37,7 +38,7 @@ fun <T : Any> Stage.StatelessSession.createQuery(
 ): Stage.Query<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, context)
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [UpdateQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
@@ -47,7 +48,7 @@ fun <T : Any> Stage.StatelessSession.createQuery(
 ): Stage.Query<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, queryParams, context)
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(
@@ -56,7 +57,7 @@ fun <T : Any> Stage.StatelessSession.createQuery(
 ): Stage.Query<T> = JpqlStageStatelessSessionUtils.createQuery(this, query, context)
 
 /**
- * Creates [Stage.Query] from the [SelectQuery] and [RenderContext].
+ * Creates a [Stage.Query] from the [DeleteQuery] and [RenderContext].
  */
 @SinceJdsl("3.0.0")
 fun <T : Any> Stage.StatelessSession.createQuery(

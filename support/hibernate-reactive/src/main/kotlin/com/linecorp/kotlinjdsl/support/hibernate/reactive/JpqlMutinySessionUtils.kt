@@ -1,104 +1,83 @@
 package com.linecorp.kotlinjdsl.support.hibernate.reactive
 
-import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
-import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
 import org.hibernate.reactive.mutiny.Mutiny
 import kotlin.reflect.KClass
 
 internal object JpqlMutinySessionUtils {
     fun <T : Any> createQuery(
         session: Mutiny.Session,
-        query: SelectQuery<T>,
+        query: JpqlQuery<*>,
+        returnType: KClass<T>,
         context: RenderContext,
     ): Mutiny.SelectionQuery<T> {
         val rendered = JpqlRendererHolder.get().render(query, context)
 
-        return createQuery(session, rendered, query.returnType)
+        return createQuery(session, rendered.query, rendered.params, returnType.java)
     }
 
     fun <T : Any> createQuery(
         session: Mutiny.Session,
-        query: SelectQuery<T>,
+        query: JpqlQuery<*>,
         queryParams: Map<String, Any?>,
+        returnType: KClass<T>,
         context: RenderContext,
     ): Mutiny.SelectionQuery<T> {
         val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
 
-        return createQuery(session, rendered, query.returnType)
+        return createQuery(session, rendered.query, rendered.params, returnType.java)
     }
 
-    fun <T : Any> createMutationQuery(
+    fun createMutationQuery(
         session: Mutiny.Session,
-        query: UpdateQuery<T>,
+        query: JpqlQuery<*>,
         context: RenderContext,
     ): Mutiny.MutationQuery {
         val rendered = JpqlRendererHolder.get().render(query, context)
 
-        return createMutationQuery(session, rendered)
+        return createMutationQuery(session, rendered.query, rendered.params)
     }
 
-    fun <T : Any> createMutationQuery(
+    fun createMutationQuery(
         session: Mutiny.Session,
-        query: UpdateQuery<T>,
+        query: JpqlQuery<*>,
         queryParams: Map<String, Any?>,
         context: RenderContext,
     ): Mutiny.MutationQuery {
         val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
 
-        return createMutationQuery(session, rendered)
-    }
-
-    fun <T : Any> createMutationQuery(
-        session: Mutiny.Session,
-        query: DeleteQuery<T>,
-        context: RenderContext,
-    ): Mutiny.MutationQuery {
-        val rendered = JpqlRendererHolder.get().render(query, context)
-
-        return createMutationQuery(session, rendered)
-    }
-
-    fun <T : Any> createMutationQuery(
-        session: Mutiny.Session,
-        query: DeleteQuery<T>,
-        queryParams: Map<String, Any?>,
-        context: RenderContext,
-    ): Mutiny.MutationQuery {
-        val rendered = JpqlRendererHolder.get().render(query, queryParams, context)
-
-        return createMutationQuery(session, rendered)
+        return createMutationQuery(session, rendered.query, rendered.params)
     }
 
     private fun <T : Any> createQuery(
         session: Mutiny.Session,
-        rendered: JpqlRendered,
-        resultClass: KClass<T>,
+        query: String,
+        queryParams: Map<String, Any?>,
+        returnType: Class<T>,
     ): Mutiny.SelectionQuery<T> {
-        return session.createQuery(rendered.query, resultClass.java).apply {
-            setParams(this, rendered.params)
+        return session.createQuery(query, returnType).apply {
+            setParams(this, queryParams)
         }
     }
 
     private fun createMutationQuery(
         session: Mutiny.Session,
-        rendered: JpqlRendered,
+        query: String,
+        queryParams: Map<String, Any?>,
     ): Mutiny.MutationQuery {
-        return session.createMutationQuery(rendered.query).apply {
-            setParams(this, rendered.params)
+        return session.createMutationQuery(query).apply {
+            setParams(this, queryParams)
         }
     }
 
-    private fun <T> setParams(query: Mutiny.SelectionQuery<T>, params: JpqlRenderedParams) {
+    private fun <T> setParams(query: Mutiny.SelectionQuery<T>, params: Map<String, Any?>) {
         params.forEach { (name, value) ->
             query.setParameter(name, value)
         }
     }
 
-    private fun setParams(query: Mutiny.MutationQuery, params: JpqlRenderedParams) {
+    private fun setParams(query: Mutiny.MutationQuery, params: Map<String, Any?>) {
         params.forEach { (name, value) ->
             query.setParameter(name, value)
         }
