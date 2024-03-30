@@ -171,8 +171,6 @@ minDistinct(path(Book::price))
 
 sum(path(Book::price))
 sumDistinct(path(Book::price))
-
-ceiling(path(Book::price))
 ```
 
 ### Sum
