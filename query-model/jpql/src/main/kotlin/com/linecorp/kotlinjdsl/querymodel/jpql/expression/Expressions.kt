@@ -266,8 +266,8 @@ object Expressions {
      * Creates an expression that represents the index of the value in an ordered list.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any> index(path: Expression<T>): Expression<Int> {
-        return JpqlIndex(path)
+    fun <T : Any> index(entity: Entity<T>): Expression<Int> {
+        return JpqlIndex(entity)
     }
 
     /**

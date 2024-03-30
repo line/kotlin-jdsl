@@ -241,7 +241,7 @@ exp(path(Book::price))
 
 floor(path(Book::price))
 
-index(path(Book::authors))
+index(BookAuthor::class)
 
 ln(path(Book::price))
 

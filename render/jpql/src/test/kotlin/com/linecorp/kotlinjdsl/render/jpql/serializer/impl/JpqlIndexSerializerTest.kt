@@ -1,10 +1,10 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.querymodel.jpql.entity.Entities
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
-import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIndex
 import com.linecorp.kotlinjdsl.render.TestRenderContext
-import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.render.jpql.entity.book.BookAuthor
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
@@ -23,7 +23,7 @@ class JpqlIndexSerializerTest : WithAssertions {
     @MockK
     private lateinit var serializer: JpqlRenderSerializer
 
-    private val expression1 = Paths.path(Book::authors)
+    private val entity1 = Entities.entity(BookAuthor::class)
 
     @Test
     fun handledType() {
@@ -38,18 +38,18 @@ class JpqlIndexSerializerTest : WithAssertions {
     fun serialize() {
         // given
         val part = Expressions.index(
-            path = expression1,
+            entity = entity1,
         )
         val context = TestRenderContext(serializer)
 
         // when
-        sut.serialize(part as JpqlIndex<*>, writer, context)
+        sut.serialize(part as JpqlIndex, writer, context)
 
         // then
         verifySequence {
             writer.write("INDEX")
             writer.writeParentheses(any())
-            serializer.serialize(expression1, writer, context)
+            serializer.serialize(entity1, writer, context)
         }
     }
 }

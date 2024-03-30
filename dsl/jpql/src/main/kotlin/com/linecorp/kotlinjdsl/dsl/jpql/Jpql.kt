@@ -615,19 +615,19 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that represents the index of the value in an ordered list.
+     * Creates an expression that represents the index of the entity in an ordered list.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V, S : Collection<V>> index(expr: KProperty1<T, @Exact S>): Expression<Int> {
-        return Expressions.index(Paths.path(expr))
+    fun <T : Any> index(entity: KClass<T>): Expression<Int> {
+        return Expressions.index(Entities.entity(entity))
     }
 
     /**
-     * Creates an expression that represents the index of the value in an ordered list.
+     * Creates an expression that represents the index of the entity in an ordered list.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any> index(expr: Expressionable<T>): Expression<Int> {
-        return Expressions.index(expr.toExpression())
+    fun index(entity: Entityable<*>): Expression<Int> {
+        return Expressions.index(entity.toEntity())
     }
 
     /**
