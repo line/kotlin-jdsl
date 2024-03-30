@@ -554,24 +554,24 @@ open class Jpql : JpqlDsl {
      * Creates an expression that represents the absolute value.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> abs(expr: KProperty1<T, @Exact V>): Expression<V> {
-        return Expressions.abs(Paths.path(expr))
+    fun <T : Any, V : Number> abs(value: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.abs(Paths.path(value))
     }
 
     /**
      * Creates an expression that represents the absolute value.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Number> abs(expr: Expressionable<T>): Expression<T> {
-        return Expressions.abs(expr.toExpression())
+    fun <T : Number> abs(value: Expressionable<T>): Expression<T> {
+        return Expressions.abs(value.toExpression())
     }
 
     /**
      * Creates an expression that is enclosed in ceiling.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> ceiling(expr: KProperty1<T, @Exact V>): Expression<V> {
-        return Expressions.ceiling(Paths.path(expr))
+    fun <T : Any, V : Number> ceiling(value: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.ceiling(Paths.path(value))
     }
 
     /**
@@ -586,8 +586,8 @@ open class Jpql : JpqlDsl {
      * Creates an expression that represents the exponential value.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> exp(expr: KProperty1<T, @Exact V>): Expression<Double> {
-        return Expressions.exp(Paths.path(expr))
+    fun <T : Any, V : Number> exp(value: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.exp(Paths.path(value))
     }
 
     /**
@@ -602,8 +602,8 @@ open class Jpql : JpqlDsl {
      * Creates an expression that is enclosed in floor.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> floor(expr: KProperty1<T, @Exact V>): Expression<V> {
-        return Expressions.floor(Paths.path(expr))
+    fun <T : Any, V : Number> floor(value: KProperty1<T, @Exact V>): Expression<V> {
+        return Expressions.floor(Paths.path(value))
     }
 
     /**
@@ -634,8 +634,8 @@ open class Jpql : JpqlDsl {
      * Creates an expression that represents the natural logarithm of value.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> ln(expr: KProperty1<T, @Exact V>): Expression<Double> {
-        return Expressions.ln(Paths.path(expr))
+    fun <T : Any, V : Number> ln(value: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.ln(Paths.path(value))
     }
 
     /**
@@ -718,8 +718,8 @@ open class Jpql : JpqlDsl {
      * - If value is zero, it returns 0.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> sign(expr: KProperty1<T, @Exact V>): Expression<Int> {
-        return Expressions.sign(Paths.path(expr))
+    fun <T : Any, V : Number> sign(value: KProperty1<T, @Exact V>): Expression<Int> {
+        return Expressions.sign(Paths.path(value))
     }
 
     /**
@@ -738,8 +738,8 @@ open class Jpql : JpqlDsl {
      * Creates an expression that represents the square root of value.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V : Number> sqrt(expr: KProperty1<T, @Exact V>): Expression<Double> {
-        return Expressions.sqrt(Paths.path(expr))
+    fun <T : Any, V : Number> sqrt(value: KProperty1<T, @Exact V>): Expression<Double> {
+        return Expressions.sqrt(Paths.path(value))
     }
 
     /**
@@ -786,8 +786,8 @@ open class Jpql : JpqlDsl {
      * Creates an expression that the number of elements of the collection.
      */
     @SinceJdsl("3.4.0")
-    fun <T : Any, V, S : Collection<V>> size(expr: KProperty1<T, @Exact S>): Expression<Int> {
-        return Expressions.size(Paths.path(expr))
+    fun <T : Any, V, S : Collection<V>> size(path: KProperty1<T, @Exact S>): Expression<Int> {
+        return Expressions.size(Paths.path(path))
     }
 
     /**
