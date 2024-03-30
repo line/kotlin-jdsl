@@ -430,6 +430,20 @@ class ExpressionsTest : WithAssertions {
     }
 
     @Test
+    fun mod() {
+        // when
+        val actual = Expressions.mod(intExpression1, intExpression2)
+
+        // then
+        val expected = JpqlMod(
+            intExpression1,
+            intExpression2,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
     fun power() {
         // when
         val actual = Expressions.power(doubleExpression1, intExpression1)
@@ -478,20 +492,6 @@ class ExpressionsTest : WithAssertions {
         val expected = JpqlRound(
             bigDecimalExpression1,
             intExpression1,
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun mod() {
-        // when
-        val actual = Expressions.mod(intExpression1, intExpression2)
-
-        // then
-        val expected = JpqlMod(
-            intExpression1,
-            intExpression2,
         )
 
         assertThat(actual).isEqualTo(expected)

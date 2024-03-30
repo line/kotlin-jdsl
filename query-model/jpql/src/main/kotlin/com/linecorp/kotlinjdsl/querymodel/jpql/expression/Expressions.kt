@@ -279,6 +279,14 @@ object Expressions {
     }
 
     /**
+     * Creates an expression that represents the mod of values.
+     */
+    @SinceJdsl("3.4.0")
+    fun mod(value1: Expression<Int>, value2: Expression<Int>): Expression<Int> {
+        return JpqlMod(value1, value2)
+    }
+
+    /**
      * Create an expression that represents the power of [base] and [exponent].
      */
     @SinceJdsl("3.4.0")
@@ -308,14 +316,6 @@ object Expressions {
     @SinceJdsl("3.4.0")
     fun <T : Number> round(value: Expression<T>, scale: Expression<Int>): Expression<T> {
         return JpqlRound(value, scale)
-    }
-
-    /**
-     * Creates an expression that represents the mod of values.
-     */
-    @SinceJdsl("3.4.0")
-    fun mod(value1: Expression<Int>, value2: Expression<Int>): Expression<Int> {
-        return JpqlMod(value1, value2)
     }
 
     /**
