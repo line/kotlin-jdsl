@@ -150,8 +150,8 @@ subprojects {
 koverReport {
     filters {
         excludes {
-            classes("com.linecorp.kotlinjdsl.example.*")
-            classes("com.linecorp.kotlinjdsl.benchmark.*")
+            packages("com.linecorp.kotlinjdsl.example.*")
+            packages("com.linecorp.kotlinjdsl.benchmark.*")
         }
     }
 }
