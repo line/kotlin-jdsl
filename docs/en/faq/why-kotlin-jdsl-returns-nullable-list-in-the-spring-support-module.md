@@ -1,7 +1,8 @@
 # Why does Kotlin JDSL allow nullable return types?
 
-Kotlin JDSL helps developers develop more efficiently by allowing them to write queries without creating a separate metadata model or making string syntax errors.
-However, Kotlin JDSL users may sometimes have questions about nullable return types in the form of Slice<T?> or Page<T?> returned when calling APIs like findSlice or findPage methods.
+Kotlin JDSL helps you write queries in a type-safe way.
+You may wonder if it also allows non-null data to be null when returning a bunch of data (e.g. `Slice<T?>` in `findSlice`, `Page<T?>` in `findPage`).
+This article explains why the Kotlin JDSL allows nullable return types.
 
 ## Why do we need nullable return types?
 
@@ -10,11 +11,11 @@ The simplest example is when you look up a column or entity without using DTO Pr
 
 The table below shows some of the cases where nullable return types can occur when using the Kotlin JDSL.
 
-| Item           | Nullable or not | Reason                                                                                               |
-|----------------|-----------------|------------------------------------------------------------------------------------------------------|
-| DTO Projection | X               | Calling the constructor for all ROWs results in the object being created, which does not allow nulls |
-| Column         | O               | Exists when looking up a field that is null                                                          |
-| Entity         | O               | Exists if the Entity being joined on Left Join is null.                                              |
+| Item           | Nullable or not | Reason                                                                                                                                                        |
+|----------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DTO Projection | X               | Calling the constructor for all ROWs did not result in the object being created to allow nulls.<br/>Fields in DTO can be null, but DTO object cannot be null. |
+| Column         | O               | Exists when looking up a field that is null.                                                                                                                  |
+| Entity         | O               | Exists if the Entity being joined on Left Join is null.                                                                                                       |
 
 As another example, the code below shows a situation where the Author entity exists, but the BookAuthor entity, the target of the left join, may be null.
 
@@ -24,7 +25,7 @@ val query = jpql {
         path(BookAuthor),
     ).from(
         entity(Author::class),
-        leftJoin(BookAuthor::class).on(path(Author::authorId).equal(path(BookAuthor::authorId))),
+        leftJoin(BookAuthor::class).on(path(Author::authorId).equal(path(BookAuthor::authorId)))
     )
 }
 ```
