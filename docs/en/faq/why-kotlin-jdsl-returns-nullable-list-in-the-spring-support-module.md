@@ -11,11 +11,11 @@ The simplest example is when you look up a column or entity without using DTO Pr
 
 The table below shows some of the cases where nullable return types can occur when using the Kotlin JDSL.
 
-| Item           | Nullable or not | Reason                                                                                                                                                        |
-|----------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DTO Projection | X               | Calling the constructor for all ROWs did not result in the object being created to allow nulls.<br/>Fields in DTO can be null, but DTO object cannot be null. |
-| Column         | O               | Exists when looking up a field that is null.                                                                                                                  |
-| Entity         | O               | Exists if the Entity being joined on Left Join is null.                                                                                                       |
+| Item           | Nullable or not | Reason                                                                                                                                                                            |
+|----------------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DTO Projection | X               | Because we're calling the constructor for all ROWs, the object is not created, resulting in a null-accepting result<br/>Fields in DTO can be null, but DTO object cannot be null. |
+| Column         | O               | Exists when looking up a field that is null.                                                                                                                                      |
+| Entity         | O               | Exists if the Entity being joined on Left Join is null.                                                                                                                           |
 
 As another example, the code below shows a situation where the Author entity exists, but the BookAuthor entity, the target of the left join, may be null.
 
