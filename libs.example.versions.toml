@@ -32,7 +32,7 @@ hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.5.0.Fi
 
 # hibernate-reactive
 hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
-hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.2.2.Final" }
+hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.3.0.Final" }
 
 # eclipse-link
 eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.14" }
