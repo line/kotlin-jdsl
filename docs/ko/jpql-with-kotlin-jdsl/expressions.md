@@ -186,7 +186,7 @@ sumDistinct(path(Book::price))
 
 ## Functions
 
-Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위함 함수들을 제공합니다.
+Kotlin JDSL은 JPA에서 제공하는 여러 함수들을 지원하기 위한 함수들을 제공합니다.
 
 ### String functions
 
