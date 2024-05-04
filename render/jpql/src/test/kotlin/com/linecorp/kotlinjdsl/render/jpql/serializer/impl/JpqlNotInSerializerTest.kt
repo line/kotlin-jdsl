@@ -9,7 +9,6 @@ import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import io.mockk.called
 import io.mockk.impl.annotations.MockK
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
@@ -73,7 +72,7 @@ class JpqlNotInSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize() draws nothing, when the compareValues is empty`() {
+    fun `serialize() draws 0 = 1, when the compareValues is empty`() {
         // Given
         val part = Predicates.notIn(
             expression1,
@@ -86,7 +85,7 @@ class JpqlNotInSerializerTest : WithAssertions {
 
         // Then
         verifySequence {
-            writer wasNot called
+            writer.write("0 = 1")
         }
     }
 }
