@@ -19,18 +19,18 @@ class JpqlNotInSerializer : JpqlSerializer<JpqlNotIn<*>> {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         if (IterableUtils.isEmpty(part.compareValues)) {
-            return
-        }
+            writer.write("0 = 1")
+        } else {
+            delegate.serialize(part.value, writer, context)
 
-        delegate.serialize(part.value, writer, context)
+            writer.write(" ")
+            writer.write("NOT IN")
+            writer.write(" ")
 
-        writer.write(" ")
-        writer.write("NOT IN")
-        writer.write(" ")
-
-        writer.writeParentheses {
-            writer.writeEach(part.compareValues, separator = ", ") {
-                delegate.serialize(it, writer, context)
+            writer.writeParentheses {
+                writer.writeEach(part.compareValues, separator = ", ") {
+                    delegate.serialize(it, writer, context)
+                }
             }
         }
     }
