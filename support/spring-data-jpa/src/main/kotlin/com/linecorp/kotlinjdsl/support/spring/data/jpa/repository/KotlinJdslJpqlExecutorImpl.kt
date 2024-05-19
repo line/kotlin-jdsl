@@ -30,8 +30,8 @@ import org.springframework.data.support.PageableExecutionUtilsAdaptor
 import org.springframework.transaction.annotation.Transactional
 import kotlin.reflect.KClass
 
-@Transactional
 @NoRepositoryBean
+@Transactional(readOnly = true)
 @SinceJdsl("3.0.0")
 open class KotlinJdslJpqlExecutorImpl(
     private val entityManager: EntityManager,
@@ -145,6 +145,7 @@ open class KotlinJdslJpqlExecutorImpl(
         return createSlice(query, query.returnType, pageable)
     }
 
+    @Transactional
     override fun <T : Any> update(
         init: Jpql.() -> JpqlQueryable<UpdateQuery<T>>,
     ): Int {
@@ -161,6 +162,7 @@ open class KotlinJdslJpqlExecutorImpl(
         return jpaQuery.executeUpdate()
     }
 
+    @Transactional
     override fun <T : Any, DSL : JpqlDsl> update(
         dsl: DSL,
         init: DSL.() -> JpqlQueryable<UpdateQuery<T>>,
@@ -171,12 +173,14 @@ open class KotlinJdslJpqlExecutorImpl(
         return jpaQuery.executeUpdate()
     }
 
+    @Transactional
     override fun <T : Any> delete(
         init: Jpql.() -> JpqlQueryable<DeleteQuery<T>>,
     ): Int {
         return delete(Jpql, init)
     }
 
+    @Transactional
     override fun <T : Any, DSL : JpqlDsl> delete(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
@@ -187,6 +191,7 @@ open class KotlinJdslJpqlExecutorImpl(
         return jpaQuery.executeUpdate()
     }
 
+    @Transactional
     override fun <T : Any, DSL : JpqlDsl> delete(
         dsl: DSL,
         init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
