@@ -28,9 +28,9 @@ import javax.persistence.Query
 import javax.persistence.TypedQuery
 import kotlin.reflect.KClass
 
-@Transactional
 @NoRepositoryBean
 @SinceJdsl("3.0.0")
+@Transactional(readOnly = true)
 open class KotlinJdslJpqlExecutorImpl(
     private val entityManager: EntityManager,
     private val renderContext: RenderContext,
@@ -143,12 +143,14 @@ open class KotlinJdslJpqlExecutorImpl(
         return createSlice(query, query.returnType, pageable)
     }
 
+    @Transactional
     override fun <T : Any> update(
         init: Jpql.() -> JpqlQueryable<UpdateQuery<T>>,
     ): Int {
         return update(Jpql, init)
     }
 
+    @Transactional
     override fun <T : Any, DSL : JpqlDsl> update(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<UpdateQuery<T>>,
@@ -159,6 +161,7 @@ open class KotlinJdslJpqlExecutorImpl(
         return jpaQuery.executeUpdate()
     }
 
+    @Transactional
     override fun <T : Any, DSL : JpqlDsl> update(
         dsl: DSL,
         init: DSL.() -> JpqlQueryable<UpdateQuery<T>>,
@@ -169,12 +172,14 @@ open class KotlinJdslJpqlExecutorImpl(
         return jpaQuery.executeUpdate()
     }
 
+    @Transactional
     override fun <T : Any> delete(
         init: Jpql.() -> JpqlQueryable<DeleteQuery<T>>,
     ): Int {
         return delete(Jpql, init)
     }
 
+    @Transactional
     override fun <T : Any, DSL : JpqlDsl> delete(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
@@ -185,6 +190,7 @@ open class KotlinJdslJpqlExecutorImpl(
         return jpaQuery.executeUpdate()
     }
 
+    @Transactional
     override fun <T : Any, DSL : JpqlDsl> delete(
         dsl: DSL,
         init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
