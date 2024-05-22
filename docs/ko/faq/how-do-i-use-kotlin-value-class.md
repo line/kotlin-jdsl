@@ -1,4 +1,4 @@
-## Value Class
+# Kotlin value class 를 사용하려면 어떻게 해야할까요?
 
 엔티티의 프로퍼티를 kotlin의 [`value class`](https://kotlinlang.org/docs/inline-classes.html)로 선언할 수 있습니다.
 
@@ -13,11 +13,6 @@ class User(
 @JvmInline
 value class UserId(private val value: Long)
 
-```
-
-hibernate를 사용해 Kotlin JDSL을 통해 조회 시 에러가 발생합니다.
-
-```kotlin
 @Service
 class UserService(
     private val jpqlRenderContext: JpqlRenderContext,
@@ -31,7 +26,7 @@ class UserService(
             ).from(
                 entity(User::class),
             ).where(
-                path(User::id).equal(userId) // 에러 발생 지점
+                path(User::id).equal(userId)
             )
         }
 
@@ -39,6 +34,8 @@ class UserService(
     }
 }
 ```
+
+하지만 추가적인 설정 없이 Hibernate를 사용해 Kotlin JDSL을 통해 조회하면 에러가 발생합니다.
 
 ```
 org.hibernate.type.descriptor.java.CoercionException: Cannot coerce value 'UserId(value=1)' [com.example.entity.UserId] to Long
@@ -57,7 +54,9 @@ Kotlin JDSL은 `JpqlValueSerializer` 클래스에서 인자들을 추출하는 �
 먼저 다음과 같은 커스텀 Seriailzer를 생성합니다.
 
 ```kotlin
-class CustomJpqlValueSerializer : JpqlSerializer<JpqlValue<*>> {
+class ValueClassAwareJpqlValueSerializer(
+    private val delegate: JpqlValueSerializer,
+) : JpqlSerializer<JpqlValue<*>> {
     override fun handledType(): KClass<JpqlValue<*>> {
         return JpqlValue::class
     }
@@ -69,29 +68,18 @@ class CustomJpqlValueSerializer : JpqlSerializer<JpqlValue<*>> {
     ) {
         val value = part.value
 
-        // value class이면 relfection을 사용해 내부 값을 꺼내서 전달
         if (value::class.isValue) {
-            val property = value::class.memberProperties.first()
-            val propertyValue = property.getter.call(value)
-
-            writer.writeParam(propertyValue)
+            writer.writeParam(value::class.memberProperties.first().getter.call(value))
             return
         }
 
-        if (value is KClass<*>) {
-            val introspector = context.getValue(JpqlRenderIntrospector)
-            val entity = introspector.introspect(value)
-
-            writer.write(entity.name)
-        } else {
-            writer.writeParam(part.value)
-        }
+        delegate.serialize(part, writer, context)
     }
 }
 ```
 
 이제 이 클래스를 `RenderContext`에 추가해야 합니다.
-추가하는 방법은 [다음 문서](custom-dsl.md#serializer)를 참조할 수 있습니다.
+추가하는 방법은 [다음 문서](../jpql-with-kotlin-jdsl/custom-dsl.md#serializer)를 참조할 수 있습니다.
 만약 스프링 부트를 사용하는 경우 다음과 같은 코드를 통해 커스텀 Seriziler를 Bean으로 등록하면 됩니다.
 
 ```kotlin
@@ -99,23 +87,23 @@ class CustomJpqlValueSerializer : JpqlSerializer<JpqlValue<*>> {
 class CustomJpqlRenderContextConfig {
     @Bean
     fun jpqlSerializer(): JpqlSerializer<*> {
-        return CustomJpqlValueSerializer()
+        return ValueClassAwareJpqlValueSerializer(JpqlValueSerializer())
     }
 }
 ```
 
 ### custom method 사용
 
-JDSL에서 제공하는 [custom dsl](custom-dsl.md#dsl) 사용해 value class 에 사용되는 매서드를 추가할 수 있습니다.
+JDSL에서 제공하는 [custom dsl](../jpql-with-kotlin-jdsl/custom-dsl.md#dsl) 사용해 value class 에 사용되는 매서드를 추가할 수 있습니다.
 
 ```kotlin
-class JDSLConfig : Jpql() {
+class CustomJpql : Jpql() {
     fun Expressionable<UserId>.equalValue(value: UserId): Predicate {
         return Predicates.equal(this.toExpression(), Expressions.value(value.value))
     }
 }
 
-val query = jpql(JDSLConfig) {
+val query = jpql(CustomJpql) {
     select(
         entity(User::class)
     ).from(
@@ -133,7 +121,7 @@ interface PrimaryLongId { val value: Long }
 
 value class UserId(override val value: Long) : PrimaryLongId
 
-class JDSLConfig : Jpql() {
+class CustomJpql : Jpql() {
     fun <T: PrimaryLongId> Expressionable<T>.equal(value: T): Predicate {
         return Predicates.equal(this.toExpression(), Expressions.value(value.value))
     }
