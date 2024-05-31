@@ -127,3 +127,27 @@ class CustomJpql : Jpql() {
     }
 }
 ```
+
+### DTO Projection 시 주의사항
+
+DTO Projection 에서 value class를 사용하는 경우 해당 프로퍼티가 nullable 한 경우에 지원되지 않습니다.
+따라서 DTO Projection에서 직접 value class를 사용하는 것보다, 기본 자료형을 사용하고 조회 후에 변환하는 것을 권장합니다.
+
+```kotlin
+data class ResponseDto(
+    private val rawId: Long,
+) {
+    val id: UserId
+        get() = UserId(rawId)
+}
+
+val query = jpql(CustomJpql) {
+    selectNew<ResponseDto>(
+        entity(User::id)
+    ).from(
+        entity(User::class),
+    ).where(
+        path(User::id).equalValue(userId)
+    )
+}
+```
