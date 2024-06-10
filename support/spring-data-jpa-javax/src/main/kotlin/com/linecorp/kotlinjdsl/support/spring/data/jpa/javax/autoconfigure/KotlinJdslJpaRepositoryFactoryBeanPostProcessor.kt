@@ -16,10 +16,15 @@ open class KotlinJdslJpaRepositoryFactoryBeanPostProcessor : BeanPostProcessor {
     lateinit var kotlinJdslJpqlExecutor: KotlinJdslJpqlExecutor
 
     override fun postProcessBeforeInitialization(bean: Any, beanName: String): Any? {
-        if (bean is JpaRepositoryFactoryBean<*, *, *>) {
+        if (bean is JpaRepositoryFactoryBean<*, *, *> && bean.hasJdsl()) {
             bean.setCustomImplementation(kotlinJdslJpqlExecutor)
         }
 
         return super.postProcessAfterInitialization(bean, beanName)
+    }
+
+    private fun JpaRepositoryFactoryBean<*, *, *>.hasJdsl(): Boolean {
+        return this.objectType.interfaces
+            .any { it == KotlinJdslJpqlExecutor::class.java }
     }
 }
