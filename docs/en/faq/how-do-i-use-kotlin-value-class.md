@@ -1,6 +1,6 @@
-# Kotlin value class 를 사용하려면 어떻게 해야할까요?
+# How do I use Kotlin value class
 
-엔티티의 프로퍼티를 kotlin의 [`value class`](https://kotlinlang.org/docs/inline-classes.html)로 선언할 수 있습니다.
+You can declare the properties of an entity as [`value class`](https://kotlinlang.org/docs/inline-classes.html) in kotlin.
 
 ```kotlin
 @Entity
@@ -35,23 +35,23 @@ class UserService(
 }
 ```
 
-하지만 추가적인 설정 없이 Hibernate를 사용해 Kotlin JDSL을 통해 조회하면 에러가 발생합니다.
+However, if you use Hibernate to query through Kotlin JDSL without extra configuration, you will get an error.
 
 ```
 org.hibernate.type.descriptor.java.CoercionException: Cannot coerce value 'UserId(value=1)' [com.example.entity.UserId] to Long
 ...
 ```
 
-이를 해결하려면 Kotlin JDSL이 매개 변수로 전달되는 `value class`의 unboxing이 필요합니다.
-unboxing은 다음 방안 중 하나를 선택해서 수행할 수 있습니다.
+To solve this, Kotlin JDSL requires unboxing of the `value class` passed as a parameter.
+Unboxing can be done in one of the following ways
 
-### JpqlValue용 커스텀 JpqlSerializer
+### Custom JpqlSerializer for JpqlValue
 
-에러를 해결하기 위해 `EntityManager`에 인자들을 `value class` 그 자체로 넘기지 않고 unboxing한 값을 넘겨야합니다.
-Kotlin JDSL은 `JpqlValueSerializer` 클래스에서 인자들을 추출하는 역할을 담당합니다.
-따라서 기본 제공하는 클래스 대신 커스텀 Seriailzer를 등록해야 합니다.
+To resolve the error, you need to pass the unboxed value to the `EntityManager` instead of passing the arguments to the `value class` itself.
+Kotlin JDSL is supposed to extract the arguments from the `JpqlValueSerializer` class.
+So, we need to register a custom Seriailzer instead of the built-in class.
 
-먼저 다음과 같은 커스텀 Seriailzer를 생성합니다.
+First, create the following custom Seriailzer.
 
 ```kotlin
 class ValueClassAwareJpqlValueSerializer(
@@ -78,9 +78,9 @@ class ValueClassAwareJpqlValueSerializer(
 }
 ```
 
-이제 이 클래스를 `RenderContext`에 추가해야 합니다.
-추가하는 방법은 [다음 문서](../jpql-with-kotlin-jdsl/custom-dsl.md#serializer)를 참조할 수 있습니다.
-만약 스프링 부트를 사용하는 경우 다음과 같은 코드를 통해 커스텀 Seriziler를 Bean으로 등록하면 됩니다.
+Now we need to add this class to our `RenderContext`.
+You can refer to [the following documentation](../jpql-with-kotlin-jdsl/custom-dsl.md#serializer) for how to add it.
+If you are using Spring Boot, you can register your custom Seriziler as a bean with the following code.
 
 ```kotlin
 @Configuration
@@ -92,9 +92,9 @@ class CustomJpqlRenderContextConfig {
 }
 ```
 
-### custom method 사용
+### Custom method
 
-Kotlin JDSL에서 제공하는 [custom dsl](../jpql-with-kotlin-jdsl/custom-dsl.md#dsl) 사용해 value class 에 사용되는 매서드를 추가할 수 있습니다.
+You can use the [custom dsl](../jpql-with-kotlin-jdsl/custom-dsl.md#dsl) provided by Kotlin JDSL to add methods used in the value class.
 
 ```kotlin
 class CustomJpql : Jpql() {
@@ -114,7 +114,7 @@ val query = jpql(CustomJpql) {
 }
 ```
 
-interface 도입과 오버로딩을 통해 다양한 value class에 대응할 수 있습니다.
+interfaces and overloading to support different value classes.
 
 ```kotlin
 interface PrimaryLongId { val value: Long }
@@ -128,10 +128,10 @@ class CustomJpql : Jpql() {
 }
 ```
 
-### DTO Projection 시 주의사항
+### Notes for DTO Projection
 
-DTO Projection 에서 value class를 사용하는 경우 해당 프로퍼티가 nullable 한 경우에 지원되지 않습니다.
-따라서 DTO Projection에서 직접 value class를 사용하는 것보다, 기본 자료형을 사용하고 조회 후에 변환하는 것을 권장합니다.
+If you use value class in DTO Projection, it is not supported if the property is nullable.
+Therefore, rather than using value class directly in DTO Projection, it is recommended to use the default type and convert it after querying.
 
 ```kotlin
 data class ResponseDto(
