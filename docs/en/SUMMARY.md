@@ -17,4 +17,6 @@
 ## FAQ
 
 * [How can I see the generated query?](faq/how-can-i-see-the-generated-query.md)
+* [How can I use Kotlin value class?](faq/how-do-i-use-kotlin-value-class.md)
 * [What is the difference between Kotlin JDSL and jOOQ and QueryDSL?](faq/what-is-the-difference-between-kotlin-jdsl-and-jooq-and-querydsl.md)
+* [Why is there a support module that only has a nullable return type](faq/why-is-there-a-support-module-that-only-has-a-nullable-return-type.md)
