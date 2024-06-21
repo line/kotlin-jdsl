@@ -49,6 +49,7 @@ internal class JpqlEntitySerializerTest : WithAssertions {
     @StatementClauseSource(
         includes = [
             StatementClause(JpqlRenderStatement.Select::class, JpqlRenderClause.From::class),
+            StatementClause(JpqlRenderStatement.Select::class, JpqlRenderClause.Join::class),
             StatementClause(JpqlRenderStatement.Update::class, JpqlRenderClause.Update::class),
             StatementClause(JpqlRenderStatement.Delete::class, JpqlRenderClause.DeleteFrom::class),
         ],
@@ -81,6 +82,7 @@ internal class JpqlEntitySerializerTest : WithAssertions {
     @StatementClauseSource(
         excludes = [
             StatementClause(JpqlRenderStatement.Select::class, JpqlRenderClause.From::class),
+            StatementClause(JpqlRenderStatement.Select::class, JpqlRenderClause.Join::class),
             StatementClause(JpqlRenderStatement.Update::class, JpqlRenderClause.Update::class),
             StatementClause(JpqlRenderStatement.Delete::class, JpqlRenderClause.DeleteFrom::class),
         ],
