@@ -22,6 +22,7 @@ class JpqlEntitySerializer : JpqlSerializer<JpqlEntity<*>> {
 
         if (
             (statement.isSelect() && clause.isFrom()) ||
+            (statement.isSelect() && clause.isJoin()) ||
             (statement.isUpdate() && clause.isUpdate()) ||
             (statement.isDelete() && clause.isDeleteFrom())
         ) {
