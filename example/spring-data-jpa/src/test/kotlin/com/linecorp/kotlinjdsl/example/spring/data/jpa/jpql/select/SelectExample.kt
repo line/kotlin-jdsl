@@ -4,10 +4,12 @@ import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.author.Author
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.BookAuthor
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.BookPrice
+import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.BookPublisher
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.employee.EmployeeDepartment
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.repository.author.AuthorRepository
+import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.repository.book.BookPublisherRepository
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.repository.book.BookRepository
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.repository.employee.EmployeeRepository
 import org.assertj.core.api.WithAssertions
@@ -31,6 +33,9 @@ class SelectExample : WithAssertions {
     @Autowired
     private lateinit var employeeRepository: EmployeeRepository
 
+    @Autowired
+    private lateinit var bookPublisherRepository: BookPublisherRepository
+
     @Test
     fun `the most prolific author`() {
         // when
@@ -49,6 +54,24 @@ class SelectExample : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(1L)
+    }
+
+    @Test
+    fun `books reference specific book publisher entity`() {
+        // when
+        val actual = bookPublisherRepository.findAll {
+            select(
+                path(Book::isbn),
+            ).from(
+                entity(BookPublisher::class),
+                join(entity(Book::class)).on(path(BookPublisher::book).eq(entity(Book::class))),
+            ).where(
+                path(BookPublisher::publisherId).eq(3),
+            )
+        }
+
+        // then
+        assertThat(actual).isEqualTo(listOf(Isbn("10"), Isbn("11"), Isbn("12")))
     }
 
     @Test
