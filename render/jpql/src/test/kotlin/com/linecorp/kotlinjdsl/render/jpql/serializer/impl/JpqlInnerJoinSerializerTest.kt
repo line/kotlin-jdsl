@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.entity.author.Author
 import com.linecorp.kotlinjdsl.render.jpql.entity.book.BookAuthor
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderClause
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
@@ -58,11 +59,11 @@ class JpqlInnerJoinSerializerTest : WithAssertions {
         verifySequence {
             writer.write("INNER JOIN")
             writer.write(" ")
-            serializer.serialize(part.entity, writer, context)
+            serializer.serialize(part.entity, writer, context + JpqlRenderClause.Join)
             writer.write(" ")
             writer.write("ON")
             writer.write(" ")
-            serializer.serialize(part.on, writer, context)
+            serializer.serialize(part.on, writer, context + JpqlRenderClause.On)
         }
     }
 }
