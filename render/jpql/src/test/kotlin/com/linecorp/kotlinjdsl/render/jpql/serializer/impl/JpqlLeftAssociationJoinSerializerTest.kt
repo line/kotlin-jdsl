@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.render.TestRenderContext
 import com.linecorp.kotlinjdsl.render.jpql.entity.book.Book
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderClause
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
@@ -60,7 +61,7 @@ class JpqlLeftAssociationJoinSerializerTest : WithAssertions {
         verifySequence {
             writer.write("LEFT JOIN")
             writer.write(" ")
-            serializer.serialize(path1, writer, context)
+            serializer.serialize(path1, writer, context + JpqlRenderClause.Join)
             writer.write(" ")
             writer.write("AS")
             writer.write(" ")
@@ -85,7 +86,7 @@ class JpqlLeftAssociationJoinSerializerTest : WithAssertions {
         verifySequence {
             writer.write("LEFT JOIN")
             writer.write(" ")
-            serializer.serialize(path1, writer, context)
+            serializer.serialize(path1, writer, context + JpqlRenderClause.Join)
             writer.write(" ")
             writer.write("AS")
             writer.write(" ")
@@ -93,7 +94,7 @@ class JpqlLeftAssociationJoinSerializerTest : WithAssertions {
             writer.write(" ")
             writer.write("ON")
             writer.write(" ")
-            serializer.serialize(predicate1, writer, context)
+            serializer.serialize(predicate1, writer, context + JpqlRenderClause.On)
         }
     }
 }
