@@ -3,6 +3,7 @@ package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlInnerJoin
 import com.linecorp.kotlinjdsl.render.RenderContext
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderClause
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
@@ -20,12 +21,14 @@ class JpqlInnerJoinSerializer : JpqlSerializer<JpqlInnerJoin<*>> {
         writer.write("INNER JOIN")
         writer.write(" ")
 
-        delegate.serialize(part.entity, writer, context)
+        val newJoinContext = context + JpqlRenderClause.Join
+        delegate.serialize(part.entity, writer, newJoinContext)
 
         writer.write(" ")
         writer.write("ON")
         writer.write(" ")
 
-        delegate.serialize(part.on, writer, context)
+        val newOnContext = context + JpqlRenderClause.On
+        delegate.serialize(part.on, writer, newOnContext)
     }
 }

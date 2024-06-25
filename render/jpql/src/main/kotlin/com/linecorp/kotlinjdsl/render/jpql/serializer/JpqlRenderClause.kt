@@ -26,6 +26,12 @@ sealed class JpqlRenderClause : AbstractRenderContextElement(Key) {
     @SinceJdsl("3.0.0")
     open fun isFrom(): Boolean = false
 
+    @SinceJdsl("3.5.1")
+    open fun isJoin(): Boolean = false
+
+    @SinceJdsl("3.5.1")
+    open fun isOn(): Boolean = false
+
     @SinceJdsl("3.0.0")
     open fun isWhere(): Boolean = false
 
@@ -71,6 +77,20 @@ sealed class JpqlRenderClause : AbstractRenderContextElement(Key) {
         override fun isFrom(): Boolean = true
 
         override fun toString(): String = "From"
+    }
+
+    @SinceJdsl("3.5.1")
+    object Join : JpqlRenderClause() {
+        override fun isJoin(): Boolean = true
+
+        override fun toString(): String = "Join"
+    }
+
+    @SinceJdsl("3.5.1")
+    object On : JpqlRenderClause() {
+        override fun isOn(): Boolean = true
+
+        override fun toString(): String = "On"
     }
 
     @SinceJdsl("3.0.0")
