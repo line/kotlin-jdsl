@@ -3,6 +3,7 @@ package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.join.impl.JpqlLeftAssociationJoin
 import com.linecorp.kotlinjdsl.render.RenderContext
+import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderClause
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
@@ -20,7 +21,8 @@ class JpqlLeftAssociationJoinSerializer : JpqlSerializer<JpqlLeftAssociationJoin
         writer.write("LEFT JOIN")
         writer.write(" ")
 
-        delegate.serialize(part.association, writer, context)
+        val newJoinContext = context + JpqlRenderClause.Join
+        delegate.serialize(part.association, writer, newJoinContext)
 
         writer.write(" ")
         writer.write("AS")
@@ -35,7 +37,8 @@ class JpqlLeftAssociationJoinSerializer : JpqlSerializer<JpqlLeftAssociationJoin
             writer.write("ON")
             writer.write(" ")
 
-            delegate.serialize(on, writer, context)
+            val newOnContext = context + JpqlRenderClause.On
+            delegate.serialize(on, writer, newOnContext)
         }
     }
 }

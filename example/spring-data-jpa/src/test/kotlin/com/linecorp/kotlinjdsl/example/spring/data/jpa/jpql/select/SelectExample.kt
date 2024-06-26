@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.author.Author
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.Book
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.BookAuthor
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.BookPrice
+import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.BookPublisher
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book.Isbn
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.employee.Employee
 import com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.employee.EmployeeDepartment
@@ -49,6 +50,24 @@ class SelectExample : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(1L)
+    }
+
+    @Test
+    fun `books reference specific book publisher entity`() {
+        // when
+        val actual = bookRepository.findAll {
+            select(
+                path(Book::isbn),
+            ).from(
+                entity(Book::class),
+                join(entity(BookPublisher::class)).on(path(BookPublisher::book).eq(entity(Book::class))),
+            ).where(
+                path(BookPublisher::publisherId).eq(3),
+            )
+        }
+
+        // then
+        assertThat(actual).isEqualTo(listOf(Isbn("10"), Isbn("11"), Isbn("12")))
     }
 
     @Test
