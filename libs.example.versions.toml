@@ -42,7 +42,7 @@ eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa",
 vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.5.8" }
 agroal-pool = { module = "io.agroal:agroal-pool", version = "2.5" }
 
-h2 = { module = "com.h2database:h2", version = "2.2.224" }
+h2 = { module = "com.h2database:h2", version = "2.3.230" }
 
 [plugins]
 spring-boot3 = { id = "org.springframework.boot", version.ref = "spring-boot3" }
