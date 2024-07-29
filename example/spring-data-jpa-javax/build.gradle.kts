@@ -23,7 +23,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(11)
 
     compilerOptions {
         apiVersion = KotlinVersion.KOTLIN_1_9
