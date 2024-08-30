@@ -133,6 +133,10 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     @MockK
     private lateinit var page1: Page<String>
 
+    private val offset1 = 10
+
+    private val limit1 = 20
+
     private val lockModeType1 = LockModeType.READ
 
     private val queryHint1 = "queryHintName1" to "queryHintValue1"
@@ -268,12 +272,14 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         } returns stringTypedQuery1
         every { stringTypedQuery1.setLockMode(any()) } returns stringTypedQuery1
         every { stringTypedQuery1.setHint(any(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
         every { stringTypedQuery1.resultList } returns list1
         every { metadata.lockModeType } returns lockModeType1
         every { metadata.queryHints } returns queryHints1
 
         // when
-        val actual = sut.findAll(createSelectQuery1)
+        val actual = sut.findAll(offset1, limit1, createSelectQuery1)
 
         // then
         assertThat(actual).isEqualTo(list1)
@@ -287,6 +293,8 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
             stringTypedQuery1.setHint(queryHint1.first, queryHint1.second)
             stringTypedQuery1.setHint(queryHint2.first, queryHint2.second)
             stringTypedQuery1.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery1.setFirstResult(offset1)
+            stringTypedQuery1.setMaxResults(limit1)
             stringTypedQuery1.resultList
         }
     }
@@ -300,12 +308,14 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         } returns stringTypedQuery2
         every { stringTypedQuery2.setLockMode(any()) } returns stringTypedQuery2
         every { stringTypedQuery2.setHint(any(), any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setFirstResult(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setMaxResults(any()) } returns stringTypedQuery2
         every { stringTypedQuery2.resultList } returns list1
         every { metadata.lockModeType } returns lockModeType1
         every { metadata.queryHints } returns queryHints1
 
         // when
-        val actual = sut.findAll(MyJpql, createSelectQuery2)
+        val actual = sut.findAll(MyJpql, offset1, limit1, createSelectQuery2)
 
         // then
         assertThat(actual).isEqualTo(list1)
@@ -319,6 +329,8 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
             stringTypedQuery2.setHint(queryHint1.first, queryHint1.second)
             stringTypedQuery2.setHint(queryHint2.first, queryHint2.second)
             stringTypedQuery2.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery2.setFirstResult(offset1)
+            stringTypedQuery2.setMaxResults(limit1)
             stringTypedQuery2.resultList
         }
     }
@@ -332,12 +344,14 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         } returns stringTypedQuery3
         every { stringTypedQuery3.setLockMode(any()) } returns stringTypedQuery3
         every { stringTypedQuery3.setHint(any(), any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setFirstResult(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setMaxResults(any()) } returns stringTypedQuery3
         every { stringTypedQuery3.resultList } returns list1
         every { metadata.lockModeType } returns lockModeType1
         every { metadata.queryHints } returns queryHints1
 
         // when
-        val actual = sut.findAll(MyJpqlObject, createSelectQuery3)
+        val actual = sut.findAll(MyJpqlObject, offset1, limit1, createSelectQuery3)
 
         // then
         assertThat(actual).isEqualTo(list1)
@@ -351,6 +365,8 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
             stringTypedQuery3.setHint(queryHint1.first, queryHint1.second)
             stringTypedQuery3.setHint(queryHint2.first, queryHint2.second)
             stringTypedQuery3.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery3.setFirstResult(offset1)
+            stringTypedQuery3.setMaxResults(limit1)
             stringTypedQuery3.resultList
         }
     }

@@ -37,27 +37,33 @@ open class KotlinJdslJpqlExecutorImpl(
     private val metadata: CrudMethodMetadata?,
 ) : KotlinJdslJpqlExecutor {
     override fun <T : Any> findAll(
+        offset: Int?,
+        limit: Int?,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
-        return findAll(Jpql, init)
+        return findAll(Jpql, offset, limit, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> findAll(
         dsl: JpqlDsl.Constructor<DSL>,
+        offset: Int?,
+        limit: Int?,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
-        val query: SelectQuery<T> = jpql(dsl, init)
-        val jpaQuery = createJpaQuery(query, query.returnType)
-
-        return jpaQuery.resultList
+        return findAll(dsl.newInstance(), offset, limit, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> findAll(
         dsl: DSL,
+        offset: Int?,
+        limit: Int?,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
         val query: SelectQuery<T> = jpql(dsl, init)
-        val jpaQuery = createJpaQuery(query, query.returnType)
+        val jpaQuery = createJpaQuery(query, query.returnType).apply {
+            offset?.let { setFirstResult(it) }
+            limit?.let { setMaxResults(it) }
+        }
 
         return jpaQuery.resultList
     }
@@ -74,9 +80,7 @@ open class KotlinJdslJpqlExecutorImpl(
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
-        val query: SelectQuery<T> = jpql(dsl, init)
-
-        return createList(query, query.returnType, pageable)
+        return findAll(dsl.newInstance(), pageable, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> findAll(
@@ -101,9 +105,7 @@ open class KotlinJdslJpqlExecutorImpl(
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): Page<T?> {
-        val query: SelectQuery<T> = jpql(dsl, init)
-
-        return createPage(query, query.returnType, pageable)
+        return findPage(dsl.newInstance(), pageable, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> findPage(
@@ -128,9 +130,7 @@ open class KotlinJdslJpqlExecutorImpl(
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): Slice<T?> {
-        val query: SelectQuery<T> = jpql(dsl, init)
-
-        return createSlice(query, query.returnType, pageable)
+        return findSlice(dsl.newInstance(), pageable, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> findSlice(
@@ -155,10 +155,7 @@ open class KotlinJdslJpqlExecutorImpl(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<UpdateQuery<T>>,
     ): Int {
-        val query: UpdateQuery<T> = jpql(dsl, init)
-        val jpaQuery = createJpaQuery(query)
-
-        return jpaQuery.executeUpdate()
+        return update(dsl.newInstance(), init)
     }
 
     @Transactional
@@ -184,10 +181,7 @@ open class KotlinJdslJpqlExecutorImpl(
         dsl: JpqlDsl.Constructor<DSL>,
         init: DSL.() -> JpqlQueryable<DeleteQuery<T>>,
     ): Int {
-        val query: DeleteQuery<T> = jpql(dsl, init)
-        val jpaQuery = createJpaQuery(query)
-
-        return jpaQuery.executeUpdate()
+        return delete(dsl.newInstance(), init)
     }
 
     @Transactional

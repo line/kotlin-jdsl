@@ -20,6 +20,8 @@ interface KotlinJdslJpqlExecutor {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> findAll(
+        offset: Int? = null,
+        limit: Int? = null,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?>
 
@@ -29,6 +31,8 @@ interface KotlinJdslJpqlExecutor {
     @SinceJdsl("3.0.0")
     fun <T : Any, DSL : JpqlDsl> findAll(
         dsl: JpqlDsl.Constructor<DSL>,
+        offset: Int? = null,
+        limit: Int? = null,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?>
 
@@ -38,6 +42,8 @@ interface KotlinJdslJpqlExecutor {
     @SinceJdsl("3.4.0")
     fun <T : Any, DSL : JpqlDsl> findAll(
         dsl: DSL,
+        offset: Int? = null,
+        limit: Int? = null,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?>
 
