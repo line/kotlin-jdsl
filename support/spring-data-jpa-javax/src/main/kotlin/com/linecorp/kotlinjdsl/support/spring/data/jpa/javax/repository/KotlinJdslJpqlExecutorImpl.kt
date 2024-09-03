@@ -41,7 +41,7 @@ open class KotlinJdslJpqlExecutorImpl(
         limit: Int?,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
-        return findAll(Jpql, offset, limit, init)
+        return findAll(Jpql, offset = offset, limit = limit, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> findAll(
@@ -50,7 +50,7 @@ open class KotlinJdslJpqlExecutorImpl(
         limit: Int?,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
-        return findAll(dsl.newInstance(), offset, limit, init)
+        return findAll(dsl.newInstance(), offset = offset, limit = limit, init)
     }
 
     override fun <T : Any, DSL : JpqlDsl> findAll(
