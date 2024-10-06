@@ -128,6 +128,87 @@ from(
 )
 ```
 
+### Select From clause
+
+select statement의 select clause와 from clause를 한 번에 만들기 위해, `selectFrom()`을 이용할 수 있습니다.
+`selectFrom()`은 [Entity](entities.md)와 [Join](statements.md#Join-For-SelectFrom)을 파라미터로 받아 어떤 entity를 통해 조회가 되는지 표현합니다.
+
+
+```kotlin
+// It can infer the result type.
+selectFrom(path(Author::class))
+
+// It cannot infer the result type.
+selectFrom(path(Author::class))
+```
+
+`selectFrom()`은 기존의 `select()`, `from()`을 각각 호출하는 것과 동일한 효과를 가져옵니다.
+
+```kotlin
+// selectFrom stmt
+selectFrom(entity(Author::class))
+
+// select and from stms
+select(
+    entity(Author::class)
+).from(
+    entity(Employee::class)
+)
+```
+
+#### Join For SelectFrom
+
+위의 [Join](statements.md#Join)과 동일한 역할을 합니다.
+
+```kotlin
+@Entity
+// ...
+class Book(
+    // ...
+
+    @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val authors: MutableSet<BookAuthor>,
+)
+
+@Entity
+// ...
+class BookAuthor(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+) {
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "isbn")
+    lateinit var book: Book
+}
+
+@Entity
+// ...
+class Author(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+
+    // ...
+)
+
+selectFrom(
+    entity(Book::class),
+    join(Book::authors), // Association Join
+    join(Author::class).on(path(BookAuthor::authorId).eq(path(Author::authorId))), // Join
+)
+```
+
+`join()` 이후에 `as()`를 호출하 것 또한 [Join](statements.md#Join)와 동일한 결과를 얻을 수 있습니다.
+
+```kotlin
+selectFrom(
+    entity(Book::class),
+    join(Book::authors).`as`(entity(BookAuthor::class, "author")),
+)
+```
+
 ### Where clause
 
 select statement의 where clause를 만들기 위해, `where()`를 사용할 수 있습니다.

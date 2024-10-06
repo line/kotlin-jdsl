@@ -126,6 +126,86 @@ from(
 )
 ```
 
+### Select From clause
+
+Use `selectFrom()` and pass [Entity](entities.md) and [Join](statements.md#Join-For-SelectFrom) to specify the entities for selection.
+In the `selectFrom()` function you can create the select and from clause at once.
+
+```kotlin
+// It can infer the result type.
+selectFrom(path(Author::class))
+
+// It cannot infer the result type.
+selectFrom(path(Author::class))
+```
+
+'SelectFrom()' has the same effect as calling the existing 'select()' and 'from()', respectively.
+
+```kotlin
+// selectFrom stmt
+selectFrom(entity(Author::class))
+
+// select and from stms
+select(
+    entity(Author::class)
+).from(
+    entity(Employee::class)
+)
+```
+
+#### Join For SelectFrom
+
+It is the same as [Join](statements.md#Join) above.
+
+```kotlin
+@Entity
+// ...
+class Book(
+    // ...
+
+    @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val authors: MutableSet<BookAuthor>,
+)
+
+@Entity
+// ...
+class BookAuthor(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+) {
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "isbn")
+    lateinit var book: Book
+}
+
+@Entity
+// ...
+class Author(
+    @Id
+    @Column(name = "author_id")
+    val authorId: Long,
+
+    // ...
+)
+
+selectFrom(
+    entity(Book::class),
+    join(Book::authors), // Association Join
+    join(Author::class).on(path(BookAuthor::authorId).eq(path(Author::authorId))), // Join
+)
+```
+
+Calling 'as()' after 'join()' can also achieve the same result as [Join](statements.md#Join)
+
+```kotlin
+selectFrom(
+    entity(Book::class),
+    join(Book::authors).`as`(entity(BookAuthor::class, "author")),
+)
+```
+
 ### Where clause
 
 Use `where()` and pass [Predicate](predicates.md) to restrict the data when building a where clause in the select statement.
