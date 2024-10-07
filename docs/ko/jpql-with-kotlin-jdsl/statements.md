@@ -132,16 +132,6 @@ from(
 
 select statement의 select clause와 from clause를 한 번에 만들기 위해, `selectFrom()`을 이용할 수 있습니다.
 `selectFrom()`은 [Entity](entities.md)와 [Join](statements.md#Join-For-SelectFrom)을 파라미터로 받아 어떤 entity를 통해 조회가 되는지 표현합니다.
-
-
-```kotlin
-// It can infer the result type.
-selectFrom(path(Author::class))
-
-// It cannot infer the result type.
-selectFrom(path(Author::class))
-```
-
 `selectFrom()`은 기존의 `select()`, `from()`을 각각 호출하는 것과 동일한 효과를 가져옵니다.
 
 ```kotlin

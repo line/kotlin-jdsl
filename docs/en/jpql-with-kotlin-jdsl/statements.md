@@ -130,15 +130,6 @@ from(
 
 Use `selectFrom()` and pass [Entity](entities.md) and [Join](statements.md#Join-For-SelectFrom) to specify the entities for selection.
 In the `selectFrom()` function you can create the select and from clause at once.
-
-```kotlin
-// It can infer the result type.
-selectFrom(path(Author::class))
-
-// It cannot infer the result type.
-selectFrom(path(Author::class))
-```
-
 'SelectFrom()' has the same effect as calling the existing 'select()' and 'from()', respectively.
 
 ```kotlin
