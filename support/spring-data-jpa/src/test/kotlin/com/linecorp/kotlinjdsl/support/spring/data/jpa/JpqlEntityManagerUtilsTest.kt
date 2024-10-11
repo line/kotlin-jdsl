@@ -43,6 +43,12 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     private lateinit var stringTypedQuery1: TypedQuery<String>
 
     @MockK
+    private lateinit var stringTypedQueryParam1: Parameter<String>
+
+    @MockK
+    private lateinit var stringTypedQueryParam2: Parameter<String>
+
+    @MockK
     private lateinit var longTypedQuery1: TypedQuery<Long>
 
     @MockK
@@ -76,6 +82,8 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         excludeRecords { longTypedQuery1.equals(any()) }
         excludeRecords { longTypedQueryParam1.hashCode() }
         excludeRecords { longTypedQueryParam2.hashCode() }
+        excludeRecords { stringTypedQueryParam1.hashCode() }
+        excludeRecords { stringTypedQueryParam2.hashCode() }
     }
 
     @Test
@@ -85,7 +93,10 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
         every { renderer.render(any(), any()) } returns rendered1
         every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { stringTypedQueryParam1.name } returns renderedParam1.first
+        every { stringTypedQueryParam2.name } returns renderedParam2.first
 
         // when
         val actual = JpqlEntityManagerUtils.createQuery(entityManager, query1, String::class, context)
@@ -96,6 +107,9 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         verifySequence {
             renderer.render(query1, context)
             entityManager.createQuery(rendered1.query, String::class.java)
+            stringTypedQuery1.parameters
+            stringTypedQueryParam1.name
+            stringTypedQueryParam2.name
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
@@ -108,7 +122,10 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
         every { renderer.render(any(), any(), any()) } returns rendered1
         every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { stringTypedQueryParam1.name } returns renderedParam1.first
+        every { stringTypedQueryParam2.name } returns renderedParam2.first
 
         // when
         val actual = JpqlEntityManagerUtils
@@ -120,6 +137,9 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         verifySequence {
             renderer.render(query1, mapOf(queryParam1, queryParam2), context)
             entityManager.createQuery(rendered1.query, String::class.java)
+            stringTypedQuery1.parameters
+            stringTypedQueryParam1.name
+            stringTypedQueryParam2.name
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
@@ -132,7 +152,10 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
         every { renderer.render(any(), any()) } returns rendered1
         every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { stringTypedQueryParam1.name } returns renderedParam1.first
+        every { stringTypedQueryParam2.name } returns renderedParam2.first
 
         // when
         val actual = JpqlEntityManagerUtils.createQuery(entityManager, query1, context)
@@ -143,6 +166,9 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         verifySequence {
             renderer.render(query1, context)
             entityManager.createQuery(rendered1.query)
+            stringTypedQuery1.parameters
+            stringTypedQueryParam1.name
+            stringTypedQueryParam2.name
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
@@ -155,7 +181,10 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
         every { renderer.render(any(), any(), any()) } returns rendered1
         every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
+        every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { stringTypedQueryParam1.name } returns renderedParam1.first
+        every { stringTypedQueryParam2.name } returns renderedParam2.first
 
         // when
         val actual = JpqlEntityManagerUtils
@@ -167,6 +196,9 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         verifySequence {
             renderer.render(query1, mapOf(queryParam1, queryParam2), context)
             entityManager.createQuery(rendered1.query)
+            stringTypedQuery1.parameters
+            stringTypedQueryParam1.name
+            stringTypedQueryParam2.name
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
@@ -184,7 +216,10 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every {
             entityManager.createQuery(any<String>(), any<Class<*>>())
         } returns stringTypedQuery1 andThen longTypedQuery1
+        every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { stringTypedQueryParam1.name } returns renderedParam1.first
+        every { stringTypedQueryParam2.name } returns renderedParam2.first
         every { longTypedQuery1.parameters } returns setOf(longTypedQueryParam1, longTypedQueryParam2)
         every { longTypedQuery1.setParameter(any<String>(), any()) } returns longTypedQuery1
         every { longTypedQueryParam1.name } returns renderedParam1.first
@@ -205,6 +240,9 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
             queryEnhancer.applySorting(sort1)
             entityManager.createQuery(sortedQuery1, String::class.java)
+            stringTypedQuery1.parameters
+            stringTypedQueryParam1.name
+            stringTypedQueryParam2.name
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
 

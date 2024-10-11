@@ -71,17 +71,7 @@ internal object JpqlEntityManagerUtils {
             createQuery(entityManager, queryEnhancer.applySorting(sort), rendered.params, returnType.java),
         ) {
             // Lazy
-            createCountQuery(entityManager, queryEnhancer.createCountQueryFor(), rendered.params)
-        }
-    }
-
-    private fun createCountQuery(
-        entityManager: EntityManager,
-        query: String,
-        queryParams: Map<String, Any?>,
-    ): TypedQuery<Long> {
-        return entityManager.createQuery(query, Long::class.javaObjectType).apply {
-            setCountQueryParams(this, queryParams)
+            createQuery(entityManager, queryEnhancer.createCountQueryFor(), rendered.params, Long::class.javaObjectType)
         }
     }
 
@@ -106,21 +96,13 @@ internal object JpqlEntityManagerUtils {
         }
     }
 
-    private fun setCountQueryParams(query: Query, params: Map<String, Any?>) {
-        val parameterList = query.parameters.map {
-            it.name
-        }.toHashSet()
+    private fun setParams(query: Query, params: Map<String, Any?>) {
+        val parameterList = query.parameters.map { it.name }.toHashSet()
 
         params.forEach { (name, value) ->
             if (parameterList.contains(name)) {
                 query.setParameter(name, value)
             }
-        }
-    }
-
-    private fun setParams(query: Query, params: Map<String, Any?>) {
-        params.forEach { (name, value) ->
-            query.setParameter(name, value)
         }
     }
 }
