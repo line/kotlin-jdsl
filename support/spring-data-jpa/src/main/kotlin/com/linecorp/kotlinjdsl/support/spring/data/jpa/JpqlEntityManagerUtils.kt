@@ -107,7 +107,7 @@ internal object JpqlEntityManagerUtils {
                 log.debug(
                     "No parameter named '{}' in query with named parameters [{}], parameter binding skipped",
                     name,
-                    parameterList.joinToString { it },
+                    parameterList.joinToString(),
                 )
             }
         }
