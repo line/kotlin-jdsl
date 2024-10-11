@@ -4,6 +4,7 @@ package com.linecorp.kotlinjdsl.support.spring.data.jpa.javax
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.repository.query.QueryEnhancerFactoryAdaptor
 import javax.persistence.EntityManager
@@ -102,7 +103,15 @@ internal object JpqlEntityManagerUtils {
         params.forEach { (name, value) ->
             if (parameterList.contains(name)) {
                 query.setParameter(name, value)
+            } else {
+                log.debug(
+                    "No parameter named '{}' in query with named parameters [{}], parameter binding skipped",
+                    name,
+                    parameterList.joinToString { it },
+                )
             }
         }
     }
 }
+
+private val log = LoggerFactory.getLogger(JpqlEntityManagerUtils::class.java)
