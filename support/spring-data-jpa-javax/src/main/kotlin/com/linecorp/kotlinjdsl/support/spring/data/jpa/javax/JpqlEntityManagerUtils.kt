@@ -107,7 +107,9 @@ internal object JpqlEntityManagerUtils {
     }
 
     private fun setCountQueryParams(query: Query, params: Map<String, Any?>) {
-        val parameterList = query.parameters.associateBy { it.name }
+        val parameterList = query.parameters.map {
+            it.name
+        }.toHashSet()
 
         params.forEach { (name, value) ->
             if (parameterList.contains(name)) {

@@ -12,6 +12,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.verifySequence
 import jakarta.persistence.EntityManager
+import jakarta.persistence.Parameter
 import jakarta.persistence.TypedQuery
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
@@ -44,6 +45,12 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     @MockK
     private lateinit var longTypedQuery1: TypedQuery<Long>
 
+    @MockK
+    private lateinit var longTypedQueryParam1: Parameter<String>
+
+    @MockK
+    private lateinit var longTypedQueryParam2: Parameter<String>
+
     private val sort1 = Sort.by("property1")
 
     private val renderedQuery1 = "query"
@@ -67,6 +74,8 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         excludeRecords { JpqlRendererHolder.get() }
         excludeRecords { stringTypedQuery1.equals(any()) }
         excludeRecords { longTypedQuery1.equals(any()) }
+        excludeRecords { longTypedQueryParam1.hashCode() }
+        excludeRecords { longTypedQueryParam2.hashCode() }
     }
 
     @Test
@@ -176,7 +185,10 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
             entityManager.createQuery(any<String>(), any<Class<*>>())
         } returns stringTypedQuery1 andThen longTypedQuery1
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { longTypedQuery1.parameters } returns setOf(longTypedQueryParam1, longTypedQueryParam2)
         every { longTypedQuery1.setParameter(any<String>(), any()) } returns longTypedQuery1
+        every { longTypedQueryParam1.name } returns renderedParam1.first
+        every { longTypedQueryParam2.name } returns renderedParam2.first
 
         // when
         val actual = JpqlEntityManagerUtils
@@ -198,6 +210,9 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
             queryEnhancer.createCountQueryFor()
             entityManager.createQuery(countQuery1, Long::class.javaObjectType)
+            longTypedQuery1.parameters
+            longTypedQueryParam1.name
+            longTypedQueryParam2.name
             longTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             longTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
         }
