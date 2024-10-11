@@ -4,6 +4,7 @@ package com.linecorp.kotlinjdsl.support.spring.data.jpa.javax
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.repository.query.QueryEnhancerFactoryAdaptor
 import javax.persistence.EntityManager
@@ -71,7 +72,17 @@ internal object JpqlEntityManagerUtils {
             createQuery(entityManager, queryEnhancer.applySorting(sort), rendered.params, returnType.java),
         ) {
             // Lazy
-            createQuery(entityManager, queryEnhancer.createCountQueryFor(), rendered.params, Long::class.javaObjectType)
+            createCountQuery(entityManager, queryEnhancer.createCountQueryFor(), rendered.params)
+        }
+    }
+
+    private fun createCountQuery(
+        entityManager: EntityManager,
+        query: String,
+        queryParams: Map<String, Any?>,
+    ): TypedQuery<Long> {
+        return entityManager.createQuery(query, Long::class.javaObjectType).apply {
+            setCountQueryParams(this, queryParams)
         }
     }
 
@@ -96,9 +107,23 @@ internal object JpqlEntityManagerUtils {
         }
     }
 
+    private fun setCountQueryParams(query: Query, params: Map<String, Any?>) {
+        params.forEach { (name, value) ->
+            try {
+                query.setParameter(name, value)
+            } catch (e: RuntimeException) {
+                if (log.isDebugEnabled) {
+                    log.debug("Silently ignoring", e)
+                }
+            }
+        }
+    }
+
     private fun setParams(query: Query, params: Map<String, Any?>) {
         params.forEach { (name, value) ->
             query.setParameter(name, value)
         }
     }
 }
+
+private val log = LoggerFactory.getLogger(JpqlEntityManagerUtils::class.java)
