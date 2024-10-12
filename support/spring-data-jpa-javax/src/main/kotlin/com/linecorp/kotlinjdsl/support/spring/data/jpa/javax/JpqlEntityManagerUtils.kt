@@ -103,7 +103,7 @@ internal object JpqlEntityManagerUtils {
         params.forEach { (name, value) ->
             if (parameterList.contains(name)) {
                 query.setParameter(name, value)
-            } else {
+            } else if (log.isDebugEnabled) {
                 log.debug(
                     "No parameter named '{}' in query with named parameters [{}], parameter binding skipped",
                     name,

@@ -3,6 +3,7 @@ package com.linecorp.kotlinjdsl.support.hibernate.reactive
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import org.hibernate.reactive.mutiny.Mutiny
+import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
 internal object JpqlMutinyStatelessSessionUtils {
@@ -73,13 +74,27 @@ internal object JpqlMutinyStatelessSessionUtils {
 
     private fun <T> setParams(query: Mutiny.SelectionQuery<T>, params: Map<String, Any?>) {
         params.forEach { (name, value) ->
-            query.setParameter(name, value)
+            try {
+                query.setParameter(name, value)
+            } catch (e: RuntimeException) {
+                if (log.isDebugEnabled) {
+                    log.debug("Silently ignoring", e)
+                }
+            }
         }
     }
 
     private fun <T> setParams(query: Mutiny.Query<T>, params: Map<String, Any?>) {
         params.forEach { (name, value) ->
-            query.setParameter(name, value)
+            try {
+                query.setParameter(name, value)
+            } catch (e: RuntimeException) {
+                if (log.isDebugEnabled) {
+                    log.debug("Silently ignoring", e)
+                }
+            }
         }
     }
 }
+
+private val log = LoggerFactory.getLogger(JpqlMutinyStatelessSessionUtils::class.java)

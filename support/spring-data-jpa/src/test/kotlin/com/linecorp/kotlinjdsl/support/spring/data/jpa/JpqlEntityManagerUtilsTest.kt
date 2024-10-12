@@ -79,11 +79,11 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
 
         excludeRecords { JpqlRendererHolder.get() }
         excludeRecords { stringTypedQuery1.equals(any()) }
+        excludeRecords { stringTypedQueryParam1.hashCode() }
+        excludeRecords { stringTypedQueryParam2.hashCode() }
         excludeRecords { longTypedQuery1.equals(any()) }
         excludeRecords { longTypedQueryParam1.hashCode() }
         excludeRecords { longTypedQueryParam2.hashCode() }
-        excludeRecords { stringTypedQueryParam1.hashCode() }
-        excludeRecords { stringTypedQueryParam2.hashCode() }
     }
 
     @Test
