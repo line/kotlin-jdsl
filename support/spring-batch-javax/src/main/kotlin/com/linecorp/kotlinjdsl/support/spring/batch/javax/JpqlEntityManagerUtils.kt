@@ -34,16 +34,16 @@ internal object JpqlEntityManagerUtils {
     }
 
     private fun setParams(query: Query, params: JpqlRenderedParams) {
-        val parameterList = query.parameters.map { it.name }.toHashSet()
+        val parameterNameSet = query.parameters.map { it.name }.toHashSet()
 
         params.forEach { (name, value) ->
-            if (parameterList.contains(name)) {
+            if (parameterNameSet.contains(name)) {
                 query.setParameter(name, value)
             } else if (log.isDebugEnabled) {
                 log.debug(
-                    "No parameter named '{}' in query with named parameters [{}], parameter binding skipped",
-                    name,
-                    parameterList.joinToString(),
+                    "No parameter named '$name' in query " +
+                        "with named parameters [${parameterNameSet.joinToString()}], " +
+                        "parameter binding skipped",
                 )
             }
         }

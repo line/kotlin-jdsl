@@ -84,9 +84,9 @@ internal object JpqlEntityManagerUtils {
                 query.setParameter(name, value)
             } else if (log.isDebugEnabled) {
                 log.debug(
-                    "No parameter named '{}' in query with named parameters [{}], parameter binding skipped",
-                    name,
-                    parameterNameSet.joinToString(),
+                    "No parameter named '$name' in query " +
+                        "with named parameters [${parameterNameSet.joinToString()}], " +
+                        "parameter binding skipped",
                 )
             }
         }
