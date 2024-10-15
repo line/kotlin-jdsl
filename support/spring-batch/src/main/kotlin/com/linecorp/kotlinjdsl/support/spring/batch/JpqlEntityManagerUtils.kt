@@ -39,12 +39,14 @@ internal object JpqlEntityManagerUtils {
         params.forEach { (name, value) ->
             if (parameterNameSet.contains(name)) {
                 query.setParameter(name, value)
-            } else if (log.isDebugEnabled) {
-                log.debug(
-                    "No parameter named '$name' in query " +
-                        "with named parameters [${parameterNameSet.joinToString()}], " +
-                        "parameter binding skipped",
-                )
+            } else {
+                if (log.isDebugEnabled) {
+                    log.debug(
+                        "No parameter named '$name' in query " +
+                            "with named parameters [${parameterNameSet.joinToString()}], " +
+                            "parameter binding skipped",
+                    )
+                }
             }
         }
     }
