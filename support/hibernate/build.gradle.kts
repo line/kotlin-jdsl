@@ -1,6 +1,7 @@
 dependencies {
     compileOnly(libs.hibernate6.core)
     compileOnly(libs.jakarta.persistence.api)
+    compileOnly(libs.slf4j)
     compileOnly(projects.jpqlDsl)
     compileOnly(projects.jpqlQueryModel)
     compileOnly(projects.jpqlRender)

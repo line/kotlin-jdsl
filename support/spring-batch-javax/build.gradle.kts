@@ -4,6 +4,7 @@ dependencies {
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     compileOnly(libs.spring.batch4.infrastructure)
     compileOnly(libs.javax.persistence.api)
+    compileOnly(libs.slf4j)
     compileOnly(projects.jpqlDsl)
     compileOnly(projects.jpqlQueryModel)
     compileOnly(projects.jpqlRender)

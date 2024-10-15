@@ -1,6 +1,7 @@
 dependencies {
     compileOnly(libs.eclipselink2)
     compileOnly(libs.javax.persistence.api)
+    compileOnly(libs.slf4j)
     compileOnly(projects.jpqlDsl)
     compileOnly(projects.jpqlQueryModel)
     compileOnly(projects.jpqlRender)

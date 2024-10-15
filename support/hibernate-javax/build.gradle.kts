@@ -2,6 +2,7 @@ dependencies {
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     compileOnly(libs.hibernate5.core)
     compileOnly(libs.javax.persistence.api)
+    compileOnly(libs.slf4j)
     compileOnly(projects.jpqlDsl)
     compileOnly(projects.jpqlQueryModel)
     compileOnly(projects.jpqlRender)
