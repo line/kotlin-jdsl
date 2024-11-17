@@ -12,7 +12,7 @@ Kotlin JDSL은 JPQL의 conditional expression을 표현하기 위해 `Predicate`
 
 {% hint style="info" %}
 만약 `and()` 와 `or()`로 넘어온 `Predicate`가 모두 null 이거나 비어 있으면, `and()`의 경우에는 `1 = 1`로 `or()`의 경우에는 `0 = 1`로 해석됩니다.
-그렇기 떄문에 다이나믹 쿼리를 만들 때 조심해야 합니다.
+그렇기 때문에 다이나믹 쿼리를 만들 때 조심해야 합니다.
 {% endhint %}
 
 ```kotlin
