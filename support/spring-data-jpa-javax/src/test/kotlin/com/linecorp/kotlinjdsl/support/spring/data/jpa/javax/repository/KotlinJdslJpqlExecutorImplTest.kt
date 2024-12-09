@@ -29,6 +29,7 @@ import org.springframework.data.jpa.repository.support.QueryHints
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
 import java.util.function.BiConsumer
 import java.util.function.LongSupplier
+import java.util.stream.Stream
 import javax.persistence.EntityManager
 import javax.persistence.LockModeType
 import javax.persistence.Query
@@ -181,6 +182,7 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     private val pageable1 = PageRequest.of(1, 10, sort1)
 
     private val list1 = listOf("1", "2", "3")
+    private val stream1 = Stream.of("1", "2", "3")
     private val counts1 = listOf(1L, 1L, 1L)
 
     private val enhancedTypedQuery1: EnhancedTypedQuery<String> by lazy(LazyThreadSafetyMode.NONE) {
@@ -764,6 +766,228 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
             stringTypedQuery3.firstResult = pageable1.offset.toInt()
             stringTypedQuery3.maxResults = pageable1.pageSize + 1
             stringTypedQuery3.resultList
+        }
+    }
+
+    @Test
+    fun findStream() {
+        // given
+        every { selectQuery1.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any<KClass<*>>(), any())
+        } returns stringTypedQuery1
+        every { stringTypedQuery1.setLockMode(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setHint(any(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultStream } returns stream1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+
+        // when
+        val actual = sut.findStream(offset1, limit1, createSelectQuery1)
+
+        // then
+        assertThat(actual).isEqualTo(stream1)
+
+        verifySequence {
+            selectQuery1.returnType
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery1, String::class, renderContext)
+            metadata.lockModeType
+            stringTypedQuery1.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery1.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery1.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery1.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery1.setFirstResult(offset1)
+            stringTypedQuery1.setMaxResults(limit1)
+            stringTypedQuery1.resultStream
+        }
+    }
+
+    @Test
+    fun `findStream() with a dsl`() {
+        // given
+        every { selectQuery2.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any<KClass<*>>(), any())
+        } returns stringTypedQuery2
+        every { stringTypedQuery2.setLockMode(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setHint(any(), any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setFirstResult(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setMaxResults(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.resultStream } returns stream1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+
+        // when
+        val actual = sut.findStream(MyJpql, offset1, limit1, createSelectQuery2)
+
+        // then
+        assertThat(actual).isEqualTo(stream1)
+
+        verifySequence {
+            selectQuery2.returnType
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery2, String::class, renderContext)
+            metadata.lockModeType
+            stringTypedQuery2.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery2.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery2.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery2.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery2.setFirstResult(offset1)
+            stringTypedQuery2.setMaxResults(limit1)
+            stringTypedQuery2.resultStream
+        }
+    }
+
+    @Test
+    fun `findStream() with a dsl object`() {
+        // given
+        every { selectQuery3.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createQuery(any(), any<SelectQuery<String>>(), any<KClass<*>>(), any())
+        } returns stringTypedQuery3
+        every { stringTypedQuery3.setLockMode(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setHint(any(), any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setFirstResult(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setMaxResults(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.resultStream } returns stream1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+
+        // when
+        val actual = sut.findStream(MyJpqlObject, offset1, limit1, createSelectQuery3)
+
+        // then
+        assertThat(actual).isEqualTo(stream1)
+
+        verifySequence {
+            selectQuery3.returnType
+            JpqlEntityManagerUtils.createQuery(entityManager, selectQuery3, String::class, renderContext)
+            metadata.lockModeType
+            stringTypedQuery3.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery3.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery3.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery3.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery3.setFirstResult(offset1)
+            stringTypedQuery3.setMaxResults(limit1)
+            stringTypedQuery3.resultStream
+        }
+    }
+
+    @Test
+    fun `findStream() with a pageable`() {
+        // given
+        every { selectQuery1.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery1
+        every { stringTypedQuery1.setLockMode(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setHint(any(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultStream } returns stream1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+
+        // when
+        val actual = sut.findStream(pageable1, createSelectQuery1)
+
+        // then
+        assertThat(actual).isEqualTo(stream1)
+
+        verifySequence {
+            selectQuery1.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery1, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery1.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery1.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery1.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery1.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery1.firstResult = pageable1.offset.toInt()
+            stringTypedQuery1.maxResults = pageable1.pageSize
+            stringTypedQuery1.resultStream
+        }
+    }
+
+    @Test
+    fun `findStream() with a dsl and a pageable`() {
+        // given
+        every { selectQuery2.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery2
+        every { stringTypedQuery2.setLockMode(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setHint(any(), any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setFirstResult(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setMaxResults(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.resultStream } returns stream1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+
+        // when
+        val actual = sut.findStream(MyJpql, pageable1, createSelectQuery2)
+
+        // then
+        assertThat(actual).isEqualTo(stream1)
+
+        verifySequence {
+            selectQuery2.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery2, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery2.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery2.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery2.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery2.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery2.firstResult = pageable1.offset.toInt()
+            stringTypedQuery2.maxResults = pageable1.pageSize
+            stringTypedQuery2.resultStream
+        }
+    }
+
+    @Test
+    fun `findStream() with a dsl object and a pageable`() {
+        // given
+        every { selectQuery3.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+            )
+        } returns enhancedTypedQuery3
+        every { stringTypedQuery3.setLockMode(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setHint(any(), any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setFirstResult(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setMaxResults(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.resultStream } returns stream1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+
+        // when
+        val actual = sut.findStream(MyJpqlObject, pageable1, createSelectQuery3)
+
+        // then
+        assertThat(actual).isEqualTo(stream1)
+
+        verifySequence {
+            selectQuery3.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery3, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery3.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery3.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery3.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery3.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery3.firstResult = pageable1.offset.toInt()
+            stringTypedQuery3.maxResults = pageable1.pageSize
+            stringTypedQuery3.resultStream
         }
     }
 
