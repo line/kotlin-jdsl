@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.repository.NoRepositoryBean
+import java.util.stream.Stream
 
 @NoRepositoryBean
 @SinceJdsl("3.0.0")
@@ -133,6 +134,67 @@ interface KotlinJdslJpqlExecutor {
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): Slice<T?>
+
+    /**
+     * Returns all results of the select query.
+     */
+    @SinceJdsl("3.5.4")
+    fun <T : Any> findStream(
+        offset: Int? = null,
+        limit: Int? = null,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?>
+
+    /**
+     * Returns all results of the select query.
+     */
+    @SinceJdsl("3.5.4")
+    fun <T : Any, DSL : JpqlDsl> findStream(
+        dsl: JpqlDsl.Constructor<DSL>,
+        offset: Int? = null,
+        limit: Int? = null,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?>
+
+    /**
+     * Returns all results of the select query.
+     */
+    @SinceJdsl("3.5.4")
+    fun <T : Any, DSL : JpqlDsl> findStream(
+        dsl: DSL,
+        offset: Int? = null,
+        limit: Int? = null,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?>
+
+    /**
+     * Returns all results of the select query.
+     */
+    @SinceJdsl("3.5.4")
+    fun <T : Any> findStream(
+        pageable: Pageable,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?>
+
+    /**
+     * Returns all results of the select query.
+     */
+    @SinceJdsl("3.5.4")
+    fun <T : Any, DSL : JpqlDsl> findStream(
+        dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?>
+
+    /**
+     * Returns all results of the select query.
+     */
+    @SinceJdsl("3.5.4")
+    fun <T : Any, DSL : JpqlDsl> findStream(
+        dsl: DSL,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?>
 
     /**
      * Execute the update query.

@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.transaction.annotation.Transactional
 import java.time.OffsetDateTime
+import java.util.stream.Collectors
 
 @Transactional
 @SpringBootTest
@@ -87,6 +88,30 @@ class SelectExample : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(listOf(Isbn("04"), Isbn("05"), Isbn("06")))
+    }
+
+    @Test
+    fun `the stream of books`() {
+        // given
+        val pageable = PageRequest.of(1, 3, Sort.by(Sort.Direction.ASC, "isbn"))
+
+        // when
+        val actual = bookRepository.findStream(pageable) {
+            select(
+                path(Book::isbn),
+            ).from(
+                entity(Book::class),
+            )
+        }
+
+        // then
+        assertThat(actual.collect(Collectors.toList())).isEqualTo(
+            listOf(
+                Isbn("04"),
+                Isbn("05"),
+                Isbn("06"),
+            ),
+        )
     }
 
     @Test
@@ -294,6 +319,39 @@ class SelectExample : WithAssertions {
 
         // then
         assertThat(actual).isEqualTo(
+            listOf(
+                Row(1, 6),
+                Row(2, 15),
+                Row(3, 18),
+            ),
+        )
+    }
+
+    @Test
+    fun the_number_of_employees_per_department_stream() {
+        // given
+        data class Row(
+            val departmentId: Long,
+            val count: Long,
+        )
+
+        // when
+        val actual = employeeRepository.findStream {
+            selectNew<Row>(
+                path(EmployeeDepartment::departmentId),
+                count(Employee::employeeId),
+            ).from(
+                entity(Employee::class),
+                join(Employee::departments),
+            ).groupBy(
+                path(EmployeeDepartment::departmentId),
+            ).orderBy(
+                path(EmployeeDepartment::departmentId).asc(),
+            )
+        }
+
+        // then
+        assertThat(actual.collect(Collectors.toList())).isEqualTo(
             listOf(
                 Row(1, 6),
                 Row(2, 15),
