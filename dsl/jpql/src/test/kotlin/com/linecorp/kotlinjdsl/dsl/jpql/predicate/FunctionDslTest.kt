@@ -57,4 +57,25 @@ class FunctionDslTest : WithAssertions {
 
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `function() with a string and a string expression`() {
+        // when
+        val predicate = queryPart {
+            function(Boolean::class, name1, string1, stringExpression2)
+        }
+
+        val actual: Predicate = predicate // for type check
+
+        // then
+        val expected = Predicates.function(
+            name1,
+            listOf(
+                Expressions.value(string1),
+                stringExpression2,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
 }

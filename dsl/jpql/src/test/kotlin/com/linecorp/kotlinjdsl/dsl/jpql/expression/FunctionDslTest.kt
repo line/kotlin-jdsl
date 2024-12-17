@@ -58,4 +58,26 @@ class FunctionDslTest : WithAssertions {
 
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `function() with a string and a string expression`() {
+        // when
+        val expression = queryPart {
+            function(Int::class, name1, string1, stringExpression2)
+        }.toExpression()
+
+        val actual: Expression<Int> = expression // for type check
+
+        // then
+        val expected = Expressions.function(
+            Int::class,
+            name1,
+            listOf(
+                Expressions.value(string1),
+                stringExpression2,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
 }

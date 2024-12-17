@@ -58,4 +58,26 @@ class CustomExpressionDslTest : WithAssertions {
 
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `customExpression() with a string and a string expression`() {
+        // when
+        val expression = queryPart {
+            customExpression(Int::class, template1, string1, stringExpression2)
+        }.toExpression()
+
+        val actual: Expression<Int> = expression // for type check
+
+        // then
+        val expected = Expressions.customExpression(
+            Int::class,
+            template1,
+            listOf(
+                Expressions.value(string1),
+                stringExpression2,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
 }
