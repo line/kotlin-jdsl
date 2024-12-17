@@ -28,6 +28,7 @@ import org.springframework.data.jpa.repository.support.QueryHints
 import org.springframework.data.repository.NoRepositoryBean
 import org.springframework.data.support.PageableExecutionUtilsAdaptor
 import org.springframework.transaction.annotation.Transactional
+import java.util.stream.Stream
 import kotlin.reflect.KClass
 
 @NoRepositoryBean
@@ -62,10 +63,7 @@ open class KotlinJdslJpqlExecutorImpl(
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): List<T?> {
         val query: SelectQuery<T> = jpql(dsl, init)
-        val jpaQuery = createJpaQuery(query, query.returnType).apply {
-            offset?.let { setFirstResult(it) }
-            limit?.let { setMaxResults(it) }
-        }
+        val jpaQuery = createJpaQuery(query, query.returnType, offset, limit)
 
         return jpaQuery.resultList
     }
@@ -92,7 +90,7 @@ open class KotlinJdslJpqlExecutorImpl(
     ): List<T?> {
         val query: SelectQuery<T> = jpql(dsl, init)
 
-        return createList(query, query.returnType, pageable)
+        return this.createSortedQuery(query, query.returnType, pageable).resultList
     }
 
     override fun <T : Any> findPage(
@@ -143,6 +141,60 @@ open class KotlinJdslJpqlExecutorImpl(
         val query: SelectQuery<T> = jpql(dsl, init)
 
         return createSlice(query, query.returnType, pageable)
+    }
+
+    override fun <T : Any> findStream(
+        offset: Int?,
+        limit: Int?,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?> {
+        return findStream(Jpql, offset = offset, limit = limit, init)
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> findStream(
+        dsl: JpqlDsl.Constructor<DSL>,
+        offset: Int?,
+        limit: Int?,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?> {
+        return findStream(dsl.newInstance(), offset = offset, limit = limit, init)
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> findStream(
+        dsl: DSL,
+        offset: Int?,
+        limit: Int?,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?> {
+        val query: SelectQuery<T> = jpql(dsl, init)
+        val jpaQuery = createJpaQuery(query, query.returnType, offset, limit)
+
+        return jpaQuery.resultStream
+    }
+
+    override fun <T : Any> findStream(
+        pageable: Pageable,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?> {
+        return findStream(Jpql, pageable, init)
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> findStream(
+        dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?> {
+        return findStream(dsl.newInstance(), pageable, init)
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> findStream(
+        dsl: DSL,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+    ): Stream<T?> {
+        val query: SelectQuery<T> = jpql(dsl, init)
+
+        return this.createSortedQuery(query, query.returnType, pageable).resultStream
     }
 
     @Transactional
@@ -200,9 +252,13 @@ open class KotlinJdslJpqlExecutorImpl(
     private fun <T : Any> createJpaQuery(
         query: JpqlQuery<*>,
         returnType: KClass<T>,
+        offset: Int?,
+        limit: Int?,
     ): TypedQuery<T> {
         return JpqlEntityManagerUtils.createQuery(entityManager, query, returnType, renderContext).apply {
             setMetadata(this, metadata)
+            offset?.let { setFirstResult(it) }
+            limit?.let { setMaxResults(it) }
         }
     }
 
@@ -260,11 +316,11 @@ open class KotlinJdslJpqlExecutorImpl(
         }
     }
 
-    private fun <T : Any> createList(
+    private fun <T : Any> createSortedQuery(
         query: JpqlQuery<*>,
         returnType: KClass<T>,
         pageable: Pageable,
-    ): List<T?> {
+    ): TypedQuery<T> {
         val enhancedQuery = createJpaEnhancedQuery(query, returnType, pageable.sort)
 
         val sortedQuery = enhancedQuery.sortedQuery
@@ -274,7 +330,7 @@ open class KotlinJdslJpqlExecutorImpl(
             sortedQuery.maxResults = pageable.pageSize
         }
 
-        return sortedQuery.resultList
+        return sortedQuery
     }
 
     private fun <T : Any> createPage(
