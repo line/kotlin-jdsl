@@ -1287,7 +1287,7 @@ open class Jpql : JpqlDsl {
      */
     @SinceJdsl("3.0.0")
     fun <T : Any> new(type: KClass<T>, vararg args: Any): Expression<T> {
-        return Expressions.new(type, args.map { Expressions.value(it) })
+        return Expressions.new(type, args.map { valueOrExpression(it) })
     }
 
     /**
@@ -1708,7 +1708,7 @@ open class Jpql : JpqlDsl {
     @LowPriorityInOverloadResolution
     @SinceJdsl("3.0.0")
     fun <T : Any> function(type: KClass<T>, name: String, vararg args: Any): Expression<T> {
-        return Expressions.function(type, name, args.map { Expressions.value(it) })
+        return Expressions.function(type, name, args.map { valueOrExpression(it) })
     }
 
     /**
@@ -1737,7 +1737,7 @@ open class Jpql : JpqlDsl {
     @LowPriorityInOverloadResolution
     @SinceJdsl("3.0.0")
     fun <T : Any> customExpression(type: KClass<T>, template: String, vararg args: Any): Expression<T> {
-        return Expressions.customExpression(type, template, args.map { Expressions.value(it) })
+        return Expressions.customExpression(type, template, args.map { valueOrExpression(it) })
     }
 
     /**
@@ -3036,7 +3036,7 @@ open class Jpql : JpqlDsl {
     @LowPriorityInOverloadResolution
     @SinceJdsl("3.0.0")
     fun function(type: KClass<Boolean>, name: String, vararg args: Any): Predicate {
-        return Predicates.function(name, args.map { Expressions.value(it) })
+        return Predicates.function(name, args.map { valueOrExpression(it) })
     }
 
     /**
@@ -3066,7 +3066,7 @@ open class Jpql : JpqlDsl {
     @LowPriorityInOverloadResolution
     @SinceJdsl("3.3.0")
     fun customPredicate(template: String, vararg args: Any): Predicate {
-        return Predicates.customPredicate(template, args.map { Expressions.value(it) })
+        return Predicates.customPredicate(template, args.map { valueOrExpression(it) })
     }
 
     /**
@@ -3217,5 +3217,13 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> deleteFrom(entity: Entityable<T>): DeleteQueryWhereStep<T> {
         return DeleteQueryDsl(entity.toEntity())
+    }
+
+    private fun valueOrExpression(value: Any): Expression<*> {
+        return if (value is Expression<*>) {
+            value
+        } else {
+            Expressions.value(value)
+        }
     }
 }

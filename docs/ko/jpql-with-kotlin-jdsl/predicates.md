@@ -12,7 +12,7 @@ Kotlin JDSL은 JPQL의 conditional expression을 표현하기 위해 `Predicate`
 
 {% hint style="info" %}
 만약 `and()` 와 `or()`로 넘어온 `Predicate`가 모두 null 이거나 비어 있으면, `and()`의 경우에는 `1 = 1`로 `or()`의 경우에는 `0 = 1`로 해석됩니다.
-그렇기 떄문에 다이나믹 쿼리를 만들 때 조심해야 합니다.
+그렇기 때문에 다이나믹 쿼리를 만들 때 조심해야 합니다.
 {% endhint %}
 
 ```kotlin
@@ -168,8 +168,9 @@ function(Boolean::class, "myFunction", path(Book::isbn))
 ```
 
 {% hint style="info" %}
-사용할 함수의 정보를 JPA 제공자에 등록할 필요가 있을 수 있습니다.
-예를 들어 Hibernate를 사용하고 있다면 `FunctionContributor`를 반드시 등록해야 합니다.
+사용하려는 함수에 대한 정보를 JPA Provider에 등록해야 할 수도 있습니다.
+
+예를 들어, Hibernate를 사용하고 있다면 `FunctionContributor`를 반드시 등록해야 합니다.
 {% endhint %}
 
 ## Custom predicate
