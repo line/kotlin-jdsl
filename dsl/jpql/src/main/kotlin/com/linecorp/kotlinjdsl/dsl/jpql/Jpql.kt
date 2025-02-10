@@ -3109,6 +3109,21 @@ open class Jpql : JpqlDsl {
      * Creates a select clause in a select query.
      */
     @SinceJdsl("3.0.0")
+    fun <T : Any> select(
+        type: KClass<T>,
+        expr: Expressionable<T>,
+    ): SelectQueryFromStep<T> {
+        return SelectQueryFromStepDsl(
+            type,
+            distinct = false,
+            listOf(expr.toExpression()),
+        )
+    }
+
+    /**
+     * Creates a select clause in a select query.
+     */
+    @SinceJdsl("3.0.0")
     inline fun <reified T : Any> select(
         expr: Expressionable<T>,
     ): SelectQueryFromStep<T> {
@@ -3116,6 +3131,22 @@ open class Jpql : JpqlDsl {
             T::class,
             distinct = false,
             listOf(expr.toExpression()),
+        )
+    }
+
+    /**
+     * Creates a select clause in a select query.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any> select(
+        type: KClass<T>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return SelectQueryFromStepDsl(
+            type,
+            distinct = false,
+            listOf(expr.toExpression()) + exprs.map { it.toExpression() },
         )
     }
 
@@ -3138,6 +3169,21 @@ open class Jpql : JpqlDsl {
      * Creates a select clause in a select query.
      */
     @SinceJdsl("3.0.0")
+    fun <T : Any> selectDistinct(
+        type: KClass<T>,
+        expr: Expressionable<T>,
+    ): SelectQueryFromStep<T> {
+        return SelectQueryFromStepDsl(
+            type,
+            distinct = true,
+            listOf(expr.toExpression()),
+        )
+    }
+
+    /**
+     * Creates a select clause in a select query.
+     */
+    @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectDistinct(
         expr: Expressionable<T>,
     ): SelectQueryFromStep<T> {
@@ -3145,6 +3191,22 @@ open class Jpql : JpqlDsl {
             T::class,
             distinct = true,
             listOf(expr.toExpression()),
+        )
+    }
+
+    /**
+     * Creates a select clause in a select query.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any> selectDistinct(
+        type: KClass<T>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return SelectQueryFromStepDsl(
+            type,
+            distinct = true,
+            listOf(expr.toExpression()) + exprs.map { it.toExpression() },
         )
     }
 
@@ -3167,6 +3229,27 @@ open class Jpql : JpqlDsl {
      * Creates a select clause with the DTO projection in a select query.
      */
     @SinceJdsl("3.0.0")
+    fun <T : Any> selectNew(
+        type: KClass<T>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return SelectQueryFromStepDsl(
+            returnType = type,
+            distinct = false,
+            select = listOf(
+                Expressions.new(
+                    type,
+                    listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+                ),
+            ),
+        )
+    }
+
+    /**
+     * Creates a select clause with the DTO projection in a select query.
+     */
+    @SinceJdsl("3.0.0")
     inline fun <reified T : Any> selectNew(
         expr: Expressionable<*>,
         vararg exprs: Expressionable<*>,
@@ -3177,6 +3260,27 @@ open class Jpql : JpqlDsl {
             select = listOf(
                 Expressions.new(
                     T::class,
+                    listOf(expr.toExpression()) + exprs.map { it.toExpression() },
+                ),
+            ),
+        )
+    }
+
+    /**
+     * Creates a select clause with the DTO projection in a select query.
+     */
+    @SinceJdsl("3.0.0")
+    fun <T : Any> selectDistinctNew(
+        type: KClass<T>,
+        expr: Expressionable<*>,
+        vararg exprs: Expressionable<*>,
+    ): SelectQueryFromStep<T> {
+        return SelectQueryFromStepDsl(
+            returnType = type,
+            distinct = true,
+            select = listOf(
+                Expressions.new(
+                    type,
                     listOf(expr.toExpression()) + exprs.map { it.toExpression() },
                 ),
             ),
