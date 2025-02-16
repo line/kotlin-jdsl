@@ -3108,7 +3108,7 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @SinceJdsl("3.5.5")
     fun <T : Any> select(
         type: KClass<T>,
         expr: Expressionable<T>,
@@ -3137,7 +3137,7 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @SinceJdsl("3.5.5")
     fun <T : Any> select(
         type: KClass<T>,
         expr: Expressionable<*>,
@@ -3168,7 +3168,7 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @SinceJdsl("3.5.5")
     fun <T : Any> selectDistinct(
         type: KClass<T>,
         expr: Expressionable<T>,
@@ -3197,7 +3197,7 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @SinceJdsl("3.5.5")
     fun <T : Any> selectDistinct(
         type: KClass<T>,
         expr: Expressionable<*>,
@@ -3228,7 +3228,7 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause with the DTO projection in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @SinceJdsl("3.5.5")
     fun <T : Any> selectNew(
         type: KClass<T>,
         expr: Expressionable<*>,
@@ -3269,7 +3269,7 @@ open class Jpql : JpqlDsl {
     /**
      * Creates a select clause with the DTO projection in a select query.
      */
-    @SinceJdsl("3.0.0")
+    @SinceJdsl("3.5.5")
     fun <T : Any> selectDistinctNew(
         type: KClass<T>,
         expr: Expressionable<*>,
