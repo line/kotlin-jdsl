@@ -21,6 +21,31 @@ class SelectDslTest : WithAssertions {
     private class View
 
     @Test
+    fun `select() with a KClass and an expression`() {
+        // when
+        val select = queryPart {
+            select(
+                BigDecimal::class,
+                expression1,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<BigDecimal> = select // for type check
+
+        // then
+        val expected = SelectQueries.selectQuery(
+            returnType = BigDecimal::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
     fun `select() with an expression`() {
         // when
         val select = queryPart {
@@ -38,6 +63,32 @@ class SelectDslTest : WithAssertions {
             returnType = BigDecimal::class,
             distinct = false,
             select = listOf(expression1),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `select() with a KClass and expressions`() {
+        // when
+        val select = queryPart {
+            select(
+                View::class,
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<View> = select // for type check
+
+        // then
+        val expected = SelectQueries.selectQuery(
+            returnType = View::class,
+            distinct = false,
+            select = listOf(expression1, expression2),
             from = listOf(entity1),
         )
 
@@ -70,10 +121,10 @@ class SelectDslTest : WithAssertions {
     }
 
     @Test
-    fun `select() with a KClass`() {
+    fun `selectDistinct() with a KClass and an expression`() {
         // when
         val select = queryPart {
-            select(
+            selectDistinct(
                 BigDecimal::class,
                 expression1,
             ).from(
@@ -86,7 +137,7 @@ class SelectDslTest : WithAssertions {
         // then
         val expected = SelectQueries.selectQuery(
             returnType = BigDecimal::class,
-            distinct = false,
+            distinct = true,
             select = listOf(expression1),
             from = listOf(entity1),
         )
@@ -119,6 +170,32 @@ class SelectDslTest : WithAssertions {
     }
 
     @Test
+    fun `selectDistinct() with a KClass and expressions`() {
+        // when
+        val select = queryPart {
+            selectDistinct(
+                View::class,
+                expression1,
+                expression2,
+            ).from(
+                entity1,
+            )
+        }.toQuery()
+
+        val actual: SelectQuery<View> = select // for type check
+
+        // then
+        val expected = SelectQueries.selectQuery(
+            returnType = View::class,
+            distinct = true,
+            select = listOf(expression1, expression2),
+            from = listOf(entity1),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
     fun `selectDistinct() with a generic type and expressions`() {
         // when
         val select = queryPart {
@@ -144,24 +221,30 @@ class SelectDslTest : WithAssertions {
     }
 
     @Test
-    fun `selectDistinct() with a KClass`() {
+    fun `selectNew() with a KClass and expressions`() {
         // when
         val select = queryPart {
-            selectDistinct(
-                BigDecimal::class,
+            selectNew(
+                Dto::class,
                 expression1,
+                expression2,
             ).from(
                 entity1,
             )
         }.toQuery()
 
-        val actual: SelectQuery<BigDecimal> = select // for type check
+        val actual: SelectQuery<Dto> = select // for type check
 
         // then
         val expected = SelectQueries.selectQuery(
-            returnType = BigDecimal::class,
-            distinct = true,
-            select = listOf(expression1),
+            returnType = Dto::class,
+            distinct = false,
+            select = listOf(
+                Expressions.new(
+                    type = Dto::class,
+                    args = listOf(expression1, expression2),
+                ),
+            ),
             from = listOf(entity1),
         )
 
@@ -199,41 +282,11 @@ class SelectDslTest : WithAssertions {
     }
 
     @Test
-    fun `selectNew() with a KClass`() {
+    fun `selectDistinctNew() with a KClass and expressions`() {
         // when
         val select = queryPart {
-            selectNew(
+            selectDistinctNew(
                 Dto::class,
-                expression1,
-                expression2,
-            ).from(
-                entity1,
-            )
-        }.toQuery()
-
-        val actual: SelectQuery<Dto> = select // for type check
-
-        // then
-        val expected = SelectQueries.selectQuery(
-            returnType = Dto::class,
-            distinct = false,
-            select = listOf(
-                Expressions.new(
-                    type = Dto::class,
-                    args = listOf(expression1, expression2),
-                ),
-            ),
-            from = listOf(entity1),
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @Test
-    fun `selectDistinctNew() with a generic type and expressions`() {
-        // when
-        val select = queryPart {
-            selectDistinctNew<Dto>(
                 expression1,
                 expression2,
             ).from(
@@ -260,11 +313,10 @@ class SelectDslTest : WithAssertions {
     }
 
     @Test
-    fun `selectDistinctNew() with a KClass`() {
+    fun `selectDistinctNew() with a generic type and expressions`() {
         // when
         val select = queryPart {
-            selectDistinctNew(
-                Dto::class,
+            selectDistinctNew<Dto>(
                 expression1,
                 expression2,
             ).from(
