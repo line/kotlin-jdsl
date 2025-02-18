@@ -25,7 +25,7 @@ allprojects {
     apply(plugin = "signing")
 
     group = "com.linecorp.kotlin-jdsl"
-    version = "3.5.4"
+    version = "3.5.5"
 
     repositories {
         mavenCentral()
