@@ -19,6 +19,7 @@ import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.AssociationJoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.FetchJoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.JoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryFromStep
+import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryWhereStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SelectQueryFromStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.sort.SortNullsStep
 import com.linecorp.kotlinjdsl.dsl.jpql.sort.impl.SortDsl
@@ -33,6 +34,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Subquery
+import com.linecorp.kotlinjdsl.querymodel.jpql.from.Fromable
 import com.linecorp.kotlinjdsl.querymodel.jpql.join.JoinType
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Pathable
@@ -3132,6 +3134,18 @@ open class Jpql : JpqlDsl {
             distinct = false,
             listOf(expr.toExpression()),
         )
+    }
+
+    /**
+     * Creates a select clause in a select from query.
+     */
+    @SinceJdsl("3.5.3")
+    inline fun <reified T : Any> selectFrom(
+        expr: Entityable<T>,
+        vararg froms: Fromable?,
+    ): SelectQueryWhereStep<T> {
+        return select(expr)
+            .from(expr, *froms)
     }
 
     /**
