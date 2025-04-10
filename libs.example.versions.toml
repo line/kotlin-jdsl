@@ -35,7 +35,7 @@ hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive
 hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.4.5.Final" }
 
 # eclipse-link
-eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.6" }
+eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.15" }
 eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.6" }
 
 # vertx
