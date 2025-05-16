@@ -39,7 +39,7 @@ eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa",
 eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.6" }
 
 # vertx
-vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.5.14" }
+vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.5.15" }
 agroal-pool = { module = "io.agroal:agroal-pool", version = "2.7" }
 
 h2 = { module = "com.h2database:h2", version = "2.3.232" }
