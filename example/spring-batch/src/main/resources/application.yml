@@ -3,7 +3,7 @@ spring.batch:
     enabled: false
 
 spring.jpa:
-  database-platform: org.hibernate.dialect.MySQL8Dialect
+  database-platform: org.hibernate.dialect.MySQLDialect
   hibernate.ddl-auto: none
 
 spring.datasource:
