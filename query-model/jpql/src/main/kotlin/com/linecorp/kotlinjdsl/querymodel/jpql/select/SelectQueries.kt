@@ -1,11 +1,14 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql.select
 
 import com.linecorp.kotlinjdsl.SinceJdsl
+import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 import com.linecorp.kotlinjdsl.querymodel.jpql.from.From
 import com.linecorp.kotlinjdsl.querymodel.jpql.from.Froms
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryUnion
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryUnionAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import kotlin.reflect.KClass
 
@@ -36,6 +39,36 @@ object SelectQueries {
             where = where,
             groupBy = groupBy,
             having = having,
+            orderBy = orderBy,
+        )
+    }
+
+    @SinceJdsl("3.6.0")
+    fun <T : Any> selectUnionQuery(
+        returnType: KClass<T>,
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+        orderBy: Iterable<Sort>?,
+    ): SelectQuery<T> {
+        return JpqlSelectQueryUnion(
+            returnType = returnType,
+            left = left,
+            right = right,
+            orderBy = orderBy,
+        )
+    }
+
+    @SinceJdsl("3.6.0")
+    fun <T : Any> selectUnionAllQuery(
+        returnType: KClass<T>,
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+        orderBy: Iterable<Sort>?,
+    ): SelectQuery<T> {
+        return JpqlSelectQueryUnionAll(
+            returnType = returnType,
+            left = left,
+            right = right,
             orderBy = orderBy,
         )
     }

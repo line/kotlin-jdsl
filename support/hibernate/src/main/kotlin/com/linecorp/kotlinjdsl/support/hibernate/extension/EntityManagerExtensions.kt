@@ -3,7 +3,6 @@ package com.linecorp.kotlinjdsl.support.hibernate.extension
 import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.delete.DeleteQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.set.SetQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.update.UpdateQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.support.hibernate.JpqlEntityManagerUtils
@@ -64,25 +63,6 @@ fun <T : Any> EntityManager.createQuery(
 @SinceJdsl("3.0.0")
 fun <T : Any> EntityManager.createQuery(
     query: DeleteQuery<T>,
-    queryParams: Map<String, Any?>,
-    context: RenderContext,
-): Query = JpqlEntityManagerUtils.createQuery(this, query, queryParams, context)
-
-/**
- * Creates a [jakarta.persistence.TypedQuery] from the [SetQuery] and [RenderContext].
- */
-@SinceJdsl("3.6.0")
-fun <T : Any> EntityManager.createQuery(
-    query: SetQuery<T>,
-    context: RenderContext,
-): TypedQuery<T> = JpqlEntityManagerUtils.createQuery(this, query, query.returnType, context)
-
-/**
- * Creates a [jakarta.persistence.Query] from the [SetQuery] and [RenderContext].
- */
-@SinceJdsl("3.6.0")
-fun <T : Any> EntityManager.createQuery(
-    query: SetQuery<T>,
     queryParams: Map<String, Any?>,
     context: RenderContext,
 ): Query = JpqlEntityManagerUtils.createQuery(this, query, queryParams, context)

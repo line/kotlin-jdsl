@@ -1,8 +1,8 @@
 package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.set.SetOperationType
-import com.linecorp.kotlinjdsl.querymodel.jpql.set.impl.JpqlSetOperationQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryUnionAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.TestRenderContext
@@ -11,6 +11,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderStatement
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializerTest
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
@@ -20,13 +21,11 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.EnumSource
 
 @JpqlSerializerTest
 @ExtendWith(MockKExtension::class)
-class JpqlSetOperationQuerySerializerTest : WithAssertions {
-    private val sut = JpqlSetOperationQuerySerializer()
+class JpqlSelectQueryUnionAllSerializerTest : WithAssertions {
+    private val sut = JpqlSelectQueryUnionAllSerializer()
 
     @MockK(relaxUnitFun = true)
     private lateinit var writer: JpqlWriter
@@ -47,18 +46,24 @@ class JpqlSetOperationQuerySerializerTest : WithAssertions {
         val actual = sut.handledType()
 
         // then
-        assertThat(actual).isEqualTo(JpqlSetOperationQuery::class)
+        assertThat(actual).isEqualTo(JpqlSelectQueryUnionAll::class)
     }
 
-    @EnumSource(SetOperationType::class, names = ["UNION", "UNION_ALL"])
-    @ParameterizedTest
-    fun `serialize operation`(type: SetOperationType) {
+    @Test
+    fun `serialize operation`() {
         // given
         val leftQuery = mockk<SelectQuery<String>>()
         val rightQuery = mockk<SelectQuery<String>>()
-        val part = JpqlSetOperationQuery(leftQuery, type, rightQuery)
+        val part = SelectQueries.selectUnionAllQuery(
+            String::class,
+            leftQuery,
+            rightQuery,
+            orderBy = null,
+        ) as JpqlSelectQueryUnionAll
         val queryContext = initialContext + JpqlRenderStatement.Select
         val slot = slot<() -> Unit>()
+        every { leftQuery.toQuery() } returns leftQuery
+        every { rightQuery.toQuery() } returns rightQuery
 
         // when
         sut.serialize(part, writer, initialContext)
@@ -66,9 +71,6 @@ class JpqlSetOperationQuerySerializerTest : WithAssertions {
         // then
         verify {
             writer.writeParentheses(capture(slot))
-            writer.write(" ")
-            writer.write(type.value)
-            writer.write(" ")
         }
 
         slot.captured.invoke()
@@ -76,26 +78,25 @@ class JpqlSetOperationQuerySerializerTest : WithAssertions {
         verify {
             writer.writeParentheses(slot.captured)
             serializer.serialize(leftQuery, writer, queryContext)
-            writer.write(" ")
-            writer.write(type.value)
-            writer.write(" ")
+            writer.write(" UNION ALL ")
             serializer.serialize(rightQuery, writer, queryContext)
         }
     }
 
-    @EnumSource(SetOperationType::class, names = ["UNION", "UNION_ALL"])
-    @ParameterizedTest
-    fun `serialize operation with order by`(type: SetOperationType) {
+    @Test
+    fun `serialize operation with order by`() {
         // given
         val leftQuery = mockk<SelectQuery<String>>()
         val rightQuery = mockk<SelectQuery<String>>()
+        every { leftQuery.toQuery() } returns leftQuery
+        every { rightQuery.toQuery() } returns rightQuery
         val sort = mockk<Sort>()
-        val part = JpqlSetOperationQuery(
-            leftQuery = leftQuery,
-            operationType = type,
-            rightQuery = rightQuery,
+        val part = SelectQueries.selectUnionAllQuery(
+            returnType = String::class,
+            left = leftQuery,
+            right = rightQuery,
             orderBy = listOf(sort),
-        )
+        ) as JpqlSelectQueryUnionAll
         val queryContext = initialContext + JpqlRenderStatement.Select
         val orderByContext = queryContext + JpqlRenderClause.OrderBy
         val slot = slot<() -> Unit>()
@@ -106,14 +107,6 @@ class JpqlSetOperationQuerySerializerTest : WithAssertions {
         // then
         verify {
             writer.writeParentheses(capture(slot))
-            writer.write(" ")
-            writer.write(type.value)
-            writer.write(" ")
-
-            writer.write(" ")
-            writer.write("ORDER BY")
-            writer.write(" ")
-            serializer.serialize(sort, writer, orderByContext)
         }
 
         slot.captured.invoke()
@@ -121,9 +114,7 @@ class JpqlSetOperationQuerySerializerTest : WithAssertions {
         verify {
             writer.writeParentheses(slot.captured)
             serializer.serialize(leftQuery, writer, queryContext)
-            writer.write(" ")
-            writer.write(type.value)
-            writer.write(" ")
+            writer.write(" UNION ALL ")
             serializer.serialize(rightQuery, writer, queryContext)
 
             writer.write(" ")

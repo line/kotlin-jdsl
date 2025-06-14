@@ -19,9 +19,10 @@ import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.AssociationJoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.FetchJoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.JoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryFromStep
+import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryOrderByStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SelectQueryFromStepDsl
-import com.linecorp.kotlinjdsl.dsl.jpql.set.SetOrderByStep
-import com.linecorp.kotlinjdsl.dsl.jpql.set.impl.SetQueryDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SetOperatorQueryDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SetOperatorType
 import com.linecorp.kotlinjdsl.dsl.jpql.sort.SortNullsStep
 import com.linecorp.kotlinjdsl.dsl.jpql.sort.impl.SortDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.update.UpdateQuerySetFirstStep
@@ -43,8 +44,6 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicatable
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
-import com.linecorp.kotlinjdsl.querymodel.jpql.set.SetOperationType
-import com.linecorp.kotlinjdsl.querymodel.jpql.set.SetQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -3329,15 +3328,11 @@ open class Jpql : JpqlDsl {
 
     @SinceJdsl("3.6.0")
     @JvmName("union")
-    fun <T : Any> union(
+    inline fun <reified T : Any> union(
         left: JpqlQueryable<SelectQuery<T>>,
         right: JpqlQueryable<SelectQuery<T>>,
-    ): SetOrderByStep<T> {
-        return SetQueryDsl(
-            leftQuery = left.toQuery(),
-            operationType = SetOperationType.UNION,
-            rightQuery = right.toQuery(),
-        )
+    ): SelectQueryOrderByStep<T> {
+        return left.union(right)
     }
 
     /**
@@ -3345,44 +3340,42 @@ open class Jpql : JpqlDsl {
      */
     @JvmName("unionAll")
     @SinceJdsl("3.6.0")
-    fun <T : Any> unionAll(
+    inline fun <reified T : Any> unionAll(
         left: JpqlQueryable<SelectQuery<T>>,
         right: JpqlQueryable<SelectQuery<T>>,
-    ): SetOrderByStep<T> {
-        return SetQueryDsl(
-            leftQuery = left.toQuery(),
-            operationType = SetOperationType.UNION_ALL,
-            rightQuery = right.toQuery(),
-        )
+    ): SelectQueryOrderByStep<T> {
+        return left.unionAll(right)
     }
 
     /**
-     * Creates a [SetQuery] that represents the union of this query and the [right] query.
+     * Creates a SelectQuery that represents the union of this query and the [right] query.
      */
     @JvmName("unionDsl")
     @SinceJdsl("3.6.0")
-    fun <T : Any> JpqlQueryable<SelectQuery<T>>.union(
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.union(
         right: JpqlQueryable<SelectQuery<T>>,
-    ): SetOrderByStep<T> {
-        return SetQueryDsl(
-            leftQuery = this.toQuery(),
-            operationType = SetOperationType.UNION,
-            rightQuery = right.toQuery(),
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = this,
+            operationType = SetOperatorType.UNION,
+            rightQuery = right,
         )
     }
 
     /**
-     * Creates a [SetQuery] that represents the union all of this query and the [right] query.
+     * Creates a SelectQuery that represents the union all of this query and the [right] query.
      */
     @JvmName("unionAllDsl")
     @SinceJdsl("3.6.0")
-    fun <T : Any> JpqlQueryable<SelectQuery<T>>.unionAll(
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.unionAll(
         right: JpqlQueryable<SelectQuery<T>>,
-    ): SetOrderByStep<T> {
-        return SetQueryDsl(
-            leftQuery = this.toQuery(),
-            operationType = SetOperationType.UNION_ALL,
-            rightQuery = right.toQuery(),
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = this,
+            operationType = SetOperatorType.UNION_ALL,
+            rightQuery = right,
         )
     }
 
@@ -3393,34 +3386,4 @@ open class Jpql : JpqlDsl {
             Expressions.value(value)
         }
     }
-}
-
-/**
- * Creates a [SetQuery] that represents the union of this query and the [right] query.
- */
-@SinceJdsl("3.6.0")
-@JvmName("unionExtension")
-fun <T : Any> JpqlQueryable<SelectQuery<T>>.union(
-    right: JpqlQueryable<SelectQuery<T>>,
-): SetQuery<T> {
-    return SetQueryDsl(
-        leftQuery = this.toQuery(),
-        operationType = SetOperationType.UNION,
-        rightQuery = right.toQuery(),
-    )
-}
-
-/**
- * Creates a [SetQuery] that represents the union all of this query and the [right] query.
- */
-@SinceJdsl("3.6.0")
-@JvmName("unionAllExtension")
-fun <T : Any> JpqlQueryable<SelectQuery<T>>.unionAll(
-    right: JpqlQueryable<SelectQuery<T>>,
-): SetQuery<T> {
-    return SetQueryDsl(
-        leftQuery = this.toQuery(),
-        operationType = SetOperationType.UNION_ALL,
-        rightQuery = right.toQuery(),
-    )
 }
