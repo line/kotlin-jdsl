@@ -163,6 +163,99 @@ having(
 )
 ```
 
+### Set Operations (`UNION`, `UNION ALL`)
+
+JPQL allows combining the results of two or more `SELECT` queries using set operators. Kotlin JDSL supports `UNION` and `UNION ALL` operations, which are standard features in JPQL and are also part_of the JPA 3.2 specification.
+
+*   `UNION`: Combines the result sets of two queries and removes duplicate rows.
+*   `UNION ALL`: Combines the result sets of two queries and includes all duplicate rows.
+
+The `SELECT` statements involved in a `UNION` or `UNION ALL` operation must have the same number of columns in their select lists, and the data types of corresponding columns must be compatible.
+
+**Using with Chained Selects:**
+
+You can chain `union()` or `unionAll()` after a select query structure (e.g., after `select`, `from`, `where`, `groupBy`, or `having` clauses). The `orderBy()` clause, if used, applies to the final result of the set operation.
+
+```kotlin
+// Example with UNION
+val unionQuery = jpql {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::price)(BookPrice::value).lessThan(BigDecimal.valueOf(20))
+    ).union( // The right-hand side query is also a select structure
+        select(
+            path(Book::isbn)
+        ).from(
+            entity(Book::class)
+        ).where(
+            path(Book::salePrice)(BookPrice::value).lessThan(BigDecimal.valueOf(15))
+        )
+    ).orderBy(
+        path(Book::isbn).asc()
+    )
+}
+
+// Example with UNION ALL
+val unionAllQuery = jpql {
+    select(
+        path(Author::name)
+    ).from(
+        entity(Author::class)
+    ).where(
+        path(Author::name).like("%Rowling%")
+    ).unionAll( // The right-hand side query is also a select structure
+        select(
+            path(Author::name)
+        ).from(
+            entity(Author::class)
+        ).where(
+            path(Author::name).like("%Tolkien%")
+        )
+    ).orderBy(
+        path(Author::name).desc()
+    )
+}
+```
+
+**Using as Top-Level Operations:**
+
+You can also use `union()` and `unionAll()` as top-level operations within a `jpql` block, combining two `JpqlQueryable<SelectQuery<T>>` instances.
+
+```kotlin
+val query1 = jpql {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::price)(BookPrice::value).eq(BigDecimal.valueOf(10))
+    )
+}
+
+val query2 = jpql {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::salePrice)(BookPrice::value).eq(BigDecimal.valueOf(10))
+    )
+}
+
+// Top-level UNION ALL
+val topLevelUnionAllQuery = jpql {
+    unionAll(query1, query2)
+        .orderBy(path(Book::isbn).asc())
+}
+```
+
+**Important Note on `ORDER BY`:**
+
+The `ORDER BY` clause is applied to the final result set of the `UNION` or `UNION ALL` operation. It cannot be applied to the individual `SELECT` queries that are part_of the set operation in a way that affects the set operation itself (though subqueries might have their own `ORDER BY` for other purposes like limiting results before the set operation, this is generally not how `ORDER BY` interacts with `UNION` in JPQL for final sorting). The sorting criteria in the `ORDER BY` clause usually refer to columns by their alias from the `SELECT` list of the first query, or by their position.
+
 ### Order by clause
 
 Use `orderBy()` and pass [Sort](sorts.md) to return data in the declared order when building an order by clause in the select statement.
