@@ -36,7 +36,7 @@ hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive
 
 # eclipse-link
 eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.16" }
-eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.6" }
+eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.7" }
 
 # vertx
 vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.5.16" }
