@@ -88,4 +88,59 @@ class FromDslTest : WithAssertions {
 
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `selectFrom() with entity`() {
+        // when
+        val selectFrom = queryPart {
+            selectFrom(
+                entity1,
+            )
+        }.toQuery()
+        val actual: SelectQuery<Book> = selectFrom
+
+        // then
+        val expected = SelectQueries.selectQuery(
+            returnType = Book::class,
+            distinct = false,
+            select = listOf(entity1),
+            from = listOf(
+                entity1,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `selectFrom() with froms`() {
+        // when
+        val selectFrom = queryPart {
+            selectFrom(
+                entity1,
+                null,
+                entity2,
+                null,
+                join1,
+                null,
+                join2,
+            )
+        }.toQuery()
+        val actual: SelectQuery<Book> = selectFrom
+
+        // then
+        val expected = SelectQueries.selectQuery(
+            returnType = Book::class,
+            distinct = false,
+            select = listOf(entity1),
+            from = listOf(
+                entity1,
+                entity2,
+                join1,
+                join2,
+            ),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
 }

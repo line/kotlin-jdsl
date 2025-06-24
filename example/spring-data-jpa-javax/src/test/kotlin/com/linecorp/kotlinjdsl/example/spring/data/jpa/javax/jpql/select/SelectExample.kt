@@ -73,6 +73,24 @@ class SelectExample : WithAssertions {
     }
 
     @Test
+    fun `authors who haven't written a book with selectFrom`() {
+        // when
+        val actual = authorRepository.findAll {
+            selectFrom(
+                entity(Author::class),
+                leftJoin(BookAuthor::class).on(path(Author::authorId).equal(path(BookAuthor::authorId))),
+            ).where(
+                path(BookAuthor::authorId).isNull(),
+            ).orderBy(
+                path(Author::authorId).asc(),
+            )
+        }
+
+        // then
+        assertThat(actual.map { it?.authorId }).isEqualTo(listOf(4L))
+    }
+
+    @Test
     fun `the list of books`() {
         // given
         val pageable = PageRequest.of(1, 3, Sort.by(Sort.Direction.ASC, "isbn"))

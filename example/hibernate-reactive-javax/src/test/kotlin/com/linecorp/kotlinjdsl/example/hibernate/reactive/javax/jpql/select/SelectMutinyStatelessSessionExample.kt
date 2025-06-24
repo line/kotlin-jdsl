@@ -69,6 +69,28 @@ class SelectMutinyStatelessSessionExample : WithAssertions {
     }
 
     @Test
+    fun `authors who haven't written a book with selectFrom`() {
+        // when
+        val query = jpql {
+            selectFrom(
+                entity(Author::class),
+                leftJoin(BookAuthor::class).on(path(Author::authorId).equal(path(BookAuthor::authorId))),
+            ).where(
+                path(BookAuthor::authorId).isNull(),
+            ).orderBy(
+                path(Author::authorId).asc(),
+            )
+        }
+
+        val actual = sessionFactory.withStatelessSession {
+            it.createQuery(query, context).resultList
+        }.await().indefinitely()
+
+        // then
+        assertThat(actual.map { it.authorId }).isEqualTo(listOf(4L))
+    }
+
+    @Test
     fun `the book with the most authors`() {
         // when
         val query = jpql {
