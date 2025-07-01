@@ -21,8 +21,8 @@ import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.JoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryFromStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryOrderByStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SelectQueryFromStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SetOperator
 import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SetOperatorQueryDsl
-import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SetOperatorType
 import com.linecorp.kotlinjdsl.dsl.jpql.sort.SortNullsStep
 import com.linecorp.kotlinjdsl.dsl.jpql.sort.impl.SortDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.update.UpdateQuerySetFirstStep
@@ -3338,7 +3338,7 @@ open class Jpql : JpqlDsl {
         return SetOperatorQueryDsl(
             returnType = T::class,
             leftQuery = left,
-            setOperator = SetOperatorType.UNION,
+            setOperator = SetOperator.UNION,
             rightQuery = right,
         )
     }
@@ -3355,7 +3355,7 @@ open class Jpql : JpqlDsl {
         return SetOperatorQueryDsl(
             returnType = T::class,
             leftQuery = left,
-            setOperator = SetOperatorType.UNION_ALL,
+            setOperator = SetOperator.UNION_ALL,
             rightQuery = right,
         )
     }

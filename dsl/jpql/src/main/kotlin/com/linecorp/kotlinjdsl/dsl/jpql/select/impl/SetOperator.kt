@@ -5,7 +5,7 @@ import com.linecorp.kotlinjdsl.SinceJdsl
 
 @SinceJdsl("3.6.0")
 @Internal
-enum class SetOperatorType {
+enum class SetOperator {
     UNION,
     UNION_ALL,
 }

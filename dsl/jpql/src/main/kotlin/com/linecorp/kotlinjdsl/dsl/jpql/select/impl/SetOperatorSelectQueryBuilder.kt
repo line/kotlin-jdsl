@@ -10,7 +10,7 @@ internal data class SetOperatorSelectQueryBuilder<T : Any>(
     private val returnType: KClass<T>,
     private val leftQuery: JpqlQueryable<SelectQuery<T>>,
     private val rightQuery: JpqlQueryable<SelectQuery<T>>,
-    private var operationType: SetOperatorType,
+    private var setOperator: SetOperator,
     private var orderBy: MutableList<Sort>? = null,
 ) {
     fun orderBy(sorts: Iterable<Sort>): SetOperatorSelectQueryBuilder<T> {
@@ -20,14 +20,14 @@ internal data class SetOperatorSelectQueryBuilder<T : Any>(
     }
 
     fun build(): SelectQuery<T> {
-        return when (operationType) {
-            SetOperatorType.UNION -> SelectQueries.selectUnionQuery(
+        return when (setOperator) {
+            SetOperator.UNION -> SelectQueries.selectUnionQuery(
                 returnType = returnType,
                 left = leftQuery,
                 right = rightQuery,
                 orderBy = orderBy,
             )
-            SetOperatorType.UNION_ALL -> SelectQueries.selectUnionAllQuery(
+            SetOperator.UNION_ALL -> SelectQueries.selectUnionAllQuery(
                 returnType = returnType,
                 left = leftQuery,
                 right = rightQuery,

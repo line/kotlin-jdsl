@@ -14,7 +14,7 @@ internal class SetOperatorQueryDsl<T : Any>(
         returnType: KClass<T>,
         leftQuery: JpqlQueryable<SelectQuery<T>>,
         rightQuery: JpqlQueryable<SelectQuery<T>>,
-        setOperator: SetOperatorType,
+        setOperator: SetOperator,
     ) : this(
         SetOperatorSelectQueryBuilder<T>(returnType, leftQuery, rightQuery, setOperator),
     )
