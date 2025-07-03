@@ -13,6 +13,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.join.Joins
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Paths
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicates
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryUnion
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryUnionAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sorts
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
@@ -65,6 +67,88 @@ class SelectQueriesTest : WithAssertions {
             where = predicate1,
             groupBy = listOf(expression3, expression4),
             having = predicate2,
+            orderBy = listOf(sort1, sort2),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun selectUnionQuery() {
+        // when
+        val left = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1, expression2),
+            from = listOf(entity1, join1, join2, entity2, entity3),
+            where = predicate1,
+            groupBy = listOf(expression3, expression4),
+            having = predicate2,
+            orderBy = listOf(sort1, sort2),
+        )
+        val right = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+            where = predicate1,
+            groupBy = listOf(expression3, expression4),
+            having = predicate2,
+            orderBy = listOf(sort1, sort2),
+        )
+        val actual = SelectQueries.selectUnionQuery(
+            returnType = Class1::class,
+            left = left,
+            right = right,
+            orderBy = listOf(sort1, sort2),
+        )
+
+        // then
+        val expected = JpqlSelectQueryUnion(
+            returnType = Class1::class,
+            left = left,
+            right = right,
+            orderBy = listOf(sort1, sort2),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun selectUnionAllQuery() {
+        // when
+        val left = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1, expression2),
+            from = listOf(entity1, join1, join2, entity2, entity3),
+            where = predicate1,
+            groupBy = listOf(expression3, expression4),
+            having = predicate2,
+            orderBy = listOf(sort1, sort2),
+        )
+        val right = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+            where = predicate1,
+            groupBy = listOf(expression3, expression4),
+            having = predicate2,
+            orderBy = listOf(sort1, sort2),
+        )
+        val actual = SelectQueries.selectUnionAllQuery(
+            returnType = Class1::class,
+            left = left,
+            right = right,
+            orderBy = listOf(sort1, sort2),
+        )
+
+        // then
+        val expected = JpqlSelectQueryUnionAll(
+            returnType = Class1::class,
+            left = left,
+            right = right,
             orderBy = listOf(sort1, sort2),
         )
 

@@ -168,6 +168,99 @@ having(
 )
 ```
 
+### 집합 연산 (`UNION`, `UNION ALL`)
+
+Jakarta Persistence 3.2부터 JPQL은 집합 연산자를 사용하여 둘 이상의 `SELECT` 쿼리 결과를 결합하는 기능을 공식적으로 지원합니다. Kotlin JDSL은 이러한 새로운 표준 기능인 `UNION` 및 `UNION ALL` 연산을 지원합니다. (`INTERSECT` 및 `EXCEPT` 또한 JPA 3.2에 추가되었습니다.)
+
+*   `UNION`: 두 쿼리의 결과 집합을 결합하고 중복된 행을 제거합니다.
+*   `UNION ALL`: 두 쿼리의 결과 집합을 결합하고 모든 중복된 행을 포함합니다.
+
+`UNION` 또는 `UNION ALL` 연산에 포함되는 `SELECT` 문들은 select 목록에 동일한 수의 열을 가져야 하며, 해당 열의 데이터 타입은 서로 호환되어야 합니다.
+
+**연결된 Select 쿼리와 함께 사용:**
+
+select 쿼리 구조(예: `select`, `from`, `where`, `groupBy`, 또는 `having` 절 뒤)에 `union()` 또는 `unionAll()`을 연결하여 사용할 수 있습니다. `orderBy()` 절이 사용되는 경우, 집합 연산의 최종 결과에 적용됩니다.
+
+```kotlin
+// UNION 예제
+val unionQuery = jpql {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::price)(BookPrice::value).lessThan(BigDecimal.valueOf(20))
+    ).union( // 우측 쿼리 또한 select 구조입니다.
+        select(
+            path(Book::isbn)
+        ).from(
+            entity(Book::class)
+        ).where(
+            path(Book::salePrice)(BookPrice::value).lessThan(BigDecimal.valueOf(15))
+        )
+    ).orderBy(
+        path(Book::isbn).asc()
+    )
+}
+
+// UNION ALL 예제
+val unionAllQuery = jpql {
+    select(
+        path(Author::name)
+    ).from(
+        entity(Author::class)
+    ).where(
+        path(Author::name).like("%Rowling%")
+    ).unionAll( // 우측 쿼리 또한 select 구조입니다.
+        select(
+            path(Author::name)
+        ).from(
+            entity(Author::class)
+        ).where(
+            path(Author::name).like("%Tolkien%")
+        )
+    ).orderBy(
+        path(Author::name).desc()
+    )
+}
+```
+
+**최상위 레벨 연산으로 사용:**
+
+`jpql` 블록 내에서 두 개의 `JpqlQueryable<SelectQuery<T>>` 인스턴스를 결합하여 `union()` 및 `unionAll()`을 최상위 레벨 연산으로 사용할 수도 있습니다.
+
+```kotlin
+val query1 = jpql {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::price)(BookPrice::value).eq(BigDecimal.valueOf(10))
+    )
+}
+
+val query2 = jpql {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::salePrice)(BookPrice::value).eq(BigDecimal.valueOf(10))
+    )
+}
+
+// 최상위 레벨 UNION ALL
+val topLevelUnionAllQuery = jpql {
+    unionAll(query1, query2)
+        .orderBy(path(Book::isbn).asc())
+}
+```
+
+**`ORDER BY`에 대한 중요 참고 사항:**
+
+`ORDER BY` 절은 `UNION` 또는 `UNION ALL` 연산의 최종 결과 집합에 적용됩니다. 집합 연산 자체에 영향을 미치는 방식으로 집합 연산의 일부인 개별 `SELECT` 쿼리에 적용될 수 없습니다. (물론, 하위 쿼리가 집합 연산 전에 결과를 제한하는 등의 다른 목적으로 자체 `ORDER BY`를 가질 수 있지만, 일반적으로 JPQL에서 `UNION`과 최종 정렬을 위해 상호 작용하는 방식은 아닙니다.) `ORDER BY` 절의 정렬 기준은 일반적으로 첫 번째 쿼리의 `SELECT` 목록에 있는 열의 별칭 또는 위치를 참조합니다.
+
 ### Order by clause
 
 select statment의 order by clause를 만들기 위해, `orderBy()`를 사용할 수 있습니다.
