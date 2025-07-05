@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAliasedExpres
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlAvg
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCaseWhen
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCast
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCeiling
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlCoalesce
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlConcat
@@ -22,6 +23,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFloor
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLeft
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLn
@@ -41,6 +43,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlParam
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPathType
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPlus
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlPower
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlReplace
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRight
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlRound
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSign
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlSize
@@ -721,6 +725,42 @@ object Expressions {
         start: Expression<Int>? = null,
     ): Expression<Int> {
         return JpqlLocate(substring, string, start)
+    }
+
+    /**
+     * Creates an expression that represents the casting of a value to a different type.
+     */
+    @SinceJdsl("3.6.0")
+    fun <T : Any> cast(value: Expression<*>, type: KClass<T>): Expression<T> {
+        return JpqlCast(value, type)
+    }
+
+    /**
+     * Creates an expression that returns the leftmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun left(value: Expression<String>, count: Expression<Int>): Expression<String> {
+        return JpqlLeft(value, count)
+    }
+
+    /**
+     * Creates an expression that returns the rightmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun right(value: Expression<String>, count: Expression<Int>): Expression<String> {
+        return JpqlRight(value, count)
+    }
+
+    /**
+     * Creates an expression that replaces all occurrences of a search string with a replacement string.
+     */
+    @SinceJdsl("3.6.0")
+    fun replace(
+        value: Expression<String>,
+        search: Expression<String>,
+        replacement: Expression<String>,
+    ): Expression<String> {
+        return JpqlReplace(value, search, replacement)
     }
 
     /**

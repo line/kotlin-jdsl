@@ -1706,6 +1706,78 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the casting of a value to a different type.
+     */
+    @SinceJdsl("3.6.0")
+    fun <T : Any> cast(value: Expressionable<*>, type: KClass<T>): Expression<T> {
+        return Expressions.cast(value.toExpression(), type)
+    }
+
+    /**
+     * Creates an expression that represents the casting of a value to a different type.
+     */
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> cast(value: Expressionable<*>): Expression<T> {
+        return Expressions.cast(value.toExpression(), T::class)
+    }
+
+    /**
+     * Creates an expression that returns the leftmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun left(value: Expressionable<String>, count: Expressionable<Int>): Expression<String> {
+        return Expressions.left(value.toExpression(), count.toExpression())
+    }
+
+    /**
+     * Creates an expression that returns the leftmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun left(value: Expressionable<String>, count: Int): Expression<String> {
+        return Expressions.left(value.toExpression(), intLiteral(count))
+    }
+
+    /**
+     * Creates an expression that returns the rightmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun right(value: Expressionable<String>, count: Expressionable<Int>): Expression<String> {
+        return Expressions.right(value.toExpression(), count.toExpression())
+    }
+
+    /**
+     * Creates an expression that returns the rightmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun right(value: Expressionable<String>, count: Int): Expression<String> {
+        return Expressions.right(value.toExpression(), intLiteral(count))
+    }
+
+    /**
+     * Creates an expression that replaces all occurrences of a search string with a replacement string.
+     */
+    @SinceJdsl("3.6.0")
+    fun replace(
+        value: Expressionable<String>,
+        search: Expressionable<String>,
+        replacement: Expressionable<String>,
+    ): Expression<String> {
+        return Expressions.replace(value.toExpression(), search.toExpression(), replacement.toExpression())
+    }
+
+    /**
+     * Creates an expression that replaces all occurrences of a search string with a replacement string.
+     */
+    @SinceJdsl("3.6.0")
+    fun replace(
+        value: Expressionable<String>,
+        search: String,
+        replacement: String,
+    ): Expression<String> {
+        return Expressions.replace(value.toExpression(), stringLiteral(search), stringLiteral(replacement))
+    }
+
+    /**
      * Creates an expression that represents predefined database functions and user-defined database functions.
      */
     @LowPriorityInOverloadResolution
