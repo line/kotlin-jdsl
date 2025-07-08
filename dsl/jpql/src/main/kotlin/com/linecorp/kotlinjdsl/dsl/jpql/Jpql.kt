@@ -3382,6 +3382,62 @@ open class Jpql : JpqlDsl {
         return unionAll(this, right)
     }
 
+    /**
+     * Creates an EXCEPT query with two select queries.
+     */
+    @SinceJdsl("3.6.0")
+    @JvmName("except")
+    inline fun <reified T : Any> except(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.EXCEPT,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates an EXCEPT ALL query with two select queries.
+     */
+    @JvmName("exceptAll")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> exceptAll(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.EXCEPT_ALL,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates an EXCEPT query that represents the except of this query and the [right] query.
+     */
+    @JvmName("exceptExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.except(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return except(this, right)
+    }
+
+    /**
+     * Creates an EXCEPT ALL that represents the except all of this query and the [right] query.
+     */
+    @JvmName("exceptAllExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.exceptAll(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return exceptAll(this, right)
+    }
+
     private fun valueOrExpression(value: Any): Expression<*> {
         return if (value is Expression<*>) {
             value
