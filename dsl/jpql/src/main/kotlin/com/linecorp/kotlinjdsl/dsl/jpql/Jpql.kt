@@ -634,6 +634,38 @@ open class Jpql : JpqlDsl {
     }
 
     /**
+     * Creates an expression that represents the id of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <ID : Any> id(entity: KClass<*>): Expression<ID> {
+        return Expressions.id(Entities.entity(entity))
+    }
+
+    /**
+     * Creates an expression that represents the id of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <ID : Any> id(entity: Expressionable<*>): Expression<ID> {
+        return Expressions.id(entity)
+    }
+
+    /**
+     * Creates an expression that represents the version of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <V : Any> version(entity: KClass<*>): Expression<V> {
+        return Expressions.version(Entities.entity(entity))
+    }
+
+    /**
+     * Creates an expression that represents the version of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <V : Any> version(expression: Expressionable<*>): Expression<V> {
+        return Expressions.version(expression)
+    }
+
+    /**
      * Creates an expression that represents the natural logarithm of value.
      */
     @SinceJdsl("3.4.0")

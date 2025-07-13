@@ -10,6 +10,7 @@ import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import jakarta.persistence.Version
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -42,6 +43,9 @@ class Book(
 
     @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], orphanRemoval = true)
     val publishers: List<BookPublisher>,
+
+    @Version
+    val version: Long = 0L,
 ) {
     init {
         authors.forEach { it.book = this }
