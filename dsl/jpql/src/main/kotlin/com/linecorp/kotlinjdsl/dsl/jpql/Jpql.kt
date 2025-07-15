@@ -653,7 +653,7 @@ open class Jpql : JpqlDsl {
      * Creates an expression that represents the version of the entity.
      */
     @SinceJdsl("3.6.0")
-    fun <V : Any> version(entity: KClass<*>): Expression<V> {
+    fun <VERSION : Any> version(entity: KClass<*>): Expression<VERSION> {
         return Expressions.version(Entities.entity(entity))
     }
 
@@ -661,7 +661,7 @@ open class Jpql : JpqlDsl {
      * Creates an expression that represents the version of the entity.
      */
     @SinceJdsl("3.6.0")
-    fun <V : Any> version(expression: Expressionable<*>): Expression<V> {
+    fun <VERSION : Any> version(expression: Expressionable<*>): Expression<VERSION> {
         return Expressions.version(expression)
     }
 

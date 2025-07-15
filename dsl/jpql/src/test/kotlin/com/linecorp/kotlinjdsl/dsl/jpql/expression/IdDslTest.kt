@@ -19,7 +19,7 @@ class IdDslTest : WithAssertions {
             id<Isbn>(Book::class)
         }.toExpression()
 
-        val actual: Expression<Any> = expression // for type check
+        val actual: Expression<Isbn> = expression // for type check
 
         // then
         val expected = Expressions.id<Isbn>(
@@ -36,7 +36,7 @@ class IdDslTest : WithAssertions {
             id<Isbn>(entity)
         }.toExpression()
 
-        val actual: Expression<Any> = expression // for type check
+        val actual: Expression<Isbn> = expression // for type check
 
         // then
         val expected = Expressions.id<Isbn>(
