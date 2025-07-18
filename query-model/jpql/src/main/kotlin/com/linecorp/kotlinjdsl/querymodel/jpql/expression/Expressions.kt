@@ -739,16 +739,24 @@ object Expressions {
      * Creates an expression that returns the leftmost count characters from a string.
      */
     @SinceJdsl("3.6.0")
-    fun left(value: Expression<String>, count: Expression<Int>): Expression<String> {
-        return JpqlLeft(value, count)
+    fun left(value: Expression<String>, len: Expression<Int>): Expression<String> {
+        return JpqlLeft(value, len)
+    }
+
+    /**
+     * Creates an expression that returns the leftmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun left(value: Expression<String>, len: Int): Expression<String> {
+        return left(value, intLiteral(len))
     }
 
     /**
      * Creates an expression that returns the rightmost count characters from a string.
      */
     @SinceJdsl("3.6.0")
-    fun right(value: Expression<String>, count: Expression<Int>): Expression<String> {
-        return JpqlRight(value, count)
+    fun right(value: Expression<String>, len: Expression<Int>): Expression<String> {
+        return JpqlRight(value, len)
     }
 
     /**
@@ -757,10 +765,10 @@ object Expressions {
     @SinceJdsl("3.6.0")
     fun replace(
         value: Expression<String>,
-        search: Expression<String>,
+        substring: Expression<String>,
         replacement: Expression<String>,
     ): Expression<String> {
-        return JpqlReplace(value, search, replacement)
+        return JpqlReplace(value, substring, replacement)
     }
 
     /**

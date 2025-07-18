@@ -54,7 +54,7 @@ internal class JpqlReplaceSerializerTest {
             writer.writeParentheses(any())
             serializer.serialize(expression.value, writer, context)
             writer.write(", ")
-            serializer.serialize(expression.pattern, writer, context)
+            serializer.serialize(expression.substring, writer, context)
             writer.write(", ")
             serializer.serialize(expression.replacement, writer, context)
         }

@@ -1,9 +1,9 @@
 package com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl
 
-import com.linecorp.kotlinjdsl.SinceJdsl
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expression
 
-@SinceJdsl("3.6.0")
+@Internal
 data class JpqlLeft internal constructor(
     val value: Expression<String>,
     val length: Expression<Int>,
