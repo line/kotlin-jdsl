@@ -46,10 +46,10 @@ class ExpressionDslTest : WithAssertions {
     }
 
     @Test
-    fun `cast() with a expression and a class`() {
+    fun `cast() with a string expression as Integer`() {
         // when
         val expression = queryPart {
-            cast(expression(String::class, alias1), Int::class)
+            cast(expression(String::class, alias1)).asInteger()
         }.toExpression()
 
         val actual: Expression<Int> = expression // for type check
@@ -64,18 +64,72 @@ class ExpressionDslTest : WithAssertions {
     }
 
     @Test
-    fun `inline cast() with a expression and a class`() {
+    fun `cast() with a string expression as Long`() {
         // when
         val expression = queryPart {
-            cast<Int>(expression(String::class, alias1))
+            cast(expression(String::class, alias1)).asLong()
         }.toExpression()
 
-        val actual: Expression<Int> = expression // for type check
+        val actual: Expression<Long> = expression // for type check
 
         // then
         val expected = Expressions.cast(
             Expressions.expression(String::class, alias1),
-            Int::class,
+            Long::class,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `cast() with a string expression as Float`() {
+        // when
+        val expression = queryPart {
+            cast(expression(String::class, alias1)).asFloat()
+        }.toExpression()
+
+        val actual: Expression<Float> = expression // for type check
+
+        // then
+        val expected = Expressions.cast(
+            Expressions.expression(String::class, alias1),
+            Float::class,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `cast() with a string expression as Double`() {
+        // when
+        val expression = queryPart {
+            cast(expression(String::class, alias1)).asDouble()
+        }.toExpression()
+
+        val actual: Expression<Double> = expression // for type check
+
+        // then
+        val expected = Expressions.cast(
+            Expressions.expression(String::class, alias1),
+            Double::class,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `cast() with scalar expression as String`() {
+        // when
+        val expression = queryPart {
+            cast(expression(Int::class, alias1)).asString()
+        }.toExpression()
+
+        val actual: Expression<String> = expression // for type check
+
+        // then
+        val expected = Expressions.cast(
+            Expressions.expression(Int::class, alias1),
+            String::class,
         )
 
         assertThat(actual).isEqualTo(expected)

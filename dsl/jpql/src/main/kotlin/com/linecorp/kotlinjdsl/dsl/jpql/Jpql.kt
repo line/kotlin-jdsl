@@ -5,9 +5,13 @@ import com.linecorp.kotlinjdsl.dsl.jpql.delete.DeleteQueryWhereStep
 import com.linecorp.kotlinjdsl.dsl.jpql.delete.impl.DeleteQueryDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseThenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.CastStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.StringCastStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.TrimFromStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseThenFirstStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseValueWhenFirstStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.JpqlCastStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.JpqlStringCastStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimBothFromStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimFromStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimLeadingFromStepDsl
@@ -1706,19 +1710,19 @@ open class Jpql : JpqlDsl {
     }
 
     /**
-     * Creates an expression that represents the casting of a value to a different type.
+     * Creates a step to cast a string expression to another type.
      */
     @SinceJdsl("3.6.0")
-    fun <T : Any> cast(value: Expressionable<*>, type: KClass<T>): Expression<T> {
-        return Expressions.cast(value.toExpression(), type)
+    fun cast(value: Expressionable<String>): CastStep {
+        return JpqlCastStep(value.toExpression())
     }
 
     /**
-     * Creates an expression that represents the casting of a value to a different type.
+     * Creates a step to cast a scalar expression to a string.
      */
     @SinceJdsl("3.6.0")
-    inline fun <reified T : Any> cast(value: Expressionable<*>): Expression<T> {
-        return Expressions.cast(value.toExpression(), T::class)
+    fun <T : Any> cast(value: Expressionable<T>): StringCastStep {
+        return JpqlStringCastStep(value.toExpression())
     }
 
     /**

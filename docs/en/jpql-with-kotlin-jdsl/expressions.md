@@ -220,8 +220,11 @@ length(path(Book::title))
 
 locate("Book", path(Book::title))
 
-cast(path(Book::price), String::class)
-cast<String>(path(Book::price))
+cast(path(Book::price)).asString()
+cast(path(Book::authorId)).asInt()
+cast(path(Book::authorId)).asLong()
+cast(path(Book::authorId)).asDouble()
+cast(path(Book::authorId)).asFloat()
 
 left(path(Book::title), 3)
 left(path(Book::title), literal(3))
@@ -230,6 +233,10 @@ right(path(Book::title), 3)
 right(path(Book::title), literal(3))
 
 replace(path(Book::title), "old", "new")
+replace(path(Book::title), stringLiteral("old"), "new")
+replace(path(Book::title), path(Book::name), "new")
+replace(path(Book::title), "old", stringLiteral("new"))
+replace(path(Book::title), "old", path(Book::name))
 replace(path(Book::title), literal("old"), literal("new"))
 ```
 
