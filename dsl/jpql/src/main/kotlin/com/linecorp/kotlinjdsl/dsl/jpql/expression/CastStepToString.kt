@@ -8,7 +8,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressionable
  * This corresponds to the BNF: CAST(scalar_expression AS STRING)
  */
 @SinceJdsl("3.6.0")
-interface StringCastStep {
+interface CastStepToString {
     /**
      * Casts the expression to a STRING.
      */

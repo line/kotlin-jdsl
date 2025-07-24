@@ -6,12 +6,12 @@ import com.linecorp.kotlinjdsl.dsl.jpql.delete.impl.DeleteQueryDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseThenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CastStep
-import com.linecorp.kotlinjdsl.dsl.jpql.expression.StringCastStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.CastStepToString
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.TrimFromStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseThenFirstStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseValueWhenFirstStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.JpqlCastStep
-import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.JpqlStringCastStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.JpqlCastStepToString
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimBothFromStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimFromStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimLeadingFromStepDsl
@@ -1721,8 +1721,8 @@ open class Jpql : JpqlDsl {
      * Creates a step to cast a scalar expression to a string.
      */
     @SinceJdsl("3.6.0")
-    fun <T : Any> cast(value: Expressionable<T>): StringCastStep {
-        return JpqlStringCastStep(value.toExpression())
+    fun <T : Any> cast(value: Expressionable<T>): CastStepToString {
+        return JpqlCastStepToString(value.toExpression())
     }
 
     /**
