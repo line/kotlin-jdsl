@@ -53,6 +53,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanOrEqua
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanOrEqualToAnySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanOrEqualToSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlGreaterThanSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlIdSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlInSubquerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlIndexSerializer
@@ -112,6 +113,8 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPredicateParenthe
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlReplaceSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRightSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRoundSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryExceptAllSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryExceptSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQuerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryUnionAllSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryUnionSerializer
@@ -130,6 +133,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlTrimTrailingSeria
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlUpdateQuerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlUpperSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlValueSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlVersionSerializer
 
 /**
  * RenderContext for rendering JPQL.
@@ -322,6 +326,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlGreaterThanOrEqualToAnySerializer(),
             JpqlGreaterThanOrEqualToSerializer(),
             JpqlGreaterThanSerializer(),
+            JpqlIdSerializer(),
             JpqlIndexSerializer(),
             JpqlInnerAssociationFetchJoinSerializer(),
             JpqlInnerAssociationJoinSerializer(),
@@ -381,6 +386,8 @@ private class DefaultModule : JpqlRenderModule {
             JpqlRightSerializer(),
             JpqlReplaceSerializer(),
             JpqlRoundSerializer(),
+            JpqlSelectQueryExceptAllSerializer(),
+            JpqlSelectQueryExceptSerializer(),
             JpqlSelectQuerySerializer(),
             JpqlSelectQueryUnionAllSerializer(),
             JpqlSelectQueryUnionSerializer(),
@@ -399,6 +406,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlUpdateQuerySerializer(),
             JpqlUpperSerializer(),
             JpqlValueSerializer(),
+            JpqlVersionSerializer(),
         )
     }
 }

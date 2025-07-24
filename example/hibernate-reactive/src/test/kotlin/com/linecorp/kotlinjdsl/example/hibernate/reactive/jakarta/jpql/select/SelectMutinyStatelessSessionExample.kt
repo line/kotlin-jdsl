@@ -301,4 +301,76 @@ class SelectMutinyStatelessSessionExample : WithAssertions {
         // then
         assertThat(actual).isEqualTo(listOf(7L))
     }
+
+    @Test
+    fun `id of book`() {
+        // when
+        val query = jpql {
+            select(
+                id(Book::class),
+            ).from(
+                entity(Book::class),
+            ).orderBy(
+                path(Book::isbn).asc(),
+            )
+        }
+
+        val actual = sessionFactory.withStatelessSession {
+            it.createQuery(query, context).resultList
+        }.await().indefinitely()
+
+        // then
+        assertThat(actual).isEqualTo(
+            listOf(
+                Isbn("01"),
+                Isbn("02"),
+                Isbn("03"),
+                Isbn("04"),
+                Isbn("05"),
+                Isbn("06"),
+                Isbn("07"),
+                Isbn("08"),
+                Isbn("09"),
+                Isbn("10"),
+                Isbn("11"),
+                Isbn("12"),
+            ),
+        )
+    }
+
+    @Test
+    fun `version of book`() {
+        // when
+        val query = jpql {
+            select(
+                version(Book::class),
+            ).from(
+                entity(Book::class),
+            ).orderBy(
+                path(Book::isbn).asc(),
+            )
+        }
+
+        val actual = sessionFactory.withStatelessSession {
+            it.createQuery(query, context).resultList
+        }.await().indefinitely()
+
+        // then
+        assertThat(actual).isEqualTo(
+            listOf(
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+            ),
+        )
+    }
 }

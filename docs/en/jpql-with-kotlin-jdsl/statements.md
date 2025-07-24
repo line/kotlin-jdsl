@@ -163,18 +163,20 @@ having(
 )
 ```
 
-### Set Operations (`UNION`, `UNION ALL`)
+### Set Operations (`UNION`, `UNION ALL`, `EXCEPT`, `EXCEPT ALL`)
 
-JPQL allows combining the results of two or more `SELECT` queries using set operators. Kotlin JDSL supports `UNION` and `UNION ALL` operations, which are standard features in JPQL and are also part_of the JPA 3.2 specification.
+JPQL allows combining the results of two or more `SELECT` queries using set operators. Kotlin JDSL supports `UNION`, `UNION ALL`, `EXCEPT`, and `EXCEPT ALL` operations, which are standard features in JPQL and are also part of the JPA 3.2 specification.
 
 *   `UNION`: Combines the result sets of two queries and removes duplicate rows.
 *   `UNION ALL`: Combines the result sets of two queries and includes all duplicate rows.
+*   `EXCEPT`: Returns rows from the first query that are not present in the second query, removing duplicates.
+*   `EXCEPT ALL`: Returns rows from the first query that are not present in the second query, including all duplicates.
 
-The `SELECT` statements involved in a `UNION` or `UNION ALL` operation must have the same number of columns in their select lists, and the data types of corresponding columns must be compatible.
+The `SELECT` statements involved in a `UNION`, `UNION ALL`, `EXCEPT`, or `EXCEPT ALL` operation must have the same number of columns in their select lists, and the data types of corresponding columns must be compatible.
 
 **Using with Chained Selects:**
 
-You can chain `union()` or `unionAll()` after a select query structure (e.g., after `select`, `from`, `where`, `groupBy`, or `having` clauses). The `orderBy()` clause, if used, applies to the final result of the set operation.
+You can chain `union()`, `unionAll()`, `except()`, or `exceptAll()` after a select query structure (e.g., after `select`, `from`, `where`, `groupBy`, or `having` clauses). The `orderBy()` clause, if used, applies to the final result of the set operation.
 
 ```kotlin
 // Example with UNION
@@ -218,11 +220,53 @@ val unionAllQuery = jpql {
         path(Author::name).desc()
     )
 }
+
+// Example with EXCEPT
+val exceptQuery = jpql {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::price)(BookPrice::value).lessThan(BigDecimal.valueOf(30))
+    ).except( // The right-hand side query is also a select structure
+        select(
+            path(Book::isbn)
+        ).from(
+            entity(Book::class)
+        ).where(
+            path(Book::salePrice)(BookPrice::value).lessThan(BigDecimal.valueOf(20))
+        )
+    ).orderBy(
+        path(Book::isbn).asc()
+    )
+}
+
+// Example with EXCEPT ALL
+val exceptAllQuery = jpql {
+    select(
+        path(Author::name)
+    ).from(
+        entity(Author::class)
+    ).where(
+        path(Author::name).like("%Fantasy%")
+    ).exceptAll( // The right-hand side query is also a select structure
+        select(
+            path(Author::name)
+        ).from(
+            entity(Author::class)
+        ).where(
+            path(Author::name).like("%Mystery%")
+        )
+    ).orderBy(
+        path(Author::name).desc()
+    )
+}
 ```
 
 **Using as Top-Level Operations:**
 
-You can also use `union()` and `unionAll()` as top-level operations within a `jpql` block, combining two `JpqlQueryable<SelectQuery<T>>` instances.
+You can also use `union()`, `unionAll()`, `except()`, and `exceptAll()` as top-level operations within a `jpql` block, combining two `JpqlQueryable<SelectQuery<T>>` instances.
 
 ```kotlin
 val query1 = jpql {
@@ -250,11 +294,26 @@ val topLevelUnionAllQuery = jpql {
     unionAll(query1, query2)
         .orderBy(path(Book::isbn).asc())
 }
+
+// Top-level EXCEPT ALL
+val topLevelExceptAllQuery = jpql {
+    exceptAll(query1, query2)
+        .orderBy(path(Book::isbn).asc())
+}
 ```
 
 **Important Note on `ORDER BY`:**
 
-The `ORDER BY` clause is applied to the final result set of the `UNION` or `UNION ALL` operation. It cannot be applied to the individual `SELECT` queries that are part_of the set operation in a way that affects the set operation itself (though subqueries might have their own `ORDER BY` for other purposes like limiting results before the set operation, this is generally not how `ORDER BY` interacts with `UNION` in JPQL for final sorting). The sorting criteria in the `ORDER BY` clause usually refer to columns by their alias from the `SELECT` list of the first query, or by their position.
+The `ORDER BY` clause is applied to the final result set of the set operation (`UNION`, `UNION ALL`, `EXCEPT`, or `EXCEPT ALL`). It cannot be applied to the individual `SELECT` queries that are part of the set operation in a way that affects the set operation itself (though subqueries might have their own `ORDER BY` for other purposes like limiting results before the set operation, this is generally not how `ORDER BY` interacts with set operations in JPQL for final sorting). The sorting criteria in the `ORDER BY` clause usually refer to columns by their alias from the `SELECT` list of the first query, or by their position.
+
+**Database Compatibility Note:**
+
+While these set operations are part of the JPA 3.2 specification, not all databases support all operations. For example:
+- H2 database (versions 1.4.192 - 2.3.232) supports `UNION`, `UNION ALL`, and `EXCEPT` but does not support `EXCEPT ALL`
+- PostgreSQL, Oracle, and SQL Server support all four operations (`UNION`, `UNION ALL`, `EXCEPT`, `EXCEPT ALL`)
+- MySQL supports `UNION` and `UNION ALL` but does not support `EXCEPT` operations (use `NOT EXISTS` or `LEFT JOIN` as alternatives)
+
+When using these operations, ensure your target database supports them, or provide alternative query strategies for unsupported databases.
 
 ### Order by clause
 

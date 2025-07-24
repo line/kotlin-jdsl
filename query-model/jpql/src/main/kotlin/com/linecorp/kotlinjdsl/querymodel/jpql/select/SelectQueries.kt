@@ -7,6 +7,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.from.From
 import com.linecorp.kotlinjdsl.querymodel.jpql.from.Froms
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryExcept
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryExceptAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryUnion
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryUnionAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
@@ -66,6 +68,36 @@ object SelectQueries {
         orderBy: Iterable<Sort>?,
     ): SelectQuery<T> {
         return JpqlSelectQueryUnionAll(
+            returnType = returnType,
+            left = left,
+            right = right,
+            orderBy = orderBy,
+        )
+    }
+
+    @SinceJdsl("3.6.0")
+    fun <T : Any> selectExceptQuery(
+        returnType: KClass<T>,
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+        orderBy: Iterable<Sort>?,
+    ): SelectQuery<T> {
+        return JpqlSelectQueryExcept(
+            returnType = returnType,
+            left = left,
+            right = right,
+            orderBy = orderBy,
+        )
+    }
+
+    @SinceJdsl("3.6.0")
+    fun <T : Any> selectExceptAllQuery(
+        returnType: KClass<T>,
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+        orderBy: Iterable<Sort>?,
+    ): SelectQuery<T> {
+        return JpqlSelectQueryExceptAll(
             returnType = returnType,
             left = left,
             right = right,

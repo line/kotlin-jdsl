@@ -7,4 +7,6 @@ import com.linecorp.kotlinjdsl.SinceJdsl
 internal enum class SetOperator {
     UNION,
     UNION_ALL,
+    EXCEPT,
+    EXCEPT_ALL,
 }

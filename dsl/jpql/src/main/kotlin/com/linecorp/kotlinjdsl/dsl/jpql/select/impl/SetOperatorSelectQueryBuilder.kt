@@ -33,6 +33,18 @@ internal data class SetOperatorSelectQueryBuilder<T : Any>(
                 right = rightQuery,
                 orderBy = orderBy,
             )
+            SetOperator.EXCEPT -> SelectQueries.selectExceptQuery(
+                returnType = returnType,
+                left = leftQuery,
+                right = rightQuery,
+                orderBy = orderBy,
+            )
+            SetOperator.EXCEPT_ALL -> SelectQueries.selectExceptAllQuery(
+                returnType = returnType,
+                left = leftQuery,
+                right = rightQuery,
+                orderBy = orderBy,
+            )
         }
     }
 }

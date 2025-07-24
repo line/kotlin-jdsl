@@ -37,7 +37,7 @@ jobs:
           distribution: 'adopt'
           cache: gradle
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v3
+        uses: gradle/actions/wrapper-validation@v4
       - name: Lint Kotlin with Gradle
         run: ./gradlew lintKotlin
       - name: Cleanup Gradle Cache

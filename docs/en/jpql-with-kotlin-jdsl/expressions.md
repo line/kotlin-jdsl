@@ -390,3 +390,57 @@ customExpression(String::class, "CAST({0} AS VARCHAR)", path(Book::price))
 ```
 
 If you frequently use `customExpression()`, you can create [your own DSL](custom-dsl.md).
+
+## ID
+
+You can get the identifier of an entity. This function was added in JPA 3.2.
+The function takes an `Entity` or a path expression that evaluates to a single-valued entity (`single_valued_object_path_expression`). It returns the identifier of the entity.
+
+```kotlin
+// Example using an entity alias
+val query = jpql {
+    select(
+        id(entity(Book::class))
+    ).from(
+        entity(Book::class)
+    )
+}
+```
+
+```kotlin
+// Example using a path expression
+val query = jpql {
+    select(
+        id(path(BookOrder::customer))
+    ).from(
+        entity(BookOrder::class)
+    )
+}
+```
+
+## VERSION
+
+You can get the version of an entity. This function was added in JPA 3.2.
+The function takes an `Entity` or a path expression that evaluates to a single-valued entity with a version mapping. It returns the version of the entity.
+
+```kotlin
+// Example using an entity alias
+val query = jpql {
+    select(
+        version(entity(Book::class))
+    ).from(
+        entity(Book::class)
+    )
+}
+```
+
+```kotlin
+// Example using a path expression
+val query = jpql {
+    select(
+        version(path(BookOrder::customer))
+    ).from(
+        entity(BookOrder::class)
+    )
+}
+```
