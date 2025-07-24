@@ -365,3 +365,57 @@ customExpression(String::class, "CAST({0} AS VARCHAR)", path(Book::price))
 ```
 
 만약 `customExpression()`을 많이 사용한다면 [나만의 DSL](custom-dsl.md)을 만드는 것을 고려해보세요.
+
+## ID
+
+엔티티의 식별자를 가져올 수 있습니다. 이 함수는 JPA 3.2에서 추가되었습니다.
+함수는 `Entity` 또는 단일 값 엔티티로 귀결되는 경로 표현식(`single_valued_object_path_expression`)을 인자로 받습니다. 함수는 엔티티의 식별자를 반환합니다.
+
+```kotlin
+// 엔티티 별칭을 사용하는 예제
+val query = jpql {
+    select(
+        id(entity(Book::class))
+    ).from(
+        entity(Book::class)
+    )
+}
+```
+
+```kotlin
+// 경로 표현식을 사용하는 예제
+val query = jpql {
+    select(
+        id(path(BookOrder::customer))
+    ).from(
+        entity(BookOrder::class)
+    )
+}
+```
+
+## VERSION
+
+엔티티의 버전을 가져올 수 있습니다. 이 함수는 JPA 3.2에서 추가되었습니다.
+함수는 `Entity` 또는 버전 매핑이 있는 단일 값 엔티티로 귀결되는 경로 표현식을 인자로 받습니다. 함수는 엔티티의 버전을 반환합니다.
+
+```kotlin
+// 엔티티 별칭을 사용하는 예제
+val query = jpql {
+    select(
+        version(entity(Book::class))
+    ).from(
+        entity(Book::class)
+    )
+}
+```
+
+```kotlin
+// 경로 표현식을 사용하는 예제
+val query = jpql {
+    select(
+        version(path(BookOrder::customer))
+    ).from(
+        entity(BookOrder::class)
+    )
+}
+```

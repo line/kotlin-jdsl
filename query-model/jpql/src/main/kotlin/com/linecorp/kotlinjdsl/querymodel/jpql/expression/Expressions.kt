@@ -22,6 +22,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpression
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlExpressionParentheses
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFloor
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlFunctionExpression
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlId
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLength
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLiteral
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlLn
@@ -55,6 +56,7 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimLeading
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlTrimTrailing
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlUpper
 import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlVersion
 import com.linecorp.kotlinjdsl.querymodel.jpql.path.Path
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlIndex
@@ -812,5 +814,21 @@ object Expressions {
     @SinceJdsl("3.0.0")
     fun <T : Any> parentheses(expr: Expression<T>): Expression<T> {
         return JpqlExpressionParentheses(expr)
+    }
+
+    /**
+     * Creates an expression that represents the id of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <ID : Any> id(entity: Expressionable<*>): Expression<ID> {
+        return JpqlId(entity)
+    }
+
+    /**
+     * Creates an expression that represents the version of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <VERSION : Any> version(expr: Expressionable<*>): Expression<VERSION> {
+        return JpqlVersion(expr)
     }
 }

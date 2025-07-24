@@ -12,4 +12,5 @@ class Book(
     val publishDate: OffsetDateTime,
     val authors: MutableSet<BookAuthor>,
     val publisher: BookPublisher,
+    val version: Long,
 )
