@@ -20,6 +20,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlAvgSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlBetweenSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseValueSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCaseWhenSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCastSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCeilingSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlCoalesceSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlConcatSerializer
@@ -69,6 +70,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftAssociationFe
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftAssociationJoinSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftFetchJoinSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftJoinSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLeftSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLengthSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanAllSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlLessThanAnySerializer
@@ -108,6 +110,8 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPathTypeSerialize
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPlusSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPowerSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlPredicateParenthesesSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlReplaceSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRightSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRoundSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryExceptAllSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryExceptSerializer
@@ -289,6 +293,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlBetweenSerializer(),
             JpqlCaseValueSerializer(),
             JpqlCaseWhenSerializer(),
+            JpqlCastSerializer(),
             JpqlCeilingSerializer(),
             JpqlCoalesceSerializer(),
             JpqlConcatSerializer(),
@@ -338,6 +343,7 @@ private class DefaultModule : JpqlRenderModule {
             JpqlLeftAssociationJoinSerializer(),
             JpqlLeftFetchJoinSerializer(),
             JpqlLeftJoinSerializer(),
+            JpqlLeftSerializer(),
             JpqlLengthSerializer(),
             JpqlLessThanAllSerializer(),
             JpqlLessThanAnySerializer(),
@@ -377,6 +383,8 @@ private class DefaultModule : JpqlRenderModule {
             JpqlPlusSerializer(),
             JpqlPowerSerializer(),
             JpqlPredicateParenthesesSerializer(),
+            JpqlRightSerializer(),
+            JpqlReplaceSerializer(),
             JpqlRoundSerializer(),
             JpqlSelectQueryExceptAllSerializer(),
             JpqlSelectQueryExceptSerializer(),

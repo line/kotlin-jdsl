@@ -199,6 +199,10 @@ Kotlin JDSL provides a series of functions to support built-in functions in JPA.
 * UPPER (upper)
 * LENGTH (length)
 * LOCATE (locate)
+* CAST (cast) - *Added in JPA 3.2*
+* LEFT (left) - *Added in JPA 3.2*
+* RIGHT (right) - *Added in JPA 3.2*
+* REPLACE (replace) - *Added in JPA 3.2*
 
 ```kotlin
 concat(path(Book::title), literal(":"), path(Book::imageUrl))
@@ -215,6 +219,25 @@ upper(path(Book::title))
 length(path(Book::title))
 
 locate("Book", path(Book::title))
+
+cast(path(Book::price)).asString()
+cast(path(Book::authorId)).asInt()
+cast(path(Book::authorId)).asLong()
+cast(path(Book::authorId)).asDouble()
+cast(path(Book::authorId)).asFloat()
+
+left(path(Book::title), 3)
+left(path(Book::title), literal(3))
+
+right(path(Book::title), 3)
+right(path(Book::title), literal(3))
+
+replace(path(Book::title), "old", "new")
+replace(path(Book::title), stringLiteral("old"), "new")
+replace(path(Book::title), path(Book::name), "new")
+replace(path(Book::title), "old", stringLiteral("new"))
+replace(path(Book::title), "old", path(Book::name))
+replace(path(Book::title), literal("old"), literal("new"))
 ```
 
 ### Arithmetic functions
