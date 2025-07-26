@@ -90,6 +90,7 @@ class JpqlSelectQueryIntersectAllSerializerTest : WithAssertions {
         ) as JpqlSelectQueryIntersectAll
         val queryContext = initialContext + JpqlRenderStatement.Select
         val orderByContext = queryContext + JpqlRenderClause.OrderBy
+
         // when
         sut.serialize(part, writer, initialContext)
 
