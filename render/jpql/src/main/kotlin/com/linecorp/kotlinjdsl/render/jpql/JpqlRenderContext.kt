@@ -115,6 +115,8 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRightSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlRoundSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryExceptAllSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryExceptSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryIntersectAllSerializer
+import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryIntersectSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQuerySerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryUnionAllSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.impl.JpqlSelectQueryUnionSerializer
@@ -388,6 +390,8 @@ private class DefaultModule : JpqlRenderModule {
             JpqlRoundSerializer(),
             JpqlSelectQueryExceptAllSerializer(),
             JpqlSelectQueryExceptSerializer(),
+            JpqlSelectQueryIntersectAllSerializer(),
+            JpqlSelectQueryIntersectSerializer(),
             JpqlSelectQuerySerializer(),
             JpqlSelectQueryUnionAllSerializer(),
             JpqlSelectQueryUnionSerializer(),

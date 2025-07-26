@@ -3570,6 +3570,62 @@ open class Jpql : JpqlDsl {
         return exceptAll(this, right)
     }
 
+    /**
+     * Creates an INTERSECT query with two select queries.
+     */
+    @SinceJdsl("3.6.0")
+    @JvmName("intersect")
+    inline fun <reified T : Any> intersect(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.INTERSECT,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates an INTERSECT ALL query with two select queries.
+     */
+    @JvmName("intersectAll")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> intersectAll(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.INTERSECT_ALL,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates an INTERSECT query that represents the intersecting of this query and the [right] query.
+     */
+    @JvmName("intersectExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.intersect(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return intersect(this, right)
+    }
+
+    /**
+     * Creates an INTERSECT ALL that represents to intersect all of this query and the [right] query.
+     */
+    @JvmName("intersectAllExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.intersectAll(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return intersectAll(this, right)
+    }
+
     private fun valueOrExpression(value: Any): Expression<*> {
         return if (value is Expression<*>) {
             value
