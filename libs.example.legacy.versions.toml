@@ -1,0 +1,27 @@
+[versions]
+spring-boot2 = "2.7.18"
+
+[libraries]
+# jpa
+javax-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
+
+# spring boot
+spring-boot2-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot2" }
+spring-boot2-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot2" }
+spring-boot2-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.8.1" }
+spring-boot2-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot2" }
+
+# spring
+spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", version = "4.3.10" }
+
+# hibernate
+hibernate5-core = { module = "org.hibernate:hibernate-core", version = "5.6.15.Final" }
+
+# hibernate-reactive
+hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
+
+# eclipse-link
+eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.16" }
+
+[plugins]
+spring-boot2 = { id = "org.springframework.boot", version.ref = "spring-boot2" }
