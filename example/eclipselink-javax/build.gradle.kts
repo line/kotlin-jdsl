@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(exampleLibs.eclipselink2)
+    implementation(exampleLegacyLibs.eclipselink2)
     implementation(exampleLibs.logback)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
@@ -16,7 +16,7 @@ dependencies {
 
     runtimeOnly(exampleLibs.h2)
 
-    testFixturesImplementation(exampleLibs.eclipselink2)
+    testFixturesImplementation(exampleLegacyLibs.eclipselink2)
     testFixturesImplementation(projects.jpqlRender)
 }
 

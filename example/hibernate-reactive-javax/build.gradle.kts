@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(exampleLibs.hibernate.reactive1.core)
+    implementation(exampleLegacyLibs.hibernate.reactive1.core)
     implementation(exampleLibs.vertx.jdbc.client)
     implementation(exampleLibs.agroal.pool)
     implementation(exampleLibs.logback)
@@ -18,7 +18,7 @@ dependencies {
 
     runtimeOnly(exampleLibs.h2)
 
-    testFixturesImplementation(exampleLibs.hibernate.reactive1.core)
+    testFixturesImplementation(exampleLegacyLibs.hibernate.reactive1.core)
     testFixturesImplementation(projects.jpqlRender)
 }
 
