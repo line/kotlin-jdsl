@@ -9,4 +9,6 @@ internal enum class SetOperator {
     UNION_ALL,
     EXCEPT,
     EXCEPT_ALL,
+    INTERSECT,
+    INTERSECT_ALL,
 }

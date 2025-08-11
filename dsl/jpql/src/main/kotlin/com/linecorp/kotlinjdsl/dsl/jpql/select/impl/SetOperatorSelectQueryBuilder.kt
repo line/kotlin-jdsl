@@ -45,6 +45,18 @@ internal data class SetOperatorSelectQueryBuilder<T : Any>(
                 right = rightQuery,
                 orderBy = orderBy,
             )
+            SetOperator.INTERSECT -> SelectQueries.selectIntersectQuery(
+                returnType = returnType,
+                left = leftQuery,
+                right = rightQuery,
+                orderBy = orderBy,
+            )
+            SetOperator.INTERSECT_ALL -> SelectQueries.selectIntersectAllQuery(
+                returnType = returnType,
+                left = leftQuery,
+                right = rightQuery,
+                orderBy = orderBy,
+            )
         }
     }
 }

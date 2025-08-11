@@ -163,20 +163,22 @@ having(
 )
 ```
 
-### Set Operations (`UNION`, `UNION ALL`, `EXCEPT`, `EXCEPT ALL`)
+### Set Operations (`UNION`, `UNION ALL`, `EXCEPT`, `EXCEPT ALL`, `INTERSECT`, `INTERSECT ALL`)
 
-JPQL allows combining the results of two or more `SELECT` queries using set operators. Kotlin JDSL supports `UNION`, `UNION ALL`, `EXCEPT`, and `EXCEPT ALL` operations, which are standard features in JPQL and are also part of the JPA 3.2 specification.
+JPQL allows combining the results of two or more `SELECT` queries using set operators. Kotlin JDSL supports `UNION`, `UNION ALL`, `EXCEPT`, `EXCEPT ALL`, `INTERSECT`, and `INTERSECT ALL` operations, which are standard features in JPQL and are also part of the JPA 3.2 specification.
 
 *   `UNION`: Combines the result sets of two queries and removes duplicate rows.
 *   `UNION ALL`: Combines the result sets of two queries and includes all duplicate rows.
 *   `EXCEPT`: Returns rows from the first query that are not present in the second query, removing duplicates.
 *   `EXCEPT ALL`: Returns rows from the first query that are not present in the second query, including all duplicates.
+*   `INTERSECT`: Returns only the rows that are present in both result sets, removing duplicates.
+*   `INTERSECT ALL`: Returns only the rows that are present in both result sets, including all duplicates.
 
-The `SELECT` statements involved in a `UNION`, `UNION ALL`, `EXCEPT`, or `EXCEPT ALL` operation must have the same number of columns in their select lists, and the data types of corresponding columns must be compatible.
+The `SELECT` statements involved in a `UNION`, `UNION ALL`, `EXCEPT`, `EXCEPT ALL`, `INTERSECT`, or `INTERSECT ALL` operation must have the same number of columns in their select lists, and the data types of corresponding columns must be compatible.
 
 **Using with Chained Selects:**
 
-You can chain `union()`, `unionAll()`, `except()`, or `exceptAll()` after a select query structure (e.g., after `select`, `from`, `where`, `groupBy`, or `having` clauses). The `orderBy()` clause, if used, applies to the final result of the set operation.
+You can chain `union()`, `unionAll()`, `except()`, `exceptAll()`, `intersect()`, or `intersectAll()` after a select query structure (e.g., after `select`, `from`, `where`, `groupBy`, or `having` clauses). The `orderBy()` clause, if used, applies to the final result of the set operation.
 
 ```kotlin
 // Example with UNION
@@ -262,11 +264,53 @@ val exceptAllQuery = jpql {
         path(Author::name).desc()
     )
 }
+
+// Example with INTERSECT
+val intersectQuery = jpql {
+    select(
+        path(Book::isbn)
+    ).from(
+        entity(Book::class)
+    ).where(
+        path(Book::price)(BookPrice::value).lessThan(BigDecimal.valueOf(20))
+    ).intersect( // The right-hand side query is also a select structure
+        select(
+            path(Book::isbn)
+        ).from(
+            entity(Book::class)
+        ).where(
+            path(Book::salePrice)(BookPrice::value).lessThan(BigDecimal.valueOf(15))
+        )
+    ).orderBy(
+        path(Book::isbn).asc()
+    )
+}
+
+// Example with INTERSECT ALL
+val intersectAllQuery = jpql {
+    select(
+        path(Author::name)
+    ).from(
+        entity(Author::class)
+    ).where(
+        path(Author::name).like("%Fantasy%")
+    ).intersectAll( // The right-hand side query is also a select structure
+        select(
+            path(Author::name)
+        ).from(
+            entity(Author::class)
+        ).where(
+            path(Author::name).like("%Sci-Fi%")
+        )
+    ).orderBy(
+        path(Author::name).desc()
+    )
+}
 ```
 
 **Using as Top-Level Operations:**
 
-You can also use `union()`, `unionAll()`, `except()`, and `exceptAll()` as top-level operations within a `jpql` block, combining two `JpqlQueryable<SelectQuery<T>>` instances.
+You can also use `union()`, `unionAll()`, `except()`, `exceptAll()`, `intersect()`, and `intersectAll()` as top-level operations within a `jpql` block, combining two `JpqlQueryable<SelectQuery<T>>` instances.
 
 ```kotlin
 val query1 = jpql {
@@ -300,18 +344,27 @@ val topLevelExceptAllQuery = jpql {
     exceptAll(query1, query2)
         .orderBy(path(Book::isbn).asc())
 }
+
+// Top-level INTERSECT
+val topLevelIntersectQuery = jpql {
+    intersect(query1, query2)
+        .orderBy(path(Book::isbn).asc())
+}
 ```
 
 **Important Note on `ORDER BY`:**
 
-The `ORDER BY` clause is applied to the final result set of the set operation (`UNION`, `UNION ALL`, `EXCEPT`, or `EXCEPT ALL`). It cannot be applied to the individual `SELECT` queries that are part of the set operation in a way that affects the set operation itself (though subqueries might have their own `ORDER BY` for other purposes like limiting results before the set operation, this is generally not how `ORDER BY` interacts with set operations in JPQL for final sorting). The sorting criteria in the `ORDER BY` clause usually refer to columns by their alias from the `SELECT` list of the first query, or by their position.
+The `ORDER BY` clause is applied to the final result set of the set operation (`UNION`, `UNION ALL`, `EXCEPT`, `EXCEPT ALL`, `INTERSECT`, or `INTERSECT ALL`). It cannot be applied to the individual `SELECT` queries that are part of the set operation in a way that affects the set operation itself (though subqueries might have their own `ORDER BY` for other purposes like limiting results before the set operation, this is generally not how `ORDER BY` interacts with set operations in JPQL for final sorting). The sorting criteria in the `ORDER BY` clause usually refer to columns by their alias from the `SELECT` list of the first query, or by their position.
 
 **Database Compatibility Note:**
 
 While these set operations are part of the JPA 3.2 specification, not all databases support all operations. For example:
-- H2 database (versions 1.4.192 - 2.3.232) supports `UNION`, `UNION ALL`, and `EXCEPT` but does not support `EXCEPT ALL`
-- PostgreSQL, Oracle, and SQL Server support all four operations (`UNION`, `UNION ALL`, `EXCEPT`, `EXCEPT ALL`)
-- MySQL supports `UNION` and `UNION ALL` but does not support `EXCEPT` operations (use `NOT EXISTS` or `LEFT JOIN` as alternatives)
+- H2 database (versions 1.4.192 - 2.3.232) supports `UNION`, `UNION ALL`, `INTERSECT`, and `EXCEPT` but does not support `EXCEPT ALL` or `INTERSECT ALL`.
+- PostgreSQL, Oracle, and SQL Server support all six operations (`UNION`, `UNION ALL`, `EXCEPT`, `EXCEPT ALL`, `INTERSECT`, `INTERSECT ALL`).
+- MySQL supports `UNION` and `UNION ALL` but has limitations on other operators:
+    - It does not support `EXCEPT`. This can be emulated using `NOT EXISTS` or `LEFT JOIN`.
+    - It does not support `INTERSECT`. This can be emulated using `INNER JOIN` or `IN`.
+    - It does not support `EXCEPT ALL` or `INTERSECT ALL`, and there are no simple alternative queries.
 
 When using these operations, ensure your target database supports them, or provide alternative query strategies for unsupported databases.
 

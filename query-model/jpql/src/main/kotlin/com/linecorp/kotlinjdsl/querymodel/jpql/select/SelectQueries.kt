@@ -9,6 +9,8 @@ import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.Predicate
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryExcept
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryExceptAll
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryIntersect
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryIntersectAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryUnion
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQueryUnionAll
 import com.linecorp.kotlinjdsl.querymodel.jpql.sort.Sort
@@ -98,6 +100,36 @@ object SelectQueries {
         orderBy: Iterable<Sort>?,
     ): SelectQuery<T> {
         return JpqlSelectQueryExceptAll(
+            returnType = returnType,
+            left = left,
+            right = right,
+            orderBy = orderBy,
+        )
+    }
+
+    @SinceJdsl("3.6.0")
+    fun <T : Any> selectIntersectQuery(
+        returnType: KClass<T>,
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+        orderBy: Iterable<Sort>?,
+    ): SelectQuery<T> {
+        return JpqlSelectQueryIntersect(
+            returnType = returnType,
+            left = left,
+            right = right,
+            orderBy = orderBy,
+        )
+    }
+
+    @SinceJdsl("3.6.0")
+    fun <T : Any> selectIntersectAllQuery(
+        returnType: KClass<T>,
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+        orderBy: Iterable<Sort>?,
+    ): SelectQuery<T> {
+        return JpqlSelectQueryIntersectAll(
             returnType = returnType,
             left = left,
             right = right,
