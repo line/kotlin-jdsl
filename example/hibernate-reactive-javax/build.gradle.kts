@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     implementation(exampleLegacyLibs.hibernate.reactive1.core)
-    implementation(exampleLibs.vertx.jdbc.client)
+    implementation(exampleLibs.vertx.jdbc.client4)
     implementation(exampleLibs.agroal.pool)
     implementation(exampleLibs.logback)
     implementation(projects.example)

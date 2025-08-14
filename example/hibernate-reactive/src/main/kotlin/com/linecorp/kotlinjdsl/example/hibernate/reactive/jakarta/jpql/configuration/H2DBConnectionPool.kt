@@ -10,9 +10,9 @@ import org.hibernate.reactive.pool.impl.DefaultSqlClientPool
 import java.net.URI
 
 class H2DBConnectionPool : DefaultSqlClientPool() {
-    override fun createPool(
+    override fun <T : SqlConnectOptions> createPool(
         uri: URI,
-        connectOptions: SqlConnectOptions,
+        connectOptions: T,
         poolOptions: PoolOptions,
         vertx: Vertx,
     ): Pool {
