@@ -19,4 +19,5 @@
 * [어떻게 생성된 쿼리를 볼 수 있나요?](faq/how-can-i-see-the-generated-query.md)
 * [Kotlin value class 를 사용하려면 어떻게 해야할까요?](faq/how-do-i-use-kotlin-value-class.md)
 * [Kotlin JDSL과 jOOQ, QueryDSL의 차이점은 무엇인가요?](faq/what-is-the-difference-between-kotlin-jdsl-and-jooq-and-querydsl.md)
+* [DTO 필드나 별칭(alias)으로 정렬하려면 어떻게 하나요?](faq/how-to-sort-by-dto-fields-or-aliases.md)
 * [왜 Kotlin JDSL은 Nullable한 반환 타입을 허용하나요?](faq/why-is-there-a-support-module-that-only-has-a-nullable-return-type.md)
