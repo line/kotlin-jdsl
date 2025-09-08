@@ -11,6 +11,7 @@
     * [Subqueries](jpql-with-kotlin-jdsl/subqueries.md)
     * [Custom DSL](jpql-with-kotlin-jdsl/custom-dsl.md)
     * [Spring supports](jpql-with-kotlin-jdsl/spring-supports.md)
+    * [Hibernate Reactive supports](jpql-with-kotlin-jdsl/hibernate-reactive-supports.md)
     * [Migration 2.X to 3.X](jpql-with-kotlin-jdsl/migration-2.x-to-3.x.md)
 * [Kotlin JDSL Roadmap](kotlin-jdsl-roadmap.md)
 
@@ -20,4 +21,6 @@
 * [How can I use Kotlin value class?](faq/how-do-i-use-kotlin-value-class.md)
 * [What is the difference between Kotlin JDSL and jOOQ and QueryDSL?](faq/what-is-the-difference-between-kotlin-jdsl-and-jooq-and-querydsl.md)
 * [How to handle count query in Spring Data JPA Pageable?](faq/how-to-handle-count-query-in-spring-data-jpa-pageable.md)
+* [How to sort by DTO fields or aliases?](faq/how-to-sort-by-dto-fields-or-aliases.md)
+* [How to work with advanced JPA mappings?](faq/how-to-work-with-advanced-jpa-mappings.md)
 * [Why is there a support module that only has a nullable return type](faq/why-is-there-a-support-module-that-only-has-a-nullable-return-type.md)
