@@ -11,6 +11,7 @@
     * [Subqueries](jpql-with-kotlin-jdsl/subqueries.md)
     * [Custom DSL](jpql-with-kotlin-jdsl/custom-dsl.md)
     * [Spring supports](jpql-with-kotlin-jdsl/spring-supports.md)
+    * [Hibernate Reactive supports](jpql-with-kotlin-jdsl/hibernate-reactive-supports.md)
     * [Migration 2.X to 3.X](jpql-with-kotlin-jdsl/migration-2.x-to-3.x.md)
 * [Kotlin JDSL Roadmap](kotlin-jdsl-roadmap.md)
 
