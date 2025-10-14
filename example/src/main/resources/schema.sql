@@ -21,7 +21,8 @@ create table book
     publish_date datetime(6)    not null,
 
     price        numeric(38, 2) not null,
-    sale_price   numeric(38, 2) not null
+    sale_price   numeric(38, 2) not null,
+    version      bigint         not null default 0
 );
 
 create table book_author

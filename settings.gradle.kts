@@ -56,6 +56,10 @@ dependencyResolutionManagement {
         create("exampleLibs") {
             from(files("libs.example.versions.toml"))
         }
+
+        create("exampleLegacyLibs") {
+            from(files("libs.example.legacy.versions.toml"))
+        }
     }
 }
 

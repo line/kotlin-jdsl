@@ -1,49 +1,38 @@
 [versions]
-spring-boot3 = "3.3.0"
-spring-boot2 = "2.7.18"
+spring-boot3 = "3.5.6"
 
 [libraries]
 # log
-slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.13" }
-logback = { module = "ch.qos.logback:logback-classic", version = "1.5.6" }
+slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.17" }
+logback = { module = "ch.qos.logback:logback-classic", version = "1.5.19" }
 
 # jpa
-javax-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
 jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.2.0" }
 
 # spring boot
 spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot3" }
 spring-boot3-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot3" }
-spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.9.1" }
+spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.12.0" }
 spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot3" }
 
-spring-boot2-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot2" }
-spring-boot2-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot2" }
-spring-boot2-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.8.1" }
-spring-boot2-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot2" }
-
 # spring
-spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "5.1.2" }
-spring-batch4-test = { module = "org.springframework.batch:spring-batch-test", version = "4.3.10" }
+spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "5.2.3" }
 
 # hibernate
-hibernate5-core = { module = "org.hibernate:hibernate-core", version = "5.6.15.Final" }
-hibernate6-core = { module = "org.hibernate:hibernate-core", version = "6.5.2.Final" }
+hibernate7-core = { module = "org.hibernate:hibernate-core", version = "7.1.4.Final" }
 
 # hibernate-reactive
-hibernate-reactive1-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "1.1.9.Final" }
-hibernate-reactive2-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "2.3.1.Final" }
+hibernate-reactive4-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "4.1.2.Final" }
 
 # eclipse-link
-eclipselink2 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "2.7.15" }
-eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.3" }
+eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.8" }
 
 # vertx
-vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "4.5.8" }
-agroal-pool = { module = "io.agroal:agroal-pool", version = "2.4" }
+vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "5.0.4" }
+vertx-jdbc-client4 = { module = "io.vertx:vertx-jdbc-client", version = "4.5.21" }
+agroal-pool = { module = "io.agroal:agroal-pool", version = "2.8" }
 
-h2 = { module = "com.h2database:h2", version = "2.2.224" }
+h2 = { module = "com.h2database:h2", version = "2.4.240" }
 
 [plugins]
 spring-boot3 = { id = "org.springframework.boot", version.ref = "spring-boot3" }
-spring-boot2 = { id = "org.springframework.boot", version.ref = "spring-boot2" }

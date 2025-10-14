@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(exampleLibs.hibernate.reactive2.core)
+    implementation(exampleLibs.hibernate.reactive4.core)
     implementation(exampleLibs.vertx.jdbc.client)
     implementation(exampleLibs.agroal.pool)
     implementation(exampleLibs.logback)
@@ -18,12 +18,12 @@ dependencies {
 
     runtimeOnly(exampleLibs.h2)
 
-    testFixturesImplementation(exampleLibs.hibernate.reactive2.core)
+    testFixturesImplementation(exampleLibs.hibernate.reactive4.core)
     testFixturesImplementation(projects.jpqlRender)
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 
     compilerOptions {
         apiVersion = KotlinVersion.KOTLIN_1_9

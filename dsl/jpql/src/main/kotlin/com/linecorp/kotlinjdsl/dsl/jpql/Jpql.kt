@@ -5,9 +5,13 @@ import com.linecorp.kotlinjdsl.dsl.jpql.delete.DeleteQueryWhereStep
 import com.linecorp.kotlinjdsl.dsl.jpql.delete.impl.DeleteQueryDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseThenFirstStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.CaseValueWhenFirstStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.CastStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.CastStepToString
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.TrimFromStep
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseThenFirstStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.CaseValueWhenFirstStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.JpqlCastStep
+import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.JpqlCastStepToString
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimBothFromStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimFromStepDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.expression.impl.TrimLeadingFromStepDsl
@@ -19,7 +23,10 @@ import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.AssociationJoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.FetchJoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.join.impl.JoinDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryFromStep
+import com.linecorp.kotlinjdsl.dsl.jpql.select.SelectQueryOrderByStep
 import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SelectQueryFromStepDsl
+import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SetOperator
+import com.linecorp.kotlinjdsl.dsl.jpql.select.impl.SetOperatorQueryDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.sort.SortNullsStep
 import com.linecorp.kotlinjdsl.dsl.jpql.sort.impl.SortDsl
 import com.linecorp.kotlinjdsl.dsl.jpql.update.UpdateQuerySetFirstStep
@@ -628,6 +635,38 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.4.0")
     fun index(entity: Entityable<*>): Expression<Int> {
         return Expressions.index(entity.toEntity())
+    }
+
+    /**
+     * Creates an expression that represents the id of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <ID : Any> id(entity: KClass<*>): Expression<ID> {
+        return Expressions.id(Entities.entity(entity))
+    }
+
+    /**
+     * Creates an expression that represents the id of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <ID : Any> id(entity: Expressionable<*>): Expression<ID> {
+        return Expressions.id(entity)
+    }
+
+    /**
+     * Creates an expression that represents the version of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <VERSION : Any> version(entity: KClass<*>): Expression<VERSION> {
+        return Expressions.version(Entities.entity(entity))
+    }
+
+    /**
+     * Creates an expression that represents the version of the entity.
+     */
+    @SinceJdsl("3.6.0")
+    fun <VERSION : Any> version(expression: Expressionable<*>): Expression<VERSION> {
+        return Expressions.version(expression)
     }
 
     /**
@@ -1700,6 +1739,102 @@ open class Jpql : JpqlDsl {
             string.toExpression(),
             start?.toExpression(),
         )
+    }
+
+    /**
+     * Creates a step to cast a string expression to another type.
+     */
+    @SinceJdsl("3.6.0")
+    fun cast(value: Expressionable<String>): CastStep {
+        return JpqlCastStep(value.toExpression())
+    }
+
+    /**
+     * Creates a step to cast a scalar expression to a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun <T : Any> cast(value: Expressionable<T>): CastStepToString {
+        return JpqlCastStepToString(value.toExpression())
+    }
+
+    /**
+     * Creates an expression that returns the leftmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun left(value: Expressionable<String>, len: Expressionable<Int>): Expression<String> {
+        return Expressions.left(value.toExpression(), len.toExpression())
+    }
+
+    /**
+     * Creates an expression that returns the leftmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun left(value: Expressionable<String>, len: Int): Expression<String> {
+        return left(value.toExpression(), intLiteral(len))
+    }
+
+    /**
+     * Creates an expression that returns the rightmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun right(value: Expressionable<String>, len: Expressionable<Int>): Expression<String> {
+        return Expressions.right(value.toExpression(), len.toExpression())
+    }
+
+    /**
+     * Creates an expression that returns the rightmost count characters from a string.
+     */
+    @SinceJdsl("3.6.0")
+    fun right(value: Expressionable<String>, len: Int): Expression<String> {
+        return right(value.toExpression(), intLiteral(len))
+    }
+
+    /**
+     * Creates an expression that replaces all occurrences of a search string with a replacement string.
+     */
+    @SinceJdsl("3.6.0")
+    fun replace(
+        value: Expressionable<String>,
+        substring: Expressionable<String>,
+        replacement: Expressionable<String>,
+    ): Expression<String> {
+        return Expressions.replace(value.toExpression(), substring.toExpression(), replacement.toExpression())
+    }
+
+    /**
+     * Creates an expression that replaces all occurrences of a search string with a replacement string.
+     */
+    @SinceJdsl("3.6.0")
+    fun replace(
+        value: Expressionable<String>,
+        substring: String,
+        replacement: String,
+    ): Expression<String> {
+        return replace(value.toExpression(), stringLiteral(substring), stringLiteral(replacement))
+    }
+
+    /**
+     * Creates an expression that replaces all occurrences of a search string with a replacement string.
+     */
+    @SinceJdsl("3.6.0")
+    fun replace(
+        value: Expressionable<String>,
+        substring: Expressionable<String>,
+        replacement: String,
+    ): Expression<String> {
+        return replace(value.toExpression(), substring, stringLiteral(replacement))
+    }
+
+    /**
+     * Creates an expression that replaces all occurrences of a search string with a replacement string.
+     */
+    @SinceJdsl("3.6.0")
+    fun replace(
+        value: Expressionable<String>,
+        substring: String,
+        replacement: Expressionable<String>,
+    ): Expression<String> {
+        return replace(value.toExpression(), substring, replacement)
     }
 
     /**
@@ -3321,6 +3456,174 @@ open class Jpql : JpqlDsl {
     @SinceJdsl("3.0.0")
     fun <T : Any> deleteFrom(entity: Entityable<T>): DeleteQueryWhereStep<T> {
         return DeleteQueryDsl(entity.toEntity())
+    }
+
+    /**
+     * Creates a UNION query with two select queries.
+     */
+    @SinceJdsl("3.6.0")
+    @JvmName("union")
+    inline fun <reified T : Any> union(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.UNION,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates a UNION ALL query with two select queries.
+     */
+    @JvmName("unionAll")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> unionAll(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.UNION_ALL,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates a UNION query that represents the union of this query and the [right] query.
+     */
+    @JvmName("unionExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.union(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return union(this, right)
+    }
+
+    /**
+     * Creates a UNION ALL that represents the union all of this query and the [right] query.
+     */
+    @JvmName("unionAllExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.unionAll(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return unionAll(this, right)
+    }
+
+    /**
+     * Creates an EXCEPT query with two select queries.
+     */
+    @SinceJdsl("3.6.0")
+    @JvmName("except")
+    inline fun <reified T : Any> except(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.EXCEPT,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates an EXCEPT ALL query with two select queries.
+     */
+    @JvmName("exceptAll")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> exceptAll(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.EXCEPT_ALL,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates an EXCEPT query that represents the except of this query and the [right] query.
+     */
+    @JvmName("exceptExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.except(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return except(this, right)
+    }
+
+    /**
+     * Creates an EXCEPT ALL that represents the except all of this query and the [right] query.
+     */
+    @JvmName("exceptAllExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.exceptAll(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return exceptAll(this, right)
+    }
+
+    /**
+     * Creates an INTERSECT query with two select queries.
+     */
+    @SinceJdsl("3.6.0")
+    @JvmName("intersect")
+    inline fun <reified T : Any> intersect(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.INTERSECT,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates an INTERSECT ALL query with two select queries.
+     */
+    @JvmName("intersectAll")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> intersectAll(
+        left: JpqlQueryable<SelectQuery<T>>,
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return SetOperatorQueryDsl(
+            returnType = T::class,
+            leftQuery = left,
+            setOperator = SetOperator.INTERSECT_ALL,
+            rightQuery = right,
+        )
+    }
+
+    /**
+     * Creates an INTERSECT query that represents the intersecting of this query and the [right] query.
+     */
+    @JvmName("intersectExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.intersect(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return intersect(this, right)
+    }
+
+    /**
+     * Creates an INTERSECT ALL that represents to intersect all of this query and the [right] query.
+     */
+    @JvmName("intersectAllExtension")
+    @SinceJdsl("3.6.0")
+    inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.intersectAll(
+        right: JpqlQueryable<SelectQuery<T>>,
+    ): SelectQueryOrderByStep<T> {
+        return intersectAll(this, right)
     }
 
     private fun valueOrExpression(value: Any): Expression<*> {

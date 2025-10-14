@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
-    alias(exampleLibs.plugins.spring.boot2)
+    alias(exampleLegacyLibs.plugins.spring.boot2)
     alias(libs.plugins.kotlin.noarg)
     alias(libs.plugins.kotlin.allopen)
     alias(libs.plugins.kotlin.spring)
@@ -10,9 +10,9 @@ plugins {
 
 dependencies {
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
-    implementation(exampleLibs.spring.boot2.batch)
-    implementation(exampleLibs.spring.boot2.jpa)
-    implementation(exampleLibs.spring.boot2.p6spy)
+    implementation(exampleLegacyLibs.spring.boot2.batch)
+    implementation(exampleLegacyLibs.spring.boot2.jpa)
+    implementation(exampleLegacyLibs.spring.boot2.p6spy)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
@@ -20,12 +20,12 @@ dependencies {
 
     runtimeOnly(exampleLibs.h2)
 
-    testImplementation(exampleLibs.spring.boot2.test)
-    testImplementation(exampleLibs.spring.batch4.test)
+    testImplementation(exampleLegacyLibs.spring.boot2.test)
+    testImplementation(exampleLegacyLibs.spring.batch4.test)
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(11)
 
     compilerOptions {
         apiVersion = KotlinVersion.KOTLIN_1_9
