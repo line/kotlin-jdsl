@@ -22,7 +22,7 @@ spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", v
 hibernate7-core = { module = "org.hibernate:hibernate-core", version = "7.1.6.Final" }
 
 # hibernate-reactive
-hibernate-reactive4-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "4.1.3.Final" }
+hibernate-reactive4-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "4.1.4.Final" }
 
 # eclipse-link
 eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.8" }
