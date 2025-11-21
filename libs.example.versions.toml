@@ -19,7 +19,7 @@ spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-tes
 spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "5.2.4" }
 
 # hibernate
-hibernate7-core = { module = "org.hibernate:hibernate-core", version = "7.1.8.Final" }
+hibernate7-core = { module = "org.hibernate:hibernate-core", version = "7.1.9.Final" }
 
 # hibernate-reactive
 hibernate-reactive4-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "4.1.6.Final" }
