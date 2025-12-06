@@ -28,9 +28,7 @@ class JpqlInSerializer : JpqlSerializer<JpqlIn<*>> {
             writer.write(" ")
 
             writer.writeParentheses {
-                writer.writeEach(part.compareValues, separator = ", ") {
-                    delegate.serialize(it, writer, context)
-                }
+                writer.writeParam(part.compareValues)
             }
         }
     }
