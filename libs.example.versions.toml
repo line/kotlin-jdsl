@@ -1,5 +1,5 @@
 [versions]
-spring-boot3 = "3.5.8"
+spring-boot3 = "3.5.9"
 
 [libraries]
 # log
