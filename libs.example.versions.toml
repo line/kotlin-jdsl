@@ -12,7 +12,7 @@ jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-ap
 # spring boot
 spring-boot3-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot3" }
 spring-boot3-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot3" }
-spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.12.1" }
+spring-boot3-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "2.0.0" }
 spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot3" }
 
 # spring
