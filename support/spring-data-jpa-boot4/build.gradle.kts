@@ -30,7 +30,7 @@ dependencies {
 
     // Spring Boot & JPA
     implementation(rootLibs.spring.boot4.starter.data.jpa)
-    implementation(rootLibs.jakarta.persistence.api)
+    implementation(rootLibs.jakarta.persistence32.api)
     implementation(rootLibs.kotlin)
     implementation(rootLibs.kotlin.reflect)
 
@@ -38,6 +38,7 @@ dependencies {
     testImplementation(rootLibs.spring.boot4.starter.test)
     testImplementation(rootLibs.junit)
     testImplementation(rootLibs.mockk)
+    testImplementation(rootLibs.jakarta.persistence.api)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
