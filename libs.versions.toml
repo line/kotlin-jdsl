@@ -1,5 +1,7 @@
 [versions]
 kotlin = "1.9.22"
+kotlin2 = "2.2.0"
+spring-boot4 = "4.0.0"
 
 [libraries]
 # kotlin
@@ -31,6 +33,8 @@ eclipselink3 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa",
 
 # spring-boot
 spring-boot3-starter = { module = "org.springframework.boot:spring-boot-starter", version = "3.0.3" }
+spring-boot4-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot4" }
+spring-boot4-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot4" }
 spring-boot2-starter = { module = "org.springframework.boot:spring-boot-starter", version = "2.7.10" }
 
 # spring
@@ -49,12 +53,20 @@ assertJ = { module = "org.assertj:assertj-core", version = "3.24.2" }
 mockk = { module = "io.mockk:mockk", version = "1.13.7" }
 
 [plugins]
+spring-boot4 = { id = "org.springframework.boot", version.ref = "spring-boot4" }
 kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version = "0.4.10" }
 kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
+kotlin2-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin2" }
+kotlin2-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin2" }
+kotlin2-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin2" }
+kotlin2-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin2" }
+kotlin2-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin2" }
 kover = { id = "org.jetbrains.kotlinx.kover", version = "0.7.6" }
 ktlint = { id = "org.jmailen.kotlinter", version = "3.16.0" }
+ktlint5 = { id = "org.jmailen.kotlinter", version = "5.3.0" }
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version = "1.3.0" }
+spring-dependency-management = { id = "io.spring.dependency-management", version = "1.1.4" }

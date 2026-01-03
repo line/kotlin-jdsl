@@ -1,0 +1,13 @@
+spring.jpa:
+  database-platform: org.hibernate.dialect.MySQLDialect
+  hibernate.ddl-auto: none
+
+spring.datasource:
+  url: jdbc:h2:mem:testdb;MODE=MySQL
+
+decorator:
+  datasource:
+    p6spy.enable-logging: true
+
+logging.level:
+  com.linecorp.kotlinjdsl: debug
