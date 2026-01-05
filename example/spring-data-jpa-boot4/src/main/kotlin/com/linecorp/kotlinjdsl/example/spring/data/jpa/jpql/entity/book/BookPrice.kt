@@ -1,0 +1,17 @@
+@file:Suppress("unused")
+
+package com.linecorp.kotlinjdsl.example.spring.data.jpa.jpql.entity.book
+
+import jakarta.persistence.Column
+import jakarta.persistence.Embeddable
+import java.math.BigDecimal
+
+@Embeddable
+data class BookPrice(
+    @Column(name = "price", scale = 2)
+    val value: BigDecimal,
+)
+
+fun BookPrice(int: Int): BookPrice = BookPrice(BigDecimal.valueOf(int.toLong()).setScale(2))
+
+fun BookPrice(double: Double): BookPrice = BookPrice(BigDecimal.valueOf(double).setScale(2))
