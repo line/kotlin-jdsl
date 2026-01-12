@@ -2,6 +2,7 @@
 kotlin = "1.9.22"
 kotlin2 = "2.2.0"
 spring-boot4 = "4.0.0"
+junit6 = "6.0.2"
 
 [libraries]
 # kotlin
@@ -50,6 +51,9 @@ spring-data-jpa2 = { module = "org.springframework.data:spring-data-jpa", versio
 
 # test
 junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.0" }
+junit6 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit6" }
+junit6-platform-engine = { module = "org.junit.platform:junit-platform-engine", version.ref = "junit6" }
+junit6-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit6" }
 assertJ = { module = "org.assertj:assertj-core", version = "3.24.2" }
 mockk = { module = "io.mockk:mockk", version = "1.13.7" }
 

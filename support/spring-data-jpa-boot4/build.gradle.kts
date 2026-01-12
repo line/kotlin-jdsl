@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     alias(rootLibs.plugins.kotlin2.jvm)
     alias(rootLibs.plugins.kotlin2.spring)
@@ -6,6 +8,7 @@ plugins {
     alias(rootLibs.plugins.spring.dependency.management)
     alias(rootLibs.plugins.ktlint5)
     alias(rootLibs.plugins.kover)
+    alias(rootLibs.plugins.nexus.publish)
     `maven-publish`
     signing
 }
@@ -29,18 +32,19 @@ dependencies {
     implementation("com.linecorp.kotlin-jdsl:jpql-render")
 
     // Spring Boot & JPA
-    implementation(rootLibs.spring.boot4.starter.data.jpa)
-    implementation(rootLibs.kotlin)
-    implementation(rootLibs.kotlin.reflect)
+    compileOnly(rootLibs.spring.boot4.starter.data.jpa)
 
     // Test
+    testImplementation(rootLibs.spring.boot4.starter.data.jpa)
     testImplementation(rootLibs.spring.boot4.starter.test)
-    testImplementation(rootLibs.junit)
+    testImplementation(rootLibs.junit6)
+    testImplementation(rootLibs.junit6.platform.engine)
+    testImplementation(rootLibs.junit6.platform.launcher)
     testImplementation(rootLibs.mockk)
     testImplementation(rootLibs.jakarta.persistence32.api)
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+tasks.withType<KotlinCompile> {
     compilerOptions {
         freeCompilerArgs.add("-Xjsr305=strict")
         freeCompilerArgs.add("-Xallow-kotlin-package")
@@ -115,6 +119,21 @@ publishing {
                     url.set("https://github.com/line/kotlin-jdsl")
                 }
             }
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl = uri("https://ossrh-staging-api.central.sonatype.com/service/local/")
+            snapshotRepositoryUrl = uri("https://central.sonatype.com/repository/maven-snapshots/")
+
+            val sonatypeUsername: String? by project
+            val sonatypePassword: String? by project
+
+            username = sonatypeUsername
+            password = sonatypePassword
         }
     }
 }
