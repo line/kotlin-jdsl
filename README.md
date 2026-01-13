@@ -1,4 +1,4 @@
-Visit [the gitbook](https://kotlin-jdsl.gitbook.io/snapshot-docs/) for more information.
+Visit [the gitbook](https://kotlin-jdsl.gitbook.io/docs/) for more information.
 
 # Kotlin JDSL
 
