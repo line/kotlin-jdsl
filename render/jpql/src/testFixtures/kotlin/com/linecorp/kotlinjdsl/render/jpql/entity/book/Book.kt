@@ -2,6 +2,7 @@ package com.linecorp.kotlinjdsl.render.jpql.entity.book
 
 import java.math.BigDecimal
 import java.time.OffsetDateTime
+import java.util.Date
 import java.util.UUID
 
 class Book(
@@ -14,6 +15,7 @@ class Book(
     val price: BigDecimal,
     val salePrice: BigDecimal,
     val publishDate: OffsetDateTime,
+    val modifiedDate: Date,
     val authors: MutableSet<BookAuthor>,
     val publisher: BookPublisher,
 )

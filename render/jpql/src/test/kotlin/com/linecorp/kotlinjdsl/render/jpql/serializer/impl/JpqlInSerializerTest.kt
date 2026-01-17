@@ -16,6 +16,7 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.time.OffsetDateTime
+import java.util.Date
 import java.util.UUID
 
 @JpqlSerializerTest
@@ -272,6 +273,45 @@ class JpqlInSerializerTest : WithAssertions {
             listOf(
                 uuid1,
                 uuid2,
+            ),
+        )
+
+        // When
+        sut.serialize(part as JpqlIn<*>, writer, context)
+
+        // Then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("IN")
+            writer.write(" ")
+            writer.writeParentheses(any())
+            serializer.serialize(singleParam, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize() draws a single parameter, when the compareValues are Date types`() {
+        // Given
+        val expression1 = Paths.path(Book::modifiedDate)
+        val date1 = Date()
+        val date2 = Date(date1.time + 1000)
+
+        val expressions = listOf(
+            Expressions.value(date1),
+            Expressions.value(date2),
+        )
+
+        val part = Predicates.`in`(
+            expression1,
+            compareValues = expressions,
+        )
+        val context = TestRenderContext(serializer)
+
+        val singleParam = Expressions.value(
+            listOf(
+                date1,
+                date2,
             ),
         )
 
