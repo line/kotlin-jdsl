@@ -50,6 +50,16 @@ class JpqlInSerializer : JpqlSerializer<JpqlIn<*>> {
         }
     }
 
+    /**
+     * Returns `true` if this expression is a [JpqlValue] containing a basic type.
+     *
+     * Basic types are [String], [Number], [Boolean], [Enum], [UUID], [Temporal], and [Date].
+     *
+     * If all values in the IN clause are basic types, they can be grouped into a single parameter
+     * (e.g. `IN (?1)` where `?1` is a `List`) for query plan caching optimization.
+     * Other types (like Entities or Paths) often require individual rendering or specific serialization logic
+     * (e.g. extracting an ID from an Entity) and therefore cannot be safely grouped into a single raw value collection.
+     */
     private fun Expression<*>.isBasicType(): Boolean =
         this is JpqlValue<*> && (
             this.value is String ||
