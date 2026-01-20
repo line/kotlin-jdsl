@@ -16,6 +16,7 @@ import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.time.OffsetDateTime
+import java.util.Calendar
 import java.util.Date
 import java.util.UUID
 
@@ -326,6 +327,193 @@ class JpqlInSerializerTest : WithAssertions {
             writer.write(" ")
             writer.writeParentheses(any())
             serializer.serialize(singleParam, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize() draws a single parameter, when the compareValues are Char types`() {
+        // Given
+        val expression1 = Paths.path(Book::firstLetter)
+        val char1 = 'A'
+        val char2 = 'B'
+
+        val expressions = listOf(
+            Expressions.value(char1),
+            Expressions.value(char2),
+        )
+
+        val part = Predicates.`in`(
+            expression1,
+            compareValues = expressions,
+        )
+        val context = TestRenderContext(serializer)
+
+        val singleParam = Expressions.value(
+            listOf(
+                char1,
+                char2,
+            ),
+        )
+
+        // When
+        sut.serialize(part as JpqlIn<*>, writer, context)
+
+        // Then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("IN")
+            writer.write(" ")
+            writer.writeParentheses(any())
+            serializer.serialize(singleParam, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize() draws a single parameter, when the compareValues are Calendar types`() {
+        // Given
+        val expression1 = Paths.path(Book::publicationCalendar)
+        val calendar1 = Calendar.getInstance().apply { set(2020, Calendar.JANUARY, 1) }
+        val calendar2 = Calendar.getInstance().apply { set(2021, Calendar.FEBRUARY, 15) }
+
+        val expressions = listOf(
+            Expressions.value(calendar1),
+            Expressions.value(calendar2),
+        )
+
+        val part = Predicates.`in`(
+            expression1,
+            compareValues = expressions,
+        )
+        val context = TestRenderContext(serializer)
+
+        val singleParam = Expressions.value(
+            listOf(
+                calendar1,
+                calendar2,
+            ),
+        )
+
+        // When
+        sut.serialize(part as JpqlIn<*>, writer, context)
+
+        // Then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("IN")
+            writer.write(" ")
+            writer.writeParentheses(any())
+            serializer.serialize(singleParam, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize() draws a single parameter, when the compareValues are ByteArray types`() {
+        // Given
+        val expression1 = Paths.path(Book::coverImageBytes)
+        val bytes1 = byteArrayOf(1, 2, 3)
+        val bytes2 = byteArrayOf(4, 5, 6)
+
+        val expressions = listOf(
+            Expressions.value(bytes1),
+            Expressions.value(bytes2),
+        )
+
+        val part = Predicates.`in`(
+            expression1,
+            compareValues = expressions,
+        )
+        val context = TestRenderContext(serializer)
+
+        val singleParam = Expressions.value(
+            listOf(
+                bytes1,
+                bytes2,
+            ),
+        )
+
+        // When
+        sut.serialize(part as JpqlIn<*>, writer, context)
+
+        // Then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("IN")
+            writer.write(" ")
+            writer.writeParentheses(any())
+            serializer.serialize(singleParam, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize() draws a single parameter, when the compareValues are CharArray types`() {
+        // Given
+        val expression1 = Paths.path(Book::titleChars)
+        val chars1 = charArrayOf('A', 'B', 'C')
+        val chars2 = charArrayOf('D', 'E', 'F')
+
+        val expressions = listOf(
+            Expressions.value(chars1),
+            Expressions.value(chars2),
+        )
+
+        val part = Predicates.`in`(
+            expression1,
+            compareValues = expressions,
+        )
+        val context = TestRenderContext(serializer)
+
+        val singleParam = Expressions.value(
+            listOf(
+                chars1,
+                chars2,
+            ),
+        )
+
+        // When
+        sut.serialize(part as JpqlIn<*>, writer, context)
+
+        // Then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("IN")
+            writer.write(" ")
+            writer.writeParentheses(any())
+            serializer.serialize(singleParam, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize() draws parameters, when the compareValues contain ByteArray and non-basic types`() {
+        // Given
+        val bytes = byteArrayOf(1, 2, 3)
+        val expressions = listOf(
+            Expressions.value(bytes),
+            expression1,
+        )
+
+        val part = Predicates.`in`(
+            Paths.path(Book::coverImageBytes),
+            compareValues = expressions,
+        )
+        val context = TestRenderContext(serializer)
+
+        // When
+        sut.serialize(part as JpqlIn<*>, writer, context)
+
+        // Then
+        verifySequence {
+            serializer.serialize(Paths.path(Book::coverImageBytes), writer, context)
+            writer.write(" ")
+            writer.write("IN")
+            writer.write(" ")
+            writer.writeParentheses(any())
+            writer.writeEach(expressions, ", ", any())
+            serializer.serialize(Expressions.value(bytes), writer, context)
+            serializer.serialize(expression1, writer, context)
         }
     }
 
