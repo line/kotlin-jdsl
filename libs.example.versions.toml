@@ -5,7 +5,7 @@ spring-boot4 = "4.0.2"
 [libraries]
 # log
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.17" }
-logback = { module = "ch.qos.logback:logback-classic", version = "1.5.26" }
+logback = { module = "ch.qos.logback:logback-classic", version = "1.5.27" }
 
 # jpa
 jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.2.0" }
