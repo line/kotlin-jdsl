@@ -26,10 +26,10 @@ kotlin {
 
 dependencies {
     // Core Dependencies (from included build)
-    implementation("com.linecorp.kotlin-jdsl:kotlin-jdsl")
-    implementation("com.linecorp.kotlin-jdsl:jpql-dsl")
-    implementation("com.linecorp.kotlin-jdsl:jpql-query-model")
-    implementation("com.linecorp.kotlin-jdsl:jpql-render")
+    implementation("com.linecorp.kotlin-jdsl:kotlin-jdsl:${project.version}")
+    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:${project.version}")
+    implementation("com.linecorp.kotlin-jdsl:jpql-query-model:${project.version}")
+    implementation("com.linecorp.kotlin-jdsl:jpql-render:${project.version}")
 
     // Spring Boot & JPA
     compileOnly(rootLibs.spring.boot4.starter.data.jpa)
