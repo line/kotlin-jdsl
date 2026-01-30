@@ -100,8 +100,8 @@ Kotlin JDSL을 실행시키기 위해서는 다음 dependency들이 필수로 �
 
 ```kotlin
 dependencies {
-    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.7.1")
-    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.7.1")
+    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.7.2")
+    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.7.2")
 }
 ```
 
@@ -111,8 +111,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.linecorp.kotlin-jdsl:jpql-dsl:3.7.1'
-    implementation 'com.linecorp.kotlin-jdsl:jpql-render:3.7.1'
+    implementation 'com.linecorp.kotlin-jdsl:jpql-dsl:3.7.2'
+    implementation 'com.linecorp.kotlin-jdsl:jpql-render:3.7.2'
 }
 ```
 
@@ -126,12 +126,12 @@ dependencies {
     <dependency>
         <groupId>com.linecorp.kotlin-jdsl</groupId>
         <artifactId>jpql-dsl</artifactId>
-        <version>3.7.1</version>
+        <version>3.7.2</version>
     </dependency>
     <dependency>
         <groupId>com.linecorp.kotlin-jdsl</groupId>
         <artifactId>jpql-render</artifactId>
-        <version>3.7.1</version>
+        <version>3.7.2</version>
     </dependency>
 </dependencies>
 ```
