@@ -9,6 +9,11 @@ import org.springframework.orm.jpa.SharedEntityManagerCreator
 
 @SpringBootApplication
 class Application {
+    /**
+     * In Spring Boot 4, the EntityManager bean is no longer auto-registered.
+     * KotlinJdslJpqlExecutor requires EntityManager, so manual registration is needed.
+     * See the Spring supports documentation in docs for more details.
+     */
     @Bean
     fun entityManager(entityManagerFactory: EntityManagerFactory): EntityManager =
         SharedEntityManagerCreator.createSharedEntityManager(entityManagerFactory)

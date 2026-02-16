@@ -11,6 +11,28 @@ If your project has Spring Boot and one of the following dependencies, AutoConfi
 
 If you declare your `JpqlSerializer` or `JpqlIntrospector` as a bean, it will be included with the `JpqlRenderContext` bean.
 
+#### EntityManager bean registration for Spring Boot 4
+
+In Spring Boot 4 (Spring Data JPA 4), `EntityManagerBeanDefinitionRegistrarPostProcessor` has been deprecated, so the `EntityManager` bean is no longer auto-registered.
+According to the [Spring Data 2025.1 Release Notes](https://github.com/spring-projects/spring-data-commons/wiki/Spring-Data-2025.1-Release-Notes#reuse-of-shared-entitymanager), when a shared `EntityManager` is required, using `SharedEntityManagerCreator` directly in your configuration is the recommended approach.
+Since `KotlinJdslJpqlExecutor` requires an `EntityManager`, Spring Boot 4 users must register the `EntityManager` bean manually as follows:
+
+```kotlin
+import jakarta.persistence.EntityManager
+import jakarta.persistence.EntityManagerFactory
+import org.springframework.context.annotation.Bean
+import org.springframework.orm.jpa.SharedEntityManagerCreator
+
+@SpringBootApplication
+class Application {
+    @Bean
+    fun entityManager(entityManagerFactory: EntityManagerFactory): EntityManager =
+        SharedEntityManagerCreator.createSharedEntityManager(entityManagerFactory)
+}
+```
+
+Kotlin JDSL respects Spring Boot 4's design decision and does not forcibly add the `EntityManager` bean in AutoConfiguration.
+
 ## Spring Data Repository
 
 If your `JpaRepository` extends `KotlinJdslJpqlExecutor`, you can use the extension provided by Kotlin JDSL.
