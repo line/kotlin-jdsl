@@ -146,7 +146,8 @@ For each JPA provider, Kotlin JDSL provides the following dependencies:
 
 - hibernate-support: Assist to execute the query with Hibernate
 - eclipselink-support: Assist to execute the query with EclipseLink
-- spring-batch-support: Assist to execute the query with Spring Batch
+- spring-batch-support: Assist to execute the query with Spring Batch 5
+- spring-batch6-support: Assist to execute the query with Spring Batch 6
 - spring-data-jpa-support: Assist to execute the query with Spring Data JPA (for Spring Boot 2 or 3)
 - spring-data-jpa-boot4-support: Assist to execute the query with Spring Data JPA (for Spring Boot 4)
 - hibernate-reactive-support: Assist to execute the query with Hibernate Reactive
@@ -157,7 +158,7 @@ For the javax, Kotlin JDSL also provides the following dependencies:
 
 - hibernate-javax-support: Assist to execute the query with Hibernate
 - eclipselink-javax-support: Assist to execute the query with EclipseLink
-- spring-batch-javax-support: Assist to execute the query with Spring Batch.
+- spring-batch-javax-support: Assist to execute the query with Spring Batch 4.
 - spring-data-jpa-javax-support: Assist to execute the query with Spring Data JPA.
 - hibernate-reactive-javax-support: Assist to execute the query with Hibernate Reactive
 
