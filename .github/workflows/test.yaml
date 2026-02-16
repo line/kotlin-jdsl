@@ -31,7 +31,7 @@ jobs:
           ./gradlew -p support/spring-data-jpa-boot4 koverXmlReport
           ./gradlew -p support/spring-batch6 koverXmlReport
           ./gradlew -p example/spring-data-jpa-boot4 test
-          ./gradlew -p example/spring-boot6 test
+          ./gradlew -p example/spring-batch6 test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
