@@ -158,7 +158,7 @@ javax 패키지를 사용하는 경우 다음 dependency들 중에서 선택하�
 
 - hibernate-javax-support: Hibernate를 통해 쿼리를 실행하도록 도움을 주는 라이브러리.
 - eclipselink-javax-support: EclipseLink를 통해 쿼리를 실행하도록 도움을 주는 라이브러리.
-- spring-batch-javax-support: Spring Batch 5와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
+- spring-batch-javax-support: Spring Batch 4와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
 - spring-data-jpa-javax-support: Spring Data Jpa와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
 - hibernate-reactive-javax-support: Hibernate Reactive와 함께 쿼리를 실행하도록 도움을 주는 라이브러리.
 
