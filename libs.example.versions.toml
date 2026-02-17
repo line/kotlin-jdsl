@@ -33,7 +33,7 @@ hibernate-reactive4-core = { module = "org.hibernate.reactive:hibernate-reactive
 eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "4.0.9" }
 
 # vertx
-vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "5.0.7" }
+vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "5.0.8" }
 vertx-jdbc-client4 = { module = "io.vertx:vertx-jdbc-client", version = "4.5.25" }
 agroal-pool = { module = "io.agroal:agroal-pool", version = "3.0" }
 
