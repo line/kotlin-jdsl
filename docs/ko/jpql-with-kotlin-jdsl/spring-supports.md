@@ -7,7 +7,8 @@ Kotlin JDSL은 Spring Boot AutoConfigure를 지원합니다.
 
 * `com.linecorp.kotlin-jdsl:spring-data-jpa-support` (Spring Boot 2 또는 3 사용 시)
 * `com.linecorp.kotlin-jdsl:spring-data-jpa-boot4-support` (Spring Boot 4 사용 시)
-* `com.linecorp.kotlin-jdsl:spring-batch-support`
+* `com.linecorp.kotlin-jdsl:spring-batch-support` (Spring Batch 5 사용 시)
+* `com.linecorp.kotlin-jdsl:spring-batch6-support` (Spring Batch 6 사용 시)
 
 만약 `JpqlSerializer` 또는 `JpqlIntrospector`를 bean으로 선언했다면, 자동으로 `JpqlRenderContext`에 해당 bean이 포함됩니다.
 

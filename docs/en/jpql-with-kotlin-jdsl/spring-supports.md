@@ -7,7 +7,8 @@ If your project has Spring Boot and one of the following dependencies, AutoConfi
 
 * `com.linecorp.kotlin-jdsl:spring-data-jpa-support` (for Spring Boot 2 or 3)
 * `com.linecorp.kotlin-jdsl:spring-data-jpa-boot4-support` (for Spring Boot 4)
-* `com.linecorp.kotlin-jdsl:spring-batch-support`
+* `com.linecorp.kotlin-jdsl:spring-batch-support` (for Spring Batch 5)
+* `com.linecorp.kotlin-jdsl:spring-batch6-support` (for Spring Batch 6)
 
 If you declare your `JpqlSerializer` or `JpqlIntrospector` as a bean, it will be included with the `JpqlRenderContext` bean.
 
