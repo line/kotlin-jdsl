@@ -1,6 +1,12 @@
+@file:OptIn(Internal::class)
+
 package com.linecorp.kotlinjdsl.support.spring.data.jpa.javax
 
+import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRendered
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderedParams
@@ -9,6 +15,7 @@ import io.mockk.every
 import io.mockk.excludeRecords
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.verifySequence
 import org.assertj.core.api.WithAssertions
@@ -74,6 +81,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     fun setUp() {
         mockkObject(JpqlRendererHolder)
         mockkObject(QueryEnhancerFactoryAdaptor)
+        mockkObject(SelectQueries)
 
         every { JpqlRendererHolder.get() } returns renderer
 
@@ -91,7 +99,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
-        every { renderer.render(any(), any()) } returns rendered1
+        every { renderer.render(any<JpqlQuery<*>>(), any()) } returns rendered1
         every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
         every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
@@ -120,7 +128,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
-        every { renderer.render(any(), any(), any()) } returns rendered1
+        every { renderer.render(any<JpqlQuery<*>>(), any(), any()) } returns rendered1
         every { entityManager.createQuery(any<String>(), any<Class<String>>()) } returns stringTypedQuery1
         every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
@@ -150,7 +158,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
-        every { renderer.render(any(), any()) } returns rendered1
+        every { renderer.render(any<JpqlQuery<*>>(), any()) } returns rendered1
         every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
         every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
@@ -179,7 +187,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
 
-        every { renderer.render(any(), any(), any()) } returns rendered1
+        every { renderer.render(any<JpqlQuery<*>>(), any(), any()) } returns rendered1
         every { entityManager.createQuery(any<String>()) } returns stringTypedQuery1
         every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
         every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
@@ -205,14 +213,77 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
-    fun createEnhancedQuery() {
+    fun `createEnhancedQuery() with JpqlSelectQuery`() {
         // given
-        val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
+        val selectQuery1: JpqlSelectQuery<Any> = mockk()
+        val countQuery1Model: SelectQuery<Long> = mockk()
 
-        every { renderer.render(any(), any()) } returns rendered1
+        val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
+        val renderedCount1 = JpqlRendered(countQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
+
+        every { renderer.render(any<JpqlQuery<*>>(), any()) } returns rendered1
+        every { SelectQueries.toCountQuery(any()) } returns countQuery1Model
+        every { renderer.render(any<JpqlQuery<*>>(), any(), any()) } returns renderedCount1
+
         every { QueryEnhancerFactoryAdaptor.forQuery(any()) } returns queryEnhancer
         every { queryEnhancer.applySorting(any()) } returns sortedQuery1
-        every { queryEnhancer.createCountQueryFor() } returns countQuery1
+
+        every {
+            entityManager.createQuery(any<String>(), any<Class<*>>())
+        } returns stringTypedQuery1 andThen longTypedQuery1
+
+        every { stringTypedQuery1.parameters } returns setOf(stringTypedQueryParam1, stringTypedQueryParam2)
+        every { stringTypedQuery1.setParameter(any<String>(), any()) } returns stringTypedQuery1
+        every { stringTypedQueryParam1.name } returns renderedParam1.first
+        every { stringTypedQueryParam2.name } returns renderedParam2.first
+
+        every { longTypedQuery1.parameters } returns setOf(longTypedQueryParam1, longTypedQueryParam2)
+        every { longTypedQuery1.setParameter(any<String>(), any()) } returns longTypedQuery1
+        every { longTypedQueryParam1.name } returns renderedParam1.first
+        every { longTypedQueryParam2.name } returns renderedParam2.first
+
+        // when
+        val actual = JpqlEntityManagerUtils
+            .createEnhancedQuery(entityManager, selectQuery1, String::class, sort1, context)
+
+        // then
+        assertThat(actual.sortedQuery).isEqualTo(stringTypedQuery1)
+        assertThat(actual.countQuery).isEqualTo(longTypedQuery1)
+
+        verifySequence {
+            renderer.render(selectQuery1, context)
+
+            QueryEnhancerFactoryAdaptor.forQuery(rendered1.query)
+
+            queryEnhancer.applySorting(sort1)
+            entityManager.createQuery(sortedQuery1, String::class.java)
+            stringTypedQuery1.parameters
+            stringTypedQueryParam1.name
+            stringTypedQueryParam2.name
+            stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
+
+            SelectQueries.toCountQuery(selectQuery1)
+            renderer.render(countQuery1Model, rendered1.params, context)
+            entityManager.createQuery(countQuery1, Long::class.javaObjectType)
+            longTypedQuery1.parameters
+            longTypedQueryParam1.name
+            longTypedQueryParam2.name
+            longTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            longTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
+        }
+    }
+
+    @Test
+    fun `createEnhancedQuery() fallback for non-select queries`() {
+        // given
+        val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
+        val fallbackQueryEnhancer: QueryEnhancer = mockk()
+
+        every { renderer.render(any<JpqlQuery<*>>(), any()) } returns rendered1
+        every { QueryEnhancerFactoryAdaptor.forQuery(any()) } returns queryEnhancer andThen fallbackQueryEnhancer
+        every { queryEnhancer.applySorting(any()) } returns sortedQuery1
+        every { fallbackQueryEnhancer.createCountQueryFor() } returns countQuery1
         every {
             entityManager.createQuery(any<String>(), any<Class<*>>())
         } returns stringTypedQuery1 andThen longTypedQuery1
@@ -246,7 +317,8 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
 
-            queryEnhancer.createCountQueryFor()
+            QueryEnhancerFactoryAdaptor.forQuery(rendered1.query)
+            fallbackQueryEnhancer.createCountQueryFor()
             entityManager.createQuery(countQuery1, Long::class.javaObjectType)
             longTypedQuery1.parameters
             longTypedQueryParam1.name

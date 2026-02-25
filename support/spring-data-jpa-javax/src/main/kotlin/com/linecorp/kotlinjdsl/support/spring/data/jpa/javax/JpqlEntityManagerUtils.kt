@@ -3,6 +3,8 @@
 package com.linecorp.kotlinjdsl.support.spring.data.jpa.javax
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Sort
@@ -71,8 +73,29 @@ internal object JpqlEntityManagerUtils {
         return EnhancedTypedQuery(
             createQuery(entityManager, queryEnhancer.applySorting(sort), rendered.params, returnType.java),
         ) {
-            // Lazy
-            createQuery(entityManager, queryEnhancer.createCountQueryFor(), rendered.params, Long::class.javaObjectType)
+            // Use JDSL model to create the count query instead of relying on string parsing
+            if (query is SelectQuery<*>) {
+                val countQuery = SelectQueries.toCountQuery(query)
+
+                val renderedCount = JpqlRendererHolder.get().render(countQuery, rendered.params, context)
+
+                createQuery(
+                    entityManager,
+                    renderedCount.query,
+                    renderedCount.params,
+                    Long::class.javaObjectType,
+                )
+            } else {
+                // Fallback for non-select queries using Spring's enhancer
+                val fallbackQueryEnhancer = QueryEnhancerFactoryAdaptor.forQuery(rendered.query)
+
+                createQuery(
+                    entityManager,
+                    fallbackQueryEnhancer.createCountQueryFor(),
+                    rendered.params,
+                    Long::class.javaObjectType,
+                )
+            }
         }
     }
 
