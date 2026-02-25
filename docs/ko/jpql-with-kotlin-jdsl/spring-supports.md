@@ -11,6 +11,28 @@ Kotlin JDSL은 Spring Boot AutoConfigure를 지원합니다.
 
 만약 `JpqlSerializer` 또는 `JpqlIntrospector`를 bean으로 선언했다면, 자동으로 `JpqlRenderContext`에 해당 bean이 포함됩니다.
 
+#### Spring Boot 4에서 EntityManager bean 등록
+
+Spring Boot 4 (Spring Data JPA 4)에서는 `EntityManagerBeanDefinitionRegistrarPostProcessor`가 deprecated되어 `EntityManager` bean이 더 이상 자동 등록되지 않습니다.
+[Spring Data 2025.1 Release Notes](https://github.com/spring-projects/spring-data-commons/wiki/Spring-Data-2025.1-Release-Notes#reuse-of-shared-entitymanager)에 따르면, shared `EntityManager`가 필요한 경우 `SharedEntityManagerCreator`를 설정에서 직접 사용하는 것이 권장됩니다.
+`KotlinJdslJpqlExecutor`는 `EntityManager`를 필요로 하므로, Spring Boot 4 사용 시 아래와 같이 `EntityManager` bean을 수동으로 등록해야 합니다.
+
+```kotlin
+import jakarta.persistence.EntityManager
+import jakarta.persistence.EntityManagerFactory
+import org.springframework.context.annotation.Bean
+import org.springframework.orm.jpa.SharedEntityManagerCreator
+
+@SpringBootApplication
+class Application {
+    @Bean
+    fun entityManager(entityManagerFactory: EntityManagerFactory): EntityManager =
+        SharedEntityManagerCreator.createSharedEntityManager(entityManagerFactory)
+}
+```
+
+Kotlin JDSL은 Spring Boot 4의 설계 변경을 존중하여 `EntityManager` bean을 AutoConfiguration에서 강제로 추가하지 않습니다.
+
 ## Spring Data Repository
 
 만약 사용하고 있는 `JpaRepository`가 `KotlinJdslJpqlExecutor`를 상속하면, Kotlin JDSL이 제공하는 확장 기능을 사용할 수 있습니다.

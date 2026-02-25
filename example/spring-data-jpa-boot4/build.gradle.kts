@@ -44,6 +44,10 @@ allOpen {
     annotation("jakarta.persistence.Embeddable")
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 // Disable bootJar as we usually run tests or use it as a library reference
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
     enabled = false
