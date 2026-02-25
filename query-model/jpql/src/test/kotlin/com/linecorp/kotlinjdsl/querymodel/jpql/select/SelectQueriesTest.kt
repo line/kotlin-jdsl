@@ -273,6 +273,39 @@ class SelectQueriesTest : WithAssertions {
     }
 
     @Test
+    fun toCountQuery_with_JpqlSelectQuery_single_select_not_distinct() {
+        // given
+        val query = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+
+        // when
+        val actual = SelectQueries.toCountQuery(query)
+
+        // then
+        val expected = JpqlSelectQuery(
+            returnType = Long::class,
+            distinct = false,
+            select = listOf(
+                Expressions.count(
+                    distinct = false,
+                    Expressions.intLiteral(1),
+                ),
+            ),
+            from = (query as JpqlSelectQuery<*>).from,
+            where = null,
+            groupBy = null,
+            having = null,
+            orderBy = null,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
     fun toCountQuery_with_JpqlSelectQuery_multiple_selects() {
         // given
         val query = SelectQueries.selectQuery(

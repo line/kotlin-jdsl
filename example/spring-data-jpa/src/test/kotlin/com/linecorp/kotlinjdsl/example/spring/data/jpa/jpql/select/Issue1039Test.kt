@@ -224,4 +224,31 @@ class Issue1039Test : WithAssertions {
         // then - Should count 1 (ISBN 01)
         assertThat(actual.totalElements).isEqualTo(1L)
     }
+
+    @Test
+    fun `findPage with groupBy and having should paginate and count correctly`() {
+        // given - page size 1 so grouped results span multiple pages
+        val firstPageable = PageRequest.of(0, 1)
+        val secondPageable = PageRequest.of(1, 1)
+        // when - Group books by ISBN and keep only specific ISBNs via HAVING
+        val firstPage =
+            bookRepository.findPage(firstPageable) {
+                select(path(Book::isbn))
+                    .from(entity(Book::class))
+                    .groupBy(path(Book::isbn))
+                    .having(path(Book::isbn).`in`(Isbn("01"), Isbn("02")))
+            }
+        val secondPage =
+            bookRepository.findPage(secondPageable) {
+                select(path(Book::isbn))
+                    .from(entity(Book::class))
+                    .groupBy(path(Book::isbn))
+                    .having(path(Book::isbn).`in`(Isbn("01"), Isbn("02")))
+            }
+        // then - There should be 2 grouped results (ISBN 01 and 02) across pages
+        assertThat(firstPage.totalElements).isEqualTo(2L)
+        assertThat(secondPage.totalElements).isEqualTo(2L)
+        assertThat(firstPage.content).hasSize(1)
+        assertThat(secondPage.content).hasSize(1)
+    }
 }

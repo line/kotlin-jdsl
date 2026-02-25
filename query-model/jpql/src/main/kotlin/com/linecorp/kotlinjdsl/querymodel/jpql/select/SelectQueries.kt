@@ -56,9 +56,8 @@ object SelectQueries {
      * - The `orderBy` clause is removed.
      * - The `returnType` is changed to [Long].
      * - If `distinct` is true, it counts the first selection using `COUNT(DISTINCT ...)`.
-     * - If `distinct` is false and there is only one selection, it counts that selection using `COUNT(...)`.
-     * - If `distinct` is false and there are multiple selections, it counts 1 using `COUNT(1)`
-     *   to ensure compatibility across different JPA implementations and more accurate results.
+     * - If `distinct` is false, it counts 1 using `COUNT(1)` to ensure accurate row counts
+     *   (ignoring nullability of projections) and compatibility across different JPA implementations.
      *
      * If the [query] is a set operation (e.g., Union, Intersect, Except), it returns a count query
      * that counts the rows of the [query] by wrapping it in a subquery within the FROM clause
@@ -77,8 +76,6 @@ object SelectQueries {
                     Expressions.count(
                         distinct = query.distinct,
                         if (query.distinct) {
-                            query.select.first()
-                        } else if (query.select.count() == 1) {
                             query.select.first()
                         } else {
                             Expressions.intLiteral(1)
