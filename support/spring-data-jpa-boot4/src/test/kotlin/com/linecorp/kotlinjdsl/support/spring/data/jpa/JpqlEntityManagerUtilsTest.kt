@@ -230,7 +230,6 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
         every { SelectQueries.toCountQuery(any()) } returns countQuery1Model
         every { renderer.render(countQuery1Model, any(), any()) } returns renderedCount1
 
-        every { QueryEnhancerFactoryAdaptor.forQuery(any()) } returns queryEnhancer
         every { QueryUtils.applySorting(any<String>(), any<Sort>()) } returns sortedQuery1
 
         every {

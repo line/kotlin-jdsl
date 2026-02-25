@@ -54,14 +54,16 @@ class Issue1039Test : WithAssertions {
         val pageable1 = PageRequest.of(1, 2)
 
         // when
-        val actual0 = authorRepository.findPage(pageable0) {
-            select(path(Author::authorId))
-                .from(entity(Author::class))
-        }
-        val actual1 = authorRepository.findPage(pageable1) {
-            select(path(Author::authorId))
-                .from(entity(Author::class))
-        }
+        val actual0 =
+            authorRepository.findPage(pageable0) {
+                select(path(Author::authorId))
+                    .from(entity(Author::class))
+            }
+        val actual1 =
+            authorRepository.findPage(pageable1) {
+                select(path(Author::authorId))
+                    .from(entity(Author::class))
+            }
 
         // then - 4 authors in data.sql, totalElements should be 4 for both
         assertThat(actual0.totalElements).isEqualTo(4L)
@@ -151,26 +153,32 @@ class Issue1039Test : WithAssertions {
         val pageable1 = PageRequest.of(1, 1)
 
         // when - Union of books ISBN 01 and ISBN 02
-        val actual0 = bookRepository.findPage(pageable0) {
-            val query1 = select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
-                .from(entity(Book::class))
-                .where(path(Book::isbn).equal(Isbn("01")))
-            val query2 = select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
-                .from(entity(Book::class))
-                .where(path(Book::isbn).equal(Isbn("02")))
+        val actual0 =
+            bookRepository.findPage(pageable0) {
+                val query1 =
+                    select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
+                        .from(entity(Book::class))
+                        .where(path(Book::isbn).equal(Isbn("01")))
+                val query2 =
+                    select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
+                        .from(entity(Book::class))
+                        .where(path(Book::isbn).equal(Isbn("02")))
 
-            union(query1, query2)
-        }
-        val actual1 = bookRepository.findPage(pageable1) {
-            val query1 = select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
-                .from(entity(Book::class))
-                .where(path(Book::isbn).equal(Isbn("01")))
-            val query2 = select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
-                .from(entity(Book::class))
-                .where(path(Book::isbn).equal(Isbn("02")))
+                union(query1, query2)
+            }
+        val actual1 =
+            bookRepository.findPage(pageable1) {
+                val query1 =
+                    select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
+                        .from(entity(Book::class))
+                        .where(path(Book::isbn).equal(Isbn("01")))
+                val query2 =
+                    select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
+                        .from(entity(Book::class))
+                        .where(path(Book::isbn).equal(Isbn("02")))
 
-            union(query1, query2)
-        }
+                union(query1, query2)
+            }
 
         // then - Both should have totalElements = 2
         assertThat(actual0.totalElements).isEqualTo(2L)
@@ -189,12 +197,14 @@ class Issue1039Test : WithAssertions {
         // when - Intersect of (01, 02) and (02, 03)
         val actual =
             bookRepository.findPage(pageable) {
-                val query1 = select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
-                    .from(entity(Book::class))
-                    .where(path(Book::isbn).`in`(Isbn("01"), Isbn("02")))
-                val query2 = select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
-                    .from(entity(Book::class))
-                    .where(path(Book::isbn).`in`(Isbn("02"), Isbn("03")))
+                val query1 =
+                    select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
+                        .from(entity(Book::class))
+                        .where(path(Book::isbn).`in`(Isbn("01"), Isbn("02")))
+                val query2 =
+                    select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
+                        .from(entity(Book::class))
+                        .where(path(Book::isbn).`in`(Isbn("02"), Isbn("03")))
 
                 intersect(query1, query2)
             }
@@ -211,18 +221,39 @@ class Issue1039Test : WithAssertions {
         // when - Except (01, 02 minus 02, 03)
         val actual =
             bookRepository.findPage(pageable) {
-                val query1 = select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
-                    .from(entity(Book::class))
-                    .where(path(Book::isbn).`in`(Isbn("01"), Isbn("02")))
-                val query2 = select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
-                    .from(entity(Book::class))
-                    .where(path(Book::isbn).`in`(Isbn("02"), Isbn("03")))
+                val query1 =
+                    select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
+                        .from(entity(Book::class))
+                        .where(path(Book::isbn).`in`(Isbn("01"), Isbn("02")))
+                val query2 =
+                    select(path(Book::isbn).alias(expression(Isbn::class, "isbn")))
+                        .from(entity(Book::class))
+                        .where(path(Book::isbn).`in`(Isbn("02"), Isbn("03")))
 
                 except(query1, query2)
             }
 
         // then - Should count 1 (ISBN 01)
         assertThat(actual.totalElements).isEqualTo(1L)
+    }
+
+    @Test
+    fun `findPage with fetchJoin should work by stripping fetch from count query`() {
+        // given
+        val pageable = PageRequest.of(0, 10)
+
+        // when - FETCH join is allowed in select query but forbidden in count query
+        val actual =
+            bookRepository.findPage(pageable) {
+                select(entity(Book::class))
+                    .from(
+                        entity(Book::class),
+                        fetchJoin(Book::authors),
+                    )
+            }
+
+        // then - Should count 15 (stripped fetch results in normal join behavior)
+        assertThat(actual.totalElements).isEqualTo(15L)
     }
 
     @Test

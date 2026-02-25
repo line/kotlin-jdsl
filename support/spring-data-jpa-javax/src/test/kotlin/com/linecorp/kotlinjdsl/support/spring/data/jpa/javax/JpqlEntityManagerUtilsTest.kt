@@ -278,12 +278,11 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     fun `createEnhancedQuery() fallback for non-select queries`() {
         // given
         val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
-        val fallbackQueryEnhancer: QueryEnhancer = mockk()
 
         every { renderer.render(any<JpqlQuery<*>>(), any()) } returns rendered1
-        every { QueryEnhancerFactoryAdaptor.forQuery(any()) } returns queryEnhancer andThen fallbackQueryEnhancer
+        every { QueryEnhancerFactoryAdaptor.forQuery(any()) } returns queryEnhancer
         every { queryEnhancer.applySorting(any()) } returns sortedQuery1
-        every { fallbackQueryEnhancer.createCountQueryFor() } returns countQuery1
+        every { queryEnhancer.createCountQueryFor() } returns countQuery1
         every {
             entityManager.createQuery(any<String>(), any<Class<*>>())
         } returns stringTypedQuery1 andThen longTypedQuery1
@@ -317,8 +316,7 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
             stringTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
             stringTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
 
-            QueryEnhancerFactoryAdaptor.forQuery(rendered1.query)
-            fallbackQueryEnhancer.createCountQueryFor()
+            queryEnhancer.createCountQueryFor()
             entityManager.createQuery(countQuery1, Long::class.javaObjectType)
             longTypedQuery1.parameters
             longTypedQueryParam1.name

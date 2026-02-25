@@ -87,11 +87,9 @@ internal object JpqlEntityManagerUtils {
                 )
             } else {
                 // Fallback for non-select queries using Spring's enhancer
-                val fallbackQueryEnhancer = QueryEnhancerFactoryAdaptor.forQuery(rendered.query)
-
                 createQuery(
                     entityManager,
-                    fallbackQueryEnhancer.createCountQueryFor(),
+                    queryEnhancer.createCountQueryFor(),
                     rendered.params,
                     Long::class.javaObjectType,
                 )

@@ -247,6 +247,9 @@ class SelectQueriesTest : WithAssertions {
             distinct = true,
             select = listOf(expression1),
             from = listOf(entity1),
+            where = predicate1,
+            groupBy = listOf(expression3),
+            having = predicate2,
         )
 
         // when
@@ -280,6 +283,9 @@ class SelectQueriesTest : WithAssertions {
             distinct = false,
             select = listOf(expression1),
             from = listOf(entity1),
+            where = predicate1,
+            groupBy = listOf(expression3),
+            having = predicate2,
         )
 
         // when
@@ -296,9 +302,9 @@ class SelectQueriesTest : WithAssertions {
                 ),
             ),
             from = (query as JpqlSelectQuery<*>).from,
-            where = null,
-            groupBy = null,
-            having = null,
+            where = query.where,
+            groupBy = query.groupBy,
+            having = query.having,
             orderBy = null,
         )
 
@@ -313,6 +319,9 @@ class SelectQueriesTest : WithAssertions {
             distinct = false,
             select = listOf(expression1, expression2),
             from = listOf(entity1),
+            where = predicate1,
+            groupBy = listOf(expression3, expression4),
+            having = predicate2,
         )
 
         // when
@@ -329,9 +338,48 @@ class SelectQueriesTest : WithAssertions {
                 ),
             ),
             from = (query as JpqlSelectQuery<*>).from,
-            where = null,
-            groupBy = null,
-            having = null,
+            where = query.where,
+            groupBy = query.groupBy,
+            having = query.having,
+            orderBy = null,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun toCountQuery_with_JpqlSelectQuery_strips_fetch() {
+        // given
+        val fetchJoin = Joins.innerFetchJoin(entity2, predicate1)
+        val query = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1, fetchJoin),
+            where = predicate1,
+            groupBy = listOf(expression3),
+            having = predicate2,
+        )
+
+        // when
+        val actual = SelectQueries.toCountQuery(query)
+
+        // then
+        val expected = JpqlSelectQuery(
+            returnType = Long::class,
+            distinct = false,
+            select = listOf(
+                Expressions.count(
+                    distinct = false,
+                    Expressions.intLiteral(1),
+                ),
+            ),
+            from = listOf(
+                JpqlJoinedEntity(entity1, Joins.innerJoin(entity2, predicate1)),
+            ),
+            where = (query as JpqlSelectQuery<*>).where,
+            groupBy = query.groupBy,
+            having = query.having,
             orderBy = null,
         )
 
@@ -368,7 +416,7 @@ class SelectQueriesTest : WithAssertions {
             returnType = Long::class,
             distinct = false,
             select = listOf(Expressions.count(distinct = false, expr = Expressions.intLiteral(1))),
-            from = listOf(Entities.derivedEntity(query, alias = "derived")),
+            from = listOf(Entities.derivedEntity(query, alias = "__jdsl_derived__")),
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -404,7 +452,7 @@ class SelectQueriesTest : WithAssertions {
             returnType = Long::class,
             distinct = false,
             select = listOf(Expressions.count(distinct = false, expr = Expressions.intLiteral(1))),
-            from = listOf(Entities.derivedEntity(query, alias = "derived")),
+            from = listOf(Entities.derivedEntity(query, alias = "__jdsl_derived__")),
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -440,7 +488,7 @@ class SelectQueriesTest : WithAssertions {
             returnType = Long::class,
             distinct = false,
             select = listOf(Expressions.count(distinct = false, expr = Expressions.intLiteral(1))),
-            from = listOf(Entities.derivedEntity(query, alias = "derived")),
+            from = listOf(Entities.derivedEntity(query, alias = "__jdsl_derived__")),
         )
 
         assertThat(actual).isEqualTo(expected)
