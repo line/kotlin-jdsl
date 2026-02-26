@@ -4,6 +4,7 @@ import com.linecorp.kotlinjdsl.SinceJdsl
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.impl.JpqlDerivedEntity
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.impl.JpqlEntity
 import com.linecorp.kotlinjdsl.querymodel.jpql.entity.impl.JpqlEntityTreat
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.impl.JpqlSelectQuery
 import kotlin.reflect.KClass
@@ -43,7 +44,7 @@ object Entities {
                 returnType = selectQuery.returnType,
                 select = selectQuery.select,
                 distinct = selectQuery.distinct,
-                from = selectQuery.from,
+                from = SelectQueries.stripFetch(selectQuery.from),
                 where = selectQuery.where,
                 groupBy = selectQuery.groupBy,
                 having = selectQuery.having,

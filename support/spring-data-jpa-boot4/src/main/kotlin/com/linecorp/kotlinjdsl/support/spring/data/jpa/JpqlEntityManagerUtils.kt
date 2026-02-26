@@ -3,6 +3,8 @@
 package com.linecorp.kotlinjdsl.support.spring.data.jpa
 
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQuery
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQueries
+import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
 import com.linecorp.kotlinjdsl.render.RenderContext
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Query
@@ -67,18 +69,34 @@ internal object JpqlEntityManagerUtils {
     ): EnhancedTypedQuery<T> {
         val rendered = JpqlRendererHolder.get().render(query, context)
 
-        val queryEnhancer = QueryEnhancerFactoryAdaptor.forQuery(rendered.query)
+        val sortedQueryString = QueryUtils.applySorting(rendered.query, sort)
 
         return EnhancedTypedQuery(
-            createQuery(entityManager, QueryUtils.applySorting(rendered.query, sort), rendered.params, returnType.java),
+            createQuery(entityManager, sortedQueryString, rendered.params, returnType.java),
         ) {
-            // Lazy
-            createQuery(
-                entityManager,
-                queryEnhancer.createCountQueryFor(null),
-                rendered.params,
-                Long::class.javaObjectType,
-            )
+            // Use JDSL model to create the count query instead of relying on string parsing
+            if (query is SelectQuery<*>) {
+                val countQuery = SelectQueries.toCountQuery(query)
+
+                val renderedCount = JpqlRendererHolder.get().render(countQuery, rendered.params, context)
+
+                createQuery(
+                    entityManager,
+                    renderedCount.query,
+                    renderedCount.params,
+                    Long::class.javaObjectType,
+                )
+            } else {
+                // Fallback for non-select queries using Spring's enhancer
+                val queryEnhancer = QueryEnhancerFactoryAdaptor.forQuery(rendered.query)
+
+                createQuery(
+                    entityManager,
+                    queryEnhancer.createCountQueryFor(null),
+                    rendered.params,
+                    Long::class.javaObjectType,
+                )
+            }
         }
     }
 

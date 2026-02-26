@@ -238,4 +238,259 @@ class SelectQueriesTest : WithAssertions {
 
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun toCountQuery_with_JpqlSelectQuery() {
+        // given
+        val query = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = true,
+            select = listOf(expression1),
+            from = listOf(entity1),
+            where = predicate1,
+            groupBy = listOf(expression3),
+            having = predicate2,
+        )
+
+        // when
+        val actual = SelectQueries.toCountQuery(query)
+
+        // then
+        val expected = JpqlSelectQuery(
+            returnType = Long::class,
+            distinct = false,
+            select = listOf(
+                Expressions.count(
+                    distinct = true,
+                    expression1,
+                ),
+            ),
+            from = (query as JpqlSelectQuery<*>).from,
+            where = query.where,
+            groupBy = query.groupBy,
+            having = query.having,
+            orderBy = null,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun toCountQuery_with_JpqlSelectQuery_single_select_not_distinct() {
+        // given
+        val query = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+            where = predicate1,
+            groupBy = listOf(expression3),
+            having = predicate2,
+        )
+
+        // when
+        val actual = SelectQueries.toCountQuery(query)
+
+        // then
+        val expected = JpqlSelectQuery(
+            returnType = Long::class,
+            distinct = false,
+            select = listOf(
+                Expressions.count(
+                    distinct = false,
+                    Expressions.intLiteral(1),
+                ),
+            ),
+            from = (query as JpqlSelectQuery<*>).from,
+            where = query.where,
+            groupBy = query.groupBy,
+            having = query.having,
+            orderBy = null,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun toCountQuery_with_JpqlSelectQuery_multiple_selects() {
+        // given
+        val query = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1, expression2),
+            from = listOf(entity1),
+            where = predicate1,
+            groupBy = listOf(expression3, expression4),
+            having = predicate2,
+        )
+
+        // when
+        val actual = SelectQueries.toCountQuery(query)
+
+        // then
+        val expected = JpqlSelectQuery(
+            returnType = Long::class,
+            distinct = false,
+            select = listOf(
+                Expressions.count(
+                    distinct = false,
+                    Expressions.intLiteral(1),
+                ),
+            ),
+            from = (query as JpqlSelectQuery<*>).from,
+            where = query.where,
+            groupBy = query.groupBy,
+            having = query.having,
+            orderBy = null,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun toCountQuery_with_JpqlSelectQuery_strips_fetch() {
+        // given
+        val fetchJoin = Joins.innerFetchJoin(entity2, predicate1)
+        val query = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1, fetchJoin),
+            where = predicate1,
+            groupBy = listOf(expression3),
+            having = predicate2,
+        )
+
+        // when
+        val actual = SelectQueries.toCountQuery(query)
+
+        // then
+        val expected = JpqlSelectQuery(
+            returnType = Long::class,
+            distinct = false,
+            select = listOf(
+                Expressions.count(
+                    distinct = false,
+                    Expressions.intLiteral(1),
+                ),
+            ),
+            from = listOf(
+                JpqlJoinedEntity(entity1, Joins.innerJoin(entity2, predicate1)),
+            ),
+            where = (query as JpqlSelectQuery<*>).where,
+            groupBy = query.groupBy,
+            having = query.having,
+            orderBy = null,
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun toCountQuery_with_UnionQuery() {
+        // given
+        val left = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+        val right = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+        val query = SelectQueries.selectUnionQuery(
+            returnType = Class1::class,
+            left = left,
+            right = right,
+            orderBy = null,
+        )
+
+        // when
+        val actual = SelectQueries.toCountQuery(query)
+
+        // then
+        val expected = SelectQueries.selectQuery(
+            returnType = Long::class,
+            distinct = false,
+            select = listOf(Expressions.count(distinct = false, expr = Expressions.intLiteral(1))),
+            from = listOf(Entities.derivedEntity(query, alias = "__jdsl_derived__")),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun toCountQuery_with_IntersectQuery() {
+        // given
+        val left = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+        val right = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+        val query = SelectQueries.selectIntersectQuery(
+            returnType = Class1::class,
+            left = left,
+            right = right,
+            orderBy = null,
+        )
+
+        // when
+        val actual = SelectQueries.toCountQuery(query)
+
+        // then
+        val expected = SelectQueries.selectQuery(
+            returnType = Long::class,
+            distinct = false,
+            select = listOf(Expressions.count(distinct = false, expr = Expressions.intLiteral(1))),
+            from = listOf(Entities.derivedEntity(query, alias = "__jdsl_derived__")),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun toCountQuery_with_ExceptQuery() {
+        // given
+        val left = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+        val right = SelectQueries.selectQuery(
+            returnType = Class1::class,
+            distinct = false,
+            select = listOf(expression1),
+            from = listOf(entity1),
+        )
+        val query = SelectQueries.selectExceptQuery(
+            returnType = Class1::class,
+            left = left,
+            right = right,
+            orderBy = null,
+        )
+
+        // when
+        val actual = SelectQueries.toCountQuery(query)
+
+        // then
+        val expected = SelectQueries.selectQuery(
+            returnType = Long::class,
+            distinct = false,
+            select = listOf(Expressions.count(distinct = false, expr = Expressions.intLiteral(1))),
+            from = listOf(Entities.derivedEntity(query, alias = "__jdsl_derived__")),
+        )
+
+        assertThat(actual).isEqualTo(expected)
+    }
 }
