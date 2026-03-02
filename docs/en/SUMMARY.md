@@ -25,4 +25,4 @@
 * [How to handle count query in Spring Data JPA Pageable?](faq/how-to-handle-count-query-in-spring-data-jpa-pageable.md)
 * [How to sort by DTO fields or aliases?](faq/how-to-sort-by-dto-fields-or-aliases.md)
 * [How to work with advanced JPA mappings?](faq/how-to-work-with-advanced-jpa-mappings.md)
-* [Why is there a support module that only has a nullable return type](faq/why-is-there-a-support-module-that-only-has-a-nullable-return-type.md)
+* [Why is there a support module that only has a nullable return type?](faq/why-is-there-a-support-module-that-only-has-a-nullable-return-type.md)
