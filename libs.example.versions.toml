@@ -22,7 +22,7 @@ spring-boot4-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-star
 spring-boot4-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot4" }
 
 # spring
-spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "6.0.3" }
+spring-batch5-test = { module = "org.springframework.batch:spring-batch-test", version = "5.2.5" }
 spring-batch6-test = { module = "org.springframework.batch:spring-batch-test", version = "6.0.3" }
 
 # hibernate
