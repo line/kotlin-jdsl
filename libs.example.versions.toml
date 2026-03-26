@@ -1,6 +1,6 @@
 [versions]
 spring-boot3 = "3.5.13"
-spring-boot4 = "4.0.4"
+spring-boot4 = "4.0.5"
 
 [libraries]
 # log
