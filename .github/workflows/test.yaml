@@ -33,7 +33,7 @@ jobs:
           ./gradlew -p example/spring-data-jpa-boot4 test
           ./gradlew -p example/spring-batch6 test
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./build/reports/kover/report.xml
