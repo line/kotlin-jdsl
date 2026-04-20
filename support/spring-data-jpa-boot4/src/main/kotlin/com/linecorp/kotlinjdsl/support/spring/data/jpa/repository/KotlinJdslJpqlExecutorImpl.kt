@@ -110,18 +110,14 @@ open class KotlinJdslJpqlExecutorImpl(
         pageable: Pageable,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
         countInit: Jpql.() -> JpqlQueryable<SelectQuery<Long>>,
-    ): Page<T> {
-        return findPage(Jpql, pageable, init, countInit)
-    }
+    ): Page<T> = findPage(Jpql, pageable, init, countInit)
 
     override fun <T : Any, DSL : JpqlDsl> findPage(
         dsl: JpqlDsl.Constructor<DSL>,
         pageable: Pageable,
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
         countInit: DSL.() -> JpqlQueryable<SelectQuery<Long>>,
-    ): Page<T> {
-        return findPage(dsl.newInstance(), pageable, init, countInit)
-    }
+    ): Page<T> = findPage(dsl.newInstance(), pageable, init, countInit)
 
     override fun <T : Any, DSL : JpqlDsl> findPage(
         dsl: DSL,
@@ -375,9 +371,10 @@ open class KotlinJdslJpqlExecutorImpl(
             sortedQuery.maxResults = pageable.pageSize
         }
 
-        val countJpaQuery = JpqlEntityManagerUtils
-            .createCountQuery(entityManager, countQuery, renderContext)
-            .apply { setMetadataForCount(this, metadata) }
+        val countJpaQuery =
+            JpqlEntityManagerUtils
+                .createCountQuery(entityManager, countQuery, renderContext)
+                .apply { setMetadataForCount(this, metadata) }
 
         return PageableExecutionUtilsAdaptor.getPage(sortedQuery.resultList, pageable) {
             val counts = countJpaQuery.resultList

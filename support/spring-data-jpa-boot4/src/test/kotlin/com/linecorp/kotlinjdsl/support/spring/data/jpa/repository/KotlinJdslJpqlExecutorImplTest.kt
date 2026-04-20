@@ -706,7 +706,11 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         every { selectQuery1.returnType } returns String::class
         every {
             JpqlEntityManagerUtils.createEnhancedQuery(
-                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+                any(),
+                any<SelectQuery<String>>(),
+                any<KClass<*>>(),
+                any(),
+                any(),
             )
         } returns enhancedTypedQuery1
         every {
@@ -762,7 +766,11 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         every { selectQuery2.returnType } returns String::class
         every {
             JpqlEntityManagerUtils.createEnhancedQuery(
-                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+                any(),
+                any<SelectQuery<String>>(),
+                any<KClass<*>>(),
+                any(),
+                any(),
             )
         } returns enhancedTypedQuery2
         every {
@@ -818,7 +826,11 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         every { selectQuery3.returnType } returns String::class
         every {
             JpqlEntityManagerUtils.createEnhancedQuery(
-                any(), any<SelectQuery<String>>(), any<KClass<*>>(), any(), any(),
+                any(),
+                any<SelectQuery<String>>(),
+                any<KClass<*>>(),
+                any(),
+                any(),
             )
         } returns enhancedTypedQuery3
         every {
