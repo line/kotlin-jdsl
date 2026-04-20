@@ -26,6 +26,18 @@ internal object JpqlEntityManagerUtils {
         return createQuery(entityManager, rendered.query, rendered.params, returnType.java)
     }
 
+    fun createCountQuery(
+        entityManager: EntityManager,
+        query: JpqlQuery<*>,
+        context: RenderContext,
+    ): TypedQuery<Long> {
+        val rendered = JpqlRendererHolder.get().render(query, context)
+
+        return entityManager.createQuery(rendered.query, Long::class.javaObjectType).apply {
+            setParams(this, rendered.params)
+        }
+    }
+
     fun <T : Any> createQuery(
         entityManager: EntityManager,
         query: JpqlQuery<*>,

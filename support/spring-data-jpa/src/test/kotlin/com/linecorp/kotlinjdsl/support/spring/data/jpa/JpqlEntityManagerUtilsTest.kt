@@ -213,6 +213,35 @@ class JpqlEntityManagerUtilsTest : WithAssertions {
     }
 
     @Test
+    fun `createCountQuery() uses boxed Long java type`() {
+        // given
+        val rendered1 = JpqlRendered(renderedQuery1, JpqlRenderedParams(mapOf(renderedParam1, renderedParam2)))
+
+        every { renderer.render(any<JpqlQuery<*>>(), any()) } returns rendered1
+        every { entityManager.createQuery(any<String>(), any<Class<Long>>()) } returns longTypedQuery1
+        every { longTypedQuery1.parameters } returns setOf(longTypedQueryParam1, longTypedQueryParam2)
+        every { longTypedQuery1.setParameter(any<String>(), any()) } returns longTypedQuery1
+        every { longTypedQueryParam1.name } returns renderedParam1.first
+        every { longTypedQueryParam2.name } returns renderedParam2.first
+
+        // when
+        val actual = JpqlEntityManagerUtils.createCountQuery(entityManager, query1, context)
+
+        // then
+        assertThat(actual).isEqualTo(longTypedQuery1)
+
+        verifySequence {
+            renderer.render(query1, context)
+            entityManager.createQuery(rendered1.query, Long::class.javaObjectType)
+            longTypedQuery1.parameters
+            longTypedQueryParam1.name
+            longTypedQueryParam2.name
+            longTypedQuery1.setParameter(renderedParam1.first, renderedParam1.second)
+            longTypedQuery1.setParameter(renderedParam2.first, renderedParam2.second)
+        }
+    }
+
+    @Test
     fun `createEnhancedQuery() with JpqlSelectQuery`() {
         // given
         val selectQuery1: JpqlSelectQuery<Any> = mockk()
