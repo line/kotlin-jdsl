@@ -116,6 +116,35 @@ open class KotlinJdslJpqlExecutorImpl(
         return createPage(query, query.returnType, pageable)
     }
 
+    override fun <T : Any> findPage(
+        pageable: Pageable,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+        countInit: Jpql.() -> JpqlQueryable<SelectQuery<Long>>,
+    ): Page<T?> {
+        return findPage(Jpql, pageable, init, countInit)
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+        countInit: DSL.() -> JpqlQueryable<SelectQuery<Long>>,
+    ): Page<T?> {
+        return findPage(dsl.newInstance(), pageable, init, countInit)
+    }
+
+    override fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: DSL,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+        countInit: DSL.() -> JpqlQueryable<SelectQuery<Long>>,
+    ): Page<T?> {
+        val query: SelectQuery<T> = jpql(dsl, init)
+        val countQuery: SelectQuery<Long> = jpql(dsl, countInit)
+
+        return createPage(query, query.returnType, countQuery, pageable)
+    }
+
     override fun <T : Any> findSlice(
         pageable: Pageable,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
@@ -268,6 +297,14 @@ open class KotlinJdslJpqlExecutorImpl(
         }
     }
 
+    private fun createJpaCountQuery(
+        countQuery: JpqlQuery<*>,
+    ): TypedQuery<Long> {
+        return JpqlEntityManagerUtils
+            .createCountQuery(entityManager, countQuery, renderContext)
+            .apply { setMetadataForCount(this, metadata) }
+    }
+
     private fun <T : Any> createJpaEnhancedQuery(
         query: JpqlQuery<*>,
         returnType: KClass<T>,
@@ -347,6 +384,34 @@ open class KotlinJdslJpqlExecutorImpl(
 
         return PageableExecutionUtilsAdaptor.getPage(sortedQuery.resultList, pageable) {
             val counts = enhancedQuery.countQuery.resultList
+
+            if (counts.size == 1) {
+                counts.first()
+            } else {
+                counts.count().toLong()
+            }
+        }
+    }
+
+    private fun <T : Any> createPage(
+        query: JpqlQuery<*>,
+        returnType: KClass<T>,
+        countQuery: JpqlQuery<*>,
+        pageable: Pageable,
+    ): Page<T?> {
+        val enhancedQuery = createJpaEnhancedQuery(query, returnType, pageable.sort)
+
+        val sortedQuery = enhancedQuery.sortedQuery
+
+        if (pageable.isPaged) {
+            sortedQuery.firstResult = pageable.offset.toInt()
+            sortedQuery.maxResults = pageable.pageSize
+        }
+
+        val countJpaQuery = createJpaCountQuery(countQuery)
+
+        return PageableExecutionUtilsAdaptor.getPage(sortedQuery.resultList, pageable) {
+            val counts = countJpaQuery.resultList
 
             if (counts.size == 1) {
                 counts.first()

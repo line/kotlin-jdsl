@@ -38,6 +38,29 @@ internal object JpqlEntityManagerUtils {
         return createQuery(entityManager, rendered.query, rendered.params, returnType.java)
     }
 
+    /**
+     * Creates a [TypedQuery] for a count query with boxed [java.lang.Long] as the return type.
+     *
+     * This is separated from the general [createQuery] to work around a Hibernate 5 strictness issue:
+     * the primitive `long` vs. boxed `java.lang.Long` mismatch is rejected with
+     * `Type specified for TypedQuery [long] is incompatible with query return type [class java.lang.Long]`.
+     *
+     * Hibernate 6 is lenient about this mismatch today, but the same latent issue remains.
+     * Applied consistently across all three support modules (spring-data-jpa, spring-data-jpa-javax,
+     * spring-data-jpa-boot4) to remain safe when future Hibernate versions tighten type inference.
+     *
+     * This matches the convention already used by the auto-count path in `createEnhancedQuery`.
+     */
+    fun createCountQuery(
+        entityManager: EntityManager,
+        query: JpqlQuery<*>,
+        context: RenderContext,
+    ): TypedQuery<Long> {
+        val rendered = JpqlRendererHolder.get().render(query, context)
+
+        return createQuery(entityManager, rendered.query, rendered.params, Long::class.javaObjectType)
+    }
+
     fun createQuery(
         entityManager: EntityManager,
         query: JpqlQuery<*>,

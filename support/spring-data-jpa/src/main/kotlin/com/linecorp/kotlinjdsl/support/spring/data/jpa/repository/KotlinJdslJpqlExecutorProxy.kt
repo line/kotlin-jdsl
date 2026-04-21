@@ -83,6 +83,26 @@ open class KotlinJdslJpqlExecutorProxy(
         init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
     ): Page<T?> = getDelegate().findPage(dsl, pageable, init)
 
+    override fun <T : Any> findPage(
+        pageable: Pageable,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+        countInit: Jpql.() -> JpqlQueryable<SelectQuery<Long>>,
+    ): Page<T?> = getDelegate().findPage(pageable, init, countInit)
+
+    override fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+        countInit: DSL.() -> JpqlQueryable<SelectQuery<Long>>,
+    ): Page<T?> = getDelegate().findPage(dsl, pageable, init, countInit)
+
+    override fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: DSL,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+        countInit: DSL.() -> JpqlQueryable<SelectQuery<Long>>,
+    ): Page<T?> = getDelegate().findPage(dsl, pageable, init, countInit)
+
     override fun <T : Any> findSlice(
         pageable: Pageable,
         init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,

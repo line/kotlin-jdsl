@@ -107,6 +107,38 @@ interface KotlinJdslJpqlExecutor {
     ): Page<T>
 
     /**
+     * Returns the page of the select query.
+     */
+    @SinceJdsl("3.8.2")
+    fun <T : Any> findPage(
+        pageable: Pageable,
+        init: Jpql.() -> JpqlQueryable<SelectQuery<T>>,
+        countInit: Jpql.() -> JpqlQueryable<SelectQuery<Long>>,
+    ): Page<T>
+
+    /**
+     * Returns the page of the select query.
+     */
+    @SinceJdsl("3.8.2")
+    fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: JpqlDsl.Constructor<DSL>,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+        countInit: DSL.() -> JpqlQueryable<SelectQuery<Long>>,
+    ): Page<T>
+
+    /**
+     * Returns the page of the select query.
+     */
+    @SinceJdsl("3.8.2")
+    fun <T : Any, DSL : JpqlDsl> findPage(
+        dsl: DSL,
+        pageable: Pageable,
+        init: DSL.() -> JpqlQueryable<SelectQuery<T>>,
+        countInit: DSL.() -> JpqlQueryable<SelectQuery<Long>>,
+    ): Page<T>
+
+    /**
      * Returns the slice of the select query.
      */
     @SinceJdsl("3.0.0")
