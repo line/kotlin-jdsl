@@ -1,5 +1,5 @@
 ---
-description: 'Latest stable version: 3.8.1'
+description: 'Latest stable version: 3.8.2'
 ---
 
 # Kotlin JDSL
