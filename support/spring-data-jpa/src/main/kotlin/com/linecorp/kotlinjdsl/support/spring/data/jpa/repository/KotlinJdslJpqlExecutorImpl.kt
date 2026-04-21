@@ -299,6 +299,14 @@ open class KotlinJdslJpqlExecutorImpl(
         }
     }
 
+    private fun createJpaCountQuery(
+        countQuery: JpqlQuery<*>,
+    ): TypedQuery<Long> {
+        return JpqlEntityManagerUtils
+            .createCountQuery(entityManager, countQuery, renderContext)
+            .apply { setMetadataForCount(this, metadata) }
+    }
+
     private fun <T : Any> createJpaEnhancedQuery(
         query: JpqlQuery<*>,
         returnType: KClass<T>,
@@ -402,9 +410,7 @@ open class KotlinJdslJpqlExecutorImpl(
             sortedQuery.maxResults = pageable.pageSize
         }
 
-        val countJpaQuery = JpqlEntityManagerUtils
-            .createCountQuery(entityManager, countQuery, renderContext)
-            .apply { setMetadataForCount(this, metadata) }
+        val countJpaQuery = createJpaCountQuery(countQuery)
 
         return PageableExecutionUtilsAdaptor.getPage(sortedQuery.resultList, pageable) {
             val counts = countJpaQuery.resultList
