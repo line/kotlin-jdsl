@@ -78,6 +78,15 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
     private lateinit var createDeleteQuery3: MyJpqlObject.() -> JpqlQueryable<DeleteQuery<String>>
 
     @MockK
+    private lateinit var createCountSelectQuery1: Jpql.() -> JpqlQueryable<SelectQuery<Long>>
+
+    @MockK
+    private lateinit var createCountSelectQuery2: MyJpql.() -> JpqlQueryable<SelectQuery<Long>>
+
+    @MockK
+    private lateinit var createCountSelectQuery3: MyJpqlObject.() -> JpqlQueryable<SelectQuery<Long>>
+
+    @MockK
     private lateinit var selectQuery1: SelectQuery<String>
 
     @MockK
@@ -103,6 +112,15 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
 
     @MockK
     private lateinit var deleteQuery3: DeleteQuery<String>
+
+    @MockK
+    private lateinit var countSelectQuery1: SelectQuery<Long>
+
+    @MockK
+    private lateinit var countSelectQuery2: SelectQuery<Long>
+
+    @MockK
+    private lateinit var countSelectQuery3: SelectQuery<Long>
 
     @MockK
     private lateinit var stringTypedQuery1: TypedQuery<String>
@@ -235,6 +253,9 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         every { createDeleteQuery1.invoke(any()) } returns deleteQuery1
         every { createDeleteQuery2.invoke(any()) } returns deleteQuery2
         every { createDeleteQuery3.invoke(any()) } returns deleteQuery3
+        every { createCountSelectQuery1.invoke(any()) } returns countSelectQuery1
+        every { createCountSelectQuery2.invoke(any()) } returns countSelectQuery2
+        every { createCountSelectQuery3.invoke(any()) } returns countSelectQuery3
         every { selectQuery1.toQuery() } returns selectQuery1
         every { selectQuery2.toQuery() } returns selectQuery2
         every { selectQuery3.toQuery() } returns selectQuery3
@@ -244,6 +265,9 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         every { deleteQuery1.toQuery() } returns deleteQuery1
         every { deleteQuery2.toQuery() } returns deleteQuery2
         every { deleteQuery3.toQuery() } returns deleteQuery3
+        every { countSelectQuery1.toQuery() } returns countSelectQuery1
+        every { countSelectQuery2.toQuery() } returns countSelectQuery2
+        every { countSelectQuery3.toQuery() } returns countSelectQuery3
 
         excludeRecords { createSelectQuery1.invoke(any()) }
         excludeRecords { createSelectQuery2.invoke(any()) }
@@ -254,6 +278,9 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         excludeRecords { createDeleteQuery1.invoke(any()) }
         excludeRecords { createDeleteQuery2.invoke(any()) }
         excludeRecords { createDeleteQuery3.invoke(any()) }
+        excludeRecords { createCountSelectQuery1.invoke(any()) }
+        excludeRecords { createCountSelectQuery2.invoke(any()) }
+        excludeRecords { createCountSelectQuery3.invoke(any()) }
         excludeRecords { selectQuery1.toQuery() }
         excludeRecords { selectQuery2.toQuery() }
         excludeRecords { selectQuery3.toQuery() }
@@ -263,6 +290,9 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
         excludeRecords { deleteQuery1.toQuery() }
         excludeRecords { deleteQuery2.toQuery() }
         excludeRecords { deleteQuery3.toQuery() }
+        excludeRecords { countSelectQuery1.toQuery() }
+        excludeRecords { countSelectQuery2.toQuery() }
+        excludeRecords { countSelectQuery3.toQuery() }
     }
 
     @Test
@@ -666,6 +696,186 @@ class KotlinJdslJpqlExecutorImplTest : WithAssertions {
             longTypedQuery3.setHint(queryHintForCount1.first, queryHintForCount1.second)
             longTypedQuery3.setHint(queryHintForCount2.first, queryHintForCount2.second)
             longTypedQuery3.setHint(queryHintForCount3.first, queryHintForCount3.second)
+            longTypedQuery3.resultList
+        }
+    }
+
+    @Test
+    fun `findPage() with count query`() {
+        // given
+        every { selectQuery1.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(),
+                any<SelectQuery<String>>(),
+                any<KClass<*>>(),
+                any(),
+                any(),
+            )
+        } returns enhancedTypedQuery1
+        every {
+            JpqlEntityManagerUtils.createCountQuery(any(), any<SelectQuery<Long>>(), any())
+        } returns longTypedQuery1
+        every { stringTypedQuery1.setLockMode(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setHint(any(), any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setFirstResult(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.setMaxResults(any()) } returns stringTypedQuery1
+        every { stringTypedQuery1.resultList } returns list1
+        every { longTypedQuery1.setHint(any(), any()) } returns longTypedQuery1
+        every { longTypedQuery1.resultList } returns counts1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+        every { metadata.queryHintsForCount } returns queryHintsForCount1
+        every { PageableExecutionUtilsAdaptor.getPage<String>(any(), any(), any()) } answers {
+            lastArg<LongSupplier>().asLong
+
+            page1
+        }
+
+        // when
+        val actual = sut.findPage(pageable1, createSelectQuery1, createCountSelectQuery1)
+
+        // then
+        assertThat(actual).isEqualTo(page1)
+
+        verifySequence {
+            selectQuery1.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery1, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery1.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery1.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery1.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery1.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery1.firstResult = pageable1.offset.toInt()
+            stringTypedQuery1.maxResults = pageable1.pageSize
+            JpqlEntityManagerUtils.createCountQuery(entityManager, countSelectQuery1, renderContext)
+            metadata.queryHintsForCount
+            longTypedQuery1.setHint(queryHintForCount1.first, queryHintForCount1.second)
+            longTypedQuery1.setHint(queryHintForCount2.first, queryHintForCount2.second)
+            longTypedQuery1.setHint(queryHintForCount3.first, queryHintForCount3.second)
+            stringTypedQuery1.resultList
+            PageableExecutionUtilsAdaptor.getPage(list1, pageable1, any())
+            longTypedQuery1.resultList
+        }
+    }
+
+    @Test
+    fun `findPage() with count query with a dsl`() {
+        // given
+        every { selectQuery2.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(),
+                any<SelectQuery<String>>(),
+                any<KClass<*>>(),
+                any(),
+                any(),
+            )
+        } returns enhancedTypedQuery2
+        every {
+            JpqlEntityManagerUtils.createCountQuery(any(), any<SelectQuery<Long>>(), any())
+        } returns longTypedQuery2
+        every { stringTypedQuery2.setLockMode(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setHint(any(), any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setFirstResult(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.setMaxResults(any()) } returns stringTypedQuery2
+        every { stringTypedQuery2.resultList } returns list1
+        every { longTypedQuery2.setHint(any(), any()) } returns longTypedQuery2
+        every { longTypedQuery2.resultList } returns counts1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+        every { metadata.queryHintsForCount } returns queryHintsForCount1
+        every { PageableExecutionUtilsAdaptor.getPage<String>(any(), any(), any()) } answers {
+            lastArg<LongSupplier>().asLong
+
+            page1
+        }
+
+        // when
+        val actual = sut.findPage(MyJpql, pageable1, createSelectQuery2, createCountSelectQuery2)
+
+        // then
+        assertThat(actual).isEqualTo(page1)
+
+        verifySequence {
+            selectQuery2.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery2, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery2.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery2.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery2.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery2.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery2.firstResult = pageable1.offset.toInt()
+            stringTypedQuery2.maxResults = pageable1.pageSize
+            JpqlEntityManagerUtils.createCountQuery(entityManager, countSelectQuery2, renderContext)
+            metadata.queryHintsForCount
+            longTypedQuery2.setHint(queryHintForCount1.first, queryHintForCount1.second)
+            longTypedQuery2.setHint(queryHintForCount2.first, queryHintForCount2.second)
+            longTypedQuery2.setHint(queryHintForCount3.first, queryHintForCount3.second)
+            stringTypedQuery2.resultList
+            PageableExecutionUtilsAdaptor.getPage(list1, pageable1, any())
+            longTypedQuery2.resultList
+        }
+    }
+
+    @Test
+    fun `findPage() with count query with a dsl object`() {
+        // given
+        every { selectQuery3.returnType } returns String::class
+        every {
+            JpqlEntityManagerUtils.createEnhancedQuery(
+                any(),
+                any<SelectQuery<String>>(),
+                any<KClass<*>>(),
+                any(),
+                any(),
+            )
+        } returns enhancedTypedQuery3
+        every {
+            JpqlEntityManagerUtils.createCountQuery(any(), any<SelectQuery<Long>>(), any())
+        } returns longTypedQuery3
+        every { stringTypedQuery3.setLockMode(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setHint(any(), any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setFirstResult(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.setMaxResults(any()) } returns stringTypedQuery3
+        every { stringTypedQuery3.resultList } returns list1
+        every { longTypedQuery3.setHint(any(), any()) } returns longTypedQuery3
+        every { longTypedQuery3.resultList } returns counts1
+        every { metadata.lockModeType } returns lockModeType1
+        every { metadata.queryHints } returns queryHints1
+        every { metadata.queryHintsForCount } returns queryHintsForCount1
+        every { PageableExecutionUtilsAdaptor.getPage<String>(any(), any(), any()) } answers {
+            lastArg<LongSupplier>().asLong
+
+            page1
+        }
+
+        // when
+        val actual = sut.findPage(MyJpqlObject, pageable1, createSelectQuery3, createCountSelectQuery3)
+
+        // then
+        assertThat(actual).isEqualTo(page1)
+
+        verifySequence {
+            selectQuery3.returnType
+            JpqlEntityManagerUtils.createEnhancedQuery(entityManager, selectQuery3, String::class, sort1, renderContext)
+            metadata.lockModeType
+            stringTypedQuery3.setLockMode(lockModeType1)
+            metadata.queryHints
+            stringTypedQuery3.setHint(queryHint1.first, queryHint1.second)
+            stringTypedQuery3.setHint(queryHint2.first, queryHint2.second)
+            stringTypedQuery3.setHint(queryHint3.first, queryHint3.second)
+            stringTypedQuery3.firstResult = pageable1.offset.toInt()
+            stringTypedQuery3.maxResults = pageable1.pageSize
+            JpqlEntityManagerUtils.createCountQuery(entityManager, countSelectQuery3, renderContext)
+            metadata.queryHintsForCount
+            longTypedQuery3.setHint(queryHintForCount1.first, queryHintForCount1.second)
+            longTypedQuery3.setHint(queryHintForCount2.first, queryHintForCount2.second)
+            longTypedQuery3.setHint(queryHintForCount3.first, queryHintForCount3.second)
+            stringTypedQuery3.resultList
+            PageableExecutionUtilsAdaptor.getPage(list1, pageable1, any())
             longTypedQuery3.resultList
         }
     }

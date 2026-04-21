@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-
 plugins {
     alias(rootLibs.plugins.kotlin2.jvm)
     alias(exampleLibs.plugins.spring.boot4)
@@ -12,7 +10,7 @@ plugins {
 }
 
 group = "com.linecorp.kotlin-jdsl"
-version = "3.8.0-SNAPSHOT"
+version = "3.8.2"
 
 repositories {
     mavenCentral()

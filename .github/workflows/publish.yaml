@@ -31,6 +31,7 @@ jobs:
         run: |
           ./gradlew --max-workers=1 publish closeAndReleaseStagingRepository
           ./gradlew -p support/spring-data-jpa-boot4 --max-workers=1 publish closeAndReleaseStagingRepository
+          ./gradlew -p support/spring-batch6 --max-workers=1 publish closeAndReleaseStagingRepository
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
