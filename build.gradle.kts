@@ -42,6 +42,8 @@ allprojects {
         testFixturesImplementation(rootProject.libs.junit)
         testFixturesImplementation(rootProject.libs.mockk)
         testFixturesImplementation(rootProject.libs.assertJ)
+
+        testRuntimeOnly(rootProject.libs.junit.platform.launcher)
     }
 
     kotlin {
@@ -77,9 +79,10 @@ allprojects {
         val signingKey: String? by project
         val signingPassword: String? by project
 
-        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-
-        sign(publishing.publications)
+        if (signingKey != null) {
+            useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+            sign(publishing.publications)
+        }
     }
 
     publishing {
@@ -122,30 +125,34 @@ allprojects {
                 }
             }
         }
+
     }
 }
 
 subprojects {
-    rootProject.dependencies {
-        kover(this@subprojects)
-    }
-
+    // Kover 0.9.8: subproject aggregation via dependencies block
+    // The kover(project) dependency pattern is no longer valid;
+    // aggregate tasks are created automatically.
     dependencies {
         implementation(rootProject)
     }
 
     kover {
-        excludeSourceSets {
-            names(sourceSets.testFixtures.name)
+        currentProject {
+            sources {
+                excludedSourceSets.addAll(sourceSets.testFixtures.name)
+            }
         }
     }
 }
 
-koverReport {
-    filters {
-        excludes {
-            packages("com.linecorp.kotlinjdsl.example.*")
-            packages("com.linecorp.kotlinjdsl.benchmark.*")
+kover {
+    reports {
+        filters {
+            excludes {
+                packages("com.linecorp.kotlinjdsl.example.*")
+                packages("com.linecorp.kotlinjdsl.benchmark.*")
+            }
         }
     }
 }

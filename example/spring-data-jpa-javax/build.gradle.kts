@@ -1,17 +1,21 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
-    alias(exampleLegacyLibs.plugins.spring.boot2)
+    `java-library`
+    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.noarg)
     alias(libs.plugins.kotlin.allopen)
     alias(libs.plugins.kotlin.spring)
-    alias(libs.plugins.kotlin.jpa)
+    alias(libs.plugins.spring.dependency.management)
 }
 
 dependencies {
+    implementation(platform(exampleLegacyLibs.spring.boot2.bom))
+
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     implementation(exampleLegacyLibs.spring.boot2.jpa)
     implementation(exampleLegacyLibs.spring.boot2.p6spy)
+    implementation(exampleLegacyLibs.javax.persistence.api)
     implementation(projects.example)
     implementation(projects.jpqlDsl)
     implementation(projects.jpqlRender)
@@ -33,6 +37,8 @@ kotlin {
 
 noArg {
     annotation("com.linecorp.kotlinjdsl.example.spring.data.jpa.javax.jpql.annotation.CompositeId")
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.Embeddable")
 }
 
 allOpen {

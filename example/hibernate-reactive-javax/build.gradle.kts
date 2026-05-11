@@ -42,8 +42,10 @@ allOpen {
 }
 
 kover {
-    excludeInstrumentation {
-        packages("org.hibernate.*")
+    currentProject {
+        instrumentation {
+            excludedClasses.addAll("org.hibernate.*")
+        }
     }
 }
 

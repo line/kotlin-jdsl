@@ -21,7 +21,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 
     compilerOptions {
         apiVersion = KotlinVersion.KOTLIN_1_9
@@ -42,8 +42,10 @@ allOpen {
 }
 
 kover {
-    excludeInstrumentation {
-        packages("org.hibernate.*")
+    currentProject {
+        instrumentation {
+            excludedClasses.addAll("org.hibernate.*")
+        }
     }
 }
 

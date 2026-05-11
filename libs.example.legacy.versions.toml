@@ -6,6 +6,7 @@ spring-boot2 = "2.7.18"
 javax-persistence-api = { module = "javax.persistence:javax.persistence-api", version = "2.2" }
 
 # spring boot
+spring-boot2-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot2" }
 spring-boot2-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot2" }
 spring-boot2-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot2" }
 spring-boot2-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "1.8.1" }
