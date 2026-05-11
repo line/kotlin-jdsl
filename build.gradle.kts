@@ -89,6 +89,8 @@ allprojects {
         publications {
             create<MavenPublication>("maven") {
                 from(components["java"])
+                suppressPomMetadataWarningsFor("testFixturesApiElements")
+                suppressPomMetadataWarningsFor("testFixturesRuntimeElements")
 
                 pom {
                     name.set(artifactId)
