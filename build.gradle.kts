@@ -53,6 +53,7 @@ allprojects {
     tasks.withType<KotlinCompile> {
         compilerOptions {
             freeCompilerArgs.add("-Xallow-kotlin-package")
+            freeCompilerArgs.add("-Xconsistent-data-class-copy-visibility")
         }
         jvmTargetValidationMode.set(JvmTargetValidationMode.ERROR)
     }
