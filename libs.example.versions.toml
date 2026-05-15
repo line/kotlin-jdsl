@@ -18,7 +18,7 @@ spring-boot3-test = { module = "org.springframework.boot:spring-boot-starter-tes
 
 spring-boot4-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot4" }
 spring-boot4-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot4" }
-spring-boot4-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "2.0.0" }
+spring-boot4-p6spy = { module = "com.github.gavlyukovskiy:p6spy-spring-boot-starter", version = "2.0.1" }
 spring-boot4-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot4" }
 
 # spring
