@@ -32,7 +32,7 @@ hibernate7-core = { module = "org.hibernate.orm:hibernate-core", version = "7.4.
 hibernate-reactive4-core = { module = "org.hibernate.reactive:hibernate-reactive-core", version = "4.5.0.Final" }
 
 # eclipse-link
-eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "5.0.0" }
+eclipselink4 = { module = "org.eclipse.persistence:org.eclipse.persistence.jpa", version = "5.0.1" }
 
 # vertx
 vertx-jdbc-client = { module = "io.vertx:vertx-jdbc-client", version = "5.1.3" }
