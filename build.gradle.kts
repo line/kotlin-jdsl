@@ -6,6 +6,32 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.nio.file.Files
+import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+
+fun resolveGitDirectory(gitMetadata: File): File? =
+    when {
+        gitMetadata.isDirectory -> gitMetadata
+        gitMetadata.isFile -> {
+            val worktreeGitDirectory = resolvePath(gitMetadata.readText().trim().removePrefix("gitdir: "), gitMetadata.parentFile)
+            val commonDirectory = File(worktreeGitDirectory, "commondir")
+
+            if (commonDirectory.isFile) {
+                resolvePath(commonDirectory.readText().trim(), worktreeGitDirectory)
+            } else {
+                worktreeGitDirectory
+            }
+        }
+        else -> null
+    }
+
+fun resolvePath(path: String, parent: File): File =
+    File(path).let {
+        if (it.isAbsolute) {
+            it
+        } else {
+            File(parent, path)
+        }
+    }
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -185,23 +211,20 @@ File("$projectDir/.githook").let { projectGitHookDir ->
         else -> "default"
     }
 
-    val gitHookDir = File("$projectDir/.git/hooks")
+    resolveGitDirectory(File(projectDir, ".git"))
+        ?.resolve("hooks")
+        ?.takeIf(File::isDirectory)
+        ?.let { gitHookDir ->
+            projectGitHookDir
+                .listFiles()
+                ?.filter {
+                    it.nameWithoutExtension.contains(suffix)
+                }?.forEach {
+                    val gitHook = File(gitHookDir, it.nameWithoutExtension.removeSuffix("-$suffix"))
 
-    gitHookDir
-        .listFiles()
-        ?.forEach {
-            it.deleteRecursively()
-        }
+                    Files.copy(it.toPath(), gitHook.toPath(), REPLACE_EXISTING)
 
-    projectGitHookDir
-        .listFiles()
-        ?.filter {
-            it.nameWithoutExtension.contains(suffix)
-        }?.forEach {
-            val gitHook = File(gitHookDir, it.nameWithoutExtension.removeSuffix("-$suffix"))
-
-            Files.copy(it.toPath(), gitHook.toPath())
-
-            gitHook.setExecutable(true)
+                    gitHook.setExecutable(true)
+                }
         }
 }
