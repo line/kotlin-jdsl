@@ -101,11 +101,11 @@ allprojects {
         withJavadocJar()
     }
 
-    signing {
-        val signingKeyId: String? by project
-        val signingKey: String? by project
-        val signingPassword: String? by project
+    val signingKeyId = providers.gradleProperty("signingKeyId").orNull
+    val signingKey = providers.gradleProperty("signingKey").orNull
+    val signingPassword = providers.gradleProperty("signingPassword").orNull
 
+    signing {
         if (signingKey != null) {
             useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
             sign(publishing.publications)
@@ -186,14 +186,14 @@ kover {
     }
 }
 
+val sonatypeUsername = providers.gradleProperty("sonatypeUsername").orNull
+val sonatypePassword = providers.gradleProperty("sonatypePassword").orNull
+
 nexusPublishing {
     repositories {
         sonatype {
             nexusUrl = uri("https://ossrh-staging-api.central.sonatype.com/service/local/")
             snapshotRepositoryUrl = uri("https://central.sonatype.com/repository/maven-snapshots/")
-
-            val sonatypeUsername: String? by project
-            val sonatypePassword: String? by project
 
             username = sonatypeUsername
             password = sonatypePassword
