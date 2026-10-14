@@ -1,4 +1,5 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "baseBranches": [
     "develop"
   ],
@@ -9,11 +10,58 @@
   },
   "packageRules": [
     {
+      "description": "libs.versions.toml pins the MINIMUM supported versions (compileOnly floors of the support matrix) and libs.example.legacy.versions.toml is the frozen javax stack; both are maintained manually.",
       "matchFileNames": [
         "libs.example.legacy.versions.toml",
         "libs.versions.toml"
       ],
       "enabled": false
+    },
+    {
+      "description": "vertx-jdbc-client4 is the pinned 4.x line (hibernate-reactive-javax example); update only within 4.x. The current vertx-jdbc-client 5.x line stays unrestricted, so a new major still surfaces as a proposal.",
+      "matchFileNames": ["libs.example.versions.toml"],
+      "matchPackageNames": ["io.vertx:vertx-jdbc-client"],
+      "matchCurrentVersion": "/^4\\./",
+      "allowedVersions": "/^4\\./"
+    },
+    {
+      "description": "p6spy for the Boot 3 examples is pinned to the 1.x line; the current Boot 4 line (2.x) stays unrestricted.",
+      "matchFileNames": ["libs.example.versions.toml"],
+      "matchPackageNames": ["com.github.gavlyukovskiy:p6spy-spring-boot-starter"],
+      "matchCurrentVersion": "/^1\\./",
+      "allowedVersions": "/^1\\./"
+    },
+    {
+      "description": "spring-batch-test for the Batch 5 examples is pinned to the 5.x line; the current Batch 6 line stays unrestricted.",
+      "matchFileNames": ["libs.example.versions.toml"],
+      "matchPackageNames": ["org.springframework.batch:spring-batch-test"],
+      "matchCurrentVersion": "/^5\\./",
+      "allowedVersions": "/^5\\./"
+    },
+    {
+      "description": "Boot 3 example stack: pinned to the 3.x line; the starters and the plugin share the spring-boot3 [versions] entry, so they are grouped into one PR that bumps the shared version ref.",
+      "matchFileNames": ["libs.example.versions.toml"],
+      "matchPackageNames": [
+        "org.springframework.boot:spring-boot-starter-data-jpa",
+        "org.springframework.boot:spring-boot-starter-batch",
+        "org.springframework.boot:spring-boot-starter-test",
+        "org.springframework.boot"
+      ],
+      "matchCurrentVersion": "/^3\\./",
+      "allowedVersions": "/^3\\./",
+      "groupName": "example-spring-boot-3.x"
+    },
+    {
+      "description": "Boot 4 example stack: NOT version-restricted (a new major is a migration signal), but grouped because the starters and the plugin share the spring-boot4 [versions] entry and must be bumped together in one PR.",
+      "matchFileNames": ["libs.example.versions.toml"],
+      "matchPackageNames": [
+        "org.springframework.boot:spring-boot-starter-data-jpa",
+        "org.springframework.boot:spring-boot-starter-batch",
+        "org.springframework.boot:spring-boot-starter-test",
+        "org.springframework.boot"
+      ],
+      "matchCurrentVersion": "/^4\\./",
+      "groupName": "example-spring-boot-4.x"
     }
   ]
 }
