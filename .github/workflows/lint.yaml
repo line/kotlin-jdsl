@@ -44,3 +44,14 @@ jobs:
         run: |
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
           rm -f ~/.gradle/caches/modules-2/gc.properties
+  renovate-config:
+    name: Validate Renovate Config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+      - name: Validate renovate.json
+        run: npx -y -p renovate renovate-config-validator
