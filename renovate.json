@@ -45,7 +45,7 @@
         "org.springframework.boot:spring-boot-starter-data-jpa",
         "org.springframework.boot:spring-boot-starter-batch",
         "org.springframework.boot:spring-boot-starter-test",
-        "org.springframework.boot"
+        "org.springframework.boot:org.springframework.boot.gradle.plugin"
       ],
       "matchCurrentVersion": "/^3\\./",
       "allowedVersions": "/^3\\./",
@@ -58,7 +58,7 @@
         "org.springframework.boot:spring-boot-starter-data-jpa",
         "org.springframework.boot:spring-boot-starter-batch",
         "org.springframework.boot:spring-boot-starter-test",
-        "org.springframework.boot"
+        "org.springframework.boot:org.springframework.boot.gradle.plugin"
       ],
       "matchCurrentVersion": "/^4\\./",
       "groupName": "example-spring-boot-4.x"
