@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
-          node-version: 24.x
+          node-version: 26.x
       - name: Install dependencies
         run: npm install
       - name: Validate all commits from PR
@@ -52,6 +52,6 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
-          node-version: 24.x
+          node-version: 26.x
       - name: Validate renovate.json
         run: npx -y -p renovate renovate-config-validator
