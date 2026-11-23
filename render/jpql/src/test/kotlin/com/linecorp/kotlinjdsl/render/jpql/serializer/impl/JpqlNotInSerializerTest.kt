@@ -74,7 +74,7 @@ class JpqlNotInSerializerTest : WithAssertions {
     }
 
     @Test
-    fun `serialize() draws 0 = 1, when the compareValues is empty`() {
+    fun `serialize() draws 1 = 1, when the compareValues is empty`() {
         // Given
         val part =
             Predicates.notIn(
@@ -88,7 +88,7 @@ class JpqlNotInSerializerTest : WithAssertions {
 
         // Then
         verifySequence {
-            writer.write("0 = 1")
+            writer.write("1 = 1")
         }
     }
 }
