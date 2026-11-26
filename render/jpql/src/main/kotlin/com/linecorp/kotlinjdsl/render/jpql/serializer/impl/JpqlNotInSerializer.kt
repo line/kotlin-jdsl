@@ -21,7 +21,7 @@ class JpqlNotInSerializer : JpqlSerializer<JpqlNotIn<*>> {
         val delegate = context.getValue(JpqlRenderSerializer)
 
         if (IterableUtils.isEmpty(part.compareValues)) {
-            writer.write("0 = 1")
+            writer.write("1 = 1")
         } else {
             delegate.serialize(part.value, writer, context)
 
