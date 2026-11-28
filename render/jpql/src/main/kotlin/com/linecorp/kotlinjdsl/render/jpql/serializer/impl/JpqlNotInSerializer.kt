@@ -2,8 +2,11 @@ package com.linecorp.kotlinjdsl.render.jpql.serializer.impl
 
 import com.linecorp.kotlinjdsl.Internal
 import com.linecorp.kotlinjdsl.iterable.IterableUtils
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.Expressions
+import com.linecorp.kotlinjdsl.querymodel.jpql.expression.impl.JpqlValue
 import com.linecorp.kotlinjdsl.querymodel.jpql.predicate.impl.JpqlNotIn
 import com.linecorp.kotlinjdsl.render.RenderContext
+import com.linecorp.kotlinjdsl.render.jpql.ExpressionUtils
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
@@ -29,9 +32,18 @@ class JpqlNotInSerializer : JpqlSerializer<JpqlNotIn<*>> {
             writer.write("NOT IN")
             writer.write(" ")
 
-            writer.writeParentheses {
-                writer.writeEach(part.compareValues, separator = ", ") {
-                    delegate.serialize(it, writer, context)
+            val compareValues = part.compareValues.toList()
+            if (compareValues.all { ExpressionUtils.isBasicType(it) }) {
+                val values = compareValues.map { (it as JpqlValue<*>).value }
+                val singleParam = Expressions.value(values)
+                writer.writeParentheses {
+                    delegate.serialize(singleParam, writer, context)
+                }
+            } else {
+                writer.writeParentheses {
+                    writer.writeEach(compareValues, separator = ", ") {
+                        delegate.serialize(it, writer, context)
+                    }
                 }
             }
         }

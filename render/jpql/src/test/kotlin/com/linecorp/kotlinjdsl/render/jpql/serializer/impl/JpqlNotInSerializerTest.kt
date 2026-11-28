@@ -40,13 +40,52 @@ class JpqlNotInSerializerTest : WithAssertions {
     }
 
     @Test
-    fun serialize() {
+    fun `serialize() draws a single parameter, when the compareValues are basic types`() {
         // given
         val expressions =
             listOf(
                 expression2,
                 expression3,
                 expression4,
+            )
+
+        val part =
+            Predicates.notIn(
+                expression1,
+                expressions,
+            )
+        val context = TestRenderContext(serializer)
+
+        val singleParam =
+            Expressions.value(
+                listOf(
+                    BigDecimal.valueOf(100),
+                    BigDecimal.valueOf(200),
+                    BigDecimal.valueOf(300),
+                ),
+            )
+
+        // when
+        sut.serialize(part as JpqlNotIn<*>, writer, context)
+
+        // then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("NOT IN")
+            writer.write(" ")
+            writer.writeParentheses(any())
+            serializer.serialize(singleParam, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize() draws parameters, when the compareValues contain non-basic types`() {
+        // given
+        val expressions =
+            listOf(
+                expression2,
+                expression1,
             )
 
         val part =
@@ -68,8 +107,37 @@ class JpqlNotInSerializerTest : WithAssertions {
             writer.writeParentheses(any())
             writer.writeEach(expressions, ", ", any())
             serializer.serialize(expression2, writer, context)
-            serializer.serialize(expression3, writer, context)
-            serializer.serialize(expression4, writer, context)
+            serializer.serialize(expression1, writer, context)
+        }
+    }
+
+    @Test
+    fun `serialize() draws parameters, when the compareValues are not basic types`() {
+        // given
+        val expressions =
+            listOf(
+                expression1,
+            )
+
+        val part =
+            Predicates.notIn(
+                expression1,
+                expressions,
+            )
+        val context = TestRenderContext(serializer)
+
+        // when
+        sut.serialize(part as JpqlNotIn<*>, writer, context)
+
+        // then
+        verifySequence {
+            serializer.serialize(expression1, writer, context)
+            writer.write(" ")
+            writer.write("NOT IN")
+            writer.write(" ")
+            writer.writeParentheses(any())
+            writer.writeEach(expressions, ", ", any())
+            serializer.serialize(expression1, writer, context)
         }
     }
 
